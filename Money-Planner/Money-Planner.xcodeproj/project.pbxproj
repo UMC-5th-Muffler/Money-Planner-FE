@@ -12,6 +12,13 @@
 		7A610ABC2B47FA8E00D3096F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610ABB2B47FA8E00D3096F /* ViewController.swift */; };
 		7A610AC12B47FA8F00D3096F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A610AC02B47FA8F00D3096F /* Assets.xcassets */; };
 		7A610AC42B47FA8F00D3096F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A610AC22B47FA8F00D3096F /* LaunchScreen.storyboard */; };
+		7A610AD22B49004200D3096F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AD12B49004200D3096F /* SettingsViewController.swift */; };
+		7A610AD62B49007100D3096F /* BattleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AD52B49007100D3096F /* BattleViewController.swift */; };
+		7A610AD92B49009300D3096F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AD82B49009300D3096F /* HomeViewController.swift */; };
+		7A610ADC2B4900C800D3096F /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 7A610ADB2B4900C800D3096F /* CombineMoya */; };
+		7A610ADE2B4900C800D3096F /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 7A610ADD2B4900C800D3096F /* Moya */; };
+		7A610AE02B4900C800D3096F /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 7A610ADF2B4900C800D3096F /* ReactiveMoya */; };
+		7A610AE22B4900C800D3096F /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 7A610AE12B4900C800D3096F /* RxMoya */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +29,9 @@
 		7A610AC02B47FA8F00D3096F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A610AC32B47FA8F00D3096F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7A610AC52B47FA8F00D3096F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7A610AD12B49004200D3096F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		7A610AD52B49007100D3096F /* BattleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleViewController.swift; sourceTree = "<group>"; };
+		7A610AD82B49009300D3096F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +39,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A610ADE2B4900C800D3096F /* Moya in Frameworks */,
+				7A610ADC2B4900C800D3096F /* CombineMoya in Frameworks */,
+				7A610AE22B4900C800D3096F /* RxMoya in Frameworks */,
+				7A610AE02B4900C800D3096F /* ReactiveMoya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,13 +68,13 @@
 		7A610AB62B47FA8E00D3096F /* Money-Planner */ = {
 			isa = PBXGroup;
 			children = (
+				7A610AB72B47FA8E00D3096F /* AppDelegate.swift */,
+				7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */,
+				7A610AD02B48FEE000D3096F /* Notification */,
 				7A610ACE2B480B5B00D3096F /* Model */,
 				7A610ACD2B480B1400D3096F /* ViewModel */,
 				7A610ACC2B480B0E00D3096F /* View */,
 				7A610ACB2B480AFF00D3096F /* Network */,
-				7A610AB72B47FA8E00D3096F /* AppDelegate.swift */,
-				7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */,
-				7A610ABB2B47FA8E00D3096F /* ViewController.swift */,
 				7A610AC02B47FA8F00D3096F /* Assets.xcassets */,
 				7A610AC22B47FA8F00D3096F /* LaunchScreen.storyboard */,
 				7A610AC52B47FA8F00D3096F /* Info.plist */,
@@ -78,6 +92,10 @@
 		7A610ACC2B480B0E00D3096F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				7A610ABB2B47FA8E00D3096F /* ViewController.swift */,
+				7A610AD72B49008600D3096F /* Home */,
+				7A610AD42B49005400D3096F /* Battle */,
+				7A610AD32B49004500D3096F /* Settings */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -96,6 +114,37 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		7A610AD02B48FEE000D3096F /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		7A610AD32B49004500D3096F /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				7A610AD12B49004200D3096F /* SettingsViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		7A610AD42B49005400D3096F /* Battle */ = {
+			isa = PBXGroup;
+			children = (
+				7A610AD52B49007100D3096F /* BattleViewController.swift */,
+			);
+			path = Battle;
+			sourceTree = "<group>";
+		};
+		7A610AD72B49008600D3096F /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				7A610AD82B49009300D3096F /* HomeViewController.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -112,6 +161,12 @@
 			dependencies = (
 			);
 			name = "Money-Planner";
+			packageProductDependencies = (
+				7A610ADB2B4900C800D3096F /* CombineMoya */,
+				7A610ADD2B4900C800D3096F /* Moya */,
+				7A610ADF2B4900C800D3096F /* ReactiveMoya */,
+				7A610AE12B4900C800D3096F /* RxMoya */,
+			);
 			productName = "Money-Planner";
 			productReference = 7A610AB42B47FA8E00D3096F /* Money-Planner.app */;
 			productType = "com.apple.product-type.application";
@@ -140,6 +195,9 @@
 				Base,
 			);
 			mainGroup = 7A610AAB2B47FA8E00D3096F;
+			packageReferences = (
+				7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */,
+			);
 			productRefGroup = 7A610AB52B47FA8E00D3096F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -169,6 +227,9 @@
 				7A610ABC2B47FA8E00D3096F /* ViewController.swift in Sources */,
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
 				7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */,
+				7A610AD22B49004200D3096F /* SettingsViewController.swift in Sources */,
+				7A610AD62B49007100D3096F /* BattleViewController.swift in Sources */,
+				7A610AD92B49009300D3096F /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,6 +442,40 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7A610ADB2B4900C800D3096F /* CombineMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = CombineMoya;
+		};
+		7A610ADD2B4900C800D3096F /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		7A610ADF2B4900C800D3096F /* ReactiveMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = ReactiveMoya;
+		};
+		7A610AE12B4900C800D3096F /* RxMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = RxMoya;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7A610AAC2B47FA8E00D3096F /* Project object */;
 }
