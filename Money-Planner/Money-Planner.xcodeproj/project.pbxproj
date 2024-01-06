@@ -19,6 +19,8 @@
 		7A610ADE2B4900C800D3096F /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 7A610ADD2B4900C800D3096F /* Moya */; };
 		7A610AE02B4900C800D3096F /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 7A610ADF2B4900C800D3096F /* ReactiveMoya */; };
 		7A610AE22B4900C800D3096F /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 7A610AE12B4900C800D3096F /* RxMoya */; };
+		7A610AE52B491ED600D3096F /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AE42B491ED600D3096F /* Dummy.swift */; };
+		7A610AE72B491F1600D3096F /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AE62B491F1600D3096F /* Components.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		7A610AD12B49004200D3096F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		7A610AD52B49007100D3096F /* BattleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleViewController.swift; sourceTree = "<group>"; };
 		7A610AD82B49009300D3096F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		7A610AE42B491ED600D3096F /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
+		7A610AE62B491F1600D3096F /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +96,7 @@
 		7A610ACC2B480B0E00D3096F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				7A610AE62B491F1600D3096F /* Components.swift */,
 				7A610AE32B49020700D3096F /* Login */,
 				7A610AD72B49008600D3096F /* Home */,
 				7A610AD42B49005400D3096F /* Battle */,
@@ -110,6 +115,7 @@
 		7A610ACE2B480B5B00D3096F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				7A610AE42B491ED600D3096F /* Dummy.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -233,6 +239,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A610ABC2B47FA8E00D3096F /* LoginViewController.swift in Sources */,
+				7A610AE72B491F1600D3096F /* Components.swift in Sources */,
+				7A610AE52B491ED600D3096F /* Dummy.swift in Sources */,
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
 				7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */,
 				7A610AD22B49004200D3096F /* SettingsViewController.swift in Sources */,
