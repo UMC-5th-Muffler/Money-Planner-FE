@@ -72,7 +72,17 @@ extension UIFont {
     }
 }
 
-
+//Custom Color
+extension UIColor {
+    static let mpMainColor = UIColor(red: 0/255, green: 117/255, blue: 255/255, alpha: 1) // #0075FF
+    static let mpGray = UIColor(red: 190/255, green: 190/255, blue: 192/255, alpha: 1) // #BEBEC0
+    static let mpLightGray = UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1) // #E8E8E8
+    static let mpDarkGray = UIColor(red: 138/255, green: 138/255, blue: 138/255, alpha: 1) // #8A8A8A
+    static let mpGypsumGray = UIColor(red: 246/255, green: 246/255, blue: 246/255, alpha: 1) // #F6F6F6
+    static let mpCharcoal = UIColor(red: 84/255, green: 89/255, blue: 101/255, alpha: 1) // #545965
+    static let mpWhite = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1) // #FFFFFF
+    static let mpBlack = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // #000000
+}
 
 // CustomLabel (letter spacing -2%)
 class MPLabel: UILabel {
@@ -217,7 +227,7 @@ class CheckBtn: UIButton {
     // 이미지 업데이트 메소드
     private func updateImage() {
         let systemName = "checkmark.circle.fill"
-        let color = isChecked ? UIColor.mpMain : UIColor.mpGray
+        let color = isChecked ? UIColor.mpMainColor : UIColor.mpGray
         setImage(UIImage(systemName: systemName)?.withTintColor(color, renderingMode: .alwaysOriginal), for: .normal)
     }
     
@@ -256,7 +266,7 @@ class MainBottomBtn: UIButton {
     // 버튼 스타일 업데이트 메소드
     private func updateButtonStyle() {
         if isEnabled {
-            backgroundColor = .mpMain
+            backgroundColor = .mpMainColor
             setTitleColor(.mpWhite, for: .normal)
         } else {
             backgroundColor = .mpLightGray
