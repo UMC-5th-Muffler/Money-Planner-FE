@@ -72,6 +72,7 @@ extension UIFont {
     }
 }
 
+
 //Custom Color
 extension UIColor {
     static let mpMainColor = UIColor(red: 0/255, green: 117/255, blue: 255/255, alpha: 1) // #0075FF
@@ -83,6 +84,7 @@ extension UIColor {
     static let mpWhite = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1) // #FFFFFF
     static let mpBlack = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // #000000
 }
+
 
 // CustomLabel (letter spacing -2%)
 class MPLabel: UILabel {
@@ -313,8 +315,8 @@ class SmallBtnView: UIView {
     private func setupButtons() {
         // 취소 버튼 설정
         cancelButton.setTitle("취소", for: .normal)
-        cancelButton.setTitleColor(UIColor(named:"mpMainColor"), for: .normal)
-        cancelButton.layer.borderColor = UIColor(named: "mpMainColor")?.cgColor
+        cancelButton.setTitleColor(UIColor.mpMainColor, for: .normal)
+        cancelButton.layer.borderColor = UIColor.mpMainColor.cgColor
         cancelButton.layer.borderWidth = 1
         cancelButton.backgroundColor = UIColor.mpWhite
         cancelButton.layer.cornerRadius = 10  // 적절한 둥글기 값 설정
@@ -323,7 +325,7 @@ class SmallBtnView: UIView {
         // 완료 버튼 설정
         completeButton.setTitle("완료", for: .normal)
         completeButton.setTitleColor(UIColor.mpWhite, for: .normal)
-        completeButton.backgroundColor = UIColor(named: "mpMainColor")
+        completeButton.backgroundColor = UIColor.mpMainColor
         completeButton.layer.cornerRadius = 10  // 적절한 둥글기 값 설정
         completeButton.clipsToBounds = true
         
