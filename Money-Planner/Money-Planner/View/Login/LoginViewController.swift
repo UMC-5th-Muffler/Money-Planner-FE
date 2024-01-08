@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import KakaoSDKCommon
+import KakaoSDKAuth
+import KakaoSDKUser
 
 class LoginViewController: UIViewController {
     
@@ -38,8 +41,9 @@ class LoginViewController: UIViewController {
     }
     
     private func setupButtons() {
-        setupButton(firstButton, title: "첫 번째 버튼")
-        setupButton(secondButton, title: "두 번째 버튼")
+        
+        setupKakaoButton(firstButton)
+        setupAppleButton(secondButton)
         
         NSLayoutConstraint.activate([
             firstButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
@@ -54,12 +58,44 @@ class LoginViewController: UIViewController {
         ])
     }
     
-    private func setupButton(_ button: UIButton, title: String) {
-        button.setTitle(title, for: .normal)
+    private func setupKakaoButton(_ button: UIButton) {
+        button.setTitle("카카오 계정으로 로그인", for: .normal)
+        button.backgroundColor = .blue // 예시 색상
+        button.layer.cornerRadius = 25 // 버튼의 높이의 절반으로 둥근 모서리 설정
+        button.addTarget(self, action: #selector(loginToKakao), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(button)
+    }
+    
+    private func setupAppleButton(_ button: UIButton) {
+        button.setTitle("Apple 계정으로 로그인", for: .normal)
         button.backgroundColor = .blue // 예시 색상
         button.layer.cornerRadius = 25 // 버튼의 높이의 절반으로 둥근 모서리 설정
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)
+    }
+    
+    @objc private func loginToKakao() {
+        // 카카오톡 앱이 설치되어 있을 경우
+        if UserApi.isKakaoTalkLoginAvailable() {
+            UserApi.shared.loginWithKakaoTalk { (oauthToken, error) in
+                self.handleLoginResult(oauthToken: oauthToken, error: error)
+            }
+        } else {
+            // 카카오톡 앱이 설치되어 있지 않을 경우
+            UserApi.shared.loginWithKakaoAccount { (oauthToken, error) in
+                self.handleLoginResult(oauthToken: oauthToken, error: error)
+            }
+        }
+    }
+    
+    private func handleLoginResult(oauthToken: OAuthToken?, error: Error?) {
+        if let error = error {
+            print("로그인 실패: \(error.localizedDescription)")
+        } else if let _ = oauthToken {
+            print("로그인 성공")
+            // 로그인 성공 후 처리
+        }
     }
     
     //

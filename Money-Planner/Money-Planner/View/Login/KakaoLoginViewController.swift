@@ -6,3 +6,14 @@
 //
 
 import Foundation
+import UIKit
+import KakaoSDKCommon
+import KakaoSDKAuth
+import KakaoSDKUser
+
+class KakaoLoginViewController : UIViewController{
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+}
