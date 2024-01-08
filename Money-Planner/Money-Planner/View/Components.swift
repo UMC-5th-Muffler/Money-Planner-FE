@@ -133,7 +133,7 @@ class HeaderView: UIView {
     //받은 제목에 맞춰서 title 수정
     private func setupTitleLabel(with title: String) {
         titleLabel.text = title
-        titleLabel.font = UIFont.mpFont20B()
+        titleLabel.font = UIFont.mpFont18B()
         titleLabel.textAlignment = .center
         addSubview(titleLabel)
     }
