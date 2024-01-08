@@ -26,7 +26,6 @@
 		7A610AF02B49414100D3096F /* RegisterProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AEF2B49414100D3096F /* RegisterProfileViewController.swift */; };
 		7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF12B49421F00D3096F /* KakaoLoginViewController.swift */; };
 		7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF32B49422E00D3096F /* AppleLoginViewController.swift */; };
-		7AC060FD2B4C5AD4008C0E63 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC060FC2B4C5AD4008C0E63 /* Design.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,7 +46,6 @@
 		7A610AEF2B49414100D3096F /* RegisterProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterProfileViewController.swift; sourceTree = "<group>"; };
 		7A610AF12B49421F00D3096F /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
 		7A610AF32B49422E00D3096F /* AppleLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewController.swift; sourceTree = "<group>"; };
-		7AC060FC2B4C5AD4008C0E63 /* Design.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,7 +106,6 @@
 		7A610ACC2B480B0E00D3096F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				7AC060FC2B4C5AD4008C0E63 /* Design.swift */,
 				7A610AE62B491F1600D3096F /* Components.swift */,
 				7A610AEC2B493F3B00D3096F /* Usage */,
 				7A610AE82B493E8000D3096F /* Goal */,
@@ -273,7 +270,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A610ABC2B47FA8E00D3096F /* LoginViewController.swift in Sources */,
-				7AC060FD2B4C5AD4008C0E63 /* Design.swift in Sources */,
 				7A610AF02B49414100D3096F /* RegisterProfileViewController.swift in Sources */,
 				7A610AE72B491F1600D3096F /* Components.swift in Sources */,
 				7A610AEA2B493EC900D3096F /* MakeGoalViewController.swift in Sources */,
