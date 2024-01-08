@@ -8,15 +8,6 @@
 import Foundation
 import UIKit
 
-
-
-// 색 등록 (asset에 추가해도 됨.)
-extension UIColor{
-    static let mpGray = UIColor(red: 0.35, green: 0.35, blue: 0.35, alpha: 1.0)
-}
-
-
-
 // HeaderView
 class HeaderView: UIView {
     
@@ -37,7 +28,7 @@ class HeaderView: UIView {
     //추후 색 변환 가능
     private func setupBackButton() {
         if let chevronImage = UIImage(systemName: "chevron.left")?.withRenderingMode(.alwaysOriginal) {
-            let darkGrayChevron = chevronImage.withTintColor(.darkGray)
+            let darkGrayChevron = chevronImage.withTintColor(.mpGray)
             backButton.setImage(darkGrayChevron, for: .normal)
         }
         addSubview(backButton)

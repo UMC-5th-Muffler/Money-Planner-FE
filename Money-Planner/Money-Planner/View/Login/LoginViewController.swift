@@ -9,16 +9,16 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
-    private let logo = UIImage(cgImage: "globe")
-    
-    private let appleLogin = UIButton(frame: <#T##CGRect#>)
-    private let kakaoLogin = UIButton(frame: <#T##CGRect#>)
+//    private let logo = UIImage(cgImage: "globe")
+//    
+//    private let appleLogin = UIButton(frame: <#T##CGRect#>)
+//    private let kakaoLogin = UIButton(frame: <#T##CGRect#>)
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = UIColor(named: "mpMainColor")
     }
     
 }
