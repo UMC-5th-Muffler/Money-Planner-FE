@@ -16,6 +16,10 @@ extension UIFont {
         return UIFont(name: "AppleSDGothicNeo-Bold", size: 26) ?? UIFont.systemFont(ofSize: 26, weight: .bold)
     }
     
+    static func mpFont21SB() -> UIFont {
+        return UIFont(name: "AppleSDGothicNeo-SemiBold", size: 21) ?? UIFont.systemFont(ofSize: 21, weight: .light)
+    }
+    
     static func mpFont20B() -> UIFont {
         return UIFont(name: "AppleSDGothicNeo-Bold", size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .bold)
     }
