@@ -194,7 +194,7 @@ class MainBottomBtn: UIButton {
             backgroundColor = .mpMainColor
             setTitleColor(.mpWhite, for: .normal)
         } else {
-            backgroundColor = .mpLightGray
+            backgroundColor = .mpGypsumGray // 수정 - 근영/ 메인 버튼 색상 F6F6F6
             setTitleColor(.mpGray, for: .normal)
         }
     }

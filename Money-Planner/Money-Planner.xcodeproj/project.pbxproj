@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		20118A112B56A86100B2569E /* ConsumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20118A102B56A86100B2569E /* ConsumeViewController.swift */; };
 		7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AB72B47FA8E00D3096F /* AppDelegate.swift */; };
 		7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */; };
 		7A610ABC2B47FA8E00D3096F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610ABB2B47FA8E00D3096F /* LoginViewController.swift */; };
@@ -31,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		20118A102B56A86100B2569E /* ConsumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumeViewController.swift; sourceTree = "<group>"; };
 		7A610AB42B47FA8E00D3096F /* Money-Planner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Money-Planner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A610AB72B47FA8E00D3096F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -68,6 +70,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		20118A0E2B56A83400B2569E /* Consume */ = {
+			isa = PBXGroup;
+			children = (
+				20118A102B56A86100B2569E /* ConsumeViewController.swift */,
+			);
+			path = Consume;
+			sourceTree = "<group>";
+		};
 		7A610AAB2B47FA8E00D3096F = {
 			isa = PBXGroup;
 			children = (
@@ -113,6 +123,7 @@
 		7A610ACC2B480B0E00D3096F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				20118A0E2B56A83400B2569E /* Consume */,
 				7A610AE62B491F1600D3096F /* Components.swift */,
 				7A610AEC2B493F3B00D3096F /* Usage */,
 				7A610AE82B493E8000D3096F /* Goal */,
@@ -308,6 +319,7 @@
 				7A610AD62B49007100D3096F /* BattleViewController.swift in Sources */,
 				D29536F12B4C0DF000EEA81F /* UserDefaults.swift in Sources */,
 				7A610AD92B49009300D3096F /* HomeViewController.swift in Sources */,
+				20118A112B56A86100B2569E /* ConsumeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
