@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       window = UIWindow(windowScene: windowScene)
         ///userdefaults 안에서 이전 로그인 여부 파악하고 자동로그인.
         ///없으면 로그인 화면으로 이동
-      window?.rootViewController = LoginViewController()
+      window?.rootViewController = GoalTotalAmountViewController()
       window?.makeKeyAndVisible()
     }
 
