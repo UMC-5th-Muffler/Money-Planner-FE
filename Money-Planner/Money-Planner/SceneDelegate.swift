@@ -20,23 +20,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         ///userdefaults 안에서 이전 로그인 여부 파악하고 자동로그인.
         ///없으면 로그인 화면으로 이동
-        let tabBarController = CustomTabBarController()
+//        let tabBarController = CustomTabBarController()
+//        
+//        let homeVC = UINavigationController(rootViewController: HomeViewController())
+//        let consumeVC = UINavigationController(rootViewController: ConsumeViewController())
+//        let battleVC = UINavigationController(rootViewController: BattleViewController())
+//        let settingVC = UINavigationController(rootViewController: SettingsViewController())
+//        
+//        homeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(systemName: "house"), tag: 0)
+//        
+//        // 아직 목표 페이지가 없어서 임으로 해두었습니다! 나중에 목표페이지 생기면 바꿔서 넣으면됩니다!
+//        consumeVC.tabBarItem = UITabBarItem(title: "목표", image: UIImage(systemName: "person"), tag: 1)
+//        battleVC.tabBarItem = UITabBarItem(title: "소비 배틀", image: UIImage(systemName: "person"), tag: 2)
+//        settingVC.tabBarItem = UITabBarItem(title: "마이페이지", image: UIImage(systemName: "person"), tag: 3)
+//        
+//        tabBarController.setViewControllers([homeVC, consumeVC, battleVC, settingVC], animated: true)
         
-        let homeVC = UINavigationController(rootViewController: HomeViewController())
-        let consumeVC = UINavigationController(rootViewController: ConsumeViewController())
-        let battleVC = UINavigationController(rootViewController: BattleViewController())
-        let settingVC = UINavigationController(rootViewController: SettingsViewController())
-        
-        homeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(systemName: "house"), tag: 0)
-        
-        // 아직 목표 페이지가 없어서 임으로 해두었습니다! 나중에 목표페이지 생기면 바꿔서 넣으면됩니다!
-        consumeVC.tabBarItem = UITabBarItem(title: "목표", image: UIImage(systemName: "person"), tag: 1)
-        battleVC.tabBarItem = UITabBarItem(title: "소비 배틀", image: UIImage(systemName: "person"), tag: 2)
-        settingVC.tabBarItem = UITabBarItem(title: "마이페이지", image: UIImage(systemName: "person"), tag: 3)
-        
-        tabBarController.setViewControllers([homeVC, consumeVC, battleVC, settingVC], animated: true)
-        
-        window?.rootViewController = tabBarController
+        window?.rootViewController = GoalNameViewController()
         window?.makeKeyAndVisible()
         
     }
