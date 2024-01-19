@@ -18,6 +18,14 @@
 		7A3B83A32B56F191007F049A /* GoalTotalAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B83A22B56F191007F049A /* GoalTotalAmountViewController.swift */; };
 		7A3B83A52B56F2DA007F049A /* GoalComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3B83A42B56F2DA007F049A /* GoalComponents.swift */; };
 		7A4C67302B57B686008BCAC9 /* GoalMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C672F2B57B686008BCAC9 /* GoalMainViewController.swift */; };
+		7A4C675C2B5A5700008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67512B5A5700008BCAC9 /* SubDescriptionView.swift */; };
+		7A4C675D2B5A5700008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67522B5A5700008BCAC9 /* MPLabel.swift */; };
+		7A4C675E2B5A5700008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67532B5A5700008BCAC9 /* DescriptionView.swift */; };
+		7A4C675F2B5A5700008BCAC9 /* MainTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67552B5A5700008BCAC9 /* MainTextField.swift */; };
+		7A4C67602B5A5700008BCAC9 /* MainBottomBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67572B5A5700008BCAC9 /* MainBottomBtn.swift */; };
+		7A4C67612B5A5700008BCAC9 /* SmallButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67582B5A5700008BCAC9 /* SmallButtonView.swift */; };
+		7A4C67622B5A5700008BCAC9 /* CheckBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67592B5A5700008BCAC9 /* CheckBtn.swift */; };
+		7A4C67632B5A5700008BCAC9 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C675A2B5A5700008BCAC9 /* HeaderView.swift */; };
 		7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AB72B47FA8E00D3096F /* AppDelegate.swift */; };
 		7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */; };
 		7A610ABC2B47FA8E00D3096F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610ABB2B47FA8E00D3096F /* LoginViewController.swift */; };
@@ -52,6 +60,14 @@
 		7A3B83A22B56F191007F049A /* GoalTotalAmountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTotalAmountViewController.swift; sourceTree = "<group>"; };
 		7A3B83A42B56F2DA007F049A /* GoalComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalComponents.swift; sourceTree = "<group>"; };
 		7A4C672F2B57B686008BCAC9 /* GoalMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalMainViewController.swift; sourceTree = "<group>"; };
+		7A4C67512B5A5700008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
+		7A4C67522B5A5700008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
+		7A4C67532B5A5700008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
+		7A4C67552B5A5700008BCAC9 /* MainTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTextField.swift; sourceTree = "<group>"; };
+		7A4C67572B5A5700008BCAC9 /* MainBottomBtn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainBottomBtn.swift; sourceTree = "<group>"; };
+		7A4C67582B5A5700008BCAC9 /* SmallButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmallButtonView.swift; sourceTree = "<group>"; };
+		7A4C67592B5A5700008BCAC9 /* CheckBtn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckBtn.swift; sourceTree = "<group>"; };
+		7A4C675A2B5A5700008BCAC9 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		7A610AB42B47FA8E00D3096F /* Money-Planner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Money-Planner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A610AB72B47FA8E00D3096F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -103,6 +119,69 @@
 			path = Adding;
 			sourceTree = "<group>";
 		};
+		7A4C674D2B5A5700008BCAC9 /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+				7A4C674E2B5A5700008BCAC9 /* ImageView */,
+				7A4C674F2B5A5700008BCAC9 /* Calendar */,
+				7A4C67502B5A5700008BCAC9 /* Label */,
+				7A4C67542B5A5700008BCAC9 /* TextField */,
+				7A4C67562B5A5700008BCAC9 /* Button */,
+				7A4C675A2B5A5700008BCAC9 /* HeaderView.swift */,
+				7A4C675B2B5A5700008BCAC9 /* TableViewCell */,
+			);
+			path = CustomView;
+			sourceTree = "<group>";
+		};
+		7A4C674E2B5A5700008BCAC9 /* ImageView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ImageView;
+			sourceTree = "<group>";
+		};
+		7A4C674F2B5A5700008BCAC9 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		7A4C67502B5A5700008BCAC9 /* Label */ = {
+			isa = PBXGroup;
+			children = (
+				7A4C67512B5A5700008BCAC9 /* SubDescriptionView.swift */,
+				7A4C67522B5A5700008BCAC9 /* MPLabel.swift */,
+				7A4C67532B5A5700008BCAC9 /* DescriptionView.swift */,
+			);
+			path = Label;
+			sourceTree = "<group>";
+		};
+		7A4C67542B5A5700008BCAC9 /* TextField */ = {
+			isa = PBXGroup;
+			children = (
+				7A4C67552B5A5700008BCAC9 /* MainTextField.swift */,
+			);
+			path = TextField;
+			sourceTree = "<group>";
+		};
+		7A4C67562B5A5700008BCAC9 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				7A4C67572B5A5700008BCAC9 /* MainBottomBtn.swift */,
+				7A4C67582B5A5700008BCAC9 /* SmallButtonView.swift */,
+				7A4C67592B5A5700008BCAC9 /* CheckBtn.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		7A4C675B2B5A5700008BCAC9 /* TableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = TableViewCell;
+			sourceTree = "<group>";
+		};
 		7A610AAB2B47FA8E00D3096F = {
 			isa = PBXGroup;
 			children = (
@@ -122,6 +201,7 @@
 		7A610AB62B47FA8E00D3096F /* Money-Planner */ = {
 			isa = PBXGroup;
 			children = (
+				7A4C674D2B5A5700008BCAC9 /* CustomView */,
 				D29536EF2B4C091400EEA81F /* Money-Planner.entitlements */,
 				D29536ED2B4C076F00EEA81F /* Common */,
 				7A610AB72B47FA8E00D3096F /* AppDelegate.swift */,
@@ -341,18 +421,23 @@
 			files = (
 				7A3B83A32B56F191007F049A /* GoalTotalAmountViewController.swift in Sources */,
 				7A3B83A02B50DB09007F049A /* NetworkManager.swift in Sources */,
+				7A4C675F2B5A5700008BCAC9 /* MainTextField.swift in Sources */,
 				7A610ABC2B47FA8E00D3096F /* LoginViewController.swift in Sources */,
 				7A610AF02B49414100D3096F /* RegisterProfileViewController.swift in Sources */,
+				7A4C675C2B5A5700008BCAC9 /* SubDescriptionView.swift in Sources */,
 				7A3B83962B50C00F007F049A /* GoalNameViewController.swift in Sources */,
+				7A4C67632B5A5700008BCAC9 /* HeaderView.swift in Sources */,
 				7A610AEA2B493EC900D3096F /* GoalPeriodViewController.swift in Sources */,
 				7A610AE52B491ED600D3096F /* Dummy.swift in Sources */,
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
 				7A3B83922B50BF75007F049A /* GoalCategoryViewController.swift in Sources */,
+				7A4C67622B5A5700008BCAC9 /* CheckBtn.swift in Sources */,
 				7A3B839A2B50CC9F007F049A /* Goal.swift in Sources */,
 				7A3B839E2B50DAFC007F049A /* GoalAPI.swift in Sources */,
 				7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */,
 				7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */,
 				7A3B83A52B56F2DA007F049A /* GoalComponents.swift in Sources */,
+				7A4C675E2B5A5700008BCAC9 /* DescriptionView.swift in Sources */,
 				7A610AD22B49004200D3096F /* SettingsViewController.swift in Sources */,
 				7AC060FF2B4C5D78008C0E63 /* Design.swift in Sources */,
 				7A3B83942B50BFA3007F049A /* GoalDailyViewController.swift in Sources */,
@@ -364,6 +449,9 @@
 				7A610AD62B49007100D3096F /* BattleViewController.swift in Sources */,
 				D29536F12B4C0DF000EEA81F /* UserDefaults.swift in Sources */,
 				7A610AD92B49009300D3096F /* HomeViewController.swift in Sources */,
+				7A4C67602B5A5700008BCAC9 /* MainBottomBtn.swift in Sources */,
+				7A4C67612B5A5700008BCAC9 /* SmallButtonView.swift in Sources */,
+				7A4C675D2B5A5700008BCAC9 /* MPLabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
