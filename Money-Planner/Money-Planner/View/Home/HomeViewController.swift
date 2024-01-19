@@ -16,6 +16,32 @@ class HomeViewController : UIViewController {
     }
     
     func setupHeader(){
+        
+        // 검색 버튼 추가
+        let searchButton = UIButton(type: .system)
+        searchButton.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
+        searchButton.tintColor = .mpBlack
+        searchButton.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
+        
+        let search = UIBarButtonItem(customView: searchButton)
+
+        let bellButton = UIButton(type: .system)
+        bellButton.setImage(UIImage(systemName: "bell"), for: .normal)
+        bellButton.tintColor = .mpBlack
+        bellButton.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
+
+
+        let bell = UIBarButtonItem(customView: bellButton)
+        
+        let menuButton = UIButton(type: .system)
+        menuButton.setImage(UIImage(systemName: "bell"), for: .normal)
+        menuButton.tintColor = .mpBlack
+        menuButton.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
+
+        let menu = UIBarButtonItem(customView: menuButton)
+
+        navigationItem.rightBarButtonItems = [search, bell, menu]
+
         // 헤더 뷰 생성
         let headerView = UIView()
         headerView.translatesAutoresizingMaskIntoConstraints = false
@@ -27,22 +53,6 @@ class HomeViewController : UIViewController {
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.mpFont21SB()
         headerView.addSubview(titleLabel)
-        
-        // 검색 버튼 추가
-        let searchButton = UIButton(type: .system)
-        searchButton.translatesAutoresizingMaskIntoConstraints = false
-        searchButton.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
-        searchButton.tintColor = .mpBlack
-        searchButton.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
-        headerView.addSubview(searchButton)
-        
-        // 플러스 버튼 추가
-        let plusButton = UIButton(type: .system)
-        plusButton.translatesAutoresizingMaskIntoConstraints = false
-        plusButton.setImage(UIImage(systemName: "plus"), for: .normal)
-        plusButton.tintColor = .mpBlack
-        plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
-        headerView.addSubview(plusButton)
         
         // 화면에 헤더 뷰 추가
         view.addSubview(headerView)
@@ -57,18 +67,6 @@ class HomeViewController : UIViewController {
             
             titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            
-            plusButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
-            plusButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            
-            searchButton.trailingAnchor.constraint(equalTo: plusButton.leadingAnchor, constant: -14),
-            searchButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            
-            searchButton.widthAnchor.constraint(equalToConstant: 24),
-            searchButton.heightAnchor.constraint(equalToConstant: 24),
-            
-            plusButton.widthAnchor.constraint(equalToConstant: 30),
-            plusButton.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
     
