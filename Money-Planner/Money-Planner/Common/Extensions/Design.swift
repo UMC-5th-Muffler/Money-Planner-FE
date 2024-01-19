@@ -76,7 +76,9 @@ extension UIFont {
 
 //Custom Color
 extension UIColor {
-    static let mpMainColor = UIColor(red: 0/255, green: 117/255, blue: 255/255, alpha: 1) // #0075FF
+    static let mpMainColor = UIColor(red: 19/255, green: 203/255, blue: 191/255, alpha: 1) // #19CBBF
+    static let mpGraph = UIColor(red: 40/255, green: 216/255, blue: 204/255, alpha: 1) // #28D8CC
+    static let mpCalendarHighLight = UIColor(red: 223/255, green: 242/255, blue: 241/255, alpha: 1) // #DFF2F1
     static let mpGray = UIColor(red: 190/255, green: 190/255, blue: 192/255, alpha: 1) // #BEBEC0
     static let mpLightGray = UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1) // #E8E8E8
     static let mpDarkGray = UIColor(red: 138/255, green: 138/255, blue: 138/255, alpha: 1) // #8A8A8A
