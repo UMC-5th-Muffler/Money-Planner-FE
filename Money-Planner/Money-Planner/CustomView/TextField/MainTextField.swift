@@ -34,7 +34,7 @@ class MainTextField: UITextField {
         
         
         // 텍스트 필드에 시스템 아이콘 이미지 추가
-            let systemIconImageView = UIImageView(image: UIImage(systemName: iconName))
+            let systemIconImageView = UIImageView(image: UIImage(named: iconName))
             systemIconImageView.tintColor = UIColor.mpMainColor// 시스템 아이콘 이미지 색상 설정
             //systemIconImageView.contentMode = .scaleAspectFit
 
