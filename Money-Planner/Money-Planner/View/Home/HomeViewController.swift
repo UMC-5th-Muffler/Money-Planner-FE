@@ -8,7 +8,9 @@
 import Foundation
 import UIKit
 
-class HomeViewController : UIViewController {
+class HomeViewController : UIViewController, MainMonthViewDelegate {
+    
+    let headerView = UIView()
     
     let calendarView : MainCalendarView = {
         let v = MainCalendarView()
@@ -16,15 +18,16 @@ class HomeViewController : UIViewController {
         return v
     }()
     
+    let monthView: MainMonthView = {
+        let v = MainMonthView()
+        v.translatesAutoresizingMaskIntoConstraints=false
+        return v
+    }()
+    
     override func viewDidLoad(){
-        setupHeader()
         view.backgroundColor = UIColor.mpWhite
-        
-        view.addSubview(calendarView)
-        calendarView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive=true
-        calendarView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -12).isActive=true
-        calendarView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive=true
-        calendarView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 100).isActive = true
+        setupHeader()
+        setupView()
     }
     
     override func viewWillLayoutSubviews() {
@@ -59,16 +62,14 @@ class HomeViewController : UIViewController {
         
         navigationItem.rightBarButtonItems = [search, bell, menu]
         
-        // 헤더 뷰 생성
-        let headerView = UIView()
         headerView.translatesAutoresizingMaskIntoConstraints = false
         
         // 제목 레이블 추가
         let titleLabel = MPLabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "✈️ 일본여행 가기 전"
+        titleLabel.text = "✈️ 일본여행 가기 전 돈 모으기"
         titleLabel.textAlignment = .center
-        titleLabel.font = UIFont.mpFont21SB()
+        titleLabel.font = UIFont.mpFont18M()
         headerView.addSubview(titleLabel)
         
         // 화면에 헤더 뷰 추가
@@ -86,6 +87,27 @@ class HomeViewController : UIViewController {
             titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
         ])
     }
+    
+    func setupView(){
+        monthView.delegate=self
+        view.addSubview(monthView)
+        monthView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 20).isActive=true
+        monthView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive=true
+        monthView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive=true
+        monthView.heightAnchor.constraint(equalToConstant: 35).isActive=true
+        
+    
+        view.addSubview(calendarView)
+        calendarView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive=true
+        calendarView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -12).isActive=true
+        calendarView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive=true
+        calendarView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 100).isActive = true
+    }
+    
+    func didChangeMonth(monthIndex: Int, year: Int) {
+        calendarView.changeMonth(monthIndex: monthIndex, year: year)
+    }
+    
     
     @objc func searchButtonTapped() {
         // 왼쪽 버튼이 탭되었을 때의 동작

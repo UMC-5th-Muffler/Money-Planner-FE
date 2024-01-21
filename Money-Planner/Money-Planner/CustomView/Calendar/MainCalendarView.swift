@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MainMonthViewDelegate {
+class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     // 0인덱스를 없애기 위해 처리
     var numOfDaysInMonth = [-1,31,28,31,30,31,30,31,31,30,31,30,31]
@@ -127,7 +127,7 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         return day
     }
     
-    func didChangeMonth(monthIndex: Int, year: Int) {
+    func changeMonth(monthIndex: Int, year: Int) {
         currentMonth=monthIndex
         currentYear = year
         
@@ -147,15 +147,8 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func setupViews() {
-        addSubview(monthView)
-        monthView.topAnchor.constraint(equalTo: topAnchor).isActive=true
-        monthView.leftAnchor.constraint(equalTo: leftAnchor).isActive=true
-        monthView.rightAnchor.constraint(equalTo: rightAnchor).isActive=true
-        monthView.heightAnchor.constraint(equalToConstant: 35).isActive=true
-        monthView.delegate=self
-        
         addSubview(weekdaysView)
-        weekdaysView.topAnchor.constraint(equalTo: monthView.bottomAnchor).isActive=true
+        weekdaysView.topAnchor.constraint(equalTo: topAnchor).isActive=true
         weekdaysView.leftAnchor.constraint(equalTo: leftAnchor).isActive=true
         weekdaysView.rightAnchor.constraint(equalTo: rightAnchor).isActive=true
         weekdaysView.heightAnchor.constraint(equalToConstant: 30).isActive=true
@@ -166,12 +159,6 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         myCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0).isActive=true
         myCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive=true
     }
-    
-    let monthView: MainMonthView = {
-        let v = MainMonthView()
-        v.translatesAutoresizingMaskIntoConstraints=false
-        return v
-    }()
     
     let weekdaysView: MainWeekDayView = {
         let v = MainWeekDayView()
