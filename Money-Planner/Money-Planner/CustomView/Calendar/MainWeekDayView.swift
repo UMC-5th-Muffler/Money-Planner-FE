@@ -81,8 +81,8 @@ class WeekdayCVCell: UICollectionViewCell {
         var label = UILabel()
         label.text = "MON"
         label.textAlignment = .center
-        label.textColor = .lightGray
-        label.font = UIFont.systemFont (ofSize: 10)
+        label.textColor = UIColor(hexCode: "979797")
+        label.font = UIFont.mpFont14B()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
