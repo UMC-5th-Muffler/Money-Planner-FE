@@ -109,7 +109,7 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width/7 - 8
-        let height: CGFloat = 40
+        let height: CGFloat = width + 30
         return CGSize(width: width, height: height)
     }
     
@@ -201,7 +201,7 @@ class dateCVCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "00"
         label.textAlignment = .center
-        label.font=UIFont.systemFont(ofSize: 16)
+        label.font=UIFont.mpFont16M()
         label.textColor = UIColor.mpBlack
         label.translatesAutoresizingMaskIntoConstraints=false
         return label
@@ -213,6 +213,26 @@ class dateCVCell: UICollectionViewCell {
         imageView.image = UIImage(named: "btn_date_off")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
+    }()
+    
+    let dayGoalAmount : UILabel = {
+        let label = UILabel()
+        label.text = "5,000"
+        label.textAlignment = .center
+        label.font=UIFont.mpFont10R()
+        label.textColor = UIColor.mpDarkGray
+        label.translatesAutoresizingMaskIntoConstraints=false
+        return label
+    }()
+    
+    let dayConsumeAmount : UILabel = {
+        let label = UILabel()
+        label.text = "2,000"
+        label.textAlignment = .center
+        label.font=UIFont.mpFont10R()
+        label.textColor = UIColor.mpMainColor
+        label.translatesAutoresizingMaskIntoConstraints=false
+        return label
     }()
     
     
@@ -228,15 +248,26 @@ class dateCVCell: UICollectionViewCell {
     func setupViews() {
         addSubview(imageView)
         addSubview(lbl)
+        addSubview(dayGoalAmount)
+        addSubview(dayConsumeAmount)
         
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor),
             imageView.leftAnchor.constraint(equalTo: leftAnchor),
             imageView.rightAnchor.constraint(equalTo: rightAnchor),
-            imageView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
             
             lbl.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
             lbl.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
+            lbl.heightAnchor.constraint(equalToConstant: 16),
+            
+            dayGoalAmount.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+            dayGoalAmount.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
+            dayGoalAmount.heightAnchor.constraint(equalToConstant: 10),
+            
+            dayConsumeAmount.topAnchor.constraint(equalTo: dayGoalAmount.bottomAnchor, constant: 2),
+            dayConsumeAmount.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
+            dayConsumeAmount.heightAnchor.constraint(equalToConstant: 10),
         ])
     }
     

@@ -75,6 +75,18 @@ extension UIFont {
     static func mpFont12R() -> UIFont {
         return UIFont(name: "AppleSDGothicNeo-Regular", size: 12) ?? UIFont.systemFont(ofSize: 12, weight: .regular)
     }
+    
+    static func mpFont10B() -> UIFont {
+        return UIFont(name: "AppleSDGothicNeo-Bold", size: 10) ?? UIFont.systemFont(ofSize: 10, weight: .bold)
+    }
+    
+    static func mpFont10M() -> UIFont {
+        return UIFont(name: "AppleSDGothicNeo-Medium", size: 10) ?? UIFont.systemFont(ofSize: 10, weight: .medium)
+    }
+    
+    static func mpFont10R() -> UIFont {
+        return UIFont(name: "AppleSDGothicNeo-Regular", size: 10) ?? UIFont.systemFont(ofSize: 10, weight: .regular)
+    }
 }
 
 

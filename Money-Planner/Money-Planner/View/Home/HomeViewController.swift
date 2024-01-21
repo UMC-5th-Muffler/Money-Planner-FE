@@ -24,7 +24,7 @@ class HomeViewController : UIViewController {
         calendarView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive=true
         calendarView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -12).isActive=true
         calendarView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive=true
-        calendarView.heightAnchor.constraint(equalToConstant: 365).isActive=true
+        calendarView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 100).isActive = true
     }
     
     override func viewWillLayoutSubviews() {
