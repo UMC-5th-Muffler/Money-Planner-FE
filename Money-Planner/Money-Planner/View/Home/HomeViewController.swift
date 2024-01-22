@@ -124,6 +124,8 @@ extension HomeViewController{
         let menu = UIBarButtonItem(customView: menuButton)
         
         navigationItem.rightBarButtonItems = [search, bell, menu]
+        navigationController?.navigationBar.barTintColor = .mpWhite
+        navigationController?.navigationBar.shadowImage = UIImage()
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -140,7 +142,7 @@ extension HomeViewController{
         
         // Auto Layout 설정
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            headerView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 4),
             
             headerView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             headerView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
