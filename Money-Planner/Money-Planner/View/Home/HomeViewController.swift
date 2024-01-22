@@ -22,6 +22,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     private let contentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor(hexCode: "F5F6FA")
         return view
     }()
     
@@ -51,14 +52,22 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         return v
     }()
     
+    let toggleButton : ToggleButton = {
+        let v = ToggleButton()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
     override func viewDidLoad(){
         view.backgroundColor = UIColor.mpWhite
         view.addSubview(contentScrollView)
         contentScrollView.addSubview(contentView)
         
+        setupHeader()
+        
         // 스크롤 뷰 작업
         NSLayoutConstraint.activate([
-            contentScrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            contentScrollView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 12),
             contentScrollView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             contentScrollView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
             contentScrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
@@ -70,7 +79,6 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
             contentView.widthAnchor.constraint(equalTo: contentScrollView.widthAnchor)
         ])
         
-        setupHeader()
         setupMonthAndCategoryView()
         setupCalendarView()
     }
@@ -129,14 +137,14 @@ extension HomeViewController{
         headerView.addSubview(titleLabel)
         
         // 화면에 헤더 뷰 추가
-        contentView.addSubview(headerView)
+        view.addSubview(headerView)
         
         // Auto Layout 설정
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            headerView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20),
             
-            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            headerView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            headerView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             headerView.heightAnchor.constraint(equalToConstant: 25),
             
             titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
@@ -147,10 +155,20 @@ extension HomeViewController{
     func setupMonthAndCategoryView(){
         monthView.delegate=self
         contentView.addSubview(monthView)
-        monthView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 20).isActive=true
-        monthView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive=true
-        monthView.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive=true
-        monthView.heightAnchor.constraint(equalToConstant: 35).isActive=true
+        contentView.addSubview(toggleButton)
+        
+        NSLayoutConstraint.activate([
+            monthView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            monthView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+//            monthView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            monthView.heightAnchor.constraint(equalToConstant: 35),
+            monthView.centerYAnchor.constraint(equalTo: toggleButton.centerYAnchor),
+            
+            toggleButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            toggleButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
+            toggleButton.heightAnchor.constraint(equalToConstant: 46)
+        ])
+        
         
         //        categoryScrollView.categories = [Category(id: 0, name: "전체"), Category(id: 1, name: "식사"), Category(id: 2, name: "카페"), Category(id: 3, name: "교통"), Category(id: 4, name: "쇼핑")]
         //        view.addSubview(categoryScrollView)
@@ -166,10 +184,11 @@ extension HomeViewController{
     
     
     func setupCalendarView(){
+        calendarView.backgroundColor = UIColor.mpWhite
         contentView.addSubview(calendarView)
         calendarView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 200).isActive=true
-        calendarView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -12).isActive=true
-        calendarView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 12).isActive=true
+        calendarView.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive=true
+        calendarView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive=true
         calendarView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 100).isActive = true
         calendarView.heightAnchor.constraint(equalToConstant: 2000).isActive = true
     }

@@ -147,16 +147,17 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func setupViews() {
+        
         addSubview(weekdaysView)
         weekdaysView.topAnchor.constraint(equalTo: topAnchor).isActive=true
-        weekdaysView.leftAnchor.constraint(equalTo: leftAnchor).isActive=true
-        weekdaysView.rightAnchor.constraint(equalTo: rightAnchor).isActive=true
+        weekdaysView.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive=true
+        weekdaysView.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive=true
         weekdaysView.heightAnchor.constraint(equalToConstant: 30).isActive=true
         
         addSubview(myCollectionView)
         myCollectionView.topAnchor.constraint(equalTo: weekdaysView.bottomAnchor, constant: 0).isActive=true
-        myCollectionView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0).isActive=true
-        myCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0).isActive=true
+        myCollectionView.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive=true
+        myCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive=true
         myCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive=true
     }
     
