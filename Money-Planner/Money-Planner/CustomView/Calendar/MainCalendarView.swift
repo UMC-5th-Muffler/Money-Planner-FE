@@ -30,6 +30,23 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         initializeView()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // 적용하고자 하는 둥근 모서리의 크기
+        let cornerRadius: CGFloat = 20.0
+        
+        // UIBezierPath를 사용하여 상단 부분에만 둥근 모서리를 생성
+        let maskPath = UIBezierPath(roundedRect: bounds,
+                                    byRoundingCorners: [.topLeft, .topRight],
+                                    cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
+        
+        // CAShapeLayer를 생성하고 mask로 사용
+        let maskLayer = CAShapeLayer()
+        maskLayer.path = maskPath.cgPath
+        layer.mask = maskLayer
+    }
+    
     
     func initializeView() {
         currentMonth = Calendar.current.component(.month, from: Date())
@@ -152,10 +169,10 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         weekdaysView.topAnchor.constraint(equalTo: topAnchor).isActive=true
         weekdaysView.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive=true
         weekdaysView.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive=true
-        weekdaysView.heightAnchor.constraint(equalToConstant: 30).isActive=true
+        weekdaysView.heightAnchor.constraint(equalToConstant: 28 + 23).isActive=true
         
         addSubview(myCollectionView)
-        myCollectionView.topAnchor.constraint(equalTo: weekdaysView.bottomAnchor, constant: 0).isActive=true
+        myCollectionView.topAnchor.constraint(equalTo: weekdaysView.bottomAnchor, constant: 12).isActive=true
         myCollectionView.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive=true
         myCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive=true
         myCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive=true

@@ -58,7 +58,7 @@ class CategoryButton: UIView {
         // UIView의 기본적인 설정
         backgroundColor = .mpMainColor
         layer.cornerRadius = 18
-
+        
         stackView.addArrangedSubview(circleView)
         stackView.addArrangedSubview(textLabel)
         
@@ -75,5 +75,53 @@ class CategoryButton: UIView {
             circleView.heightAnchor.constraint(equalToConstant: 13),
             circleView.widthAnchor.constraint(equalToConstant: 13),
         ])
+    }
+}
+
+class CategoryButtonsScrollView: UIScrollView {
+    private lazy var stackView: UIStackView = {
+        let view = UIStackView()
+        view.axis = .horizontal
+        view.spacing = 8
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    var categories : [Category] = []{
+        didSet{
+            bind()
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("Not implemented xib init")
+    }
+    
+    func setupUI() {
+        showsHorizontalScrollIndicator = false
+        
+        addSubview(stackView)
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.heightAnchor.constraint(equalTo: heightAnchor)
+        ])
+    }
+    
+    func bind() {
+        for category in categories {
+            let categoryButton = CategoryButton()
+            categoryButton.category = category
+            
+            stackView.addArrangedSubview(categoryButton)
+        }
     }
 }
