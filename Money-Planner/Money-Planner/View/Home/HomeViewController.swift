@@ -88,7 +88,6 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         calendarView.myCollectionView.collectionViewLayout.invalidateLayout()
     }
     
-    
     // MainMonthView의 delegate
     func didChangeMonth(monthIndex: Int, year: Int) {
         calendarView.changeMonth(monthIndex: monthIndex, year: year)
@@ -160,12 +159,13 @@ extension HomeViewController{
         NSLayoutConstraint.activate([
             monthView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             monthView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-//            monthView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            monthView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
             monthView.heightAnchor.constraint(equalToConstant: 35),
             monthView.centerYAnchor.constraint(equalTo: toggleButton.centerYAnchor),
             
             toggleButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             toggleButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
+            toggleButton.widthAnchor.constraint(equalToConstant: 154),
             toggleButton.heightAnchor.constraint(equalToConstant: 46)
         ])
         
@@ -181,7 +181,6 @@ extension HomeViewController{
         //        categoryScrollView.topAnchor.constraint(equalTo: monthView.bottomAnchor,
         //                                                constant: 100).isActive = true
     }
-    
     
     func setupCalendarView(){
         calendarView.backgroundColor = UIColor.mpWhite
