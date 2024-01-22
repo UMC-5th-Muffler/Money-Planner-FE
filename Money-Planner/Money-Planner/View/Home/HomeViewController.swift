@@ -34,15 +34,16 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         return v
     }()
     
-//    var categoryScrollView : CategoryScrollView = {
-//        let v = CategoryScrollView()
-//        v.translatesAutoresizingMaskIntoConstraints=false
-//        return v
-//    }()
-    
-    var categoryButton : CategoryButton = {
-        let v = CategoryButton()
+    var categoryScrollView : CategoryButtonsScrollView = {
+        let v = CategoryButtonsScrollView()
         v.translatesAutoresizingMaskIntoConstraints=false
+        return v
+    }()
+    
+
+    var statisticsView : MainStatisticsView = {
+        let v = MainStatisticsView()
+        v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
@@ -80,6 +81,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         ])
         
         setupMonthAndCategoryView()
+        setupStatisticsView()
         setupCalendarView()
     }
     
@@ -158,6 +160,10 @@ extension HomeViewController{
         contentView.addSubview(monthView)
         contentView.addSubview(toggleButton)
         
+        categoryScrollView.categories = [Category(id: 0, name: "전체"), Category(id: 1, name: "식사"), Category(id: 2, name: "카페"), Category(id: 3, name: "교통"), Category(id: 4, name: "쇼핑")]
+        
+        contentView.addSubview(categoryScrollView)
+        
         NSLayoutConstraint.activate([
             monthView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             monthView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
@@ -168,30 +174,41 @@ extension HomeViewController{
             toggleButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             toggleButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
             toggleButton.widthAnchor.constraint(equalToConstant: 154),
-            toggleButton.heightAnchor.constraint(equalToConstant: 46)
+            toggleButton.heightAnchor.constraint(equalToConstant: 46),
+            
+            categoryScrollView.topAnchor.constraint(equalTo: monthView.bottomAnchor,
+                                                    constant: 24),
+            categoryScrollView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+            categoryScrollView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
+         
         ])
+    }
+    
+    func setupStatisticsView(){
+        statisticsView.progress = 0.7
+        view.addSubview(statisticsView)
         
-        
-        //        categoryScrollView.categories = [Category(id: 0, name: "전체"), Category(id: 1, name: "식사"), Category(id: 2, name: "카페"), Category(id: 3, name: "교통"), Category(id: 4, name: "쇼핑")]
-        //        view.addSubview(categoryScrollView)
-        
-        //        categoryButton.category = Category(id: 0, name: "식사")
-        //        view.addSubview(categoryButton)
-        
-        //        categoryButton.topAnchor.constraint(equalTo: monthView.bottomAnchor, constant: 100).isActive = true
-        
-        //        categoryScrollView.topAnchor.constraint(equalTo: monthView.bottomAnchor,
-        //                                                constant: 100).isActive = true
+        NSLayoutConstraint.activate([
+            statisticsView.topAnchor.constraint(equalTo: categoryScrollView.bottomAnchor, constant: 36),
+            statisticsView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -24),
+            statisticsView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 24),
+            statisticsView.heightAnchor.constraint(equalToConstant: 150)
+            
+        ])
     }
     
     func setupCalendarView(){
         calendarView.backgroundColor = UIColor.mpWhite
         contentView.addSubview(calendarView)
-        calendarView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 200).isActive=true
-        calendarView.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive=true
-        calendarView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive=true
-        calendarView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 100).isActive = true
-        calendarView.heightAnchor.constraint(equalToConstant: 2000).isActive = true
+        
+        
+        NSLayoutConstraint.activate([
+            calendarView.topAnchor.constraint(equalTo: statisticsView.bottomAnchor, constant: 36),
+            calendarView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            calendarView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+            calendarView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
+            calendarView.heightAnchor.constraint(equalToConstant: 1000)
+        ])
     }
     
     @objc func searchButtonTapped() {

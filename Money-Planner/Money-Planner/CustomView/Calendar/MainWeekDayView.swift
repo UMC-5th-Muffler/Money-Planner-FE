@@ -94,8 +94,8 @@ class WeekdayCVCell: UICollectionViewCell {
 
     private func setUpView() {
         addSubview(weekdayLabel)
-        weekdayLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        weekdayLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        weekdayLabel.topAnchor.constraint(equalTo: topAnchor, constant: 28).isActive = true
+        weekdayLabel.heightAnchor.constraint(equalToConstant: 23).isActive = true
         weekdayLabel.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         weekdayLabel.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
     }
