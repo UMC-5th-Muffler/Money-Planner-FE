@@ -34,11 +34,11 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         return v
     }()
     
-    var categoryScrollView : CategoryScrollView = {
-        let v = CategoryScrollView()
-        v.translatesAutoresizingMaskIntoConstraints=false
-        return v
-    }()
+//    var categoryScrollView : CategoryScrollView = {
+//        let v = CategoryScrollView()
+//        v.translatesAutoresizingMaskIntoConstraints=false
+//        return v
+//    }()
     
     var categoryButton : CategoryButton = {
         let v = CategoryButton()
