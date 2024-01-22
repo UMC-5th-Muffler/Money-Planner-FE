@@ -10,13 +10,22 @@ import UIKit
 
 class HomeViewController : UIViewController, MainMonthViewDelegate {
     
-    let headerView = UIView()
-    
-    let calendarView : MainCalendarView = {
-        let v = MainCalendarView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
+    private let contentScrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.backgroundColor = .white
+        scrollView.showsVerticalScrollIndicator = false
+        
+        return scrollView
     }()
+    
+    private let contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    let headerView = UIView()
     
     let monthView: MainMonthView = {
         let v = MainMonthView()
@@ -24,16 +33,63 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         return v
     }()
     
+    var categoryScrollView : CategoryScrollView = {
+        let v = CategoryScrollView()
+        v.translatesAutoresizingMaskIntoConstraints=false
+        return v
+    }()
+    
+    var categoryButton : CategoryButton = {
+        let v = CategoryButton()
+        v.translatesAutoresizingMaskIntoConstraints=false
+        return v
+    }()
+    
+    let calendarView : MainCalendarView = {
+        let v = MainCalendarView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
     override func viewDidLoad(){
         view.backgroundColor = UIColor.mpWhite
+        view.addSubview(contentScrollView)
+        contentScrollView.addSubview(contentView)
+        
+        // 스크롤 뷰 작업
+        NSLayoutConstraint.activate([
+            contentScrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            contentScrollView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            contentScrollView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            contentScrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            
+            contentView.topAnchor.constraint(equalTo: contentScrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: contentScrollView.widthAnchor)
+        ])
+        
         setupHeader()
-        setupView()
+        setupMonthAndCategoryView()
+        setupCalendarView()
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         calendarView.myCollectionView.collectionViewLayout.invalidateLayout()
     }
+    
+    
+    // MainMonthView의 delegate
+    func didChangeMonth(monthIndex: Int, year: Int) {
+        calendarView.changeMonth(monthIndex: monthIndex, year: year)
+    }
+    
+}
+
+
+extension HomeViewController{
     
     func setupHeader(){
         
@@ -73,14 +129,14 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         headerView.addSubview(titleLabel)
         
         // 화면에 헤더 뷰 추가
-        view.addSubview(headerView)
+        contentView.addSubview(headerView)
         
         // Auto Layout 설정
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            headerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             
-            headerView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 21),
-            headerView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -21),
+            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             headerView.heightAnchor.constraint(equalToConstant: 25),
             
             titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
@@ -88,26 +144,35 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         ])
     }
     
-    func setupView(){
+    func setupMonthAndCategoryView(){
         monthView.delegate=self
-        view.addSubview(monthView)
+        contentView.addSubview(monthView)
         monthView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 20).isActive=true
-        monthView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive=true
-        monthView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive=true
+        monthView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive=true
+        monthView.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive=true
         monthView.heightAnchor.constraint(equalToConstant: 35).isActive=true
         
-    
-        view.addSubview(calendarView)
-        calendarView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive=true
-        calendarView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -12).isActive=true
-        calendarView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive=true
-        calendarView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 100).isActive = true
+        //        categoryScrollView.categories = [Category(id: 0, name: "전체"), Category(id: 1, name: "식사"), Category(id: 2, name: "카페"), Category(id: 3, name: "교통"), Category(id: 4, name: "쇼핑")]
+        //        view.addSubview(categoryScrollView)
+        
+        //        categoryButton.category = Category(id: 0, name: "식사")
+        //        view.addSubview(categoryButton)
+        
+        //        categoryButton.topAnchor.constraint(equalTo: monthView.bottomAnchor, constant: 100).isActive = true
+        
+        //        categoryScrollView.topAnchor.constraint(equalTo: monthView.bottomAnchor,
+        //                                                constant: 100).isActive = true
     }
     
-    func didChangeMonth(monthIndex: Int, year: Int) {
-        calendarView.changeMonth(monthIndex: monthIndex, year: year)
-    }
     
+    func setupCalendarView(){
+        contentView.addSubview(calendarView)
+        calendarView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 200).isActive=true
+        calendarView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -12).isActive=true
+        calendarView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 12).isActive=true
+        calendarView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 100).isActive = true
+        calendarView.heightAnchor.constraint(equalToConstant: 2000).isActive = true
+    }
     
     @objc func searchButtonTapped() {
         // 왼쪽 버튼이 탭되었을 때의 동작
