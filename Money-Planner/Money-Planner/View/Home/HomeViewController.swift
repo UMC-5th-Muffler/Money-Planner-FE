@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class HomeViewController : UIViewController,UIPageViewControllerDelegate, UIPageViewControllerDataSource, MainMonthViewDelegate {
+class HomeViewController : UIViewController, MainMonthViewDelegate {
     
     lazy var pageViewController: UIPageViewController = {
         let vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
@@ -94,7 +94,7 @@ class HomeViewController : UIViewController,UIPageViewControllerDelegate, UIPage
         
         setupMonthAndCategoryView()
         
-        //                        setupCalendarView()
+                                setupCalendarView()
         //        setUpConsumeView()
     }
     
@@ -245,33 +245,33 @@ extension HomeViewController{
     }
     
     
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        // 페이지 이동 전 호출
-        guard let index = pageViewController.viewControllers?.first?.view.tag else { return nil }
-        
-        let previousIndex = index - 1
-        
-        if previousIndex < 0 || viewControllerList.count <= previousIndex {
-            return nil
-        }
-        
-        return viewControllerList[previousIndex]
-    }
-    
-    
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        // 페이지 이동 후 호출
-        guard let index = pageViewController.viewControllers?.first?.view.tag else { return nil }
-       
-        let nextIndex = index + 1
-        
-        if viewControllerList.count <= nextIndex {
-            return nil
-        }
-        
-        return viewControllerList[nextIndex]
-    }
+//    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+//        // 페이지 이동 전 호출
+//        guard let index = pageViewController.viewControllers?.first?.view.tag else { return nil }
+//
+//        let previousIndex = index - 1
+//
+//        if previousIndex < 0 || viewControllerList.count <= previousIndex {
+//            return nil
+//        }
+//
+//        return viewControllerList[previousIndex]
+//    }
+//
+//
+//
+//    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+//        // 페이지 이동 후 호출
+//        guard let index = pageViewController.viewControllers?.first?.view.tag else { return nil }
+//
+//        let nextIndex = index + 1
+//
+//        if viewControllerList.count <= nextIndex {
+//            return nil
+//        }
+//
+//        return viewControllerList[nextIndex]
+//    }
     
     
     
