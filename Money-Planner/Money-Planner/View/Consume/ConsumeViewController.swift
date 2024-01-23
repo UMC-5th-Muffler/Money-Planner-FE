@@ -245,32 +245,51 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate {
               // 입력 중인 금액 업데이트
               let currentText = textField.text ?? ""
               let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
+              amountTextField.layer.borderColor = UIColor.clear.cgColor
+              amountTextField.layer.borderWidth = 0.0
               // 입력된 것이 없는 경우
               if newText.isEmpty{
                   amountLabel.text = "0 원"
+                 
               }
               // 입력된 금액이 있는 경우
               else{
                   // 유효한 숫자인 경우
                   amountLabel.textColor = UIColor.mpBlack
+                  // 소비금액 텍스트필드에 에러 표시 취소 - 빨간색 스트로크
+                  amountTextField.layer.borderColor = UIColor.clear.cgColor
+                  amountTextField.layer.borderWidth = 0.0
                   if let amount = Int(currentText + string) {
                       let digitOfAmount = String(describing: amount).count
-                      
+                      // 소비금액 텍스트필드에 에러 표시 취소 - 빨간색 스트로크
+                      amountTextField.layer.borderColor = UIColor.clear.cgColor
+                      amountTextField.layer.borderWidth = 0.0
                       // 입력할 수 있는 범위를 초과한 경우
                       if digitOfAmount > 16 {
+                          // 소비금액 보여주는 곳에 에러 메세지 표시
                           amountLabel.text = "입력할 수 있는 범위를 초과했습니다."
                           amountLabel.textColor = .red
+                          // 소비금액 텍스트필드에 에러 표시 - 빨간색 스트로크
+                          amountTextField.layer.borderColor = UIColor.mpRed.cgColor
+                          amountTextField.layer.borderWidth = 1.0
+                          
                           return false // 더 이상 입력할 수 없도록 함
                           
                           // 입력할 수 있는 범위인 경우
                       } else {
                           amountLabel.text = "\(numberToKorean(amount))  원" // 숫자 -> 한국어로 변경하여 입력함
+                          // 소비금액 텍스트필드에 에러 표시 취소 - 빨간색 스트로크
+                          amountTextField.layer.borderColor = UIColor.clear.cgColor
+                          amountTextField.layer.borderWidth = 0.0
                       }
                       
                       // 유효한 숫자가 아닌 경우 (현재 텍스트 + 새로운 문자열)
                   } else {
                       amountLabel.text = "유효한 숫자가 아닙니다."
                       amountLabel.textColor = UIColor.mpRed
+                      // 소비금액 텍스트필드에 에러 표시 - 빨간색 스트로크
+                      amountTextField.layer.borderColor = UIColor.mpRed.cgColor
+                      amountTextField.layer.borderWidth = 1.0
                       
                   }
               }
@@ -299,6 +318,9 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate {
         
        
     }
+  
+
+    
     //숫자를 한글로 표현하는 함수(2000 -> 0부터 9999999999999999까지가능)
     func numberToKorean(_ number: Int) -> String {
         let unitLarge = ["", "만", "억", "조"]
@@ -316,7 +338,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate {
             unitIndex += 1
         }
 
-        return result.isEmpty ? "영" : result
+        return result.isEmpty ? "0" : result
     }
 
 }
