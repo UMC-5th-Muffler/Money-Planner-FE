@@ -117,28 +117,28 @@ extension HomeViewController{
         
         // 검색 버튼 추가
         let searchButton = UIButton(type: .system)
-        searchButton.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
-        searchButton.tintColor = .mpBlack
+        searchButton.setImage(UIImage(named: "search"), for: .normal)
+        searchButton.tintColor = .mpGray
         searchButton.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
         
         let search = UIBarButtonItem(customView: searchButton)
         
         let bellButton = UIButton(type: .system)
-        bellButton.setImage(UIImage(systemName: "bell"), for: .normal)
-        bellButton.tintColor = .mpBlack
-        bellButton.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
+        bellButton.setImage(UIImage(named: "bell"), for: .normal)
+        bellButton.tintColor = .mpGray
+        bellButton.addTarget(self, action: #selector(bellButtonTapped), for: .touchUpInside)
         
         
         let bell = UIBarButtonItem(customView: bellButton)
         
         let menuButton = UIButton(type: .system)
-        menuButton.setImage(UIImage(systemName: "bell"), for: .normal)
-        menuButton.tintColor = .mpBlack
-        menuButton.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
+        menuButton.setImage(UIImage(named: "menu"), for: .normal)
+        menuButton.tintColor = .mpGray
+        menuButton.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
         
         let menu = UIBarButtonItem(customView: menuButton)
         
-        navigationItem.rightBarButtonItems = [search, bell, menu]
+        navigationItem.rightBarButtonItems = [menu,bell,search]
         navigationController?.navigationBar.barTintColor = .mpWhite
         navigationController?.navigationBar.shadowImage = UIImage()
         
@@ -181,7 +181,7 @@ extension HomeViewController{
             monthView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             monthView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
             monthView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-            monthView.heightAnchor.constraint(equalToConstant: 35),
+            monthView.heightAnchor.constraint(equalToConstant: 46),
             monthView.centerYAnchor.constraint(equalTo: toggleButton.centerYAnchor),
             
             toggleButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
@@ -281,8 +281,13 @@ extension HomeViewController{
         print("Search button tapped")
     }
     
-    @objc func plusButtonTapped() {
+    @objc func bellButtonTapped() {
         // 오른쪽 버튼이 탭되었을 때의 동작
-        print("Plus button tapped")
+        print("bell button tapped")
+    }
+    
+    @objc func menuButtonTapped() {
+        // 오른쪽 버튼이 탭되었을 때의 동작
+        print("menu button tapped")
     }
 }
