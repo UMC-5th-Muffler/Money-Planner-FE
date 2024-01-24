@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20118A112B56A86100B2569E /* ConsumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20118A102B56A86100B2569E /* ConsumeViewController.swift */; };
+		206C58D22B6173E2008410C1 /* CategoryModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206C58D12B6173E2008410C1 /* CategoryModalViewController.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -58,6 +59,7 @@
 
 /* Begin PBXFileReference section */
 		20118A102B56A86100B2569E /* ConsumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumeViewController.swift; sourceTree = "<group>"; };
+		206C58D12B6173E2008410C1 /* CategoryModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModalViewController.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -128,9 +130,18 @@
 			path = Consume;
 			sourceTree = "<group>";
 		};
+		206C58D02B617396008410C1 /* Modal */ = {
+			isa = PBXGroup;
+			children = (
+				206C58D12B6173E2008410C1 /* CategoryModalViewController.swift */,
+			);
+			path = Modal;
+			sourceTree = "<group>";
+		};
 		7A4C67322B5A47BD008BCAC9 /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
+				206C58D02B617396008410C1 /* Modal */,
 				D20D6FF62B5E9734006D6762 /* Statistics */,
 				D20D6FDF2B5AEC76006D6762 /* TabBar */,
 				7A610AE62B491F1600D3096F /* HeaderView.swift */,
@@ -461,6 +472,7 @@
 				D20D6FE52B5AEECB006D6762 /* Date.swift in Sources */,
 				7A4C67412B5A4AF1008BCAC9 /* MainBottomBtn.swift in Sources */,
 				D20D6FDE2B581B20006D6762 /* CALayer.swift in Sources */,
+				206C58D22B6173E2008410C1 /* CategoryModalViewController.swift in Sources */,
 				7A4C67432B5A4B22008BCAC9 /* SmallButtonView.swift in Sources */,
 				7A610AEA2B493EC900D3096F /* MakeGoalViewController.swift in Sources */,
 				D20D6FF32B5D67B1006D6762 /* Category.swift in Sources */,
