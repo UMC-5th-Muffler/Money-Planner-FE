@@ -9,8 +9,10 @@ import Foundation
 import Moya
 
 struct Goal : Codable{
+    var goalEmoji : String
     var goalName : String
     var goalAmount : Int
+    var usedAmount : Int
     var goalStart : Date
     var goalEnd : Date
     var dailyGoal : [Int]
@@ -42,3 +44,6 @@ struct CreateGoalRequest: Codable {
 struct GoalResponse : Codable {
 //    let msg : String
 }
+
+
+

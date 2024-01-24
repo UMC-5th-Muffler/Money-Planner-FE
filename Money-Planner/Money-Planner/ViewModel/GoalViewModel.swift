@@ -11,7 +11,16 @@ import Moya
 class GoalViewModel: ObservableObject {
     
     static let shared = GoalViewModel()
+    
     @Published var goals: [Goal]
+    
+    var pastGoals: [Goal] {
+        return goals.filter { $0.goalEnd < Date() }
+    }
+    
+    var currentGoals: [Goal] {
+        return goals.filter { $0.goalEnd >= Date() }
+    }
     
     enum GoalError: String, Error {
         case goalNameExists = "goal name already exists"
@@ -19,7 +28,7 @@ class GoalViewModel: ObservableObject {
     }
     
     init() {
-        self.goals = []
+        self.goals = [pastGoal, currentGoal] //dummy data
     }
     
 //    private func requestUsergoal(uuid: String, completion: @escaping ([Goal]?) -> Void) {

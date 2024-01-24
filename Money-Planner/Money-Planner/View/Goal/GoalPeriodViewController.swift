@@ -13,7 +13,6 @@ class GoalPeriodViewController : UIViewController, UITableViewDataSource {
     
     private var header : HeaderView = HeaderView(title: "목표 기간 설정")
     private var descriptionView : DescriptionView = DescriptionView(text: "도전할 소비 목표의 기간을 선택해주세요", alignToCenter: true)
-    private lazy var calendarEmojiLabel = UILabel()
     private var tableView: UITableView!
     private lazy var btmbtn : MainBottomBtn = MainBottomBtn(title: "다음")
     
@@ -25,7 +24,6 @@ class GoalPeriodViewController : UIViewController, UITableViewDataSource {
         setupHeader()
         setupDescriptionView()
         setUpBtmBtn()
-        setupCalendarEmojiLabel()
         setupTableView()
     }
     
@@ -52,19 +50,6 @@ class GoalPeriodViewController : UIViewController, UITableViewDataSource {
         ])
     }
     
-    private func setupCalendarEmojiLabel(){
-        calendarEmojiLabel.translatesAutoresizingMaskIntoConstraints = false
-        calendarEmojiLabel.text = "🗓️"
-        calendarEmojiLabel.font = UIFont.systemFont(ofSize: 100, weight: .medium)
-        view.addSubview(calendarEmojiLabel)
-        
-        NSLayoutConstraint.activate([
-            calendarEmojiLabel.topAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: 20),
-            calendarEmojiLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
-    
-    }
-    
     private func setUpBtmBtn(){
         btmbtn.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(btmbtn)
@@ -81,7 +66,7 @@ class GoalPeriodViewController : UIViewController, UITableViewDataSource {
         
         tableView = UITableView()
         tableView.dataSource = self
-        tableView.register(WriteTextCell.self, forCellReuseIdentifier: "WriteTextCell")
+        tableView.register(PeriodCell.self, forCellReuseIdentifier: "PeriodCell")
         tableView.rowHeight = 60
         view.addSubview(tableView)
         
@@ -89,7 +74,7 @@ class GoalPeriodViewController : UIViewController, UITableViewDataSource {
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: calendarEmojiLabel.bottomAnchor, constant: 20),
+            tableView.topAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: 20),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             tableView.bottomAnchor.constraint(equalTo: btmbtn.topAnchor, constant: -20)
@@ -103,16 +88,29 @@ class GoalPeriodViewController : UIViewController, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "WriteTextCell", for: indexPath) as! WriteTextCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PeriodCell", for: indexPath) as! PeriodCell
         // 셀 설정
         switch indexPath.row {
         case 0:
-            cell.configureCell(image: UIImage(systemName: "calendar"), placeholder: "목표 기간 설정하기")
+            break // 수정하기
         default:
             break
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0:
+            let modalViewController = DefaultModalViewController() // 모달 뷰 컨트롤러 생성
+            modalViewController.modalPresentationStyle = .overFullScreen // 모달 스타일 설정 (원하는 스타일로 변경 가능)
+
+            // 모달 표시
+            present(modalViewController, animated: true, completion: nil)
+        default:
+            break
+        }
     }
     
 //    // UITableViewDelegate 메서드

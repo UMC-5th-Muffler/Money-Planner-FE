@@ -26,6 +26,7 @@
 		7A4C67612B5A5700008BCAC9 /* SmallButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67582B5A5700008BCAC9 /* SmallButtonView.swift */; };
 		7A4C67622B5A5700008BCAC9 /* CheckBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67592B5A5700008BCAC9 /* CheckBtn.swift */; };
 		7A4C67632B5A5700008BCAC9 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C675A2B5A5700008BCAC9 /* HeaderView.swift */; };
+		7A4C67652B5B9500008BCAC9 /* CalendarModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67642B5B9500008BCAC9 /* CalendarModal.swift */; };
 		7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AB72B47FA8E00D3096F /* AppDelegate.swift */; };
 		7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */; };
 		7A610ABC2B47FA8E00D3096F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610ABB2B47FA8E00D3096F /* LoginViewController.swift */; };
@@ -68,6 +69,7 @@
 		7A4C67582B5A5700008BCAC9 /* SmallButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmallButtonView.swift; sourceTree = "<group>"; };
 		7A4C67592B5A5700008BCAC9 /* CheckBtn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckBtn.swift; sourceTree = "<group>"; };
 		7A4C675A2B5A5700008BCAC9 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		7A4C67642B5B9500008BCAC9 /* CalendarModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarModal.swift; sourceTree = "<group>"; };
 		7A610AB42B47FA8E00D3096F /* Money-Planner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Money-Planner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A610AB72B47FA8E00D3096F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 		7A4C674F2B5A5700008BCAC9 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				7A4C67642B5B9500008BCAC9 /* CalendarModal.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -434,6 +437,7 @@
 				7A4C67622B5A5700008BCAC9 /* CheckBtn.swift in Sources */,
 				7A3B839A2B50CC9F007F049A /* Goal.swift in Sources */,
 				7A3B839E2B50DAFC007F049A /* GoalAPI.swift in Sources */,
+				7A4C67652B5B9500008BCAC9 /* CalendarModal.swift in Sources */,
 				7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */,
 				7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */,
 				7A3B83A52B56F2DA007F049A /* GoalComponents.swift in Sources */,

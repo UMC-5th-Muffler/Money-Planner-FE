@@ -3,4 +3,117 @@
    uuid = "A0DDD3FE-6630-4C16-8530-C8B4DB32308A"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2A521693-5DCE-45F1-B9C7-7A7140B0FF0B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Money-Planner/View/Goal/GoalComponents.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "219"
+            endingLineNumber = "219"
+            landmarkName = "setupUsedAmtBar()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "2A521693-5DCE-45F1-B9C7-7A7140B0FF0B - 852d76c07a658d9c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Money_Planner.GoalProgressBar.setupUsedAmtBar() -&gt; ()"
+                  moduleName = "Money-Planner"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yoocheolmin/Money-Planner-FE/Money-Planner/Money-Planner/View/Goal/GoalComponents.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "220"
+                  endingLineNumber = "220"
+                  offsetFromSymbolStart = "1432">
+               </Location>
+               <Location
+                  uuid = "2A521693-5DCE-45F1-B9C7-7A7140B0FF0B - 852d76c07a658d9c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Money_Planner.GoalProgressBar.setupUsedAmtBar() -&gt; ()"
+                  moduleName = "Money-Planner"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yoocheolmin/Money-Planner-FE/Money-Planner/Money-Planner/View/Goal/GoalComponents.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "220"
+                  endingLineNumber = "220"
+                  offsetFromSymbolStart = "1448">
+               </Location>
+               <Location
+                  uuid = "2A521693-5DCE-45F1-B9C7-7A7140B0FF0B - 852d76c07a658d9c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Money_Planner.GoalProgressBar.setupUsedAmtBar() -&gt; ()"
+                  moduleName = "Money-Planner"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yoocheolmin/Money-Planner-FE/Money-Planner/Money-Planner/View/Goal/GoalComponents.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "220"
+                  endingLineNumber = "220"
+                  offsetFromSymbolStart = "1300">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F3587ED7-C4A1-445B-BC74-1A2D9E75D0F6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Money-Planner/View/Goal/GoalComponents.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "199"
+            endingLineNumber = "199"
+            landmarkName = "setupGoalAmtBar()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C9DDFBF7-1F7E-4A74-B541-C6341F8C9E7A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Money-Planner/View/Goal/GoalComponents.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "200"
+            endingLineNumber = "200"
+            landmarkName = "setupGoalAmtBar()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0D2EB9F9-1C78-4C07-8F94-8DF46BA67DA1"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Money-Planner/View/Goal/GoalComponents.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
+            landmarkName = "setupGoalAmtBar()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
