@@ -8,7 +8,9 @@
 import Foundation
 import UIKit
 
-class ConsumeViewController: UIViewController,UITextFieldDelegate {
+class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelectionDelegate {
+    
+    
     let currentDate = Date()
     let dateFormatter = DateFormatter()
     lazy var dateString: String = {
@@ -33,8 +35,22 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate {
         label.textColor = UIColor.mpBlack
         return label
     }()
-    
-    private let cateogoryTextField = MainTextField(placeholder: "카테고리를 입력해주세요", iconName: "icon_category", keyboardType: .numberPad)
+    // 제목 에러 표시
+    private let titleErrorLabel: UILabel = {
+        let label = UILabel()
+        label.text = "최대 16글자로 입력해주세요"
+        label.font = UIFont.systemFont(ofSize : 11)// 폰트 사이즈
+        label.textColor = UIColor.mpRed
+        return label
+    }()
+    let catContainerView : UIView = {
+        let uiView = UIView()
+        uiView.backgroundColor = UIColor.mpGypsumGray
+        uiView.layer.cornerRadius = 8
+        uiView.translatesAutoresizingMaskIntoConstraints = false // Add this line
+        return uiView
+    }()
+    private let cateogoryTextField = MainTextField(placeholder: "카테고리를 입력해주세요", iconName: "icon_category", keyboardType: .default)
     
     // 카테고리 선택 버튼 추가
     lazy var categoryChooseButton: UIButton = {
@@ -48,21 +64,48 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate {
         return button
         
     }()
-
+   
     @objc
     private func showCategoryModal() {
         print("Category Button clicked")
         categoryChooseButton.backgroundColor = UIColor.green
         let categoryModalVC = CategoryModalViewController()
-        categoryModalVC.modalPresentationStyle = .overCurrentContext // 모달이 전체 뷰를 덮도록 설정
-        // 모달을 띄우기
-        present(categoryModalVC, animated: true, completion: nil)
+        categoryModalVC.delegate = self
+        present(categoryModalVC, animated: true)
+        }
+    func didSelectCategory(_ category: String, iconName : String) {
+            // Update the category text field in ConsumeViewController
+            cateogoryTextField.text = category
+            cateogoryTextField.changeIcon(iconName: iconName)
         }
     
     private let titleTextField = MainTextField(placeholder: "제목", iconName: "icon_Paper", keyboardType: .default)
     private let memoTextField = MainTextField(placeholder: "메모", iconName: "icon_Edit", keyboardType: .default)
     private let calTextField = MainTextField(placeholder: "", iconName: "icon_date", keyboardType: .default)
- 
+    // 카테고리 선택 버튼 추가
+    lazy var calChooseButton: UIButton = {
+        let button = UIButton()
+        
+        button.setTitle("오늘", for: .normal)
+        button.titleLabel?.font = UIFont.mpFont20M()
+        button.setTitleColor(UIColor.mpMainColor, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isUserInteractionEnabled = true  //클릭 활성화
+        button.backgroundColor = .red
+        button.addTarget(self, action: #selector(showCalModal), for: .touchUpInside) //클릭시 모달 띄우기
+        return button
+        
+    }()
+   
+    @objc
+    
+    private func showCalModal() {
+        print("Category Button clicked")
+        calChooseButton.backgroundColor = UIColor.green
+        let calModalVC = CalendartModalViewController()
+        //calModalVC.delegate = self
+        present(calModalVC, animated: true)
+        }
     
     override func viewDidLoad() {
         setupUI()
@@ -160,25 +203,37 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate {
     
     // 세팅 : 카테고리 텍스트 필트
     private func setupCategoryTextField(){
-        view.addSubview(cateogoryTextField)
-        cateogoryTextField.translatesAutoresizingMaskIntoConstraints = false
-        //cateogoryTextField.isUserInteractionEnabled = false // 수정 불가능하도록 설정
-        cateogoryTextField.textColor = UIColor.mpBlack
-        cateogoryTextField.text = "카테고리를 선택해주세요"
         
+        view.addSubview(catContainerView)
         NSLayoutConstraint.activate([
             
-            cateogoryTextField.topAnchor.constraint(equalTo: amountLabel.bottomAnchor, constant: 10),
-            cateogoryTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
-            cateogoryTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
-            cateogoryTextField.heightAnchor.constraint(equalToConstant: 64)
+            catContainerView.topAnchor.constraint(equalTo: amountLabel.bottomAnchor, constant: 10),
+            catContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+            catContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            catContainerView.heightAnchor.constraint(equalToConstant: 64)
         ])
+        
+        let buttonContainerView = UIView()
+        buttonContainerView.translatesAutoresizingMaskIntoConstraints = false
 
-        let buttonContainerView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        buttonContainerView.backgroundColor = .mpMainColor
+        catContainerView.addSubview(buttonContainerView)
+        
+        NSLayoutConstraint.activate([
+            buttonContainerView.widthAnchor.constraint(equalToConstant: 40),
+                buttonContainerView.heightAnchor.constraint(equalToConstant: 40),
+                buttonContainerView.centerYAnchor.constraint(equalTo: catContainerView.centerYAnchor),
+                buttonContainerView.trailingAnchor.constraint(equalTo: catContainerView.trailingAnchor, constant: -16)
+              
+    
+        
+        ])
         buttonContainerView.addSubview(categoryChooseButton)
+        
         // 클릭 되게 하려고.... 시도 중
         buttonContainerView.isUserInteractionEnabled = true
         self.view.bringSubviewToFront(categoryChooseButton)
+        categoryChooseButton.isUserInteractionEnabled = true
         buttonContainerView.layer.zPosition = 999
         
         
@@ -186,13 +241,30 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate {
             categoryChooseButton.widthAnchor.constraint(equalToConstant: 40),  // 버튼의 폭 제약 조건 추가
             categoryChooseButton.heightAnchor.constraint(equalToConstant: 40), // 버튼의 높이 제약 조건 추가
             categoryChooseButton.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor),
-            categoryChooseButton.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor,constant: -16),
+            categoryChooseButton.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor),
             categoryChooseButton.topAnchor.constraint(equalTo: buttonContainerView.topAnchor),
             categoryChooseButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor)
         ])
 
-        cateogoryTextField.rightView = buttonContainerView
-        cateogoryTextField.rightViewMode = .always
+        buttonContainerView.addSubview(cateogoryTextField)
+        cateogoryTextField.translatesAutoresizingMaskIntoConstraints = false
+        cateogoryTextField.isUserInteractionEnabled = false // 수정 불가능하도록 설정
+        cateogoryTextField.textColor = UIColor.mpBlack
+        cateogoryTextField.text = "카테고리를 선택해주세요"
+        cateogoryTextField.backgroundColor = .clear
+        NSLayoutConstraint.activate([
+            
+            cateogoryTextField.topAnchor.constraint(equalTo: catContainerView.topAnchor),
+            cateogoryTextField.bottomAnchor.constraint(equalTo: catContainerView.bottomAnchor),
+            cateogoryTextField.leadingAnchor.constraint(equalTo: catContainerView.leadingAnchor),
+            cateogoryTextField.trailingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor),
+            
+            
+        ])
+
+       
+        
+        
     }
     
     // 세팅 : 제목 텍스트 필트
@@ -203,7 +275,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate {
         
         NSLayoutConstraint.activate([
             
-            titleTextField.topAnchor.constraint(equalTo: cateogoryTextField.bottomAnchor, constant: 10),
+            titleTextField.topAnchor.constraint(equalTo: catContainerView.bottomAnchor, constant: 10),
             titleTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             titleTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
             titleTextField.heightAnchor.constraint(equalToConstant: 64)
@@ -232,19 +304,99 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate {
     }
     // 세팅 : 달력 텍스트 필트
     private func setupcalTextField(){
-        view.addSubview(calTextField)
+        let calContainerView : UIView = {
+            let uiView = UIView()
+            uiView.layer.cornerRadius = 8
+            uiView.backgroundColor = .mpGypsumGray
+            uiView.translatesAutoresizingMaskIntoConstraints = false // Add this line
+            return uiView
+        }()
+        view.addSubview(calContainerView)
+        NSLayoutConstraint.activate([
+            
+            calContainerView.topAnchor.constraint(equalTo: memoTextField.bottomAnchor, constant: 10),
+            calContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+            calContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            calContainerView.heightAnchor.constraint(equalToConstant: 64)
+        ])
+        
+        let calbuttonContainerView = UIView()
+        calbuttonContainerView.translatesAutoresizingMaskIntoConstraints = false
+
+        calbuttonContainerView.backgroundColor = .mpMainColor
+        calContainerView.addSubview(calbuttonContainerView)
+        
+        NSLayoutConstraint.activate([
+            calbuttonContainerView.widthAnchor.constraint(equalToConstant: 40),
+            calbuttonContainerView.heightAnchor.constraint(equalToConstant: 40),
+            calbuttonContainerView.centerYAnchor.constraint(equalTo: calContainerView.centerYAnchor),
+            calbuttonContainerView.trailingAnchor.constraint(equalTo: catContainerView.trailingAnchor, constant: -16)
+              
+    
+        
+        ])
+        calbuttonContainerView.addSubview(calChooseButton)
+        
+        // 클릭 가능하게 함
+        calbuttonContainerView.isUserInteractionEnabled = true
+        calChooseButton.isUserInteractionEnabled = true
+        calbuttonContainerView.layer.zPosition = 999
+        
+        
+        NSLayoutConstraint.activate([
+            calChooseButton.widthAnchor.constraint(equalToConstant: 40),  // 버튼의 폭 제약 조건 추가
+            calChooseButton.heightAnchor.constraint(equalToConstant: 40), // 버튼의 높이 제약 조건 추가
+            calChooseButton.leadingAnchor.constraint(equalTo: calbuttonContainerView.leadingAnchor),
+            calChooseButton.trailingAnchor.constraint(equalTo: calbuttonContainerView.trailingAnchor),
+            calChooseButton.topAnchor.constraint(equalTo: calbuttonContainerView.topAnchor),
+            calChooseButton.bottomAnchor.constraint(equalTo: calbuttonContainerView.bottomAnchor)
+        ])
+
+        calContainerView.addSubview(calTextField)
         calTextField.translatesAutoresizingMaskIntoConstraints = false
         calTextField.isUserInteractionEnabled = false // 수정 불가능하도록 설정
         calTextField.textColor = UIColor.mpBlack
         calTextField.text = dateString
-
+        
         NSLayoutConstraint.activate([
             
-            calTextField.topAnchor.constraint(equalTo: memoTextField.bottomAnchor, constant: 10),
-            calTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
-            calTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
-            calTextField.heightAnchor.constraint(equalToConstant: 64)
+            calTextField.topAnchor.constraint(equalTo: calContainerView.topAnchor),
+            calTextField.bottomAnchor.constraint(equalTo: calContainerView.bottomAnchor),
+            calTextField.leadingAnchor.constraint(equalTo: calContainerView.leadingAnchor),
+            calTextField.trailingAnchor.constraint(equalTo: calbuttonContainerView.leadingAnchor),
+            
+            
         ])
+//        //////
+//        view.addSubview(calTextField)
+//        calTextField.translatesAutoresizingMaskIntoConstraints = false
+//        calTextField.isUserInteractionEnabled = false // 수정 불가능하도록 설정
+//        calTextField.textColor = UIColor.mpBlack
+//        calTextField.text = dateString
+//
+//        NSLayoutConstraint.activate([
+//            
+//            calTextField.topAnchor.constraint(equalTo: memoTextField.bottomAnchor, constant: 10),
+//            calTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+//            calTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+//            calTextField.heightAnchor.constraint(equalToConstant: 64)
+//        ])
+//        calChooseButton.isUserInteractionEnabled = true
+//        
+//        let calButtonContainerView = UIView()
+//        calButtonContainerView.addSubview(calChooseButton)
+//
+//        
+//        NSLayoutConstraint.activate([
+//            calChooseButton.leadingAnchor.constraint(equalTo: calButtonContainerView.leadingAnchor),
+//            calChooseButton.trailingAnchor.constraint(equalTo: calButtonContainerView.trailingAnchor,constant: -25),
+//            calChooseButton.topAnchor.constraint(equalTo: calButtonContainerView.topAnchor),
+//            calChooseButton.bottomAnchor.constraint(equalTo: calButtonContainerView.bottomAnchor)
+//        ])
+//
+//        calTextField.rightView = calButtonContainerView
+//        calTextField.rightViewMode = .always
+//       
     }
     
     // 세팅 : 완료 버튼
@@ -329,20 +481,37 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate {
 
               // Apply character count limit
               if newText.count > 16 {
+                  // 소비금액 텍스트필드에 에러 표시 - 빨간색 스트로크
+                  titleTextField.layer.borderColor = UIColor.mpRed.cgColor
+                  titleTextField.layer.borderWidth = 1.0
+                  view.addSubview(titleErrorLabel)
+                  titleErrorLabel.translatesAutoresizingMaskIntoConstraints = false
+                  NSLayoutConstraint.activate([
+                    titleErrorLabel.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 8),
+                    titleErrorLabel.leadingAnchor.constraint(equalTo: titleTextField.leadingAnchor),
+                    titleErrorLabel.trailingAnchor.constraint(equalTo: titleTextField.trailingAnchor),
+                    titleErrorLabel.heightAnchor.constraint(equalToConstant: 20)
+                  ])
+                  // Move memoTextField down
+                          memoTextField.translatesAutoresizingMaskIntoConstraints = false
+                          NSLayoutConstraint.activate([
+                              memoTextField.topAnchor.constraint(equalTo: titleErrorLabel.bottomAnchor, constant: 30), // Adjust the constant as needed
+                              memoTextField.leadingAnchor.constraint(equalTo: titleTextField.leadingAnchor),
+                              memoTextField.trailingAnchor.constraint(equalTo: titleTextField.trailingAnchor),
+                              memoTextField.heightAnchor.constraint(equalToConstant: 64)
+                          ])
+
+                        
                   return false
               }
+              titleTextField.layer.borderColor = UIColor.clear.cgColor
+              titleTextField.layer.borderWidth = 0.0
           }
         
-        
-
-          // Your existing implementation for other text fields...
-
           return true
         
        
     }
-  
-
     
     //숫자를 한글로 표현하는 함수(2000 -> 0부터 9999999999999999까지가능)
     func numberToKorean(_ number: Int) -> String {
@@ -363,7 +532,6 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate {
 
         return result.isEmpty ? "0" : result
     }
-    
-    
+
 
 }
