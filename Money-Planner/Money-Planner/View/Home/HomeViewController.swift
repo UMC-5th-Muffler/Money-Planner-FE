@@ -10,6 +10,12 @@ import UIKit
 
 class HomeViewController : UIViewController, MainMonthViewDelegate {
     
+    lazy var pageViewController: UIPageViewController = {
+        let vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        
+        return vc
+    }()
+    
     private let contentScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -40,7 +46,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         return v
     }()
     
-
+    
     var statisticsView : MainStatisticsView = {
         let v = MainStatisticsView()
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -55,6 +61,12 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     
     let toggleButton : ToggleButton = {
         let v = ToggleButton()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let consumeView : HomeConsumeView = {
+        let v = HomeConsumeView()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -81,8 +93,9 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         ])
         
         setupMonthAndCategoryView()
-        setupStatisticsView()
-        setupCalendarView()
+        
+                                setupCalendarView()
+        //        setUpConsumeView()
     }
     
     override func viewWillLayoutSubviews() {
@@ -180,29 +193,27 @@ extension HomeViewController{
                                                     constant: 24),
             categoryScrollView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
             categoryScrollView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
-         
-        ])
-    }
-    
-    func setupStatisticsView(){
-        statisticsView.progress = 0.7
-        view.addSubview(statisticsView)
-        
-        NSLayoutConstraint.activate([
-            statisticsView.topAnchor.constraint(equalTo: categoryScrollView.bottomAnchor, constant: 36),
-            statisticsView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -24),
-            statisticsView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 24),
-            statisticsView.heightAnchor.constraint(equalToConstant: 150)
+            categoryScrollView.heightAnchor.constraint(equalToConstant: 37)
             
         ])
     }
     
+    
     func setupCalendarView(){
+        
+        statisticsView.progress = 0.7
+        view.addSubview(statisticsView)
+        
         calendarView.backgroundColor = UIColor.mpWhite
         contentView.addSubview(calendarView)
         
         
         NSLayoutConstraint.activate([
+            statisticsView.topAnchor.constraint(equalTo: categoryScrollView.bottomAnchor, constant: 36),
+            statisticsView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -24),
+            statisticsView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 24),
+            statisticsView.heightAnchor.constraint(equalToConstant: 150),
+            
             calendarView.topAnchor.constraint(equalTo: statisticsView.bottomAnchor, constant: 36),
             calendarView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
             calendarView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
@@ -210,6 +221,60 @@ extension HomeViewController{
             calendarView.heightAnchor.constraint(equalToConstant: 1000)
         ])
     }
+    
+    func setUpConsumeView(){
+        
+        consumeView.data = [
+            DailyConsume(date: "1월 17일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
+            DailyConsume(date: "1월 16일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
+            DailyConsume(date: "1월 15일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
+            DailyConsume(date: "1월 14일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")])
+            
+        ]
+        
+        contentView.addSubview(consumeView)
+        
+        NSLayoutConstraint.activate([
+            consumeView.topAnchor.constraint(equalTo: categoryScrollView.bottomAnchor, constant: 24),
+            consumeView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: 0),
+            consumeView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 0),
+            consumeView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
+            consumeView.heightAnchor.constraint(equalToConstant: 1000)
+            
+        ])
+    }
+    
+    
+//    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+//        // 페이지 이동 전 호출
+//        guard let index = pageViewController.viewControllers?.first?.view.tag else { return nil }
+//
+//        let previousIndex = index - 1
+//
+//        if previousIndex < 0 || viewControllerList.count <= previousIndex {
+//            return nil
+//        }
+//
+//        return viewControllerList[previousIndex]
+//    }
+//
+//
+//
+//    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+//        // 페이지 이동 후 호출
+//        guard let index = pageViewController.viewControllers?.first?.view.tag else { return nil }
+//
+//        let nextIndex = index + 1
+//
+//        if viewControllerList.count <= nextIndex {
+//            return nil
+//        }
+//
+//        return viewControllerList[nextIndex]
+//    }
+    
+    
+    
     
     @objc func searchButtonTapped() {
         // 왼쪽 버튼이 탭되었을 때의 동작
