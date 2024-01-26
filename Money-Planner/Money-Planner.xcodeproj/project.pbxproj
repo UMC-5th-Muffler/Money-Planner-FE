@@ -490,10 +490,11 @@
 				7A610AE52B491ED600D3096F /* Dummy.swift in Sources */,
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
 				7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */,
-
+       
 				206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */,
+
 				D20D70042B5FF094006D6762 /* Numeric.swift in Sources */,
-				07fb2646b852f377a9caa5d6b0ab246699e7c498
+
 				7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */,
 				7A610AD22B49004200D3096F /* SettingsViewController.swift in Sources */,
 				D20D70022B5FF088006D6762 /* Formatter.swift in Sources */,
