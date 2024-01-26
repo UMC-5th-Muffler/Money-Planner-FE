@@ -16,7 +16,7 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .mpHomeBackGround
+        view.backgroundColor = .mpHomeBackground
         setupHeaderView()
         setupGoalTable()
         headerView.addNewGoalBtn.addTarget(self, action: #selector(addNewGoalButtonTapped), for: .touchUpInside)
@@ -43,7 +43,7 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
     
     private func setupGoalTable() {
         view.addSubview(goalTable)
-        goalTable.backgroundColor = .mpHomeBackGround
+        goalTable.backgroundColor = .mpHomeBackground
         goalTable.separatorStyle = .none
         goalTable.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
