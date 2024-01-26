@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelectionDelegate {
+class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelectionDelegate,CalendarSelectionDelegate {
     
     
     let currentDate = Date()
@@ -103,8 +103,12 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         print("Category Button clicked")
         calChooseButton.backgroundColor = UIColor.green
         let calModalVC = CalendartModalViewController()
-        //calModalVC.delegate = self
+        calModalVC.delegate = self
         present(calModalVC, animated: true)
+        }
+    func didSelectCalendarDate(_date date: String) {
+        print("Selected Date in YourPresentingViewController: \(date)")
+        calTextField.text = date
         }
     
     override func viewDidLoad() {
