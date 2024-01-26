@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 protocol CalendarSelectionDelegate : AnyObject{
-    func didSelectCalendarDate(_date : String)
+    func didSelectCalendarDate(_ date : String)
 }
 class CalendartModalViewController : UIViewController {
     weak var delegate: CalendarSelectionDelegate?
@@ -28,8 +28,9 @@ class CalendartModalViewController : UIViewController {
         datePicker.locale = Locale(identifier: "ko_KR")
         datePicker.preferredDatePickerStyle = .inline
         datePicker.datePickerMode = .date
+        datePicker.tintColor = .mpMainColor
         //datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
-        datePicker.backgroundColor = .mpRed
+        //datePicker.backgroundColor = .mpRed
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         return datePicker
     }()
@@ -62,6 +63,10 @@ class CalendartModalViewController : UIViewController {
         
         return button
     }()
+    // 모달 제목 바꾸는 함수
+    func changeTitle(title : String){
+        titleLabel.text = title
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         presentCustomModal()
@@ -102,7 +107,7 @@ class CalendartModalViewController : UIViewController {
             ])
         
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.backgroundColor = .mpDim
+        //containerView.backgroundColor = .mpDim
         customModal.addSubview(containerView)
         NSLayoutConstraint.activate([
             containerView.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 9),
@@ -157,7 +162,7 @@ class CalendartModalViewController : UIViewController {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy년 MM월 dd일"
         let selectedDate = dateFormatter.string(from: datePicker.date)
-        delegate?.didSelectCalendarDate(_date: selectedDate)
+        delegate?.didSelectCalendarDate(selectedDate)
         dismiss(animated: true, completion: nil as (() -> Void)?)
         // 완료 버튼 액션 처리
     }
@@ -166,6 +171,7 @@ class CalendartModalViewController : UIViewController {
         datePicker.setDate(Date(), animated: true)
         // 완료 버튼 액션 처리
     }
+    
     
     
     
