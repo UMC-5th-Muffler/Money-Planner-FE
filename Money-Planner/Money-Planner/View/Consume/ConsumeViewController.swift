@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelectionDelegate {
+class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelectionDelegate,CalendarSelectionDelegate {
     
     
     let currentDate = Date()
@@ -81,6 +81,13 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     
     private let titleTextField = MainTextField(placeholder: "제목", iconName: "icon_Paper", keyboardType: .default)
     private let memoTextField = MainTextField(placeholder: "메모", iconName: "icon_Edit", keyboardType: .default)
+    let calContainerView : UIView = {
+        let uiView = UIView()
+        uiView.layer.cornerRadius = 8
+        uiView.backgroundColor = .mpGypsumGray
+        uiView.translatesAutoresizingMaskIntoConstraints = false // Add this line
+        return uiView
+    }()
     private let calTextField = MainTextField(placeholder: "", iconName: "icon_date", keyboardType: .default)
     // 카테고리 선택 버튼 추가
     lazy var calChooseButton: UIButton = {
@@ -103,6 +110,25 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         print("Category Button clicked")
         calChooseButton.backgroundColor = UIColor.green
         let calModalVC = CalendartModalViewController()
+        calModalVC.delegate = self
+        present(calModalVC, animated: true)
+        }
+    func didSelectCalendarDate(_ date: String) {
+        print("Selected Date in YourPresentingViewController: \(date)")
+        calTextField.text = date
+        }
+    private lazy var checkButton : CheckBtn = {
+        let checkButton = CheckBtn()
+        checkButton.addTarget(self, action: #selector(showRepeatModal), for: .touchUpInside)
+        return checkButton
+    }()
+    
+
+    @objc
+    private func showRepeatModal() {
+        print("checkButton clicked")
+        let calModalVC = CalendartModalViewController()
+        calModalVC.delegate = self
         //calModalVC.delegate = self
         present(calModalVC, animated: true)
         }
@@ -130,7 +156,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         // 날짜
         setupcalTextField()
         // 반복
-        
+        setupRepeatButton()
         // 완료 버튼 추가
         setupCompleteButton()
         
@@ -304,6 +330,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     }
     // 세팅 : 달력 텍스트 필트
     private func setupcalTextField(){
+        
         let calContainerView : UIView = {
             let uiView = UIView()
             uiView.layer.cornerRadius = 8
@@ -366,6 +393,72 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             calTextField.trailingAnchor.constraint(equalTo: calbuttonContainerView.leadingAnchor),
             
             
+        ])
+//        //////
+//        view.addSubview(calTextField)
+//        calTextField.translatesAutoresizingMaskIntoConstraints = false
+//        calTextField.isUserInteractionEnabled = false // 수정 불가능하도록 설정
+//        calTextField.textColor = UIColor.mpBlack
+//        calTextField.text = dateString
+//
+//        NSLayoutConstraint.activate([
+//            
+//            calTextField.topAnchor.constraint(equalTo: memoTextField.bottomAnchor, constant: 10),
+//            calTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+//            calTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+//            calTextField.heightAnchor.constraint(equalToConstant: 64)
+//        ])
+//        calChooseButton.isUserInteractionEnabled = true
+//        
+//        let calButtonContainerView = UIView()
+//        calButtonContainerView.addSubview(calChooseButton)
+//
+//        
+//        NSLayoutConstraint.activate([
+//            calChooseButton.leadingAnchor.constraint(equalTo: calButtonContainerView.leadingAnchor),
+//            calChooseButton.trailingAnchor.constraint(equalTo: calButtonContainerView.trailingAnchor,constant: -25),
+//            calChooseButton.topAnchor.constraint(equalTo: calButtonContainerView.topAnchor),
+//            calChooseButton.bottomAnchor.constraint(equalTo: calButtonContainerView.bottomAnchor)
+//        ])
+//
+//        calTextField.rightView = calButtonContainerView
+//        calTextField.rightViewMode = .always
+//       
+    }
+    // 세팅 : 반복 버튼
+    private func setupRepeatButton(){
+        let containerview = UIView()
+        let repeatLabel : UILabel = {
+            let label = UILabel()
+            label.text = "반복"
+            label.font = UIFont.mpFont16R()
+            label.textColor = UIColor.mpDarkGray
+            return label
+        }()
+        
+        view.addSubview(containerview)
+        
+        containerview.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            containerview.widthAnchor.constraint(equalToConstant: 80),
+            containerview.heightAnchor.constraint(equalToConstant: 30),
+            containerview.topAnchor.constraint(equalTo: calContainerView.bottomAnchor, constant: 16),
+            containerview.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 16)
+
+        ])
+        checkButton.setChecked(false)
+        containerview.addSubview(checkButton)
+        containerview.addSubview(repeatLabel)
+        checkButton.translatesAutoresizingMaskIntoConstraints = false
+        repeatLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            checkButton.widthAnchor.constraint(equalToConstant:24),
+            checkButton.heightAnchor.constraint(equalToConstant: 24),
+            checkButton.leadingAnchor.constraint(equalTo: containerview.leadingAnchor),
+            checkButton.centerYAnchor.constraint(equalTo: containerview.centerYAnchor),
+            repeatLabel.leadingAnchor.constraint(equalTo: checkButton.trailingAnchor, constant: 3),
+            repeatLabel.centerYAnchor.constraint(equalTo: containerview.centerYAnchor)
+
         ])
 //        //////
 //        view.addSubview(calTextField)
