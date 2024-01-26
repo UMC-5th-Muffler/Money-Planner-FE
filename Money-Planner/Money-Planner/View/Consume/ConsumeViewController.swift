@@ -126,10 +126,17 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
 
     @objc
     private func showRepeatModal() {
-        print("checkButton clicked")
-        let calModalVC = CalendartModalViewController()
-        calModalVC.delegate = self
-        present(calModalVC, animated: true)
+        print(checkButton.isChecked)
+        if checkButton.isChecked {
+            print("반복 모달로 이동합니다")
+            let repeatModalVC = RepeatModalViewController()
+            //calModalVC.delegate = self
+            present(repeatModalVC, animated: true)
+        }
+        else{
+            checkButton.isChecked = false
+        }
+        
         }
     
     override func viewDidLoad() {
