@@ -15,6 +15,13 @@ class CalendartModalViewController : UIViewController {
     weak var delegate: CalendarSelectionDelegate?
 
     let customModal = UIView(frame: CGRect(x: 0, y: 0, width: 361, height: 548))
+
+import UIKit
+
+
+class CalendartModalViewController : UIViewController {
+   
+
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "소비 날짜를 선택해주세요"
@@ -67,6 +74,8 @@ class CalendartModalViewController : UIViewController {
     func changeTitle(title : String){
         titleLabel.text = title
     }
+    let customModal = UIView(frame: CGRect(x: 0, y: 0, width: 361, height: 548))
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         presentCustomModal()
@@ -171,6 +180,44 @@ class CalendartModalViewController : UIViewController {
         datePicker.setDate(Date(), animated: true)
         // 완료 버튼 액션 처리
     }
+            
+    }
+
+    private func setupCategoryCellContainerView() {
+        
+        
+        let categoryCollectionView: UICollectionView = {
+            let layout = UICollectionViewFlowLayout()
+            let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+            layout.scrollDirection = .vertical
+            let numberOfItemsPerRow: CGFloat = 3
+            let spacingBetweenItems: CGFloat = 10
+            let itemWidth = (customModal.frame.width - ((numberOfItemsPerRow - 1) * spacingBetweenItems) - 48) / numberOfItemsPerRow
+            print(customModal.frame.width)
+            print(itemWidth)
+            let itemSize = CGSize(width: Int(itemWidth), height: Int(itemWidth*0.84))
+            layout.itemSize = itemSize
+            layout.minimumLineSpacing = 10
+            
+            //collectionView.backgroundColor = UIColor.green
+            collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: "CategoryCell")
+            return collectionView
+        }()
+        
+        //categoryCollectionView.backgroundColor = UIColor.systemPink
+        customModal.addSubview(categoryCollectionView)
+        
+        categoryCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            categoryCollectionView.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 24),
+            categoryCollectionView.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -24),
+            categoryCollectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
+            categoryCollectionView.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -24)
+        ])
+
+    }
+
+    
     
     
     

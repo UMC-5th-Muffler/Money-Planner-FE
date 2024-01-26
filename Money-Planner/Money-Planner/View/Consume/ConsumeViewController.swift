@@ -129,6 +129,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         print("checkButton clicked")
         let calModalVC = CalendartModalViewController()
         calModalVC.delegate = self
+        //calModalVC.delegate = self
         present(calModalVC, animated: true)
         }
     
@@ -330,6 +331,13 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     // 세팅 : 달력 텍스트 필트
     private func setupcalTextField(){
         
+        let calContainerView : UIView = {
+            let uiView = UIView()
+            uiView.layer.cornerRadius = 8
+            uiView.backgroundColor = .mpGypsumGray
+            uiView.translatesAutoresizingMaskIntoConstraints = false // Add this line
+            return uiView
+        }()
         view.addSubview(calContainerView)
         NSLayoutConstraint.activate([
             
@@ -452,6 +460,36 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             repeatLabel.centerYAnchor.constraint(equalTo: containerview.centerYAnchor)
 
         ])
+//        //////
+//        view.addSubview(calTextField)
+//        calTextField.translatesAutoresizingMaskIntoConstraints = false
+//        calTextField.isUserInteractionEnabled = false // 수정 불가능하도록 설정
+//        calTextField.textColor = UIColor.mpBlack
+//        calTextField.text = dateString
+//
+//        NSLayoutConstraint.activate([
+//            
+//            calTextField.topAnchor.constraint(equalTo: memoTextField.bottomAnchor, constant: 10),
+//            calTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+//            calTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+//            calTextField.heightAnchor.constraint(equalToConstant: 64)
+//        ])
+//        calChooseButton.isUserInteractionEnabled = true
+//        
+//        let calButtonContainerView = UIView()
+//        calButtonContainerView.addSubview(calChooseButton)
+//
+//        
+//        NSLayoutConstraint.activate([
+//            calChooseButton.leadingAnchor.constraint(equalTo: calButtonContainerView.leadingAnchor),
+//            calChooseButton.trailingAnchor.constraint(equalTo: calButtonContainerView.trailingAnchor,constant: -25),
+//            calChooseButton.topAnchor.constraint(equalTo: calButtonContainerView.topAnchor),
+//            calChooseButton.bottomAnchor.constraint(equalTo: calButtonContainerView.bottomAnchor)
+//        ])
+//
+//        calTextField.rightView = calButtonContainerView
+//        calTextField.rightViewMode = .always
+//       
     }
     
     // 세팅 : 완료 버튼
