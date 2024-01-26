@@ -11,6 +11,7 @@
 		206C58D42B623C43008410C1 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206C58D32B623C43008410C1 /* CategoryCell.swift */; };
 		206C58D82B626465008410C1 /* CategoryModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206C58D72B626465008410C1 /* CategoryModalViewController.swift */; };
 		206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */; };
+		5591601C2B64595E00063F06 /* EvaluationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591601B2B64595E00063F06 /* EvaluationViewController.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -64,6 +65,7 @@
 		206C58D32B623C43008410C1 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		206C58D72B626465008410C1 /* CategoryModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModalViewController.swift; sourceTree = "<group>"; };
 		206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendartModalViewController.swift; sourceTree = "<group>"; };
+		5591601B2B64595E00063F06 /* EvaluationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationViewController.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				20118A102B56A86100B2569E /* ConsumeViewController.swift */,
+				5591601B2B64595E00063F06 /* EvaluationViewController.swift */,
 			);
 			path = Consume;
 			sourceTree = "<group>";
@@ -490,11 +493,8 @@
 				7A610AE52B491ED600D3096F /* Dummy.swift in Sources */,
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
 				7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */,
-       
 				206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */,
-
 				D20D70042B5FF094006D6762 /* Numeric.swift in Sources */,
-
 				7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */,
 				7A610AD22B49004200D3096F /* SettingsViewController.swift in Sources */,
 				D20D70022B5FF088006D6762 /* Formatter.swift in Sources */,
@@ -508,6 +508,7 @@
 				7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */,
 				D20D6FDA2B581A05006D6762 /* CustomTabBarController.swift in Sources */,
 				7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */,
+				5591601C2B64595E00063F06 /* EvaluationViewController.swift in Sources */,
 				7A610AD62B49007100D3096F /* BattleViewController.swift in Sources */,
 				D29536F12B4C0DF000EEA81F /* UserDefaults.swift in Sources */,
 				7A610AD92B49009300D3096F /* HomeViewController.swift in Sources */,
