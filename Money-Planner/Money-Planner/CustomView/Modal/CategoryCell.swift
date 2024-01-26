@@ -78,3 +78,4 @@ class CategoryCell: UICollectionViewCell {
         categoryImageView.image = UIImage(systemName: category.imageName)
     }
 }
+
