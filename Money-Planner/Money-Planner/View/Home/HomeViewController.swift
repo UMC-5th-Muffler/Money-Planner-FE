@@ -59,8 +59,8 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         return v
     }()
     
-    let toggleButton : ToggleButton = {
-        let v = ToggleButton()
+    let toggleButton : CustomToggleButton = {
+        let v = CustomToggleButton()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -78,6 +78,8 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         
         setupHeader()
         
+        toggleButton.addTarget(self, action: #selector(customToggleButtonTapped), for: .touchUpInside)
+        
         // 스크롤 뷰 작업
         NSLayoutConstraint.activate([
             contentScrollView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 12),
@@ -93,9 +95,9 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         ])
         
         setupMonthAndCategoryView()
-        
-                                setupCalendarView()
-        //        setUpConsumeView()
+//        
+//                                setupCalendarView()
+                setUpConsumeView()
     }
     
     override func viewWillLayoutSubviews() {
@@ -244,50 +246,46 @@ extension HomeViewController{
         ])
     }
     
-    
-//    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-//        // 페이지 이동 전 호출
-//        guard let index = pageViewController.viewControllers?.first?.view.tag else { return nil }
-//
-//        let previousIndex = index - 1
-//
-//        if previousIndex < 0 || viewControllerList.count <= previousIndex {
-//            return nil
-//        }
-//
-//        return viewControllerList[previousIndex]
-//    }
-//
-//
-//
-//    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-//        // 페이지 이동 후 호출
-//        guard let index = pageViewController.viewControllers?.first?.view.tag else { return nil }
-//
-//        let nextIndex = index + 1
-//
-//        if viewControllerList.count <= nextIndex {
-//            return nil
-//        }
-//
-//        return viewControllerList[nextIndex]
-//    }
-    
-    
+        
+    @objc func customToggleButtonTapped() {
+          // 버튼을 탭했을 때 수행할 동작 추가
+          print("Custom button tapped!")
+          
+      }
     
     
     @objc func searchButtonTapped() {
-        // 왼쪽 버튼이 탭되었을 때의 동작
-        print("Search button tapped")
+        let vc = SearchConsumeViewController()
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func bellButtonTapped() {
-        // 오른쪽 버튼이 탭되었을 때의 동작
-        print("bell button tapped")
+        let vc = NotificationViewController()
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func menuButtonTapped() {
-        // 오른쪽 버튼이 탭되었을 때의 동작
-        print("menu button tapped")
+        let vc = CategoryEditViewController()
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
+
+
+//extension HomeViewController: PopUpModalDelegate {
+//    func didTapPresent() {
+//            PopUpModalViewController.present(
+//                initialView: self,
+//                delegate: self)
+//        }
+//
+//    func didTapCancel() {
+//        self.dismiss(animated: true)
+//    }
+//
+//    func didTapAccept(){
+//
+//    }
+//}
