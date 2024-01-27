@@ -9,59 +9,90 @@ import Foundation
 
 import UIKit
 
-class ToggleButton: UIButton {
+class CustomToggleButton: UIButton {
+    let halfView : UIView = {
+        let v = UIView()
+        v.backgroundColor = .mpWhite
+        v.layer.cornerRadius = 20
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
     
-    // 토글 상태를 나타내는 프로퍼티
-    var isToggled: Bool = false {
+    var isRight: Bool = false {
         didSet {
             updateUI()
         }
     }
     
-    // 초기화 메서드
+    let leftLabel: UILabel = {
+        let label = UILabel()
+        label.text = "달력"
+        label.textColor = .mpBlack
+        label.textAlignment = .center
+        label.font = UIFont.mpFont14B()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let rightLabel: UILabel = {
+        let label = UILabel()
+        label.text = "소비"
+        label.textColor = .mpBlack
+        label.textAlignment = .center
+        label.font = UIFont.mpFont14B()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
+        updateUI()
+        addTarget(self, action: #selector(switchButtonTapped), for: .touchUpInside)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupUI()
+        updateUI()
+        addTarget(self, action: #selector(switchButtonTapped), for: .touchUpInside)
+    }
+    
+    private func setupUI() {
+        backgroundColor = UIColor(hexCode: "E4E6EB")
+        layer.cornerRadius = 23
+        addSubview(halfView)
+        addSubview(leftLabel)
+        addSubview(rightLabel)
         
-        layer.cornerRadius = 18
+        
         NSLayoutConstraint.activate([
-            widthAnchor.constraint(equalToConstant: 154),
-            heightAnchor.constraint(equalToConstant: 46),
+            halfView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
+            halfView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.5, constant: -4),
+            halfView.topAnchor.constraint(equalTo: topAnchor, constant: 4),
+            halfView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
+            
+            leftLabel.leadingAnchor.constraint(equalTo: halfView.leadingAnchor),
+            leftLabel.topAnchor.constraint(equalTo: halfView.topAnchor),
+            leftLabel.bottomAnchor.constraint(equalTo: halfView.bottomAnchor),
+            leftLabel.heightAnchor.constraint(equalTo: halfView.heightAnchor ),
+            leftLabel.widthAnchor.constraint(equalTo: halfView.widthAnchor ),
+            
+            rightLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
+            rightLabel.topAnchor.constraint(equalTo: halfView.topAnchor),
+            rightLabel.bottomAnchor.constraint(equalTo: halfView.bottomAnchor),
+            rightLabel.heightAnchor.constraint(equalTo: halfView.heightAnchor ),
+            rightLabel.widthAnchor.constraint(equalTo: halfView.widthAnchor ),
         ])
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupUI()
-    }
-    
-    // UI 설정 메서드
-    private func setupUI() {
-        // 버튼 초기 설정
-        setTitleColor(.white, for: .normal)
-        setTitleColor(.blue, for: .selected)
-        backgroundColor = .blue
-        layer.cornerRadius = 8
-        addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        
-        // 초기 상태 설정
-        isToggled = false
-        updateUI()
-    }
-    
-    // 버튼 탭 시 호출되는 메서드
-    @objc private func buttonTapped() {
-        isToggled.toggle() // 토글 상태 변경
-        sendActions(for: .valueChanged) // 값이 변경되었음을 알림
-    }
-    
-    // UI 갱신 메서드
     private func updateUI() {
-        let duration: TimeInterval = 0.3
-        
-        UIView.animate(withDuration: duration) {
-            self.backgroundColor = self.isToggled ? .blue : .lightGray
-            self.setTitle(self.isToggled ? "ON" : "OFF", for: .normal)
+        UIView.animate(withDuration: 0.3) {
+            self.halfView.transform = self.isRight ? CGAffineTransform(translationX: self.halfView.frame.width, y: 0) : .identity
         }
+    }
+    
+    @objc private func switchButtonTapped() {
+        isRight.toggle()
     }
 }
