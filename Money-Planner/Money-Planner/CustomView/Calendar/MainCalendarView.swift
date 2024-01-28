@@ -24,9 +24,28 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     var todaysDate = 0
     var firstWeekDayOfMonth = 0   //(Sunday-Saturday 1-7)
     
+    let weekdaysView: MainWeekDayView = {
+        let v = MainWeekDayView()
+        v.translatesAutoresizingMaskIntoConstraints=false
+        return v
+    }()
+    
+    let myCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+        let myCollectionView=UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        myCollectionView.showsHorizontalScrollIndicator = false
+        myCollectionView.translatesAutoresizingMaskIntoConstraints=false
+        myCollectionView.backgroundColor=UIColor.clear
+        myCollectionView.allowsMultipleSelection=false
+        myCollectionView.isScrollEnabled = false
+        return myCollectionView
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         initializeView()
     }
     
@@ -45,6 +64,10 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         let maskLayer = CAShapeLayer()
         maskLayer.path = maskPath.cgPath
         layer.mask = maskLayer
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     
@@ -176,28 +199,6 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         myCollectionView.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive=true
         myCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive=true
         myCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive=true
-    }
-    
-    let weekdaysView: MainWeekDayView = {
-        let v = MainWeekDayView()
-        v.translatesAutoresizingMaskIntoConstraints=false
-        return v
-    }()
-    
-    let myCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        
-        let myCollectionView=UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        myCollectionView.showsHorizontalScrollIndicator = false
-        myCollectionView.translatesAutoresizingMaskIntoConstraints=false
-        myCollectionView.backgroundColor=UIColor.clear
-        myCollectionView.allowsMultipleSelection=false
-        return myCollectionView
-    }()
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 
