@@ -16,6 +16,7 @@
 		20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD902B656034008F8AB9 /* OneDayButton.swift */; };
 		20AFDD932B659779008F8AB9 /* RepeatIntervalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD922B659779008F8AB9 /* RepeatIntervalViewController.swift */; };
 		20AFDD952B65B882008F8AB9 /* ChooseDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD942B65B882008F8AB9 /* ChooseDateView.swift */; };
+		552A423E2B671B86007AEAAD /* EditGoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A423D2B671B86007AEAAD /* EditGoalViewController.swift */; };
 		5591601C2B64595E00063F06 /* EvaluationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591601B2B64595E00063F06 /* EvaluationViewController.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
@@ -75,6 +76,7 @@
 		20AFDD902B656034008F8AB9 /* OneDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDayButton.swift; sourceTree = "<group>"; };
 		20AFDD922B659779008F8AB9 /* RepeatIntervalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatIntervalViewController.swift; sourceTree = "<group>"; };
 		20AFDD942B65B882008F8AB9 /* ChooseDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDateView.swift; sourceTree = "<group>"; };
+		552A423D2B671B86007AEAAD /* EditGoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGoalViewController.swift; sourceTree = "<group>"; };
 		5591601B2B64595E00063F06 /* EvaluationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationViewController.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
@@ -355,6 +357,7 @@
 			isa = PBXGroup;
 			children = (
 				7A610AE92B493EC900D3096F /* MakeGoalViewController.swift */,
+				552A423D2B671B86007AEAAD /* EditGoalViewController.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -496,6 +499,7 @@
 				D20D6FFA2B5FB971006D6762 /* HomeConsumeView.swift in Sources */,
 				D20D6FEF2B5D3909006D6762 /* UIColor.swift in Sources */,
 				D20D6FE52B5AEECB006D6762 /* Date.swift in Sources */,
+				552A423E2B671B86007AEAAD /* EditGoalViewController.swift in Sources */,
 				20AFDD952B65B882008F8AB9 /* ChooseDateView.swift in Sources */,
 				7A4C67412B5A4AF1008BCAC9 /* MainBottomBtn.swift in Sources */,
 				D20D6FDE2B581B20006D6762 /* CALayer.swift in Sources */,
