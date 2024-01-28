@@ -62,6 +62,7 @@ class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
 
     private func setupUI() {
+        translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .mpWhite
         
         addSubview(orderLabel)

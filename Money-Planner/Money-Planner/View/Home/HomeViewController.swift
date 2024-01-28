@@ -10,10 +10,21 @@ import UIKit
 
 class HomeViewController : UIViewController, MainMonthViewDelegate {
     
-    lazy var pageViewController: UIPageViewController = {
-        let vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+    var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+         layout.scrollDirection = .horizontal
+         layout.minimumLineSpacing = 0
+         layout.minimumInteritemSpacing = 0
+
+         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+         collectionView.translatesAutoresizingMaskIntoConstraints = false
+         collectionView.isPagingEnabled = true
+         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = .clear
+        collectionView.isScrollEnabled = false
         
-        return vc
+        
+        return collectionView
     }()
     
     private let contentScrollView: UIScrollView = {
@@ -78,8 +89,6 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         
         setupHeader()
         
-        toggleButton.addTarget(self, action: #selector(customToggleButtonTapped), for: .touchUpInside)
-        
         // 스크롤 뷰 작업
         NSLayoutConstraint.activate([
             contentScrollView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 12),
@@ -87,17 +96,21 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
             contentScrollView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
             contentScrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             
-            contentView.topAnchor.constraint(equalTo: contentScrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: contentScrollView.widthAnchor)
+            
+            contentView.topAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.bottomAnchor),
+            
+            contentView.widthAnchor.constraint(equalTo: contentScrollView.widthAnchor),
         ])
         
+        let contentViewHeight = contentView.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor)
+        contentViewHeight.priority = .defaultLow
+        contentViewHeight.isActive = true
+        
         setupMonthAndCategoryView()
-//        
-//                                setupCalendarView()
-                setUpConsumeView()
+        setupCollectionView()
     }
     
     override func viewWillLayoutSubviews() {
@@ -171,6 +184,8 @@ extension HomeViewController{
     }
     
     func setupMonthAndCategoryView(){
+        toggleButton.addTarget(self, action: #selector(customToggleButtonTapped), for: .touchUpInside)
+        
         monthView.delegate=self
         contentView.addSubview(monthView)
         contentView.addSubview(toggleButton)
@@ -200,32 +215,46 @@ extension HomeViewController{
         ])
     }
     
-    
-    func setupCalendarView(){
+    func setupCollectionView(){
+        collectionView.dataSource = self
+        collectionView.delegate = self
         
-        statisticsView.progress = 0.7
-        view.addSubview(statisticsView)
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "PagingCell")
         
-        calendarView.backgroundColor = UIColor.mpWhite
-        contentView.addSubview(calendarView)
-        
-        
+        contentView.addSubview(collectionView)
+
+
         NSLayoutConstraint.activate([
-            statisticsView.topAnchor.constraint(equalTo: categoryScrollView.bottomAnchor, constant: 36),
-            statisticsView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -24),
-            statisticsView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 24),
-            statisticsView.heightAnchor.constraint(equalToConstant: 150),
-            
-            calendarView.topAnchor.constraint(equalTo: statisticsView.bottomAnchor, constant: 36),
-            calendarView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-            calendarView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            calendarView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
-            calendarView.heightAnchor.constraint(equalToConstant: 1000)
+            collectionView.topAnchor.constraint(equalTo: categoryScrollView.bottomAnchor, constant: 36),
+            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
     
-    func setUpConsumeView(){
+    
+    func setupCalendarView(cell : UICollectionViewCell){
         
+        statisticsView.progress = 0.7
+        cell.contentView.addSubview(statisticsView)
+
+        calendarView.backgroundColor = UIColor.mpWhite
+        cell.contentView.addSubview(calendarView)
+
+        NSLayoutConstraint.activate([
+            statisticsView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+            statisticsView.rightAnchor.constraint(equalTo: cell.contentView.rightAnchor, constant: -24),
+            statisticsView.leftAnchor.constraint(equalTo: cell.contentView.leftAnchor, constant: 24),
+            statisticsView.heightAnchor.constraint(equalToConstant: 150),
+
+            calendarView.topAnchor.constraint(equalTo: statisticsView.bottomAnchor, constant: 36),
+            calendarView.rightAnchor.constraint(equalTo: cell.contentView.rightAnchor),
+            calendarView.leftAnchor.constraint(equalTo: cell.contentView.leftAnchor),
+            calendarView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: 0),
+        ])
+    }
+    
+    func setUpConsumeView(cell : UICollectionViewCell){
         consumeView.data = [
             DailyConsume(date: "1월 17일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
             DailyConsume(date: "1월 16일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
@@ -234,45 +263,77 @@ extension HomeViewController{
             
         ]
         
-        contentView.addSubview(consumeView)
+        cell.contentView.addSubview(consumeView)
         
         NSLayoutConstraint.activate([
-            consumeView.topAnchor.constraint(equalTo: categoryScrollView.bottomAnchor, constant: 24),
-            consumeView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: 0),
-            consumeView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 0),
-            consumeView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
-            consumeView.heightAnchor.constraint(equalToConstant: 1000)
-            
+            consumeView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+            consumeView.leftAnchor.constraint(equalTo: cell.contentView.leftAnchor, constant: 0),
+            consumeView.rightAnchor.constraint(equalTo: cell.contentView.rightAnchor, constant: 0),
+            consumeView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: 0),
         ])
     }
     
-        
+    
     @objc func customToggleButtonTapped() {
-          // 버튼을 탭했을 때 수행할 동작 추가
-          print("Custom button tapped!")
-          
-      }
+        // 버튼을 탭했을 때 수행할 동작 추가
+        if(collectionView.currentPage == 0){
+            let indexPath = IndexPath(item: 1, section: 0)
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        }
+        
+        if(collectionView.currentPage == 1){
+            let indexPath = IndexPath(item: 0, section: 0)
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        }
+    }
     
     
     @objc func searchButtonTapped() {
-        let vc = SearchConsumeViewController()
-        vc.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(vc, animated: true)
+//        let vc = SearchConsumeViewController()
+//        vc.hidesBottomBarWhenPushed = true
+//        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func bellButtonTapped() {
-        let vc = NotificationViewController()
-        vc.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(vc, animated: true)
+//        let vc = NotificationViewController()
+//        vc.hidesBottomBarWhenPushed = true
+//        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func menuButtonTapped() {
-        let vc = CategoryEditViewController()
-        vc.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(vc, animated: true)
+//        let vc = CategoryEditViewController()
+//        vc.hidesBottomBarWhenPushed = true
+//        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
+extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 2
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PagingCell", for: indexPath)
+        
+        // Remove previous subviews
+        cell.contentView.subviews.forEach { $0.removeFromSuperview() }
+        
+        if(indexPath.item == 0){
+            setupCalendarView(cell: cell)
+        }
+        
+        if(indexPath.item == 1){
+            setUpConsumeView(cell: cell)
+        }
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return collectionView.bounds.size
+    }
+
+}
 
 //extension HomeViewController: PopUpModalDelegate {
 //    func didTapPresent() {
