@@ -10,7 +10,49 @@ import UIKit
 
 class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelectionDelegate,CalendarSelectionDelegate,RepeatModalViewDelegate {
    
-    let resultbutton : UITextField = {
+    // 오늘 날짜
+    let currentDate = Date()
+    let dateFormatter = DateFormatter()
+    lazy var dateString: String = {
+        dateFormatter.dateFormat = "yyyy년 MM월 dd일"
+        return dateFormatter.string(from: currentDate)
+    }()
+    
+    // 텍스트 필드
+    private let amountTextField: UITextField = MainTextField(placeholder: "소비금액을 입력하세요", iconName: "icon_Wallet", keyboardType: .numberPad)
+    private let cateogoryTextField = MainTextField(placeholder: "카테고리를 입력해주세요", iconName: "icon_category", keyboardType: .default)
+    private let titleTextField = MainTextField(placeholder: "제목", iconName: "icon_Paper", keyboardType: .default)
+    private let memoTextField = MainTextField(placeholder: "메모", iconName: "icon_Edit", keyboardType: .default)
+    private let calTextField = MainTextField(placeholder: "", iconName: "icon_date", keyboardType: .default)
+
+    // 뷰
+    private lazy var headerView = HeaderView(title: "소비내역 입력")
+
+    let catContainerView : UIView = {
+        let uiView = UIView()
+        uiView.backgroundColor = UIColor.mpGypsumGray
+        uiView.layer.cornerRadius = 8
+        uiView.translatesAutoresizingMaskIntoConstraints = false // Add this line
+        return uiView
+    }()
+    let calContainerView : UIView = {
+        let uiView = UIView()
+        uiView.layer.cornerRadius = 8
+        uiView.backgroundColor = .mpGypsumGray
+        uiView.translatesAutoresizingMaskIntoConstraints = false // Add this line
+        return uiView
+    }()
+
+    // 라벨
+    private let amountLabel: UILabel = {
+        let label = UILabel()
+        label.text = "0 원"
+        label.font = UIFont.systemFont(ofSize : 11)// 폰트 사이즈
+        label.textColor = UIColor.mpBlack
+        return label
+    }()
+    
+    let repeatResultButton : UITextField = {
         let button = UITextField()
         button.layer.cornerRadius = 6
         button.layer.masksToBounds = true
@@ -24,26 +66,6 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         return button
     }()
     
-    let currentDate = Date()
-    let dateFormatter = DateFormatter()
-    lazy var dateString: String = {
-        dateFormatter.dateFormat = "yyyy년 MM월 dd일"
-        return dateFormatter.string(from: currentDate)
-    }()
-    private lazy var headerView = HeaderView(title: "소비내역 입력")
-    private var completeButton = MainBottomBtn(title: "완료")
-    //소비금액 입력필드 추가
-    
-    private let amountTextField: UITextField = MainTextField(placeholder: "소비금액을 입력하세요", iconName: "icon_Wallet", keyboardType: .numberPad)
-    
-    // 소비금액 실시간 금액 표시
-    private let amountLabel: UILabel = {
-        let label = UILabel()
-        label.text = "0 원"
-        label.font = UIFont.systemFont(ofSize : 11)// 폰트 사이즈
-        label.textColor = UIColor.mpBlack
-        return label
-    }()
     // 제목 에러 표시
     private let titleErrorLabel: UILabel = {
         let label = UILabel()
@@ -52,16 +74,8 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         label.textColor = UIColor.mpRed
         return label
     }()
-    let catContainerView : UIView = {
-        let uiView = UIView()
-        uiView.backgroundColor = UIColor.mpGypsumGray
-        uiView.layer.cornerRadius = 8
-        uiView.translatesAutoresizingMaskIntoConstraints = false // Add this line
-        return uiView
-    }()
-    private let cateogoryTextField = MainTextField(placeholder: "카테고리를 입력해주세요", iconName: "icon_category", keyboardType: .default)
     
-    // 카테고리 선택 버튼 추가
+    // 버튼
     lazy var categoryChooseButton: UIButton = {
         let button = UIButton()
         let arrowImage = UIImage(systemName:"pencil") // Replace "arrow_down" with the actual image name in your assets
@@ -73,33 +87,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         return button
         
     }()
-   
-    @objc
-    private func showCategoryModal() {
-        print("클릭 : 카테고리 선택을 위해 카테고리 선택 모달로 이동합니다")
-        //categoryChooseButton.backgroundColor = UIColor.green
-        let categoryModalVC = CategoryModalViewController()
-        categoryModalVC.delegate = self
-        present(categoryModalVC, animated: true)
-        }
-    
-    func didSelectCategory(_ category: String, iconName : String) {
-            // Update the category text field in ConsumeViewController
-            cateogoryTextField.text = category
-            cateogoryTextField.changeIcon(iconName: iconName)
-        }
-    
-    private let titleTextField = MainTextField(placeholder: "제목", iconName: "icon_Paper", keyboardType: .default)
-    private let memoTextField = MainTextField(placeholder: "메모", iconName: "icon_Edit", keyboardType: .default)
-    let calContainerView : UIView = {
-        let uiView = UIView()
-        uiView.layer.cornerRadius = 8
-        uiView.backgroundColor = .mpGypsumGray
-        uiView.translatesAutoresizingMaskIntoConstraints = false // Add this line
-        return uiView
-    }()
-    private let calTextField = MainTextField(placeholder: "", iconName: "icon_date", keyboardType: .default)
-    // 카테고리 선택 버튼 추가
+
     lazy var calChooseButton: UIButton = {
         let button = UIButton()
         
@@ -120,6 +108,8 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     }()
     
     
+    private var completeButton = MainBottomBtn(title: "완료")
+
     
     
     
@@ -145,6 +135,20 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             checkButton.isChecked = false
         }
     }
+    @objc
+    private func showCategoryModal() {
+        print("클릭 : 카테고리 선택을 위해 카테고리 선택 모달로 이동합니다")
+        //categoryChooseButton.backgroundColor = UIColor.green
+        let categoryModalVC = CategoryModalViewController()
+        categoryModalVC.delegate = self
+        present(categoryModalVC, animated: true)
+        }
+    
+    func didSelectCategory(_ category: String, iconName : String) {
+            // Update the category text field in ConsumeViewController
+            cateogoryTextField.text = category
+            cateogoryTextField.changeIcon(iconName: iconName)
+        }
     
     func didSelectCalendarDate(_ date: String) {
         print("Selected Date in YourPresentingViewController: \(date)")
@@ -160,8 +164,9 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     }
     
     private func setupUI() {
-        // 배경색상 추가
+        
         super.viewDidLoad()
+        // 배경색상 추가
         view.backgroundColor = UIColor(named: "mpWhite")
         view.backgroundColor = .systemBackground
         
@@ -185,7 +190,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     }
     
     
-    // 세팅 : 헤더
+    // 1) 세팅 : 헤더
     private func setupHeader(){
         view.addSubview(headerView)
         
@@ -196,10 +201,9 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             headerView.heightAnchor.constraint(equalToConstant: 60)
         ])
-        
-        
     }
-    // 세팅 : 소비금액 추가
+    
+    // 2) 세팅 : 소비금액 추가
     private func setupAmountTextField() {
         view.addSubview(amountTextField)
         
@@ -246,7 +250,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         ])
     }
     
-    // 세팅 : 카테고리 텍스트 필트
+    // 3) 세팅 : 카테고리 텍스트 필트
     private func setupCategoryTextField(){
         
         view.addSubview(catContainerView)
@@ -273,6 +277,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     
         
         ])
+        //
         buttonContainerView.addSubview(categoryChooseButton)
         
         // 클릭 되게 하려고.... 시도 중
@@ -290,7 +295,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             categoryChooseButton.topAnchor.constraint(equalTo: buttonContainerView.topAnchor),
             categoryChooseButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor)
         ])
-
+        //
         buttonContainerView.addSubview(cateogoryTextField)
         cateogoryTextField.translatesAutoresizingMaskIntoConstraints = false
         cateogoryTextField.isUserInteractionEnabled = false // 수정 불가능하도록 설정
@@ -303,13 +308,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             cateogoryTextField.bottomAnchor.constraint(equalTo: catContainerView.bottomAnchor),
             cateogoryTextField.leadingAnchor.constraint(equalTo: catContainerView.leadingAnchor),
             cateogoryTextField.trailingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor),
-            
-            
         ])
-
-       
-        
-        
     }
     
     // 세팅 : 제목 텍스트 필트
@@ -403,40 +402,9 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             calTextField.bottomAnchor.constraint(equalTo: calContainerView.bottomAnchor),
             calTextField.leadingAnchor.constraint(equalTo: calContainerView.leadingAnchor),
             calTextField.trailingAnchor.constraint(equalTo: calbuttonContainerView.leadingAnchor),
-            
-            
         ])
-//        //////
-//        view.addSubview(calTextField)
-//        calTextField.translatesAutoresizingMaskIntoConstraints = false
-//        calTextField.isUserInteractionEnabled = false // 수정 불가능하도록 설정
-//        calTextField.textColor = UIColor.mpBlack
-//        calTextField.text = dateString
-//
-//        NSLayoutConstraint.activate([
-//
-//            calTextField.topAnchor.constraint(equalTo: memoTextField.bottomAnchor, constant: 10),
-//            calTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
-//            calTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
-//            calTextField.heightAnchor.constraint(equalToConstant: 64)
-//        ])
-//        calChooseButton.isUserInteractionEnabled = true
-//
-//        let calButtonContainerView = UIView()
-//        calButtonContainerView.addSubview(calChooseButton)
-//
-//
-//        NSLayoutConstraint.activate([
-//            calChooseButton.leadingAnchor.constraint(equalTo: calButtonContainerView.leadingAnchor),
-//            calChooseButton.trailingAnchor.constraint(equalTo: calButtonContainerView.trailingAnchor,constant: -25),
-//            calChooseButton.topAnchor.constraint(equalTo: calButtonContainerView.topAnchor),
-//            calChooseButton.bottomAnchor.constraint(equalTo: calButtonContainerView.bottomAnchor)
-//        ])
-//
-//        calTextField.rightView = calButtonContainerView
-//        calTextField.rightViewMode = .always
-//
     }
+    
     // 세팅 : 반복 버튼
     private func setupRepeatButton(){
         let containerview: UIStackView = {
@@ -473,7 +441,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         containerview.addArrangedSubview(repeatLabel)
         let blank = UIView()
         containerview.addArrangedSubview(blank)
-        containerview.addArrangedSubview(resultbutton)
+        containerview.addArrangedSubview(repeatResultButton)
         
         checkButton.setChecked(false)
 
@@ -599,11 +567,9 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     //숫자를 한글로 표현하는 함수(2000 -> 0부터 9999999999999999까지가능)
     func numberToKorean(_ number: Int) -> String {
         let unitLarge = ["", "만", "억", "조"]
-
         var result = ""
         var num = number
         var unitIndex = 0
-
         while num > 0 {
             let segment = num % 10000
             if segment != 0 {
@@ -612,13 +578,15 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             num /= 10000
             unitIndex += 1
         }
-
         return result.isEmpty ? "0" : result
     }
     
     func GetResultofInterval(_ result: String) {
-        resultbutton.text = "  \(result)  "
-        resultbutton.backgroundColor = .mpGypsumGray
+        print("반복 설정 완료\(result)")
+        print(repeatResultButton.text)
+        repeatResultButton.text = "  \(result)  "
+        repeatResultButton.backgroundColor = .mpGypsumGray
+        super.view.layoutIfNeeded() // 화면 다시 로딩
     }
 
 }

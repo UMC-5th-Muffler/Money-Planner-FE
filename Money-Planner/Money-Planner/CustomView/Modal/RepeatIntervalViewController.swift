@@ -24,10 +24,10 @@ class RepeatIntervalViewController : UIViewController,UIPickerViewDelegate,UIPic
     
     
     var pickerView: UIPickerView!
-    var returnValue = 0
+    var returnValue : Int = 0
     var intervals = ["1주마다 반복", "2주마다 반복", "3주마다 반복"]
     var return2 = [""]
-    var type = 0
+    var type : Int = 0
     
     
 
@@ -158,13 +158,15 @@ class RepeatIntervalViewController : UIViewController,UIPickerViewDelegate,UIPic
        // MARK: - UIPickerViewDelegate
 
        func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-           returnValue = row
+           
            return intervals[row]
        }
 
        func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
            
+           returnValue = row
            let selectedInterval = intervals[row]
+           print(returnValue)
            print("Selected Interval: \(selectedInterval)")
            // 선택된 항목을 처리하거나 delegate를 통해 전달할 수 있습니다.
        }
@@ -180,7 +182,6 @@ class RepeatIntervalViewController : UIViewController,UIPickerViewDelegate,UIPic
            label.text = intervals[row]
             label.font = UIFont.mpFont20B()// 원하는 글꼴 및 크기로 변경
            label.textAlignment = .center
-            returnValue = row
            return label
        }
 
@@ -195,10 +196,15 @@ class RepeatIntervalViewController : UIViewController,UIPickerViewDelegate,UIPic
         print(returnValue)
         var  stirngReturnValue = ""
         if type == 1{
+            print("요일 선택 화면에서 작업 중 ...")
+            print(returnValue)
             stirngReturnValue = "\(returnValue+1)"
 
         }
         if type == 2{
+            print("날짜 선택 화면에서 작업 중 ...")
+            print(return2)
+            print(returnValue)
             stirngReturnValue = return2[returnValue]
 
         }

@@ -7,14 +7,13 @@
 
 import UIKit
 
-// Protocol to handle interactions or events related to ChooseDayView
+// 요일 선택 시 화면 변경을 위한 프로토콜
 protocol ChooseDayViewDelegate: AnyObject {
     func chooseDayViewDidUpdateFrame(_ newHeight: CGFloat)
-    // Define methods or properties as needed
 }
 
 class ChooseDayView: UIView {
-    // Weak reference to the delegate
+
     weak var delegate: ChooseDayViewDelegate?
     var repeatEndChecked = true
     let currentDate = Date()
@@ -26,6 +25,7 @@ class ChooseDayView: UIView {
     let button5 = OneDayButton(title: "금", buttonBool: true)
     let button6 = OneDayButton(title: "토", buttonBool: true)
     let button7 = OneDayButton(title: "일", buttonBool: true)
+    
     lazy var dateString: String = {
         dateFormatter.dateFormat = "yyyy년 MM월 dd일"
         // 일년 뒤 날짜.
@@ -36,52 +36,19 @@ class ChooseDayView: UIView {
         }
         
     }()
-    // Other properties and methods of ChooseDayView
+    
+    // 버튼
     private let backButton = UIButton()
-    private let titleLabel = MPLabel()
+    let weekIntervalButton = OneDayButton(title: "1",buttonBool: false)
     private let weekButtons: UIStackView = {
             let stackView = UIStackView()
             stackView.axis = .horizontal
             stackView.spacing = 8
             return stackView
         }()
-    
-    private let weekInterval : UIStackView = {
-            let stackView = UIStackView()
-        stackView.backgroundColor = .blue
-            stackView.axis = .horizontal
-            stackView.spacing = 8
-            return stackView
-        }()
-    let weekIntervalButton = OneDayButton(title: "1",buttonBool: false)
-
-    private let repeatEndDate : UIStackView = {
-            let stackView = UIStackView()
-        stackView.backgroundColor = .cyan
-            stackView.axis = .horizontal
-            stackView.spacing = 8
-        stackView.alignment = .leading
-            return stackView
-        }()
-    private let repeatEndDate2 : UIStackView = {
-            let stackView = UIStackView()
-        stackView.backgroundColor = .mpWhite
-            stackView.axis = .horizontal
-            stackView.spacing = 8
-        stackView.alignment = .trailing
-            return stackView
-        }()
-    
-    private let RepeatEndDate2Label : UILabel = {
-        let label = UILabel()
-        label.text = "까지"
-        label.font = UIFont.mpFont16R()
-        label.textColor = UIColor.mpDarkGray
-        return label
-    }()
-    let blank = UIView()
     private lazy var RepeatEndDateButton : CheckBtn = {
         let checkButton = CheckBtn()
+        checkButton.setChecked(false)
         checkButton.addTarget(self, action: #selector(repeatEndDateButtonTapped), for: .touchUpInside)
         return checkButton
     }()
@@ -99,6 +66,41 @@ class ChooseDayView: UIView {
         return button
         
     }()
+    // 컨테이너
+    private let weekInterval : UIStackView = {
+            let stackView = UIStackView()
+        //stackView.backgroundColor = .blue
+            stackView.axis = .horizontal
+            stackView.spacing = 8
+            return stackView
+        }()
+
+    private let repeatEndDate : UIStackView = {
+            let stackView = UIStackView()
+        //stackView.backgroundColor = .cyan
+            stackView.axis = .horizontal
+            stackView.spacing = 8
+        stackView.alignment = .leading
+            return stackView
+        }()
+    private let repeatEndDate2 : UIStackView = {
+            let stackView = UIStackView()
+        //stackView.backgroundColor = .mpWhite
+            stackView.axis = .horizontal
+            stackView.spacing = 8
+        stackView.alignment = .trailing
+            return stackView
+        }()
+    // 라벨
+    private let RepeatEndDate2Label : UILabel = {
+        let label = UILabel()
+        label.text = "까지"
+        label.font = UIFont.mpFont16R()
+        label.textColor = UIColor.mpDarkGray
+        return label
+    }()
+    // 빈공간
+    let blank = UIView()
     
     override init(frame: CGRect  = .zero) {
         
@@ -124,29 +126,29 @@ class ChooseDayView: UIView {
         addSubview(weekInterval)
         addSubview(repeatEndDate)
 
-           NSLayoutConstraint.activate([
-            // 높이 설정
-            
+        NSLayoutConstraint.activate([
+                    
+            // 컨테이너 높이 설정
             weekButtons.heightAnchor.constraint(equalToConstant: 38),
             weekInterval.heightAnchor.constraint(equalToConstant: 38),
             repeatEndDate.heightAnchor.constraint(equalToConstant: 24),
-               //weekButtons.bottomAnchor.constraint(equalTo: weekInterval.topAnchor),
-               weekButtons.topAnchor.constraint(equalTo: topAnchor,constant: 16),
-               weekButtons.leadingAnchor.constraint(equalTo: leadingAnchor),
-            
-               weekInterval.topAnchor.constraint(equalTo: weekButtons.bottomAnchor,constant: 16),
-               weekInterval.leadingAnchor.constraint(equalTo: leadingAnchor),
-               weekInterval.trailingAnchor.constraint(equalTo: trailingAnchor),
-               //repeatEndDate.bottomAnchor.constraint(equalTo: bottomAnchor),
-               repeatEndDate.topAnchor.constraint(equalTo: weekInterval.bottomAnchor,constant: 16),
-               repeatEndDate.leadingAnchor.constraint(equalTo: leadingAnchor),
-               repeatEndDate.trailingAnchor.constraint(equalTo: trailingAnchor),
-           ])
+            //weekButtons.bottomAnchor.constraint(equalTo: weekInterval.topAnchor),
+            // 요일 선택 (월-금)
+            weekButtons.topAnchor.constraint(equalTo: topAnchor,constant: 16),
+            weekButtons.leadingAnchor.constraint(equalTo: leadingAnchor),
+            // 반복
+            weekInterval.topAnchor.constraint(equalTo: weekButtons.bottomAnchor,constant: 16),
+            weekInterval.leadingAnchor.constraint(equalTo: leadingAnchor),
+            weekInterval.trailingAnchor.constraint(equalTo: trailingAnchor),
+            //repeatEndDate.bottomAnchor.constraint(equalTo: bottomAnchor),
+            // 종료일
+            repeatEndDate.topAnchor.constraint(equalTo: weekInterval.bottomAnchor,constant: 16),
+            repeatEndDate.leadingAnchor.constraint(equalTo: leadingAnchor),
+            repeatEndDate.trailingAnchor.constraint(equalTo: trailingAnchor),
+        ])
     }
     
     private func setupWeekButtons(){
-
-        
         weekButtons.addArrangedSubview(button1)
         weekButtons.addArrangedSubview(button2)
         weekButtons.addArrangedSubview(button3)
@@ -156,6 +158,7 @@ class ChooseDayView: UIView {
         weekButtons.addArrangedSubview(button7)
         
     }
+    
     private func setupWeekInterval(){
         weekIntervalButton.addTarget(self, action: #selector(buttonTapped2), for: .touchUpInside)
         weekIntervalButton.translatesAutoresizingMaskIntoConstraints = false
@@ -195,7 +198,6 @@ class ChooseDayView: UIView {
         if repeatEndChecked {
             repeatEndChecked = false
             print("반복 종료일 설정 클릭함 ")
-            
             repeatEndDate2.translatesAutoresizingMaskIntoConstraints = false
             RepeatEndDate2Label.translatesAutoresizingMaskIntoConstraints = false
             addSubview(repeatEndDate2)

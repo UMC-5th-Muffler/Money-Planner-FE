@@ -41,35 +41,26 @@ class CategoryCell: UICollectionViewCell {
 
     func setupUI() {
         addSubview(containerView)
+        
+        containerView.addSubview(categoryImageView)
+        containerView.addSubview(categoryLabel)
+        
         NSLayoutConstraint.activate([
             containerView.centerXAnchor.constraint(equalTo: centerXAnchor),
             containerView.topAnchor.constraint(equalTo: topAnchor),
             containerView.widthAnchor.constraint(equalTo: widthAnchor),
-            containerView.heightAnchor.constraint(equalTo: heightAnchor)
-        ])
-        
-        
-        
-        // Uncomment the following lines if you want to add an image view
-        
-        containerView.addSubview(categoryImageView)
-        categoryImageView.translatesAutoresizingMaskIntoConstraints = false  // Disable autoresizing mask translation
-
-        NSLayoutConstraint.activate([
+            containerView.heightAnchor.constraint(equalTo: heightAnchor),
             categoryImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
             categoryImageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             categoryImageView.widthAnchor.constraint(equalToConstant: 32),
-            categoryImageView.heightAnchor.constraint(equalToConstant: 32)
-        ])
-        containerView.addSubview(categoryLabel)
-        categoryLabel.translatesAutoresizingMaskIntoConstraints = false  // Disable autoresizing mask translation
-
-        NSLayoutConstraint.activate([
+            categoryImageView.heightAnchor.constraint(equalToConstant: 32),
             categoryLabel.topAnchor.constraint(equalTo: categoryImageView.bottomAnchor, constant: 4),
-            categoryLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor), // Add this constraint
-            categoryLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor) // Add this constraint
+            categoryLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            categoryLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         ])
-        
+
+        categoryImageView.translatesAutoresizingMaskIntoConstraints = false
+        categoryLabel.translatesAutoresizingMaskIntoConstraints = false
     }
 
     func configure(with category: CategoryModalViewController.Category) {
