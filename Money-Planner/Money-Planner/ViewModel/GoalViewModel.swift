@@ -28,7 +28,13 @@ class GoalViewModel: ObservableObject {
     }
     
     init() {
-        self.goals = [pastGoal, currentGoal] //dummy data
+//        self.goals = [pastGoal1, pastGoal2, pastGoal3, currentGoal] //dummy data
+//        self.goals = [currentGoal] //dummy data
+        self.goals = [pastGoal1, pastGoal2, pastGoal3] //dummy data
+    }
+    
+    func goalExistsWithName(goalName: String?) -> Bool {
+        return goals.contains { $0.goalName == goalName }
     }
     
 //    private func requestUsergoal(uuid: String, completion: @escaping ([Goal]?) -> Void) {
@@ -202,3 +208,35 @@ class GoalViewModel: ObservableObject {
 //    }
 }
 
+// GoalCreationManager
+class GoalCreationManager {
+    static let shared = GoalCreationManager()
+
+    var goalEmoji: String?
+    var goalName: String?
+    var goalAmount: Int?
+    var goalStart: Date?
+    var goalEnd: Date?
+
+    private init() {} // Private initializer to ensure singleton usage
+
+    func createGoalRequest() -> CreateGoalRequest? {
+        guard let goalEmoji = goalEmoji,
+              let goalName = goalName,
+              let goalAmount = goalAmount,
+              let goalStart = goalStart,
+              let goalEnd = goalEnd else {
+            return nil
+        }
+
+        return CreateGoalRequest(goalEmoji: goalEmoji, goalName: goalName, goalAmount: goalAmount, goalStart: goalStart, goalEnd: goalEnd)
+    }
+
+    func clear() {
+        goalEmoji = nil
+        goalName = nil
+        goalAmount = nil
+        goalStart = nil
+        goalEnd = nil
+    }
+}

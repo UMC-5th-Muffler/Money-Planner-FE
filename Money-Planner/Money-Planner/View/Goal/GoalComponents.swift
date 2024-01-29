@@ -11,13 +11,13 @@ import UIKit
 
 class GoalMainHeaderView: UIView {
     
-    let titleLabel: UILabel
+    let titleLabel: MPLabel
     let addNewGoalBtn: UIButton
     let fixedHeight :CGFloat = 40
     
     override init(frame: CGRect) {
         
-        titleLabel = UILabel()
+        titleLabel = MPLabel()
         addNewGoalBtn = UIButton()
         
         super.init(frame: frame)
@@ -33,7 +33,7 @@ class GoalMainHeaderView: UIView {
     
     private func setupTitleLabel() {
         addSubview(titleLabel)
-        titleLabel.text = "나의 목표" // 여기에 원하는 텍스트를 설정하세요.
+        titleLabel.text = "나의 목표"
         titleLabel.textColor = .mpBlack
         titleLabel.font = UIFont.mpFont20B()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -48,7 +48,7 @@ class GoalMainHeaderView: UIView {
         addSubview(addNewGoalBtn)
         let plusImage = UIImage(systemName: "plus")
         addNewGoalBtn.setImage(plusImage, for: .normal)
-        addNewGoalBtn.tintColor = .black // mpBlack 대신 .black 사용
+        addNewGoalBtn.tintColor = .mpBlack
         addNewGoalBtn.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -62,19 +62,114 @@ class GoalMainHeaderView: UIView {
             heightAnchor.constraint(equalToConstant: fixedHeight)
         ])
     }
+    
 }
 
+//아무 목표도 없었을때 띄울 셀
+class GoalEmptyCell: UITableViewCell {
+    
+    let containerView = UIView()
+    //    let borderView = UIView()
+    let label = MPLabel()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .clear
+        setupCellLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupCellLayout() {
+        addSubview(containerView)
+        containerView.addSubview(label)
+        
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        
+        // Container View Constraints
+        NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+        ])
+        
+        // Label Constraints
+        NSLayoutConstraint.activate([
+            label.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            label.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+        ])
+        
+        containerView.layer.cornerRadius = 10
+        containerView.backgroundColor = .clear
+        
+        
+        label.textColor = .mpDarkGray
+        label.textAlignment = .center
+        label.font = UIFont.mpFont16M()
+        
+    }
+    
+    private func addDashedBorder(to view: UIView) {
+        
+        let lineDashPattern: [NSNumber]? = [3,2]
+        
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.strokeColor = UIColor.mpGray.cgColor
+        shapeLayer.lineWidth = 1
+        shapeLayer.lineDashPattern = lineDashPattern
+        shapeLayer.fillColor = nil
+        
+        //        이렇게 직접 추가하는 방식도 있다.
+        //        let path = CGMutablePath()
+        //        path.addLines(between: [CGPoint(x: 0, y: 0),
+        //                                    CGPoint(x: view.bounds.size.width, y: view.bounds.size.height / 2)])
+        //
+        //
+        //        shapeLayer.path = path
+        
+        shapeLayer.path = UIBezierPath(roundedRect: view.bounds, cornerRadius: view.layer.cornerRadius).cgPath
+        view.layer.addSublayer(shapeLayer)
+    }
+    
+    func configure(with text: String) {
+        //        label.text = text
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 8 // 원하는 줄 간격 값
+        paragraphStyle.alignment = .center // 가운데 정렬
+        
+        /* UILabel에서 텍스트를 가운데 정렬하려면 NSTextAlignment 속성을 사용하면 됩니다.
+         이미 UILabel의 textAlignment 속성을 .center로 설정하고 있으므로, 가운데 정렬은 이미 적용된 상태입니다.
+         하지만, NSMutableAttributedString을 사용할 때는 paragraphStyle의 alignment 속성도 설정해 주어야 합니다.*/
+        
+        let attributedString = NSMutableAttributedString(string: text)
+        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attributedString.length))
+        
+        label.attributedText = attributedString
+    }
+    
+    //내부의 view가 viewDidAppear 때 발동하려고 만드는 함수. autoLayout에 의해 view의 길이가 정해지므로, view가 완전히 생성된 이후에 조작한다.
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        addDashedBorder(to: containerView)
+    }
+}
 
+//목표가 있을때 셀
 class GoalPresentationCell: UITableViewCell {
     
     let goal : Goal
     let containerView = UIView()
     let btn = UIButton()
-    let title = UILabel()
-    let dday = UILabel()
+    let title = MPLabel()
+    let dday = MPLabel()
     var progressBar : GoalProgressBar
-    let progressPercentage = UILabel()
-    let usedAmount = UILabel()
+    let progressPercentage = MPLabel()
+    let usedAmount = MPLabel()
     
     init(goal: Goal, reuseIdentifier: String?) {
         self.goal = goal // goal을 초기화
@@ -87,6 +182,13 @@ class GoalPresentationCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    //금액에 , 넣기
+    private func setComma(cash: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter.string(from: NSNumber(value: cash)) ?? ""
     }
     
     private func setupCellLayout() {
@@ -115,13 +217,13 @@ class GoalPresentationCell: UITableViewCell {
         
         verticalStackView.axis = .vertical
         horizontalStackView2.alignment = .center
-        
         horizontalStackView3.axis = .horizontal
         horizontalStackView3.distribution = .fill
         horizontalStackView3.alignment = .leading
         
-
         btn.addSubview(verticalStackView)
+        
+        // vericalStackView layout 처리
         verticalStackView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -139,41 +241,43 @@ class GoalPresentationCell: UITableViewCell {
         
         //title
         title.text = goal.goalEmoji + "  " + goal.goalName
-        title.font = .mpFont18B()
+        title.font = .mpFont16M()
+        title.textColor = .mpBlack
         
         //d-day
-        let startDateString = dateFormatter.string(from: goal.goalStart)
-        let endDateString = dateFormatter.string(from: goal.goalEnd)
-        
+        dday.font = .mpFont12M()
         let currentDate = Date()
         let isPastGoal = currentDate > goal.goalEnd
         let daysLeft = Calendar.current.dateComponents([.day], from: currentDate, to: goal.goalEnd).day ?? 0
         
-        let (ddayText, ddayBackgroundColor, ddayTextColor) = isPastGoal ? ("종료", UIColor.mpLightGray, UIColor.mpGray) : ("D-\(daysLeft)", UIColor.mpCalendarHighLight, UIColor.mpMainColor)
+        let (ddayText, ddayBackgroundColor, ddayTextColor) = isPastGoal ? ("종료", UIColor.mpLightGray, UIColor.mpDarkGray) : ("D-\(daysLeft)", UIColor.mpCalendarHighLight, UIColor.mpMainColor)
         
         dday.text = ddayText
         dday.backgroundColor = ddayBackgroundColor
         dday.textColor = ddayTextColor
-        dday.layer.cornerRadius = 10
+        dday.layer.cornerRadius = 6
         dday.clipsToBounds = true
         dday.textAlignment = .center
-        dday.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        dday.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        dday.widthAnchor.constraint(equalToConstant: 37).isActive = true
+        dday.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         //progressPercentage
         let progressPercentageValue = Double(goal.usedAmount) / Double(goal.goalAmount) * 100.0
         progressPercentage.text = String(format: "%.0f%%", progressPercentageValue)
-        progressPercentage.textColor = .mpMainColor
+        progressPercentage.textColor = progressPercentageValue > 100 ? .mpRed : .mpMainColor
+        progressPercentage.font = .mpFont14M()
         
         
-        let usedAmountText = "\(goal.usedAmount) / \(goal.goalAmount) 사용"
-        let goalAmountTextCnt = "/ \(goal.goalAmount) 사용".count
+        let usedAmountText = setComma(cash: goal.usedAmount) + " 원 / " + setComma(cash: goal.goalAmount) + " 원 사용"
+        let goalAmountTextCnt = "/ \(goal.goalAmount) 원 사용".count
         let attributedText = NSMutableAttributedString(string: usedAmountText)
-        attributedText.addAttribute(.foregroundColor, value: UIColor.mpGray, range: NSRange(location: 0, length: usedAmountText.count))
-        attributedText.addAttribute(.foregroundColor, value: UIColor.mpLightGray, range: NSRange(location: usedAmountText.count - goalAmountTextCnt , length: goalAmountTextCnt))
+        attributedText.addAttribute(.foregroundColor, value: UIColor.mpDarkGray, range: NSRange(location: 0, length: usedAmountText.count))
+        attributedText.addAttribute(.foregroundColor, value: UIColor.mpGray, range: NSRange(location: usedAmountText.count - goalAmountTextCnt , length: goalAmountTextCnt))
         usedAmount.attributedText = attributedText
+        usedAmount.font = .mpFont14M()
     }
 }
+
 
 class GoalProgressBar: UIView {
     
@@ -209,7 +313,7 @@ class GoalProgressBar: UIView {
     
     func setupUsedAmtBar() {
         addSubview(usedAmtBar)
-        usedAmtBar.backgroundColor = usedAmt > goalAmt ? .red : .mpMainColor
+        usedAmtBar.backgroundColor = usedAmt > goalAmt ? .mpRed : .mpMainColor
         usedAmtBar.layer.cornerRadius = usedAmtBar.frame.height / 2
         usedAmtBar.translatesAutoresizingMaskIntoConstraints = false
         
@@ -226,7 +330,8 @@ class GoalProgressBar: UIView {
         
         // 현재 프레임 너비를 기반으로 usedAmtBar의 너비 계산
         let ratio = CGFloat(usedAmt) / CGFloat(goalAmt)
-        let usedAmtWidth = ratio * frame.width
+        let usingRatio = ratio > 1 ? 1 : ratio
+        let usedAmtWidth = usingRatio * frame.width
         
         // usedAmtBar의 너비 제약 조건(width constraint) 업데이트
         for constraint in usedAmtBar.constraints {
@@ -243,161 +348,256 @@ class GoalProgressBar: UIView {
 }
 
 
+/**extension EmojiView: UITextFieldDelegate {
+ 
+ func textFieldDidBeginEditing(_ textField: UITextField) {
+     textField.keyboardType = .default // Use default keyboard, customize for emoji input
+     // Additional configuration if needed
+ }
+ 
+ func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+     // Restrict input to a single emoji character
+     if string.count > 1 {
+         return false
+     }
 
-// tableView 안에 들어가는 cell 중에 키보드로 수정할 수 있는 textfield를 보유
-class WriteTextCell: UITableViewCell {
+     // Automatically dismiss keyboard after entering one emoji
+     if let _ = string.first?.isEmoji {
+         textField.text = string
+         textField.resignFirstResponder()
+         // Notify GoalNameViewController to update emoji and hide scrim (implement delegate or closure)
+     }
+     return false
+ }
+}
+
+
+extension Character {
+ var isEmoji: Bool {
+     guard let scalarValue = unicodeScalars.first else {
+         return false
+     }
+
+     // Ranges covering emojis (this includes the most common emoji ranges and might need updates when new emojis are released)
+     return scalarValue.properties.isEmoji &&
+            (scalarValue.value > 0x238C || scalarValue.value < 0x1F600 || scalarValue.value > 0x1F64F)
+ }
+}
+*/
+
+class EmojiView: UIView {
     
-    let iconImageView = UIImageView()
     let textField = UITextField()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupCell()
-        setupIconImageView()
-        setupTextField()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupEmojiView()
+        setupTextFieldView()
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        setupEmojiView()
+        setupTextFieldView()
     }
     
-    private func setupCell() {
-        
-        backgroundColor = UIColor.clear  // 셀의 배경을 투명하게 설정
-        contentView.backgroundColor = UIColor.mpLightGray
-        contentView.layer.cornerRadius = 10
-        contentView.clipsToBounds = true//" subview들이 view의 bounds에 가둬질 수 있는 지를 판단하는 Boolean 값 "
-        
-        selectionStyle = .none  // 셀 선택 시 배경색 변경 없음
-        
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-            contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
-            contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
-        ])
-        
+    private func setupEmojiView() {
+        self.backgroundColor = .mpLightGray
+        self.layer.cornerRadius = 10
     }
     
-    private func setupIconImageView() {
-        iconImageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(iconImageView)
+    private func setupTextFieldView() {
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.text = "🙌"
+        textField.font = .mpFont26B()
+//        textField.delegate = self
+        
+        self.addSubview(textField)
         
         NSLayoutConstraint.activate([
-            iconImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            iconImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            iconImageView.widthAnchor.constraint(equalToConstant: 30),
-            iconImageView.heightAnchor.constraint(equalToConstant: 30)
+            textField.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            textField.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
+    }
+}
+
+
+
+class WriteNameView: UIView, UITextFieldDelegate {
+    
+    let textField = UITextField()
+    let alertLabel = MPLabel()
+    let textDeleteBtn = UIButton()
+    
+    let goalViewModel = GoalViewModel.shared
+    
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+        setupTextDeleteBtn()
+        setupTextField()
+        setupAlertLabel()
+        textField.delegate = self
+        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupView()
+        setupTextDeleteBtn()
+        setupTextField()
+        setupAlertLabel()
+        textField.delegate = self
+        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+    }
+    
+    private func setupView() {
+        backgroundColor = UIColor.mpLightGray
+        layer.cornerRadius = 10
+        clipsToBounds = true
     }
     
     private func setupTextField() {
         textField.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(textField)
+        addSubview(textField)
         
         textField.textColor = UIColor.mpGray
         textField.textAlignment = .left
+        textField.placeholder = "목표 이름"
         
         NSLayoutConstraint.activate([
-            textField.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 16),
-            textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            textField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            textField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+            textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            textField.trailingAnchor.constraint(equalTo: textDeleteBtn.leadingAnchor, constant: -16), // 수정됨
+            textField.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
+            textField.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8)
         ])
     }
     
-    func configureCell(image: UIImage?, placeholder: String) {
-        if let image = image {
-            iconImageView.image = image.withTintColor(.mpGray, renderingMode: .alwaysOriginal)
-        } else {
-            iconImageView.image = nil
-        }
-        textField.placeholder = placeholder
+    private func setupTextDeleteBtn() {
+        
+        addSubview(textDeleteBtn) // addSubview를 먼저 호출
+        textDeleteBtn.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
+        textDeleteBtn.tintColor = .mpDarkGray
+        textDeleteBtn.addTarget(self, action: #selector(deleteText), for: .touchUpInside)
+        
+        textDeleteBtn.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            textDeleteBtn.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            textDeleteBtn.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            textDeleteBtn.widthAnchor.constraint(equalToConstant: 30),
+            textDeleteBtn.heightAnchor.constraint(equalToConstant: 30)
+        ])
     }
+    
+    private func setupAlertLabel(){
+        addSubview(alertLabel) // addSubview를 먼저 호출
+        alertLabel.translatesAutoresizingMaskIntoConstraints = false
+        alertLabel.text = ""
+        alertLabel.font = .mpFont12M()
+        alertLabel.textColor = .mpRed
+        
+        NSLayoutConstraint.activate([
+            alertLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            alertLabel.topAnchor.constraint(equalTo: self.bottomAnchor, constant: 1),
+            alertLabel.heightAnchor.constraint(equalToConstant: 30),
+            alertLabel.widthAnchor.constraint(equalToConstant: 150)
+        ])
+    }
+    
+    
+    @objc private func textFieldDidChange(_ textField: UITextField) {
+        // 텍스트 필드의 내용이 변경될 때마다 호출됩니다.
+        // 필요한 경우 alertLabel의 내용을 업데이트합니다.
+        if let text = textField.text {
+            if text.count > 15 {
+                alertLabel.text = "입력할 수 있는 범위를 초과했습니다."
+            } else if goalViewModel.goalExistsWithName(goalName: text) {
+                alertLabel.text = "동일한 이름의 목표가 이미 존재합니다."
+            } else {
+                alertLabel.text = "" // 조건에 해당하지 않으면 경고 메시지를 지웁니다.
+            }
+        }
+    }
+
+    @objc private func deleteText() {
+        textField.text = ""
+        alertLabel.text = ""
+        print("deleteText")
+    }
+    
 }
 
+protocol WriteNameCellDelegate: AnyObject {
+    func didChangeEmojiText(to newValue: String?, cell: WriteNameCell)
+    func didChangeTitleText(to newValue: String?, cell: WriteNameCell)
+}
 
-class MultiLineTextCell: UITableViewCell {
+// tableView 안에 들어가는 cell 중에 키보드로 수정할 수 있는 textfield를 보유
+class WriteNameCell: UITableViewCell {
     
-    let iconImageView = UIImageView()
-    let textView = UITextView()  // UITextView로 변경
+    weak var delegate: WriteNameCellDelegate?
+    
+    let writeNameView = WriteNameView()
+    let emojiView = EmojiView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupCell()
-        setupIconImageView()
-        setupTextView()  // UITextView 설정 메서드 호출
+        setupViews()
+        selectionStyle = .none
+        
+        emojiView.isUserInteractionEnabled = true
+        writeNameView.isUserInteractionEnabled = true
+        
+//        writeNameView.textField.delegate = self
+//        emojiView.textField.delegate = self
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupCell() {
-        backgroundColor = UIColor.clear  // 셀의 배경을 투명하게 설정
-        contentView.backgroundColor = UIColor.mpLightGray
-        contentView.layer.cornerRadius = 10
-        contentView.clipsToBounds = true//" subview들이 view의 bounds에 가둬질 수 있는 지를 판단하는 Boolean 값 "
+    private func setupViews() {
+        addSubview(emojiView)
+        addSubview(writeNameView)
+        emojiView.translatesAutoresizingMaskIntoConstraints = false
+        writeNameView.translatesAutoresizingMaskIntoConstraints = false
         
-        selectionStyle = .none  // 셀 선택 시 배경색 변경 없음
-        
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+        // EmojiView와 WriteNameView의 제약 조건 설정
         NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-            contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
-            contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
+            // EmojiView 제약 조건
+            emojiView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+            emojiView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            emojiView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+            emojiView.widthAnchor.constraint(equalToConstant: 50), // 예시 너비
+            
+            // WriteNameView 제약 조건
+            writeNameView.leadingAnchor.constraint(equalTo: emojiView.trailingAnchor, constant: 10),
+            writeNameView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
+            writeNameView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            writeNameView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
         ])
     }
     
-    private func setupIconImageView() {
-        iconImageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(iconImageView)
-        
-        NSLayoutConstraint.activate([
-            iconImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            iconImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            iconImageView.widthAnchor.constraint(equalToConstant: 30),
-            iconImageView.heightAnchor.constraint(equalToConstant: 30)
-        ])
-    }
-    
-    private func setupTextView() {
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(textView)
-        
-        textView.textColor = UIColor.mpGray
-        textView.textAlignment = .left
-        textView.isScrollEnabled = false  // 스크롤 비활성화
-        textView.font = UIFont.systemFont(ofSize: 16)  // 폰트 설정
-        
-        NSLayoutConstraint.activate([
-            textView.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 16),
-            textView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            textView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            textView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
-        ])
-    }
-    
-    func configureCell(image: UIImage?, placeholder: String) {
-        if let image = image {
-            iconImageView.image = image.withTintColor(.mpGray, renderingMode:
-                    .alwaysOriginal)
-        } else {
-            iconImageView.image = nil
-        }
-        
-    }
 }
+
+
+protocol MoneyAmountTextCellDelegate: AnyObject {
+    func didChangeAmountText(to newValue: String?, cell: MoneyAmountTextCell)
+}
+
 
 // 금액 입력을 위한 cell
 class MoneyAmountTextCell: UITableViewCell, UITextFieldDelegate {
     
+    weak var delegate: MoneyAmountTextCellDelegate?
+    
     private let iconImageView = UIImageView()
-    private let textField = UITextField()
-    private let unitLabel = UILabel()
-    private let amountLabel = UILabel()
+    let textField = UITextField()
+    private let unitLabel = MPLabel()
+    private let amountLabel = MPLabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -567,6 +767,10 @@ class MoneyAmountTextCell: UITableViewCell, UITextFieldDelegate {
         showNeatAmount()
     }
     
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+            delegate?.didChangeAmountText(to: textField.text, cell: self)
+    }
+    
 }
 
 
@@ -615,10 +819,12 @@ class PeriodCell: UITableViewCell {
 
 class PeriodCellButton: UIButton {
     
-    // 이전 PeriodCell의 모든 구현을 여기로 이동
+    // PeriodCell의 모든 구현을 여기로 이동
     private let iconImageView = UIImageView()
-    private let periodLabel = UILabel()
-    private let spanLabel = UILabel()
+    private let periodLabel = MPLabel()
+    private let spanLabel = MPLabel()
+    let startDate = Date()
+    let endDate = Date()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -692,3 +898,58 @@ class PeriodCellButton: UIButton {
     }
 }
 
+
+// 새로운 카테고리를 만들때 쓰는 점선이 있는 버튼
+class GoalCreateBtnCell: UITableViewCell {
+    
+    let addButton = UIButton()
+    let shapeLayer = CAShapeLayer()
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+//        self.layer.cornerRadius = 10
+//        self.clipsToBounds = true
+        setupAddButton()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupAddButton() {
+        if let plusImage = UIImage(systemName: "plus") {
+            addButton.setImage(plusImage, for: .normal)
+        }
+        addButton.tintColor = .mpDarkGray
+        addButton.backgroundColor = .clear
+        addButton.layer.cornerRadius = 10
+        contentView.addSubview(addButton)
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        addButton.clipsToBounds = true
+        NSLayoutConstraint.activate([
+            addButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            addButton.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            addButton.topAnchor.constraint(equalTo: self.topAnchor),
+            addButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        ])
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        addDashedBorder(to: contentView)
+    }
+    
+    private func addDashedBorder(to view: UIView) {
+        let lineDashPattern: [NSNumber] = [3, 2]
+        shapeLayer.strokeColor = UIColor.mpGray.cgColor
+        shapeLayer.lineWidth = 1
+        shapeLayer.lineDashPattern = lineDashPattern
+        shapeLayer.fillColor = nil
+        shapeLayer.path = UIBezierPath(roundedRect: addButton.bounds, cornerRadius: addButton.layer.cornerRadius).cgPath
+        shapeLayer.frame = view.bounds
+        
+        // Remove previously added layers to prevent multiple layers on top of each other
+        shapeLayer.removeFromSuperlayer()
+        view.layer.addSublayer(shapeLayer)
+    }
+}

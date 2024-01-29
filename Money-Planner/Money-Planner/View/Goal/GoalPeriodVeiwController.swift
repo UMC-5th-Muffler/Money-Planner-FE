@@ -11,12 +11,13 @@ import Moya
 
 class GoalPeriodViewController : UIViewController, UITableViewDataSource {
     
-    private var header : HeaderView = HeaderView(title: "목표 기간 설정")
-    private var descriptionView : DescriptionView = DescriptionView(text: "도전할 소비 목표의 기간을 선택해주세요", alignToCenter: true)
+    private var header : HeaderView = HeaderView(title: "")
+    private var descriptionView : DescriptionView = DescriptionView(text: "도전할 소비 목표의 기간을 선택해주세요", alignToCenter: false)
     private var tableView: UITableView!
     private lazy var btmbtn : MainBottomBtn = MainBottomBtn(title: "다음")
     
-    private let goalViewModel = GoalViewModel.shared // 싱글턴용
+    private let goalViewModel = GoalViewModel.shared //지금까지 만든 목표 확인용
+    private let goalCreationManager = GoalCreationManager.shared //목표 생성용
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,10 +26,24 @@ class GoalPeriodViewController : UIViewController, UITableViewDataSource {
         setupDescriptionView()
         setUpBtmBtn()
         setupTableView()
+        
+        btmbtn.addTarget(self, action: #selector(btmButtonTapped), for: .touchUpInside)
+        
+        // 기본 네비게이션 바의 뒤로 가기 버튼 숨기기
+        navigationItem.hidesBackButton = true
+        navigationItem.leftBarButtonItem = nil
+        
+    }
+    
+    @objc func btmButtonTapped() {
+        print("목표 금액 등록 화면으로 이동")
+        let goalTotalAmountVC = GoalTotalAmountViewController()
+        navigationController?.pushViewController(goalTotalAmountVC, animated: true)
     }
     
     private func setupHeader() {
         header.translatesAutoresizingMaskIntoConstraints = false
+        header.addBackButtonTarget(target: self, action: #selector(backButtonTapped), for: .touchUpInside)
         view.addSubview(header)
         
         NSLayoutConstraint.activate([
@@ -37,6 +52,11 @@ class GoalPeriodViewController : UIViewController, UITableViewDataSource {
             header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             header.heightAnchor.constraint(equalToConstant: 60) // 예시 높이값
         ])
+    }
+    
+    @objc private func backButtonTapped() {
+        // 뒤로 가기 기능 구현
+        navigationController?.popViewController(animated: true)
     }
     
     private func setupDescriptionView() {
@@ -75,8 +95,8 @@ class GoalPeriodViewController : UIViewController, UITableViewDataSource {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: 20),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             tableView.bottomAnchor.constraint(equalTo: btmbtn.topAnchor, constant: -20)
         ])
     }
@@ -113,6 +133,10 @@ class GoalPeriodViewController : UIViewController, UITableViewDataSource {
         }
     }
     
+//    goalCreationManager.goalStart = Date() // 셀 안에서 받은 값을 반영할 수 있게 수정해야 함.
+//    goalCreationManager.goalEnd = Date()
+    
+    
 //    // UITableViewDelegate 메서드
 //    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 //        if indexPath.row == 1 {  // 두 번째 셀에 대한 높이 설정
@@ -123,3 +147,6 @@ class GoalPeriodViewController : UIViewController, UITableViewDataSource {
 //    }
 }
 
+class DefaultModalViewController : UIViewController{
+    
+}

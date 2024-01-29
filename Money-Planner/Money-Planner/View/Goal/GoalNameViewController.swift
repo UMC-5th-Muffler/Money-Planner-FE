@@ -8,15 +8,39 @@
 import Foundation
 import UIKit
 
-
-class GoalNameViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
+extension GoalNameViewController: WriteNameCellDelegate {
     
-    private var header = HeaderView(title: "목표 이름 설정")
-    private var descriptionView = DescriptionView(text: "목표 이름과 메모를 설정해주세요", alignToCenter: true)
+    func didChangeEmojiText(to newValue: String?, cell: WriteNameCell) {
+        if let text = newValue, let emoji = String?(text) {
+            goalCreationManager.goalEmoji = emoji
+        } else {
+            // Handle the case where the text is not an String or is nil
+            goalCreationManager.goalEmoji = nil
+        }
+    }
+    
+    func didChangeTitleText(to newValue: String?, cell: WriteNameCell) {
+        if let text = newValue, let name = String?(text) {
+            goalCreationManager.goalName = name
+        } else {
+            // Handle the case where the text is not an integer or is nil
+            goalCreationManager.goalName = nil
+        }
+    }
+}
+
+class GoalNameViewController : UIViewController, UITableViewDataSource, UITableViewDelegate{
+    
+    private var header = HeaderView(title: "")
+    private var descriptionView = DescriptionView(text: "목표 이름을 설정해주세요", alignToCenter: false)
     private var tableView: UITableView!
     private var btmbtn = MainBottomBtn(title: "다음")
+    private var scrim = UIView()
     
-    private let goalViewModel = GoalViewModel.shared // 싱글턴용
+    private let goalViewModel = GoalViewModel.shared //지금까지 만든 목표 확인용
+    private let goalCreationManager = GoalCreationManager.shared //목표 생성용
+    
+    
     
     var btmbtnBottomConstraint: NSLayoutConstraint! //키보드 이동용
     
@@ -33,11 +57,20 @@ class GoalNameViewController : UIViewController, UITableViewDataSource, UITableV
         navigationItem.hidesBackButton = true
         navigationItem.leftBarButtonItem = nil
         
+        btmbtn.addTarget(self, action: #selector(btmButtonTapped), for: .touchUpInside)
+        
         // 키보드 알림 구독
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
     }
+    
+    @objc func btmButtonTapped() {
+        print("이름 입력 완료. 기간 화면으로.")
+        let goalPeriodViewController = GoalPeriodViewController()
+        navigationController?.pushViewController(goalPeriodViewController, animated: true)
+    }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -46,9 +79,10 @@ class GoalNameViewController : UIViewController, UITableViewDataSource, UITableV
         let indexPath = IndexPath(row: 0, section: 0)
         
         // 해당 indexPath의 셀을 가져옴
-        if let cell = tableView.cellForRow(at: indexPath) as? WriteTextCell {
+        if let cell = tableView.cellForRow(at: indexPath) as? WriteNameCell {
             // 셀 내의 텍스트 필드에 포커스를 줌
-            cell.textField.becomeFirstResponder()
+//            cell.writeNameView.textField.becomeFirstResponder()
+            cell.emojiView.textField.becomeFirstResponder()
         }
     }
     
@@ -68,6 +102,7 @@ class GoalNameViewController : UIViewController, UITableViewDataSource, UITableV
     @objc private func backButtonTapped() {
         // 뒤로 가기 기능 구현
         navigationController?.popViewController(animated: true)
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     private func setupDescriptionView() {
@@ -75,7 +110,7 @@ class GoalNameViewController : UIViewController, UITableViewDataSource, UITableV
         view.addSubview(descriptionView)
         
         NSLayoutConstraint.activate([
-            descriptionView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 70),
+            descriptionView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 30),
             descriptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             descriptionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
@@ -92,8 +127,8 @@ class GoalNameViewController : UIViewController, UITableViewDataSource, UITableV
         
         tableView = UITableView()
         tableView.dataSource = self
-        tableView.register(WriteTextCell.self, forCellReuseIdentifier: "WriteTextCell")
-        tableView.rowHeight = 60
+        tableView.register(WriteNameCell.self, forCellReuseIdentifier: "WriteNameCell")
+        tableView.rowHeight = 200
         view.addSubview(tableView)
         
         tableView.separatorStyle = .none  // 셀 사이 구분선 제거
@@ -113,8 +148,7 @@ class GoalNameViewController : UIViewController, UITableViewDataSource, UITableV
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "WriteTextCell", for: indexPath) as! WriteTextCell
-        cell.configureCell(image: UIImage(systemName: "pencil"), placeholder: "목표 이름")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "WriteNameCell", for: indexPath) as! WriteNameCell
         return cell
     }
     
@@ -129,6 +163,7 @@ class GoalNameViewController : UIViewController, UITableViewDataSource, UITableV
     
     func setUpBtmBtn(){
         btmbtn.translatesAutoresizingMaskIntoConstraints = false
+//        btmbtn.isEnabled = false
         view.addSubview(btmbtn)
         
         btmbtnBottomConstraint = btmbtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30)

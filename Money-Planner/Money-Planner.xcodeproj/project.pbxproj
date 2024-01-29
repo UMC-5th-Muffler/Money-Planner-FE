@@ -30,6 +30,7 @@
 		7A57676E2B6398B0009A5972 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A57676D2B6398B0009A5972 /* Goal.swift */; };
 		7A5767722B639A65009A5972 /* NetworkMangager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5767712B639A65009A5972 /* NetworkMangager.swift */; };
 		7A5767742B639A6F009A5972 /* GoalAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5767732B639A6F009A5972 /* GoalAPI.swift */; };
+		7A5767762B64D64A009A5972 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5767752B64D64A009A5972 /* CategoryViewModel.swift */; };
 		7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AB72B47FA8E00D3096F /* AppDelegate.swift */; };
 		7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */; };
 		7A610ABC2B47FA8E00D3096F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610ABB2B47FA8E00D3096F /* LoginViewController.swift */; };
@@ -94,6 +95,7 @@
 		7A57676D2B6398B0009A5972 /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		7A5767712B639A65009A5972 /* NetworkMangager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMangager.swift; sourceTree = "<group>"; };
 		7A5767732B639A6F009A5972 /* GoalAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalAPI.swift; sourceTree = "<group>"; };
+		7A5767752B64D64A009A5972 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		7A610AB42B47FA8E00D3096F /* Money-Planner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Money-Planner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A610AB72B47FA8E00D3096F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				7A57676A2B639817009A5972 /* GoalViewModel.swift */,
+				7A5767752B64D64A009A5972 /* CategoryViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -257,7 +260,6 @@
 		7A610AAB2B47FA8E00D3096F = {
 			isa = PBXGroup;
 			children = (
-				7A5767702B639A54009A5972 /* Network */,
 				7A610AB62B47FA8E00D3096F /* Money-Planner */,
 				7A610AB52B47FA8E00D3096F /* Products */,
 			);
@@ -274,11 +276,12 @@
 		7A610AB62B47FA8E00D3096F /* Money-Planner */ = {
 			isa = PBXGroup;
 			children = (
+				7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */,
+				7A610AB72B47FA8E00D3096F /* AppDelegate.swift */,
+				7A5767702B639A54009A5972 /* Network */,
 				7A4C67322B5A47BD008BCAC9 /* CustomView */,
 				D29536EF2B4C091400EEA81F /* Money-Planner.entitlements */,
 				D29536ED2B4C076F00EEA81F /* Common */,
-				7A610AB72B47FA8E00D3096F /* AppDelegate.swift */,
-				7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */,
 				7A610AD02B48FEE000D3096F /* Notification */,
 				7A610ACE2B480B5B00D3096F /* Model */,
 				7A5767692B639802009A5972 /* ViewModel */,
@@ -366,10 +369,10 @@
 				7A5767602B6396BE009A5972 /* GoalMainViewController.swift */,
 				7A5767622B6396CF009A5972 /* GoalNameViewController.swift */,
 				7A5767642B6396E0009A5972 /* GoalPeriodVeiwController.swift */,
+				7A5767662B6396F1009A5972 /* GoalTotalAmountViewController.swift */,
 				7A5767582B63968F009A5972 /* GoalCategoryViewController.swift */,
 				7A57675C2B6396A8009A5972 /* GoalDailyViewController.swift */,
 				7A57675E2B6396B2009A5972 /* GoalFinalViewController.swift */,
-				7A5767662B6396F1009A5972 /* GoalTotalAmountViewController.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -529,6 +532,7 @@
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
 				7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */,
 				206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */,
+				7A5767762B64D64A009A5972 /* CategoryViewModel.swift in Sources */,
 				D20D70042B5FF094006D6762 /* Numeric.swift in Sources */,
 				7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */,
 				7A610AD22B49004200D3096F /* SettingsViewController.swift in Sources */,

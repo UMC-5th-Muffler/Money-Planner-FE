@@ -8,15 +8,29 @@
 import Foundation
 import UIKit
 
+
+extension GoalTotalAmountViewController: MoneyAmountTextCellDelegate {
+    func didChangeAmountText(to newValue: String?, cell: MoneyAmountTextCell) {
+        // This is where you can validate and convert newValue to an Int and store it in goalCreationManager
+        if let text = newValue, let amount = Int(text) {
+            goalCreationManager.goalAmount = amount
+        } else {
+            // Handle the case where the text is not an integer or is nil
+            goalCreationManager.goalAmount = nil
+        }
+    }
+}
+
+
 class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
     
-    private var header : HeaderView = HeaderView(title: "목표 금액 설정")
-    private var descriptionView : DescriptionView = DescriptionView(text: "도전할 목표 금액을 입력해주세요", alignToCenter: true)
-    private var cashEmojiLabel = UILabel()
+    private var header : HeaderView = HeaderView(title: "")
+    private var descriptionView : DescriptionView = DescriptionView(text: "도전할 소비 목표의 금액을 입력해주세요", alignToCenter: false)
     private var tableView : UITableView!
     private lazy var btmbtn : MainBottomBtn = MainBottomBtn(title: "다음")
     
-    private let goalViewModel = GoalViewModel.shared // 싱글턴용
+    private let goalViewModel = GoalViewModel.shared
+    private let goalCreationManager = GoalCreationManager.shared //목표 생성용
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,12 +38,33 @@ class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
         setupHeader()
         setupDescriptionView()
         setUpBtmBtn()
-        setupCashEmojiLabel()
         setupTableView()
+        
+        // 기본 네비게이션 바의 뒤로 가기 버튼 숨기기
+        navigationItem.hidesBackButton = true
+        navigationItem.leftBarButtonItem = nil
+        
+        btmbtn.addTarget(self, action: #selector(btmButtonTapped), for: .touchUpInside)
     }
+
+    
+    @objc func btmButtonTapped() {
+        // Extract the textField's text from the cell and convert it to an Int
+        if let indexPath = tableView.indexPathForSelectedRow,
+           let cell = tableView.cellForRow(at: indexPath) as? MoneyAmountTextCell,
+           let text = cell.textField.text,
+           let amount = Int(text) {
+            goalCreationManager.goalAmount = amount
+        }
+
+        let goalCategoryViewController = GoalCategoryViewController()
+        navigationController?.pushViewController(goalCategoryViewController, animated: true)
+    }
+    
     
     private func setupHeader() {
         header.translatesAutoresizingMaskIntoConstraints = false
+        header.addBackButtonTarget(target: self, action: #selector(backButtonTapped), for: .touchUpInside)
         view.addSubview(header)
         
         NSLayoutConstraint.activate([
@@ -38,6 +73,11 @@ class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
             header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             header.heightAnchor.constraint(equalToConstant: 60) // 예시 높이값
         ])
+    }
+    
+    @objc private func backButtonTapped() {
+        // 뒤로 가기 기능 구현
+        navigationController?.popViewController(animated: true)
     }
     
     private func setupDescriptionView() {
@@ -51,18 +91,6 @@ class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
         ])
     }
     
-    private func setupCashEmojiLabel(){
-        cashEmojiLabel.translatesAutoresizingMaskIntoConstraints = false
-        cashEmojiLabel.text = "💰"
-        cashEmojiLabel.font = UIFont.systemFont(ofSize: 100, weight: .medium)
-        view.addSubview(cashEmojiLabel)
-        
-        NSLayoutConstraint.activate([
-            cashEmojiLabel.topAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: 20),
-            cashEmojiLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
-        
-    }
     
     private func setUpBtmBtn(){
         btmbtn.translatesAutoresizingMaskIntoConstraints = false
@@ -88,9 +116,9 @@ class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: cashEmojiLabel.bottomAnchor, constant: 20),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            tableView.topAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: 20), // cashEmojiLabel 대신 descriptionView.bottomAnchor 사용
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             tableView.bottomAnchor.constraint(equalTo: btmbtn.topAnchor, constant: -20)
         ])
     }
@@ -102,12 +130,15 @@ class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MoneyAmountTextCell", for: indexPath) as! MoneyAmountTextCell //Thread 1: signal SIGABRT
-        // 셀 설정
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MoneyAmountTextCell", for: indexPath) as! MoneyAmountTextCell
         cell.configureCell(image: UIImage(systemName: "wonsign.square.fill"), placeholder: "목표 금액")
-        
+        cell.delegate = self  // Set the viewController as the delegate
         return cell
     }
+    
+    
+    
 }
+
+
 

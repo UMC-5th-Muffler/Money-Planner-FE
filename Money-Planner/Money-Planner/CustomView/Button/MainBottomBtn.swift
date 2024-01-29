@@ -26,6 +26,8 @@ class MainBottomBtn: UIButton {
         }
     }
     
+    
+    
     private func setupButton(title: String) {
         setTitle(title, for: .normal)
         layer.cornerRadius = 10  // 둥근 모서리 설정

@@ -16,7 +16,7 @@ class SubDescriptionView: MPLabel {
         self.text = text
         self.textAlignment = alignToCenter ? .center : .left
         self.textColor = UIColor.mpGray
-        self.font = UIFont.mpFont16B()
+        self.font = UIFont.mpFont16M()
         self.numberOfLines = 0  // 여러 줄 표시 가능
     }
     
