@@ -15,7 +15,8 @@ protocol BaseAPI: TargetType {
 //기본값을 세팅
 extension BaseAPI {
     var baseURL: URL {
-        let serverURL = "http://13.209.182.17:8080"
+        let url = Bundle.main.object(forInfoDictionaryKey: "BaseURL") as? String ?? ""
+        let serverURL = "http://" + url
         return URL(string: serverURL)!
     }
     

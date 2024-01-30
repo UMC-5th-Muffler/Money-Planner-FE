@@ -12,7 +12,8 @@ import RxMoya
 final class TestRepository : BaseRepository<TestAPI> {
     
     static let shared = TestRepository()
-        
+    
+    // 그냥 moya
     func getTest(completion: @escaping (BaseResponse<Category>?, Error?) -> Void){
         provider.request(.getTest) { result in
             switch result {
@@ -22,9 +23,9 @@ final class TestRepository : BaseRepository<TestAPI> {
                     print(response)
                     
                     // 받은 값을
-//                    let decodedResponse = try response.map(BaseResponse<Category>.self)
-//                    // 성공적으로 디코딩된 응답을 처리
-//                    print(decodedResponse)
+                    //                    let decodedResponse = try response.map(BaseResponse<Category>.self)
+                    //                    // 성공적으로 디코딩된 응답을 처리
+                    //                    print(decodedResponse)
                 } catch {
                     // 디코딩 오류 처리
                     print("Decoding error: \(error)")
@@ -35,18 +36,25 @@ final class TestRepository : BaseRepository<TestAPI> {
             }
         }
     }
+    
+    // rxmoya 적으로 하기
+    func getTestRx(completion: @escaping (Any?, Error?) -> Void){
+        print("여기히히")
+        MoyaProvider<TestAPI>().rx.request(.getTest)
+            .filterSuccessfulStatusCodes().do(
+                    onSuccess: { response in
+                      print("성공")
+                        print(response)
+                    },
+                    onError: { rawError in
+                        print("에러")
+                      print(rawError)
+                    },
+                    onSubscribe: {
+                     print("여기")
+                    }
+                  )
+    }
 }
 
 
-//백업용
-//        MoyaProvider<TestAPI>().rx.request(.getTest)
-//            .filterSuccessfulStatusCodes()
-//        //리턴값의 struct형태를 지정
-//        .map(BaseResponse<Category>.self)
-//        //      .debug()
-//        //리턴값
-//        .subscribe(onSuccess: {
-//            print("여기다")
-//            completion($0, nil) }, onFailure: {
-//            completion(nil, $0) })
-//        .disposed(by: disposeBag)

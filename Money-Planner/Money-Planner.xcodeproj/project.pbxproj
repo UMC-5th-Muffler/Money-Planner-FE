@@ -70,6 +70,7 @@
 		D20D70302B68BEB0006D6762 /* Encodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D702F2B68BEB0006D6762 /* Encodable.swift */; };
 		D20D703A2B68C591006D6762 /* TestRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D70392B68C591006D6762 /* TestRepository.swift */; };
 		D20D703C2B68C599006D6762 /* TestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D703B2B68C599006D6762 /* TestAPI.swift */; };
+		D20D703F2B68DE23006D6762 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D20D703E2B68DE23006D6762 /* Config.xcconfig */; };
 		D29536F12B4C0DF000EEA81F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29536F02B4C0DF000EEA81F /* UserDefaults.swift */; };
 /* End PBXBuildFile section */
 
@@ -135,6 +136,7 @@
 		D20D702F2B68BEB0006D6762 /* Encodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encodable.swift; sourceTree = "<group>"; };
 		D20D70392B68C591006D6762 /* TestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRepository.swift; sourceTree = "<group>"; };
 		D20D703B2B68C599006D6762 /* TestAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAPI.swift; sourceTree = "<group>"; };
+		D20D703E2B68DE23006D6762 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D29536EF2B4C091400EEA81F /* Money-Planner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Money-Planner.entitlements"; sourceTree = "<group>"; };
 		D29536F02B4C0DF000EEA81F /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -282,6 +284,7 @@
 				7A610AC02B47FA8F00D3096F /* Assets.xcassets */,
 				7A610AC22B47FA8F00D3096F /* LaunchScreen.storyboard */,
 				7A610AC52B47FA8F00D3096F /* Info.plist */,
+				D20D703E2B68DE23006D6762 /* Config.xcconfig */,
 			);
 			path = "Money-Planner";
 			sourceTree = "<group>";
@@ -515,6 +518,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A610AC42B47FA8F00D3096F /* LaunchScreen.storyboard in Resources */,
+				D20D703F2B68DE23006D6762 /* Config.xcconfig in Resources */,
 				7A610AC12B47FA8F00D3096F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -603,6 +607,7 @@
 /* Begin XCBuildConfiguration section */
 		7A610AC62B47FA8F00D3096F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D20D703E2B68DE23006D6762 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -666,6 +671,7 @@
 		};
 		7A610AC72B47FA8F00D3096F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D20D703E2B68DE23006D6762 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -722,6 +728,7 @@
 		};
 		7A610AC92B47FA8F00D3096F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D20D703E2B68DE23006D6762 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -752,6 +759,7 @@
 		};
 		7A610ACA2B47FA8F00D3096F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D20D703E2B68DE23006D6762 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
