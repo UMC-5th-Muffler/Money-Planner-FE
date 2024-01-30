@@ -65,6 +65,13 @@
 		D20D6FFE2B5FDF4C006D6762 /* ConsumeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D6FFD2B5FDF4C006D6762 /* ConsumeDetail.swift */; };
 		D20D70022B5FF088006D6762 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D70012B5FF088006D6762 /* Formatter.swift */; };
 		D20D70042B5FF094006D6762 /* Numeric.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D70032B5FF094006D6762 /* Numeric.swift */; };
+		D20D70252B68B2A5006D6762 /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D70242B68B2A5006D6762 /* BaseResponse.swift */; };
+		D20D70272B68B870006D6762 /* BaseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D70262B68B870006D6762 /* BaseRepository.swift */; };
+		D20D70292B68B9DD006D6762 /* BaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D70282B68B9DD006D6762 /* BaseAPI.swift */; };
+		D20D70302B68BEB0006D6762 /* Encodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D702F2B68BEB0006D6762 /* Encodable.swift */; };
+		D20D703A2B68C591006D6762 /* TestRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D70392B68C591006D6762 /* TestRepository.swift */; };
+		D20D703C2B68C599006D6762 /* TestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D703B2B68C599006D6762 /* TestAPI.swift */; };
+		D20D703F2B68DE23006D6762 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D20D703E2B68DE23006D6762 /* Config.xcconfig */; };
 		D29536F12B4C0DF000EEA81F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29536F02B4C0DF000EEA81F /* UserDefaults.swift */; };
 /* End PBXBuildFile section */
 
@@ -125,6 +132,13 @@
 		D20D6FFD2B5FDF4C006D6762 /* ConsumeDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumeDetail.swift; sourceTree = "<group>"; };
 		D20D70012B5FF088006D6762 /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
 		D20D70032B5FF094006D6762 /* Numeric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numeric.swift; sourceTree = "<group>"; };
+		D20D70242B68B2A5006D6762 /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BaseResponse.swift; path = "Money-Planner/CustomView/Modal/BaseResponse.swift"; sourceTree = SOURCE_ROOT; };
+		D20D70262B68B870006D6762 /* BaseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BaseRepository.swift; path = "Money-Planner/CustomView/Modal/BaseRepository.swift"; sourceTree = SOURCE_ROOT; };
+		D20D70282B68B9DD006D6762 /* BaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BaseAPI.swift; path = "Money-Planner/CustomView/Modal/BaseAPI.swift"; sourceTree = SOURCE_ROOT; };
+		D20D702F2B68BEB0006D6762 /* Encodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encodable.swift; sourceTree = "<group>"; };
+		D20D70392B68C591006D6762 /* TestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRepository.swift; sourceTree = "<group>"; };
+		D20D703B2B68C599006D6762 /* TestAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAPI.swift; sourceTree = "<group>"; };
+		D20D703E2B68DE23006D6762 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D29536EF2B4C091400EEA81F /* Money-Planner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Money-Planner.entitlements"; sourceTree = "<group>"; };
 		D29536F02B4C0DF000EEA81F /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -272,6 +286,7 @@
 				7A610AC02B47FA8F00D3096F /* Assets.xcassets */,
 				7A610AC22B47FA8F00D3096F /* LaunchScreen.storyboard */,
 				7A610AC52B47FA8F00D3096F /* Info.plist */,
+				D20D703E2B68DE23006D6762 /* Config.xcconfig */,
 			);
 			path = "Money-Planner";
 			sourceTree = "<group>";
@@ -279,6 +294,10 @@
 		7A610ACB2B480AFF00D3096F /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				D20D702A2B68BB81006D6762 /* API */,
+				D20D70242B68B2A5006D6762 /* BaseResponse.swift */,
+				D20D70262B68B870006D6762 /* BaseRepository.swift */,
+				D20D70282B68B9DD006D6762 /* BaseAPI.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -392,6 +411,23 @@
 			path = Statistics;
 			sourceTree = "<group>";
 		};
+		D20D702A2B68BB81006D6762 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				D20D70382B68C57F006D6762 /* Test */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		D20D70382B68C57F006D6762 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				D20D70392B68C591006D6762 /* TestRepository.swift */,
+				D20D703B2B68C599006D6762 /* TestAPI.swift */,
+			);
+			path = Test;
+			sourceTree = "<group>";
+		};
 		D29536ED2B4C076F00EEA81F /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -412,6 +448,7 @@
 				D20D6FEE2B5D3909006D6762 /* UIColor.swift */,
 				D20D70012B5FF088006D6762 /* Formatter.swift */,
 				D20D70032B5FF094006D6762 /* Numeric.swift */,
+				D20D702F2B68BEB0006D6762 /* Encodable.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -484,6 +521,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A610AC42B47FA8F00D3096F /* LaunchScreen.storyboard in Resources */,
+				D20D703F2B68DE23006D6762 /* Config.xcconfig in Resources */,
 				7A610AC12B47FA8F00D3096F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -510,12 +548,14 @@
 				7A4C67412B5A4AF1008BCAC9 /* MainBottomBtn.swift in Sources */,
 				D20D6FDE2B581B20006D6762 /* CALayer.swift in Sources */,
 				7A4C67432B5A4B22008BCAC9 /* SmallButtonView.swift in Sources */,
+				D20D70302B68BEB0006D6762 /* Encodable.swift in Sources */,
 				7A610AEA2B493EC900D3096F /* MakeGoalViewController.swift in Sources */,
 				D20D6FF32B5D67B1006D6762 /* Category.swift in Sources */,
 				D20D6FEB2B5AF62E006D6762 /* MainWeekDayView.swift in Sources */,
 				D20D6FFC2B5FDF00006D6762 /* DailyConsume.swift in Sources */,
 				D20D6FFE2B5FDF4C006D6762 /* ConsumeDetail.swift in Sources */,
 				7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */,
+				D20D70292B68B9DD006D6762 /* BaseAPI.swift in Sources */,
 				7A610AE52B491ED600D3096F /* Dummy.swift in Sources */,
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
 				7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */,
@@ -524,6 +564,7 @@
 				D20D70042B5FF094006D6762 /* Numeric.swift in Sources */,
 				7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */,
 				7A610AD22B49004200D3096F /* MyPageViewController.swift in Sources */,
+				D20D703A2B68C591006D6762 /* TestRepository.swift in Sources */,
 				D20D70022B5FF088006D6762 /* Formatter.swift in Sources */,
 				7AC060FF2B4C5D78008C0E63 /* Design.swift in Sources */,
 				7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */,
@@ -532,6 +573,7 @@
 				D20D6FF52B5E5B91006D6762 /* ToggleButton.swift in Sources */,
 				D20D6FE32B5AED6A006D6762 /* String.swift in Sources */,
 				20EF78312B68E3AD00AA135E /* MyPageTableViewCell.swift in Sources */,
+				D20D70272B68B870006D6762 /* BaseRepository.swift in Sources */,
 				20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */,
 				7A610AEE2B493F6D00D3096F /* RegisterUsageViewController.swift in Sources */,
 				D20D6FED2B5B9962006D6762 /* MainCalendarView.swift in Sources */,
@@ -542,12 +584,14 @@
 				5591601C2B64595E00063F06 /* EvaluationViewController.swift in Sources */,
 				7A610AD62B49007100D3096F /* BattleViewController.swift in Sources */,
 				D29536F12B4C0DF000EEA81F /* UserDefaults.swift in Sources */,
+				D20D703C2B68C599006D6762 /* TestAPI.swift in Sources */,
 				20AFDD932B659779008F8AB9 /* RepeatIntervalViewController.swift in Sources */,
 				7A610AD92B49009300D3096F /* HomeViewController.swift in Sources */,
 				D20D6FF12B5D6635006D6762 /* CategoryButton.swift in Sources */,
 				20118A112B56A86100B2569E /* ConsumeViewController.swift in Sources */,
 				D20D6FDC2B581A5A006D6762 /* UITabBar.swift in Sources */,
 				D20D6FF82B5E974D006D6762 /* MainStatistics.swift in Sources */,
+				D20D70252B68B2A5006D6762 /* BaseResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -567,6 +611,7 @@
 /* Begin XCBuildConfiguration section */
 		7A610AC62B47FA8F00D3096F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D20D703E2B68DE23006D6762 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -630,6 +675,7 @@
 		};
 		7A610AC72B47FA8F00D3096F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D20D703E2B68DE23006D6762 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -686,6 +732,7 @@
 		};
 		7A610AC92B47FA8F00D3096F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D20D703E2B68DE23006D6762 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -716,6 +763,7 @@
 		};
 		7A610ACA2B47FA8F00D3096F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D20D703E2B68DE23006D6762 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
