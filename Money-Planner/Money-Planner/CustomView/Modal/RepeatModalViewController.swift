@@ -14,25 +14,44 @@ protocol RepeatModalViewDelegate : AnyObject{
 
 class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,CalendarSelectionDelegate, RepeatIntervalDelegate, ChooseDateViewDelegate {
 
+    
+    func didIntervalSelected(_ Interval: String,_ num : Int) {
+        UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+        if num == 1{
+            view1.weekIntervalButton.setTitle(Interval, for: .normal)
+
+        }
+        if num == 2{
+            view2.weekIntervalButton.setTitle(Interval, for: .normal)
+
+        }
+        print(Interval)
+    }
+    
+    func didSelectCalendarDate(_ date: String) {
+        print("Selected Date in YourPresentingViewController: \(date)")
+        view1.calChooseButton.setTitle(date, for: .normal)
+        view2.calChooseButton.setTitle(date, for: .normal)
+
+    }
+    
+   
+    let currentDate = Date()
+     let dateFormatter = DateFormatter()
+     lazy var dateString: String = {
+         dateFormatter.dateFormat = "dd일"
+         return dateFormatter.string(from: currentDate)
+     }()
     var dayContainerViewBottomConstraint: NSLayoutConstraint?
     var dateContainerViewBottomConstraint: NSLayoutConstraint?
     var ChooseDayHeightConstraint : NSLayoutConstraint?
     var ChooseDateHeightConstraint : NSLayoutConstraint?
-    var lineConstraintHeight: NSLayoutConstraint?
-    var lineConstraintBottom: NSLayoutConstraint?
-    var stackViewHeightConstraint : NSLayoutConstraint?
-    var stackView2HeightConstraint : NSLayoutConstraint?
-
-
+    var lineConstraint : NSLayoutConstraint?
     var containerViewBottomConstraint : NSLayoutConstraint?
     weak var delegate: RepeatModalViewDelegate?
-   // 오늘 날짜(일)
-    let currentDate = Date()
-    let dateFormatter = DateFormatter()
-    lazy var dateString: String = {
-         dateFormatter.dateFormat = "dd일"
-         return dateFormatter.string(from: currentDate)
-     }()
+
 
     let IntervalSelectionModalVC = RepeatIntervalViewController()
     let customModal = UIView(frame: CGRect(x: 0, y: 0, width: 361, height: 355))
@@ -42,6 +61,13 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
         label.textAlignment = .center
         label.font = UIFont.mpFont20B()
         return label
+    }()
+    // 제목 위에 작은 바
+    let modalBar : UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 8
+        view.backgroundColor = .mpLightGray
+        return view
     }()
     let containerView = UIView()
     let datePicker :UIDatePicker = {
@@ -75,8 +101,10 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
             NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue,
             NSAttributedString.Key.font: UIFont.mpFont14R()
         ]
+        
         // NSAttributedString 생성
         let underlineAttributedString = NSAttributedString(string: "오늘 선택하기", attributes: underlineAttribute)
+        
         // 버튼에 NSAttributedString 설정
         button.setAttributedTitle(underlineAttributedString, for: .normal)
         
@@ -102,37 +130,54 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
     
     let chooseDayButton  = CheckBtn()
     let chooseDateButton = CheckBtn()
+    
+    // 요일 선택 시 나오는 화면
+    // 수직 스택뷰 생성
+    //
     let dayContainerView = UIView()
-    let line : UIView = {
-        let line = UIView()
-        line.backgroundColor = .mpLightGray
-        line.layer.cornerRadius = 10
-        return line
-    }()
+    let line = UIView()
     let dateContainerView = UIView()
     let stackView = UIStackView()
     let stackView2 = UIStackView()
     let view1 = ChooseDayView()
     let view2 = ChooseDateView()
-    
-    // delegate
-    func didIntervalSelected(_ Interval: String,_ num : Int) {
-        UIView.animate(withDuration: 0.3) {
-                self.view.layoutIfNeeded()
-            }
-        if num == 1{view1.weekIntervalButton.setTitle(Interval, for: .normal)}
-        if num == 2{view2.weekIntervalButton.setTitle(Interval, for: .normal)}
-        print("[data] 얼마나 반복할 지 결정됨 : \(Interval)")
-    }
-    
-    func didSelectCalendarDate(_ date: String) {
-        print("Selected Date in YourPresentingViewController: \(date)")
-        view1.calChooseButton.setTitle(date, for: .normal)
-        view2.calChooseButton.setTitle(date, for: .normal)
 
-    }
-    
+    @objc
+        private func repeatEndDateButtonTapped() {
+//
+//            UIView.animate(withDuration: 0.5) {
+//                    self.view.layoutIfNeeded()
+//                }
+            print("반복 종료일 설정 클릭함 ")
+            view1.updateViewFrame(newHeight: 210)
+            
+            
+        }
+    func chooseDayViewDidUpdateFrame(_ newHeight: CGFloat) {
+        if newHeight == 0 {
+            calSelectionModal()
+        }
+        if newHeight == 1{
+            print("스위치 완료 - 매월 언제 반복할까요?")
+            IntervalSelectionModal(1)
+        }
+        if newHeight == 200{ // 요일 선택 > 반복 종료일 설정 누름
+            print("log1")
+            customModal.frame.size = CGSize(width: 361, height: 554)
+            stackView.frame.size = CGSize(width: 313 , height: 202)
+            //frame = CGRect(x: 0, y: 0, width:313, height: 200)
+            changeContainer(-22 ,1)
+            self.customModal.layoutIfNeeded()
 
+        }
+        if newHeight == 201 {
+            print("log2")
+            changeContainer(-60,1)
+        }
+        
+       
+        
+    }
     func chooseDateViewDidUpdateFrame(_ newHeight: CGFloat) {
         if newHeight == 0 {
             calSelectionModal()
@@ -180,25 +225,27 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
         view1.translatesAutoresizingMaskIntoConstraints = false
         view2.delegate = self
         view2.translatesAutoresizingMaskIntoConstraints = false
+        stackView2.backgroundColor = .red
+        stackView.backgroundColor = .red
 
     }
     func presentCustomModal() {
         // Instantiate your custom modal view
         customModal.backgroundColor = UIColor.mpWhite
         view.addSubview(customModal)
+        view.backgroundColor = .red
         customModal.center = view.center
+
         
     }
     private func setupBackground() {
-        //customModal.backgroundColor = .white
+        customModal.backgroundColor = .white
         customModal.layer.cornerRadius = 25
         customModal.layer.masksToBounds = true
     }
     
     private func setuptitleLabel() {
-        let modalBar = UIView()
-        modalBar.layer.cornerRadius = 8
-        modalBar.backgroundColor = .mpLightGray
+
         
         customModal.addSubview(modalBar)
         customModal.addSubview(titleLabel)
@@ -221,7 +268,7 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
     
     private func setupRepeatView() {
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        //containerView.backgroundColor = .mpDim
+        // >> containerView.backgroundColor = .mpDim
         customModal.addSubview(containerView)
         containerViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: cancelNcomplte.topAnchor, constant: -60)
         NSLayoutConstraint.activate([
@@ -231,7 +278,12 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
             containerViewBottomConstraint!
         ])
         
+        
 
+        //>>dayContainerView.backgroundColor = .green
+        line.backgroundColor = .mpLightGray
+        //>>dateContainerView.backgroundColor = .green
+        //>>stackView.backgroundColor = .red
         
         dayContainerView.translatesAutoresizingMaskIntoConstraints = false
         line.translatesAutoresizingMaskIntoConstraints = false
@@ -246,11 +298,8 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
         containerView.addSubview(dateContainerView)
         
         dayContainerViewBottomConstraint = dayContainerView.bottomAnchor.constraint(equalTo: line.topAnchor,constant: -24)
-        lineConstraintHeight = line.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
+        lineConstraint = line.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
         dateContainerViewBottomConstraint = dateContainerView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-        stackViewHeightConstraint = stackView.heightAnchor.constraint(equalToConstant: 0)
-        stackView2HeightConstraint = stackView2.heightAnchor.constraint(equalToConstant: 0)
-
         NSLayoutConstraint.activate([
             
             // 요일 선택 컨테이너 박스
@@ -263,16 +312,17 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
             
             // 요일 선택 시 등장 화면
             //stackView.widthAnchor.constraint(equalTo: containerView.widthAnchor),
+            //stackView.heightAnchor.constraint(equalToConstant: 0),
             stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: dayContainerView.bottomAnchor),
             stackView.bottomAnchor.constraint(equalTo: line.topAnchor),
             
             // containerView의 top에 맞춰서 위치
-            line.heightAnchor.constraint(equalToConstant:2),
+            line.heightAnchor.constraint(equalToConstant: 1),
             line.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             line.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            lineConstraintHeight!,
+            lineConstraint!,
             line.topAnchor.constraint(equalTo: stackView.bottomAnchor),
             
             // 날짜 선택 컨테이너 박스
@@ -324,6 +374,7 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
         
     }
     private func setupCancelNComplte(){
+        
         customModal.addSubview(cancelNcomplte)
         cancelNcomplte.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -332,11 +383,7 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
             cancelNcomplte.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 20),
             cancelNcomplte.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -20),
         ])
-        
-        // 버튼 액션 추가
-        // 취소)
         cancelNcomplte.addCancelAction(target: self, action: #selector(cancelButtonTapped))
-        // 완료)
         cancelNcomplte.addCompleteAction(target: self, action: #selector(completeButtonTapped))
     }
     
@@ -372,6 +419,7 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
         print(returnValue)
         // 완료 버튼 액션 처리
         
+        
         if IntervalSelectionModalVC.type == 1{
             delegate?.GetResultofInterval(returnValue)
         }
@@ -379,49 +427,46 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
             delegate?.GetResultofInterval("매월 "+(view2.weekIntervalButton.titleLabel?.text ?? "") )
             
         }
-        animationViewChange ()
         dismiss(animated: true, completion: nil)
     }
     @objc
     private func showChooseDayModal() {
-        print("화면 변경 : 요일 선택")
-        // 체크
+        
         if chooseDayButton.isChecked {
-            view2.removeFromSuperview() // 날짜 선택 화면 지우기
-            stackView.backgroundColor = .red
-            view1.backgroundColor = .mpMainColor
+            print("요일 선택")
             chooseDateButton.isChecked = false
             chooseDay.textColor = .mpMainColor
             chooseDate.textColor = .mpBlack
+            // 선택 시 나오는 화면 삭제 - 날짜 선택
+            stackView.removeArrangedSubview(view2)
+            view2.removeFromSuperview()
             
             stackView.addArrangedSubview(view1)
+            //view1.backgroundColor = .mpMainColor
             view1.translatesAutoresizingMaskIntoConstraints = false
             customModal.frame.size = CGSize(width: 361, height: 499)
             //stackView.frame.size = CGSize(width: 313 , height: 147)
-            
             NSLayoutConstraint.deactivate([
                 dayContainerViewBottomConstraint!,
-                lineConstraintHeight!,
-                stackViewHeightConstraint!,
+                lineConstraint!,
             ])
-
             dayContainerViewBottomConstraint = dayContainerView.bottomAnchor.constraint(equalTo: stackView.topAnchor)
             ChooseDayHeightConstraint = dayContainerView.heightAnchor.constraint(equalToConstant: 28)
             ChooseDateHeightConstraint = dateContainerView.heightAnchor.constraint(equalToConstant: 28)
-            lineConstraintBottom = line.topAnchor.constraint(equalTo: view1.bottomAnchor, constant: 28)
-
+            lineConstraint = line.topAnchor.constraint(equalTo: stackView.bottomAnchor)
             NSLayoutConstraint.activate([
                 dayContainerViewBottomConstraint!,
                 ChooseDayHeightConstraint!,
+                lineConstraint!,
                 ChooseDateHeightConstraint!,
-                lineConstraintBottom!,
-                stackView2HeightConstraint!,
+                
             ])
-            IntervalSelectionModalVC.type = 1 // 새로 등장하는 화면 타입 설정
+            IntervalSelectionModalVC.type = 1 // 서브화면 종류 설정 (1:요일선택)
+            UIView.animate(withDuration: 0.3) {
+                    self.view.layoutIfNeeded()
+                }
             
-            animationViewChange ()
-            
-        }// 체크 취소
+        }
         else{
             chooseDayButton.isChecked = false
             chooseDay.textColor = .mpBlack
@@ -429,7 +474,6 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
             // 선택 시 나오는 화면 삭제
             stackView.removeArrangedSubview(view1)
             view1.removeFromSuperview()
-            
             // 커스텀 모달 (가장 큰 화면 ) 초기화
             customModal.frame.size = CGSize(width: 361, height: 355)
             //stackView.frame.size = CGSize(width: 313 , height: 0)
@@ -437,17 +481,17 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
             NSLayoutConstraint.deactivate([
                 ChooseDayHeightConstraint!,
                 ChooseDateHeightConstraint!,
-                lineConstraintBottom!,
-                stackView2HeightConstraint!,])
-            lineConstraintHeight = line.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
+                lineConstraint!,])
+            lineConstraint = line.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
             NSLayoutConstraint.activate([
                 dayContainerViewBottomConstraint!,
-                lineConstraintHeight!,
+                lineConstraint!,
             
             ])
-            IntervalSelectionModalVC.type = 2 // 새로 등장하는 화면 타입 설정
-
-            animationViewChange ()
+            UIView.animate(withDuration: 0.3) {
+                self.customModal.layoutIfNeeded()
+                    self.view.layoutIfNeeded()
+                }
         }
         
     }
@@ -458,43 +502,36 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
         if chooseDateButton.isChecked {
             print("날짜 선택")
             view1.removeFromSuperview()
-            
             chooseDayButton.isChecked = false
-            view2.translatesAutoresizingMaskIntoConstraints = false
-            // 디자인 초기화
             chooseDate.textColor = .mpMainColor
             chooseDay.textColor = .mpBlack
             customModal.frame.size = CGSize(width: 361, height: 448)
             
-            // 날짜 선택 시 추가되는 화면
+            
             stackView2.addArrangedSubview(view2)
             view2.backgroundColor = .mpMainColor
+            view2.translatesAutoresizingMaskIntoConstraints = false
             //stackView.frame.size = CGSize(width: 313 , height: 147)
-
             NSLayoutConstraint.deactivate([
-                dayContainerViewBottomConstraint!,
                 dateContainerViewBottomConstraint!,
-                lineConstraintHeight!,
-                stackView2HeightConstraint!
+                lineConstraint!,
             ])
-            dayContainerViewBottomConstraint = dayContainerView.bottomAnchor.constraint(equalTo: stackView.topAnchor)
             dateContainerViewBottomConstraint = dateContainerView.bottomAnchor.constraint(equalTo: stackView2.topAnchor)
-            ChooseDayHeightConstraint = dayContainerView.heightAnchor.constraint(equalToConstant: 28)
+            ChooseDayHeightConstraint = dayContainerView.heightAnchor.constraint(equalToConstant: 50)
             ChooseDateHeightConstraint = dateContainerView.heightAnchor.constraint(equalToConstant: 28)
-            lineConstraintBottom = line.topAnchor.constraint(equalTo: stackView.bottomAnchor)
-            stackViewHeightConstraint = stackView.heightAnchor.constraint(equalToConstant: 28)
+            lineConstraint = line.topAnchor.constraint(equalTo: dayContainerView.bottomAnchor)
             NSLayoutConstraint.activate([
                 dateContainerViewBottomConstraint!,
                 ChooseDayHeightConstraint!,
+                lineConstraint!,
                 ChooseDateHeightConstraint!,
-                lineConstraintBottom!,
-                stackViewHeightConstraint!,
-                dayContainerViewBottomConstraint!,
-
+                
             ])
-            animationViewChange ()
-            IntervalSelectionModalVC.type = 2 // 새로 등장하는 화면 타입 설정
-            
+            IntervalSelectionModalVC.type = 2 // 서브화면 종류 설정 (2:날짜 선택)
+
+            UIView.animate(withDuration: 0.3) {
+                    self.view.layoutIfNeeded()
+                }
         }
         else{
             chooseDateButton.isChecked = false
@@ -504,7 +541,6 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
             // 선택 시 나오는 화면 삭제
             stackView2.removeArrangedSubview(view2)
             view2.removeFromSuperview()
-            
             // 커스텀 모달 (가장 큰 화면 ) 초기화
             customModal.frame.size = CGSize(width: 361, height: 355)
             //stackView.frame.size = CGSize(width: 313 , height: 0)
@@ -512,61 +548,34 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
             NSLayoutConstraint.deactivate([
                 ChooseDayHeightConstraint!,
                 ChooseDateHeightConstraint!,
-                lineConstraintBottom!,
-                stackViewHeightConstraint!,])
+                lineConstraint!,])
             
-            lineConstraintHeight = line.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
+            lineConstraint = line.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
             dateContainerViewBottomConstraint = dateContainerView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-            stackViewHeightConstraint = stackView.heightAnchor.constraint(equalToConstant: 28)
-            stackView2HeightConstraint = stackView.heightAnchor.constraint(equalToConstant: 0)
-
+            
             NSLayoutConstraint.activate([
                 dateContainerViewBottomConstraint!,
-                lineConstraintHeight!,
-                stackViewHeightConstraint!,
-                stackView2HeightConstraint!,
+                lineConstraint!,
+            
             ])
-            animationViewChange ()
+            UIView.animate(withDuration: 0.3) {
+                    self.view.layoutIfNeeded()
+                }
             
         }
         
         
         }
-    
-    @objc
-        private func repeatEndDateButtonTapped() {
-            print("반복 종료일 설정 클릭함 ")
-            view1.updateViewFrame(newHeight: 200)
-        }
-    func chooseDayViewDidUpdateFrame(_ newHeight: CGFloat) {
-        if newHeight == 0 {
-            calSelectionModal()
-        }
-        if newHeight == 1{
-            print("스위치 완료 - 매월 언제 반복할까요?")
-            IntervalSelectionModal(1)
-        }
-        if newHeight == 200{
-            // 안쪽 공간을 위해 컨테이너 화면을 늘립니다
-            print("화면 변경: 컨테이터 화면 늘림")
-            changeContainer(-22 ,1)
-        }
-        if newHeight == 201 {
-            // 안쪽 공간 컨테이너 위치 초기솨
-            print("화면 변경 : 컨테이너 위치 초기화")
-            changeContainer(-60,1)
-        }
-    }
-    
     func calSelectionModal(){
         print("종료 날짜 선택 모달")
         let calModalVC = CalendartModalViewController()
         calModalVC.changeTitle(title: " 종료날짜를 선택해주세요")
         calModalVC.delegate = self
         present(calModalVC, animated: true)
-        animationViewChange ()
+        UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
     }
-    
     func IntervalSelectionModal(_ num : Int ){
         print("반복 모달")
        
@@ -583,36 +592,41 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
 
         IntervalSelectionModalVC.delegate = self
         present(IntervalSelectionModalVC, animated: true)
-        animationViewChange ()
+        UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
     }
-    
     func changeContainer( _ constant : CGFloat, _ num : Int){
-        print("화면 변경 : 반복 화면 초기화")
+     
+        print("log1")
 
+        UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
         NSLayoutConstraint.deactivate([
             containerViewBottomConstraint!
         ])
-        
         if num == 1{
             containerViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: cancelNcomplte.topAnchor, constant: constant )
         }
         if num == 2 {
             containerViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: cancelNcomplte.topAnchor, constant: constant )
+            
+            
         }
-        
+
         NSLayoutConstraint.activate([
             containerViewBottomConstraint!
         ])
-        animationViewChange ()
     }
-    func animationViewChange (){
-        UIView.animate(withDuration: 0.5) {
-                self.view.layoutIfNeeded()
-            }
+    // 간격 :  버튼 탭 시 호출되는 메서드
+    @objc private func buttonTapped2() {
+        print("간격 모달 뷰로 스위치")
+        
     }
-
     
 }
+
 
 
 
