@@ -13,6 +13,7 @@ class PeriodSelectionModalViewController: UIViewController {
     weak var delegate: CalendarSelectionDelegate?
     
     // UI Elements: titleLabel, datePicker, completeButton, etc.
+    var titleLabel = MPLabel()
     
     var startDate: Date?
     var endDate: Date?
@@ -30,7 +31,7 @@ class PeriodSelectionModalViewController: UIViewController {
     }
     
     private func setupDatePicker() {
-        datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
+//        datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
         // Add datePicker to containerView and set constraints
     }
     
