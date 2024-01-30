@@ -44,7 +44,7 @@ class ChooseDateView: UIView {
 
     private let weekInterval : UIStackView = {
             let stackView = UIStackView()
-        //stackView.backgroundColor = .blue
+        // >> stackView.backgroundColor = .blue
             stackView.axis = .horizontal
             stackView.spacing = 8
             return stackView
@@ -57,7 +57,7 @@ class ChooseDateView: UIView {
         }()
     private let repeatEndDate : UIStackView = {
             let stackView = UIStackView()
-        //stackView.backgroundColor = .cyan
+        //>> stackView.backgroundColor = .cyan
             stackView.axis = .horizontal
             stackView.spacing = 8
         stackView.alignment = .leading
@@ -65,7 +65,7 @@ class ChooseDateView: UIView {
         }()
     private let repeatEndDate2 : UIStackView = {
             let stackView = UIStackView()
-        //stackView.backgroundColor = .mpWhite
+        // >> stackView.backgroundColor = .mpWhite
             stackView.axis = .horizontal
             stackView.spacing = 8
         stackView.alignment = .trailing
@@ -252,3 +252,4 @@ class ChooseDateView: UIView {
     }
    
 }
+
