@@ -101,5 +101,7 @@ iOSInjectionProject/
 #환경변수 파일
 Config.xcconfig
 
+*.DS_Store
+*.xcuserstate
 
 # End of https://www.toptal.com/developers/gitignore/api/swift,xcode
