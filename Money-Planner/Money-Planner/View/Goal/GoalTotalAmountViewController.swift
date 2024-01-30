@@ -102,8 +102,11 @@ class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
     private func setUpBtmBtn(){
         btmbtn.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(btmbtn)
+        
+        btmbtnBottomConstraint = btmbtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30)
+        
         NSLayoutConstraint.activate([
-            btmbtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
+            btmbtnBottomConstraint,
             btmbtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             btmbtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             btmbtn.heightAnchor.constraint(equalToConstant: 50)
