@@ -81,8 +81,8 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
         if section == 0 {
             return goalViewModel.currentGoals.isEmpty ? 1 : goalViewModel.currentGoals.count
         } else {
-            // 이전 섹션이고 목표가 없으면 비었다는 것을 알려줄 셀이 들어가므로 1을 반환하고, 그렇지 않으면 이전 목표의 개수를 반환
-            return goalViewModel.pastGoals.isEmpty ? 1 : goalViewModel.pastGoals.count
+            // 이전 섹션이고 목표가 없으면 비었다는 것을 알려줄 셀이 들어가므로 1을 반환
+            return goalViewModel.pastGoals.isEmpty && goalViewModel.futureGoals.isEmpty ? 1 : goalViewModel.pastGoals.count + goalViewModel.futureGoals.count
         }
     }
     
@@ -106,11 +106,11 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
             if goalViewModel.pastGoals.isEmpty {
                 // 이전 목표가 없으면 GoalEmptyCell을 반환
                 let cell = tableView.dequeueReusableCell(withIdentifier: "GoalEmptyCell", for: indexPath) as! GoalEmptyCell
-                cell.configure(with: "아직 지난 목표가 없습니다.")
+                cell.configure(with: "아직 지난/예정된 목표가 없습니다.")
                 return cell
             } else {
                 // 이전 목표가 있으면 GoalPresentationCell을 반환
-                let goal = goalViewModel.pastGoals[indexPath.row]
+                let goal = goalViewModel.notCurrentGoals[indexPath.row] //좀 더 깔끔한 로직이 없을까?
                 let cell = GoalPresentationCell(goal: goal, reuseIdentifier: "GoalPresentationCell")
                 return cell
             }
@@ -121,7 +121,7 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
         if section == 0 {
             return "진행 중인 목표"
         } else {
-            return "지난 목표"
+            return "나의 목표들"
         }
     }
     

@@ -45,6 +45,7 @@ class CategoryViewModel: ObservableObject {
 
 
 class CategoryCreationManager {
+    
     static let shared = CategoryCreationManager()
 
     // 생성 중인 카테고리들을 저장할 배열

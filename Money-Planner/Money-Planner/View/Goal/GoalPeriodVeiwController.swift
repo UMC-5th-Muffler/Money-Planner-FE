@@ -9,11 +9,10 @@ import Foundation
 import UIKit
 import Moya
 
-class GoalPeriodViewController : UIViewController, UITableViewDataSource {
+class GoalPeriodViewController : UIViewController{
     
     private var header : HeaderView = HeaderView(title: "")
     private var descriptionView : DescriptionView = DescriptionView(text: "도전할 소비 목표의 기간을 선택해주세요", alignToCenter: false)
-    private var tableView: UITableView!
     private lazy var btmbtn : MainBottomBtn = MainBottomBtn(title: "다음")
     
     private let goalViewModel = GoalViewModel.shared //지금까지 만든 목표 확인용
@@ -25,7 +24,6 @@ class GoalPeriodViewController : UIViewController, UITableViewDataSource {
         setupHeader()
         setupDescriptionView()
         setUpBtmBtn()
-        setupTableView()
         
         btmbtn.addTarget(self, action: #selector(btmButtonTapped), for: .touchUpInside)
         
@@ -80,57 +78,6 @@ class GoalPeriodViewController : UIViewController, UITableViewDataSource {
             btmbtn.heightAnchor.constraint(equalToConstant: 50)
         ])
         
-    }
-    
-    private func setupTableView() {
-        
-        tableView = UITableView()
-        tableView.dataSource = self
-        tableView.register(PeriodCell.self, forCellReuseIdentifier: "PeriodCell")
-        tableView.rowHeight = 60
-        view.addSubview(tableView)
-        
-        tableView.separatorStyle = .none  // 셀 사이 구분선 제거
-        
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: 20),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            tableView.bottomAnchor.constraint(equalTo: btmbtn.topAnchor, constant: -20)
-        ])
-    }
-    
-    
-    // UITableViewDataSource 메서드
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1 // 두 개의 셀
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PeriodCell", for: indexPath) as! PeriodCell
-        // 셀 설정
-        switch indexPath.row {
-        case 0:
-            break // 수정하기
-        default:
-            break
-        }
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath.row {
-        case 0:
-            let modalViewController = DefaultModalViewController() // 모달 뷰 컨트롤러 생성
-            modalViewController.modalPresentationStyle = .overFullScreen // 모달 스타일 설정 (원하는 스타일로 변경 가능)
-
-            // 모달 표시
-            present(modalViewController, animated: true, completion: nil)
-        default:
-            break
-        }
     }
     
 //    goalCreationManager.goalStart = Date() // 셀 안에서 받은 값을 반영할 수 있게 수정해야 함.

@@ -135,6 +135,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             checkButton.isChecked = false
         }
     }
+    
     @objc
     private func showCategoryModal() {
         print("클릭 : 카테고리 선택을 위해 카테고리 선택 모달로 이동합니다")
@@ -154,8 +155,6 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         print("Selected Date in YourPresentingViewController: \(date)")
         calTextField.text = date
         }
-    
-    
 
     
         

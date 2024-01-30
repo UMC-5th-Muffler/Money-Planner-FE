@@ -15,11 +15,20 @@ class GoalViewModel: ObservableObject {
     @Published var goals: [Goal]
     
     var pastGoals: [Goal] {
+        print(goals.filter { $0.goalEnd < Date() })
         return goals.filter { $0.goalEnd < Date() }
     }
     
     var currentGoals: [Goal] {
-        return goals.filter { $0.goalEnd >= Date() }
+        return goals.filter { $0.goalStart <= Date() && Date() <= $0.goalEnd }
+    }
+    
+    var futureGoals: [Goal] {
+        return goals.filter { $0.goalStart > Date() }
+    }
+    
+    var notCurrentGoals: [Goal] {
+        return goals.filter { $0.goalStart > Date() || Date() > $0.goalEnd }
     }
     
     enum GoalError: String, Error {
@@ -30,7 +39,7 @@ class GoalViewModel: ObservableObject {
     init() {
 //        self.goals = [pastGoal1, pastGoal2, pastGoal3, currentGoal] //dummy data
 //        self.goals = [currentGoal] //dummy data
-        self.goals = [pastGoal1, pastGoal2, pastGoal3] //dummy data
+        self.goals = [futureGoal, pastGoal1, pastGoal2, pastGoal3] //dummy data
     }
     
     func goalExistsWithName(goalName: String?) -> Bool {

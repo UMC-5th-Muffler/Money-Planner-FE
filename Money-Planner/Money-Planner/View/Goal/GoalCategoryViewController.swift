@@ -17,11 +17,13 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     var tableView : UITableView!
     var btmBtn = MainBottomBtn(title: "다음")
     var sumAmount = 0
+    var categoryCount = 2
     
     
     private let goalViewModel = GoalViewModel.shared // 지금까지 만든 목표 확인용
     private let goalCreationManager = GoalCreationManager.shared // 목표 생성용
-    private let categoryViewModel = CategoryViewModel.shared // 지금까지 만들어진 카테고리 확인용
+//    private let categoryViewModel = CategoryViewModel.shared // 지금까지 만들어진 카테고리 확인용
+//    private let categoryCreationManager = CategoryCreationManager.shared // 카테고리별 목표 생성용
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,10 +41,9 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     // 여기서부터 setup 메서드들을 정의합니다.
-    // 예를 들어, setupHeader, setupDescriptionView, setupProgressBar, setupTableView, setupBtmBtn 등입니다.
     @objc func btmButtonTapped() {
         // Create and present GoalNameViewController
-        print("aaaa")
+        print("일별 설정으로 넘어감")
         let goalDailyVC = GoalDailyViewController()
         navigationController?.pushViewController(goalDailyVC, animated: true)
     }
@@ -169,7 +170,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(GoalCreateBtnCell.self, forCellReuseIdentifier: "GoalCreateBtnCell")
-        tableView.register(MoneyAmountTextCell.self, forCellReuseIdentifier: "MoneyAmountTextCell")
+        tableView.register(GoalCategoryTableViewCell.self, forCellReuseIdentifier: "GoalCategoryTableViewCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100 // Give an estimated row height for better performance
         tableView.separatorStyle = .none  // Remove separator lines if not needed
@@ -179,16 +180,15 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: verticalStack.bottomAnchor, constant: 20),
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
             tableView.bottomAnchor.constraint(equalTo: btmBtn.topAnchor, constant: -20)
         ])
     }
     
     // MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
-        // Each category gets its own section, plus one for the 'add new' cell
-        return categoryViewModel.categories.count + 1
+        return categoryCount
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -197,33 +197,57 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-            // The last section is for adding a new category
-            if section < categoryViewModel.categories.count {
-                return "카테고리 목표 \(section + 1)"
-            } else {
-                return nil // No header for the 'add new' section
-            }
-        }
+        return "카테고리 목표 \(section + 1)"
+    }
         
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        // 마지막 셀인지 확인하여 GoalCategoryTableViewCell 또는 GoalCreateBtnCell 반환
+//        if indexPath.section == categoryViewModel.categories.count {
+//            // GoalCreateBtnCell 생성 및 구성
+//            let cell = tableView.dequeueReusableCell(withIdentifier: "GoalCreateBtnCell", for: indexPath) as! GoalCreateBtnCell
+//            // 셀 구성
+//            return cell
+//        } else {
+//            // GoalCategoryTableViewCell 생성 및 구성
+//            let cell = tableView.dequeueReusableCell(withIdentifier: "GoalCategoryTableViewCell", for: indexPath) as! GoalCategoryTableViewCell
+//            // 셀 구성, 예를 들어 cell.configure(with: categoryViewModel.categories[indexPath.section])
+//            return cell
+//        }
+//    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // 마지막 셀인지 확인하여 GoalCreateBtnCell 또는 MoneyAmountTextCell 반환
-        if indexPath.row == categoryViewModel.categories.count {
-            // GoalCreateBtnCell 생성 및 구성
+        if indexPath.section == categoryCount - 1 {
+            // 마지막 섹션에 GoalCreateBtnCell 배치
             let cell = tableView.dequeueReusableCell(withIdentifier: "GoalCreateBtnCell", for: indexPath) as! GoalCreateBtnCell
-            // 셀 구성
+            cell.onAddButtonTapped = { [weak self] in
+                guard let self = self else { return }
+                self.categoryCount += 1
+                // 마지막 섹션 바로 앞에 새로운 GoalCategoryTableViewCell 섹션 추가
+                self.tableView.insertSections([self.categoryCount - 2], with: .automatic)
+            }
             return cell
         } else {
-            // MoneyAmountTextCell 생성 및 구성
-            let cell = tableView.dequeueReusableCell(withIdentifier: "MoneyAmountTextCell", for: indexPath) as! MoneyAmountTextCell
-            // 셀 구성, 예를 들어 cell.configure(with: categoryViewModel.categories[indexPath.row])
+            let cell = tableView.dequeueReusableCell(withIdentifier: "GoalCategoryTableViewCell", for: indexPath) as! GoalCategoryTableViewCell
+            cell.categoryTextChanged = { text in
+                // 텍스트 변경 처리
+                print("카테고리 텍스트 변경됨: \(text)")
+            }
+            cell.categoryButtonTapped = {
+                // 버튼 탭 처리
+                print("카테고리 선택 버튼 탭됨")
+            }
             return cell
         }
     }
+
     
     // UITableViewDelegate 메서드 구현
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        // 셀 높이 설정
-        return 100
+        if indexPath.section == categoryCount - 1 {
+            return 64
+        } else {
+            return 130
+        }
     }
     
 }

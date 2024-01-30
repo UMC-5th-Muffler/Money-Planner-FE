@@ -70,4 +70,16 @@ let pastGoal3: Goal = {
 }()
 
 
-
+let futureGoal: Goal = {
+    let goal = Goal(
+        goalEmoji: "🏋️‍♀️",
+        goalName: "새해 몸매 만들기",
+        goalAmount: 200000, // 예시 금액
+        usedAmount: 0, // 미래 목표이므로 사용 금액은 0
+        goalStart: dateFormatter.date(from: "2024/02/01")!,
+        goalEnd: dateFormatter.date(from: "2024/02/28")!,
+        dailyGoal: [Int](repeating: 7142, count: 28), // 200,000을 28일로 나눈 금액
+        isEdited: [Bool](repeating: false, count: 28) // 아직 편집되지 않음
+    )
+    return goal
+}()

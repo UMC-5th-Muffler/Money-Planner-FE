@@ -38,6 +38,8 @@
 		7A5767722B639A65009A5972 /* NetworkMangager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5767712B639A65009A5972 /* NetworkMangager.swift */; };
 		7A5767742B639A6F009A5972 /* GoalAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5767732B639A6F009A5972 /* GoalAPI.swift */; };
 		7A5767762B64D64A009A5972 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5767752B64D64A009A5972 /* CategoryViewModel.swift */; };
+		7A57677A2B67CAD6009A5972 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5767792B67CAD6009A5972 /* ViewController.swift */; };
+		7A57677C2B682779009A5972 /* PeriodSelectionModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A57677B2B682779009A5972 /* PeriodSelectionModalViewController.swift */; };
 		7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AB72B47FA8E00D3096F /* AppDelegate.swift */; };
 		7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */; };
 		7A610ABC2B47FA8E00D3096F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610ABB2B47FA8E00D3096F /* LoginViewController.swift */; };
@@ -110,6 +112,8 @@
 		7A5767712B639A65009A5972 /* NetworkMangager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMangager.swift; sourceTree = "<group>"; };
 		7A5767732B639A6F009A5972 /* GoalAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalAPI.swift; sourceTree = "<group>"; };
 		7A5767752B64D64A009A5972 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
+		7A5767792B67CAD6009A5972 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		7A57677B2B682779009A5972 /* PeriodSelectionModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodSelectionModalViewController.swift; sourceTree = "<group>"; };
 		7A610AB42B47FA8E00D3096F /* Money-Planner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Money-Planner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A610AB72B47FA8E00D3096F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -184,6 +188,7 @@
 				20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */,
 				206C58D72B626465008410C1 /* CategoryModalViewController.swift */,
 				206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */,
+				7A57677B2B682779009A5972 /* PeriodSelectionModalViewController.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -393,8 +398,8 @@
 				7A5767582B63968F009A5972 /* GoalCategoryViewController.swift */,
 				7A57675C2B6396A8009A5972 /* GoalDailyViewController.swift */,
 				7A57675E2B6396B2009A5972 /* GoalFinalViewController.swift */,
-				7A610AE92B493EC900D3096F /* MakeGoalViewController.swift */,
 				552A423D2B671B86007AEAAD /* EditGoalViewController.swift */,
+				7A5767792B67CAD6009A5972 /* ViewController.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -540,6 +545,7 @@
 				7A57676B2B639817009A5972 /* GoalViewModel.swift in Sources */,
 				7A5767632B6396CF009A5972 /* GoalNameViewController.swift in Sources */,
 				D20D6FE52B5AEECB006D6762 /* Date.swift in Sources */,
+				7A57677C2B682779009A5972 /* PeriodSelectionModalViewController.swift in Sources */,
 				552A423E2B671B86007AEAAD /* EditGoalViewController.swift in Sources */,
 				20AFDD952B65B882008F8AB9 /* ChooseDateView.swift in Sources */,
 				7A4C67412B5A4AF1008BCAC9 /* MainBottomBtn.swift in Sources */,
@@ -572,6 +578,7 @@
 				20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */,
 				7A610AEE2B493F6D00D3096F /* RegisterUsageViewController.swift in Sources */,
 				D20D6FED2B5B9962006D6762 /* MainCalendarView.swift in Sources */,
+				7A57677A2B67CAD6009A5972 /* ViewController.swift in Sources */,
 				D20D6FE92B5AF1E9006D6762 /* MainMonthView.swift in Sources */,
 				7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */,
 				D20D6FDA2B581A05006D6762 /* CustomTabBarController.swift in Sources */,

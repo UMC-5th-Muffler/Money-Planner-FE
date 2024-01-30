@@ -11,12 +11,12 @@ import UIKit
 
 extension GoalTotalAmountViewController: MoneyAmountTextCellDelegate {
     func didChangeAmountText(to newValue: String?, cell: MoneyAmountTextCell) {
-        // This is where you can validate and convert newValue to an Int and store it in goalCreationManager
-        if let text = newValue, let amount = Int(text) {
+        if let text = newValue, let amount = Int(text), amount > 0 {
             goalCreationManager.goalAmount = amount
+            btmbtn.isEnabled = true
         } else {
-            // Handle the case where the text is not an integer or is nil
             goalCreationManager.goalAmount = nil
+            btmbtn.isEnabled = false
         }
     }
 }
@@ -32,6 +32,8 @@ class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
     private let goalViewModel = GoalViewModel.shared
     private let goalCreationManager = GoalCreationManager.shared //목표 생성용
     
+    var btmbtnBottomConstraint: NSLayoutConstraint!//키보드 이동용
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -45,6 +47,11 @@ class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
         navigationItem.leftBarButtonItem = nil
         
         btmbtn.addTarget(self, action: #selector(btmButtonTapped), for: .touchUpInside)
+        btmbtn.isEnabled = false
+        
+        // 키보드 알림 구독
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     
@@ -131,11 +138,36 @@ class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MoneyAmountTextCell", for: indexPath) as! MoneyAmountTextCell
-        cell.configureCell(image: UIImage(systemName: "wonsign.square.fill"), placeholder: "목표 금액")
+        cell.configureCell(image: UIImage(named: "icon_Wallet"), placeholder: "목표 금액")
         cell.delegate = self  // Set the viewController as the delegate
         return cell
     }
     
+    @objc func keyboardWillShow(notification: NSNotification) {
+        adjustButtonWithKeyboard(notification: notification, show: true)
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        adjustButtonWithKeyboard(notification: notification, show: false)
+    }
+    
+    func adjustButtonWithKeyboard(notification: NSNotification, show: Bool) {
+        guard let userInfo = notification.userInfo,
+              let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+        
+        let keyboardHeight = keyboardSize.height
+        let animationDuration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.3
+        
+        // 키보드 상태에 따른 버튼의 bottom constraint 조정
+        let bottomConstraintValue = show ? -keyboardHeight : -30  // -30은 키보드가 없을 때의 기본 간격입니다.
+        
+        UIView.animate(withDuration: animationDuration) { [weak self] in
+            self?.btmbtnBottomConstraint.constant = bottomConstraintValue
+            self?.view.layoutIfNeeded()
+        }
+    }
     
     
 }

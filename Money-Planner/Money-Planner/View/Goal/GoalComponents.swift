@@ -248,9 +248,15 @@ class GoalPresentationCell: UITableViewCell {
         dday.font = .mpFont12M()
         let currentDate = Date()
         let isPastGoal = currentDate > goal.goalEnd
+        let isFutureGoal = currentDate < goal.goalStart
+        
         let daysLeft = Calendar.current.dateComponents([.day], from: currentDate, to: goal.goalEnd).day ?? 0
         
-        let (ddayText, ddayBackgroundColor, ddayTextColor) = isPastGoal ? ("종료", UIColor.mpLightGray, UIColor.mpDarkGray) : ("D-\(daysLeft)", UIColor.mpCalendarHighLight, UIColor.mpMainColor)
+        var (ddayText, ddayBackgroundColor, ddayTextColor) = isPastGoal ? ("종료", UIColor.mpLightGray, UIColor.mpDarkGray) : ("D\(daysLeft)", UIColor.mpCalendarHighLight, UIColor.mpMainColor)
+        
+        if isFutureGoal {
+            ddayText = "진행 중"
+        }
         
         dday.text = ddayText
         dday.backgroundColor = ddayBackgroundColor
@@ -351,95 +357,124 @@ class GoalProgressBar: UIView {
 /**extension EmojiView: UITextFieldDelegate {
  
  func textFieldDidBeginEditing(_ textField: UITextField) {
-     textField.keyboardType = .default // Use default keyboard, customize for emoji input
-     // Additional configuration if needed
+ textField.keyboardType = .default // Use default keyboard, customize for emoji input
+ // Additional configuration if needed
  }
  
  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-     // Restrict input to a single emoji character
-     if string.count > 1 {
-         return false
-     }
-
-     // Automatically dismiss keyboard after entering one emoji
-     if let _ = string.first?.isEmoji {
-         textField.text = string
-         textField.resignFirstResponder()
-         // Notify GoalNameViewController to update emoji and hide scrim (implement delegate or closure)
-     }
-     return false
+ // Restrict input to a single emoji character
+ if string.count > 1 {
+ return false
  }
-}
-
+ 
+ // Automatically dismiss keyboard after entering one emoji
+ if let _ = string.first?.isEmoji {
+ textField.text = string
+ textField.resignFirstResponder()
+ // Notify GoalNameViewController to update emoji and hide scrim (implement delegate or closure)
+ }
+ return false
+ }
+ }
+ 
+ 
+ extension Character {
+ var isEmoji: Bool {
+ guard let scalarValue = unicodeScalars.first else {
+ return false
+ }
+ 
+ // Ranges covering emojis (this includes the most common emoji ranges and might need updates when new emojis are released)
+ return scalarValue.properties.isEmoji &&
+ (scalarValue.value > 0x238C || scalarValue.value < 0x1F600 || scalarValue.value > 0x1F64F)
+ }
+ }
+ */
 
 extension Character {
- var isEmoji: Bool {
-     guard let scalarValue = unicodeScalars.first else {
-         return false
-     }
-
-     // Ranges covering emojis (this includes the most common emoji ranges and might need updates when new emojis are released)
-     return scalarValue.properties.isEmoji &&
-            (scalarValue.value > 0x238C || scalarValue.value < 0x1F600 || scalarValue.value > 0x1F64F)
- }
+    var isEmoji: Bool {
+        guard let scalarValue = unicodeScalars.first else {
+            return false
+        }
+        
+        // Ranges covering emojis (this includes the most common emoji ranges and might need updates when new emojis are released)
+        return scalarValue.properties.isEmoji &&
+        (scalarValue.value > 0x238C || scalarValue.value < 0x1F600 || scalarValue.value > 0x1F64F)
+    }
 }
-*/
 
-class EmojiView: UIView {
-    
-    let textField = UITextField()
+//class EmojiView: UIView {
+//    
+//    let textField = UITextField()
+//    
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//        setupEmojiView()
+//        setupTextFieldView()
+//    }
+//    
+//    required init?(coder: NSCoder) {
+//        super.init(coder: coder)
+//        setupEmojiView()
+//        setupTextFieldView()
+//    }
+//    
+//    private func setupEmojiView() {
+//        self.backgroundColor = .mpLightGray
+//        self.layer.cornerRadius = 10
+//    }
+//    
+//    private func setupTextFieldView() {
+//        textField.translatesAutoresizingMaskIntoConstraints = false
+//        textField.text = "🙌"
+//        textField.font = .mpFont26B()
+//        //        textField.delegate = self
+//        
+//        self.addSubview(textField)
+//        
+//        NSLayoutConstraint.activate([
+//            textField.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+//            textField.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+//        ])
+//    }
+//}
+
+class EmojiTextField: UITextField {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupEmojiView()
-        setupTextFieldView()
+        setupTextField()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setupEmojiView()
-        setupTextFieldView()
+        setupTextField()
     }
     
-    private func setupEmojiView() {
+    private func setupTextField() {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.text = "🙌" // 기본 이모지 설정
+        self.font = .mpFont26B()
+        self.textAlignment = .center
         self.backgroundColor = .mpLightGray
         self.layer.cornerRadius = 10
-    }
-    
-    private func setupTextFieldView() {
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.text = "🙌"
-        textField.font = .mpFont26B()
-//        textField.delegate = self
-        
-        self.addSubview(textField)
-        
-        NSLayoutConstraint.activate([
-            textField.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            textField.centerYAnchor.constraint(equalTo: self.centerYAnchor)
-        ])
+        self.layer.masksToBounds = true // 레이어가 뷰의 경계 내로 제한되도록 설정
+        self.borderStyle = .none // 테두리 스타일 제거
+        self.keyboardType = .default
     }
 }
 
 
-
-class WriteNameView: UIView, UITextFieldDelegate {
+class WriteNameView: UIView {
     
     let textField = UITextField()
-    let alertLabel = MPLabel()
     let textDeleteBtn = UIButton()
-    
-    let goalViewModel = GoalViewModel.shared
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
         setupTextDeleteBtn()
         setupTextField()
-        setupAlertLabel()
-        textField.delegate = self
-        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
     
     required init?(coder: NSCoder) {
@@ -447,9 +482,6 @@ class WriteNameView: UIView, UITextFieldDelegate {
         setupView()
         setupTextDeleteBtn()
         setupTextField()
-        setupAlertLabel()
-        textField.delegate = self
-        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
     
     private func setupView() {
@@ -491,97 +523,66 @@ class WriteNameView: UIView, UITextFieldDelegate {
         ])
     }
     
-    private func setupAlertLabel(){
-        addSubview(alertLabel) // addSubview를 먼저 호출
-        alertLabel.translatesAutoresizingMaskIntoConstraints = false
-        alertLabel.text = ""
-        alertLabel.font = .mpFont12M()
-        alertLabel.textColor = .mpRed
-        
-        NSLayoutConstraint.activate([
-            alertLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            alertLabel.topAnchor.constraint(equalTo: self.bottomAnchor, constant: 1),
-            alertLabel.heightAnchor.constraint(equalToConstant: 30),
-            alertLabel.widthAnchor.constraint(equalToConstant: 150)
-        ])
-    }
-    
-    
-    @objc private func textFieldDidChange(_ textField: UITextField) {
-        // 텍스트 필드의 내용이 변경될 때마다 호출됩니다.
-        // 필요한 경우 alertLabel의 내용을 업데이트합니다.
-        if let text = textField.text {
-            if text.count > 15 {
-                alertLabel.text = "입력할 수 있는 범위를 초과했습니다."
-            } else if goalViewModel.goalExistsWithName(goalName: text) {
-                alertLabel.text = "동일한 이름의 목표가 이미 존재합니다."
-            } else {
-                alertLabel.text = "" // 조건에 해당하지 않으면 경고 메시지를 지웁니다.
-            }
-        }
-    }
-
     @objc private func deleteText() {
         textField.text = ""
-        alertLabel.text = ""
         print("deleteText")
     }
     
 }
 
-protocol WriteNameCellDelegate: AnyObject {
-    func didChangeEmojiText(to newValue: String?, cell: WriteNameCell)
-    func didChangeTitleText(to newValue: String?, cell: WriteNameCell)
-}
-
-// tableView 안에 들어가는 cell 중에 키보드로 수정할 수 있는 textfield를 보유
-class WriteNameCell: UITableViewCell {
-    
-    weak var delegate: WriteNameCellDelegate?
-    
-    let writeNameView = WriteNameView()
-    let emojiView = EmojiView()
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupViews()
-        selectionStyle = .none
-        
-        emojiView.isUserInteractionEnabled = true
-        writeNameView.isUserInteractionEnabled = true
-        
-//        writeNameView.textField.delegate = self
-//        emojiView.textField.delegate = self
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupViews() {
-        addSubview(emojiView)
-        addSubview(writeNameView)
-        emojiView.translatesAutoresizingMaskIntoConstraints = false
-        writeNameView.translatesAutoresizingMaskIntoConstraints = false
-        
-        // EmojiView와 WriteNameView의 제약 조건 설정
-        NSLayoutConstraint.activate([
-            // EmojiView 제약 조건
-            emojiView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-            emojiView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            emojiView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-            emojiView.widthAnchor.constraint(equalToConstant: 50), // 예시 너비
-            
-            // WriteNameView 제약 조건
-            writeNameView.leadingAnchor.constraint(equalTo: emojiView.trailingAnchor, constant: 10),
-            writeNameView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
-            writeNameView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            writeNameView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
-        ])
-    }
-    
-}
+//protocol WriteNameCellDelegate: AnyObject {
+//    func didChangeEmojiText(to newValue: String?, cell: WriteNameCell)
+//    func didChangeTitleText(to newValue: String?, cell: WriteNameCell)
+//}
+//
+//// tableView 안에 들어가는 cell 중에 키보드로 수정할 수 있는 textfield를 보유
+//class WriteNameCell: UITableViewCell {
+//    
+//    weak var delegate: WriteNameCellDelegate?
+//    
+//    let writeNameView = WriteNameView()
+//    let emojiView = EmojiView()
+//    
+//    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+//        
+//        super.init(style: style, reuseIdentifier: reuseIdentifier)
+//        setupViews()
+//        selectionStyle = .none
+//        
+//        emojiView.isUserInteractionEnabled = true
+//        writeNameView.isUserInteractionEnabled = true
+//        
+//        //        writeNameView.textField.delegate = self
+//        //        emojiView.textField.delegate = self
+//    }
+//    
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+//    
+//    private func setupViews() {
+//        addSubview(emojiView)
+//        addSubview(writeNameView)
+//        emojiView.translatesAutoresizingMaskIntoConstraints = false
+//        writeNameView.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        // EmojiView와 WriteNameView의 제약 조건 설정
+//        NSLayoutConstraint.activate([
+//            // EmojiView 제약 조건
+//            emojiView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+//            emojiView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+//            emojiView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+//            emojiView.widthAnchor.constraint(equalToConstant: 50), // 예시 너비
+//            
+//            // WriteNameView 제약 조건
+//            writeNameView.leadingAnchor.constraint(equalTo: emojiView.trailingAnchor, constant: 10),
+//            writeNameView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
+//            writeNameView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+//            writeNameView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+//        ])
+//    }
+//    
+//}
 
 
 protocol MoneyAmountTextCellDelegate: AnyObject {
@@ -768,63 +769,63 @@ class MoneyAmountTextCell: UITableViewCell, UITextFieldDelegate {
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
-            delegate?.didChangeAmountText(to: textField.text, cell: self)
+        delegate?.didChangeAmountText(to: textField.text, cell: self)
     }
     
 }
 
 
-// 기간 입력을 위한 버튼 cell
-class PeriodCell: UITableViewCell {
-    
-    private let periodButton = PeriodCellButton()
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupCell()
-        setupPeriodButton()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupCell() {
-        // 기존 PeriodCell setupCell 구현
-        backgroundColor = UIColor.clear  // 셀의 배경을 투명하게 설정
-        contentView.clipsToBounds = true//" subview들이 view의 bounds에 가둬질 수 있는 지를 판단하는 Boolean 값 "
-        
-        selectionStyle = .none  // 셀 선택 시 배경색 변경 없음
-        
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-            contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
-            contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
-        ])
-    }
-    
-    private func setupPeriodButton() {
-        contentView.addSubview(periodButton)
-        periodButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            periodButton.topAnchor.constraint(equalTo: contentView.topAnchor),
-            periodButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            periodButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            periodButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-        ])
-    }
-}
+//// 기간 입력을 위한 버튼 cell
+//class PeriodCell: UITableViewCell {
+//    
+//    private let periodButton = PeriodCellButton()
+//    
+//    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+//        super.init(style: style, reuseIdentifier: reuseIdentifier)
+//        setupCell()
+//        setupPeriodButton()
+//    }
+//    
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+//    
+//    private func setupCell() {
+//        // 기존 PeriodCell setupCell 구현
+//        backgroundColor = UIColor.clear  // 셀의 배경을 투명하게 설정
+//        contentView.clipsToBounds = true//" subview들이 view의 bounds에 가둬질 수 있는 지를 판단하는 Boolean 값 "
+//        
+//        selectionStyle = .none  // 셀 선택 시 배경색 변경 없음
+//        
+//        contentView.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            contentView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
+//            contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
+//            contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+//            contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
+//        ])
+//    }
+//    
+//    private func setupPeriodButton() {
+//        contentView.addSubview(periodButton)
+//        periodButton.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            periodButton.topAnchor.constraint(equalTo: contentView.topAnchor),
+//            periodButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+//            periodButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+//            periodButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+//        ])
+//    }
+//}
 
-class PeriodCellButton: UIButton {
-    
-    // PeriodCell의 모든 구현을 여기로 이동
+class PeriodButton: UIButton {
+   
     private let iconImageView = UIImageView()
     private let periodLabel = MPLabel()
     private let spanLabel = MPLabel()
     let startDate = Date()
     let endDate = Date()
+    let isEdited = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -904,11 +905,13 @@ class GoalCreateBtnCell: UITableViewCell {
     
     let addButton = UIButton()
     let shapeLayer = CAShapeLayer()
-
+    
+    var onAddButtonTapped: (() -> Void)?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-//        self.layer.cornerRadius = 10
-//        self.clipsToBounds = true
+        //        self.layer.cornerRadius = 10
+        //        self.clipsToBounds = true
         setupAddButton()
     }
     
@@ -925,18 +928,20 @@ class GoalCreateBtnCell: UITableViewCell {
         addButton.layer.cornerRadius = 10
         contentView.addSubview(addButton)
         addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.clipsToBounds = true
+//        addButton.clipsToBounds = true
+        addButton.addTarget(self, action: #selector(addButtonAction), for: .touchUpInside)
+        
         NSLayoutConstraint.activate([
-            addButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            addButton.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            addButton.topAnchor.constraint(equalTo: self.topAnchor),
+            addButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            addButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant : 16),
+            addButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
             addButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        addDashedBorder(to: contentView)
+        addDashedBorder(to: addButton)
     }
     
     private func addDashedBorder(to view: UIView) {
@@ -952,4 +957,94 @@ class GoalCreateBtnCell: UITableViewCell {
         shapeLayer.removeFromSuperlayer()
         view.layer.addSublayer(shapeLayer)
     }
+    
+    @objc private func addButtonAction() {
+        onAddButtonTapped?()
+    }
+}
+
+
+class GoalCategoryTableViewCell: UITableViewCell, UITextFieldDelegate {
+    
+    var categoryTextChanged: ((String) -> Void)?
+    var categoryButtonTapped: (() -> Void)?
+    
+    let categoryTextField = MainTextField(placeholder: "카테고리를 입력해주세요", iconName: "icon_category", keyboardType: .default)
+    let amountTextField: UITextField = MainTextField(placeholder: "소비금액을 입력하세요", iconName: "icon_Wallet", keyboardType: .numberPad)
+    
+    lazy var categoryChooseButton: UIButton = {
+        let button = UIButton()
+        let arrowImage = UIImage(systemName: "chevron.down")
+        button.setImage(arrowImage, for: .normal)
+        button.tintColor = .mpBlack
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupUI()
+        categoryTextField.addTarget(self, action: #selector(categoryTextFieldChanged), for: .editingChanged)
+        categoryChooseButton.addTarget(self, action: #selector(categoryButtonPressed), for: .touchUpInside)
+    }
+    
+    @objc private func categoryTextFieldChanged(_ textField: UITextField) {
+        categoryTextChanged?(textField.text ?? "")
+    }
+    
+    @objc private func categoryButtonPressed() {
+        categoryButtonTapped?()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupUI()
+        categoryTextField.addTarget(self, action: #selector(categoryTextFieldChanged), for: .editingChanged)
+        categoryChooseButton.addTarget(self, action: #selector(categoryButtonPressed), for: .touchUpInside)
+    }
+    
+    private func setupUI() {
+        backgroundColor = .clear
+        
+        addSubview(categoryTextField)
+        addSubview(amountTextField)
+        addSubview(categoryChooseButton)
+        
+        // Autolayout 설정
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
+        categoryTextField.translatesAutoresizingMaskIntoConstraints = false
+        amountTextField.translatesAutoresizingMaskIntoConstraints = false
+        categoryChooseButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        // 카테고리 텍스트 필드 제약 조건
+        NSLayoutConstraint.activate([
+            categoryTextField.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            categoryTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
+            categoryTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
+            categoryTextField.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
+        // 금액 텍스트 필드 제약 조건
+        NSLayoutConstraint.activate([
+            amountTextField.topAnchor.constraint(equalTo: categoryTextField.bottomAnchor, constant: 10),
+            amountTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
+            amountTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
+            amountTextField.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
+        // 카테고리 선택 버튼 제약 조건
+        NSLayoutConstraint.activate([
+            categoryChooseButton.centerYAnchor.constraint(equalTo: categoryTextField.centerYAnchor),
+            categoryChooseButton.trailingAnchor.constraint(equalTo: categoryTextField.trailingAnchor, constant: -5),
+            categoryChooseButton.widthAnchor.constraint(equalToConstant: 30),
+            categoryChooseButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
+    // 필요한 경우 UITextFieldDelegate 메서드를 여기에 구현하세요
+    // 예: func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
 }
