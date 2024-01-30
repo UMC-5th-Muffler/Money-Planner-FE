@@ -232,6 +232,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     // 세팅 : 헤더
     private func setupHeader(){
         view.addSubview(headerView)
+        headerView.backgroundColor = .red
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

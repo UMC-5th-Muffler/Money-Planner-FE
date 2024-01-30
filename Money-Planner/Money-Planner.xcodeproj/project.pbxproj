@@ -17,6 +17,7 @@
 		20AFDD932B659779008F8AB9 /* RepeatIntervalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD922B659779008F8AB9 /* RepeatIntervalViewController.swift */; };
 		20AFDD952B65B882008F8AB9 /* ChooseDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD942B65B882008F8AB9 /* ChooseDateView.swift */; };
 		20EF782D2B68CEA700AA135E /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EF782C2B68CEA700AA135E /* AddCategoryViewController.swift */; };
+		20EF78312B68E3AD00AA135E /* MyPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EF78302B68E3AD00AA135E /* MyPageTableViewCell.swift */; };
 		552A423E2B671B86007AEAAD /* EditGoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A423D2B671B86007AEAAD /* EditGoalViewController.swift */; };
 		5591601C2B64595E00063F06 /* EvaluationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591601B2B64595E00063F06 /* EvaluationViewController.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
@@ -31,7 +32,7 @@
 		7A610ABC2B47FA8E00D3096F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610ABB2B47FA8E00D3096F /* LoginViewController.swift */; };
 		7A610AC12B47FA8F00D3096F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A610AC02B47FA8F00D3096F /* Assets.xcassets */; };
 		7A610AC42B47FA8F00D3096F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A610AC22B47FA8F00D3096F /* LaunchScreen.storyboard */; };
-		7A610AD22B49004200D3096F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AD12B49004200D3096F /* SettingsViewController.swift */; };
+		7A610AD22B49004200D3096F /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AD12B49004200D3096F /* MyPageViewController.swift */; };
 		7A610AD62B49007100D3096F /* BattleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AD52B49007100D3096F /* BattleViewController.swift */; };
 		7A610AD92B49009300D3096F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AD82B49009300D3096F /* HomeViewController.swift */; };
 		7A610ADC2B4900C800D3096F /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 7A610ADB2B4900C800D3096F /* CombineMoya */; };
@@ -85,6 +86,7 @@
 		20AFDD922B659779008F8AB9 /* RepeatIntervalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatIntervalViewController.swift; sourceTree = "<group>"; };
 		20AFDD942B65B882008F8AB9 /* ChooseDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDateView.swift; sourceTree = "<group>"; };
 		20EF782C2B68CEA700AA135E /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
+		20EF78302B68E3AD00AA135E /* MyPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTableViewCell.swift; sourceTree = "<group>"; };
 		552A423D2B671B86007AEAAD /* EditGoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGoalViewController.swift; sourceTree = "<group>"; };
 		5591601B2B64595E00063F06 /* EvaluationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationViewController.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
@@ -101,7 +103,7 @@
 		7A610AC02B47FA8F00D3096F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A610AC32B47FA8F00D3096F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7A610AC52B47FA8F00D3096F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7A610AD12B49004200D3096F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		7A610AD12B49004200D3096F /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		7A610AD52B49007100D3096F /* BattleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleViewController.swift; sourceTree = "<group>"; };
 		7A610AD82B49009300D3096F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		7A610AE42B491ED600D3096F /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
@@ -342,7 +344,8 @@
 		7A610AD32B49004500D3096F /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				7A610AD12B49004200D3096F /* SettingsViewController.swift */,
+				7A610AD12B49004200D3096F /* MyPageViewController.swift */,
+				20EF78302B68E3AD00AA135E /* MyPageTableViewCell.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -560,8 +563,8 @@
 				206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */,
 				D20D70042B5FF094006D6762 /* Numeric.swift in Sources */,
 				7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */,
+				7A610AD22B49004200D3096F /* MyPageViewController.swift in Sources */,
 				D20D703A2B68C591006D6762 /* TestRepository.swift in Sources */,
-				7A610AD22B49004200D3096F /* SettingsViewController.swift in Sources */,
 				D20D70022B5FF088006D6762 /* Formatter.swift in Sources */,
 				7AC060FF2B4C5D78008C0E63 /* Design.swift in Sources */,
 				7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */,
@@ -569,6 +572,7 @@
 				20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */,
 				D20D6FF52B5E5B91006D6762 /* ToggleButton.swift in Sources */,
 				D20D6FE32B5AED6A006D6762 /* String.swift in Sources */,
+				20EF78312B68E3AD00AA135E /* MyPageTableViewCell.swift in Sources */,
 				D20D70272B68B870006D6762 /* BaseRepository.swift in Sources */,
 				20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */,
 				7A610AEE2B493F6D00D3096F /* RegisterUsageViewController.swift in Sources */,
