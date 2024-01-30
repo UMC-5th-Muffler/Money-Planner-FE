@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let homeVC = UINavigationController(rootViewController: HomeViewController())
         let consumeVC = UINavigationController(rootViewController: ConsumeViewController())
         let battleVC = UINavigationController(rootViewController: BattleViewController())
-        let settingVC = UINavigationController(rootViewController: SettingsViewController())
+        let settingVC = UINavigationController(rootViewController: MyPageViewController())
         let loginVC = UINavigationController(rootViewController: LoginViewController())
         
         homeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(systemName: "house"), tag: 0)
@@ -34,6 +34,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         consumeVC.tabBarItem = UITabBarItem(title: "목표", image: UIImage(systemName: "person"), tag: 1)
         battleVC.tabBarItem = UITabBarItem(title: "소비 배틀", image: UIImage(systemName: "person"), tag: 2)
         settingVC.tabBarItem = UITabBarItem(title: "마이페이지", image: UIImage(systemName: "person"), tag: 3)
+        settingVC.tabBarItem = UITabBarItem(title: "마이페이지", image: UIImage(systemName: "person"), tag: 4)
         
         tabBarController.setViewControllers([homeVC, consumeVC, battleVC, settingVC], animated: true)
         
