@@ -10,15 +10,9 @@ import UIKit
 
 protocol CategorySelectionDelegate: AnyObject {
     func didSelectCategory(_ category: String, iconName : String)
-    func AddCategory()
 }
 
 class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
-    var addCatName : String = ""
-    var addCatIconName : String = ""
-
- 
-    
     weak var delegate: CategorySelectionDelegate?
     struct Category {
         let name: String
@@ -155,25 +149,13 @@ class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UI
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedCategory = categories[indexPath.item].name
         let selectedIcon = categories[indexPath.item].imageName
-        print("Selected Category: \(selectedCategory)")
-        dismiss(animated: true, completion: nil )
-        if selectedCategory == "직접 추가"{
-            // 직접 추가인 경우 카테고리 추가 화면으로 이동
-            print("직접 추가를 선택했습니다")
-            delegate?.AddCategory() // 카테고리 추가 화면으로 이동
-        }
-        else{
+            print("Selected Category: \(selectedCategory)")
             delegate?.didSelectCategory(selectedCategory, iconName: selectedIcon)
-
+            dismiss(animated: true, completion: nil )
+            // You can perform additional actions or notify your view controller about the selected category here
         }
-        
-        
-        
-        // You can perform additional actions or notify your view controller about the selected category he
-    }
     
     
 }
-
 
 
