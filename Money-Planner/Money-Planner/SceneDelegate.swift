@@ -38,10 +38,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         tabBarController.setViewControllers([homeVC, consumeVC, battleVC, settingVC], animated: true)
         
-        TestRepository().getTest{
-            _ , _ in
-            print("여기")
-        }
         
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
