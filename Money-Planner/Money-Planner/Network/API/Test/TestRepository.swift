@@ -39,7 +39,6 @@ final class TestRepository : BaseRepository<TestAPI> {
     
     // rxmoya 적으로 하기
     func getTestRx(completion: @escaping (Any?, Error?) -> Void){
-        print("여기히히")
         MoyaProvider<TestAPI>().rx.request(.getTest)
             .filterSuccessfulStatusCodes().do(
                     onSuccess: { response in
