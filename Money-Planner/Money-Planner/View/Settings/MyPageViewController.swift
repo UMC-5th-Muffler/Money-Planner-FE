@@ -1,4 +1,3 @@
-//
 //  MyPageViewController.swift
 //  Money-Planner
 //
@@ -21,9 +20,10 @@ class MyPageViewController: UIViewController, UITableViewDataSource, UITableView
     let tableView: UITableView = {
         let table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
+        table.separatorStyle = .none
         return table
     }()
-
+  
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -61,20 +61,47 @@ class MyPageViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "myPageCell", for: indexPath) as! MyPageTableViewCell
-            let item = myPageData[indexPath.section].items[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "myPageCell", for: indexPath) as! MyPageTableViewCell
+        let item = myPageData[indexPath.section].items[indexPath.row]
+        var text = item
+ 
+        if item == "알림 설정" {
+            // 알림 설정인 경우 on or off 버튼 추가
+            text = "ON"
+            cell.optionalLabel.text = text
+            
+        }
+        if item == "프로필"{
+            text = "프로필 설정"
+            cell.optionalLabel.text = text
+            cell.addProfile()
+            // 프로필인 경우 프로필 띄우기
+        }
+        else{
             cell.textLabel?.text = item
-        cell.textLabel?.font = UIFont.mpFont16M()
+            cell.textLabel?.font = UIFont.mpFont16M()
+
+        }
         
             // 각 셀에 대한 추가 작업을 수행할 수 있습니다.
             return cell
         }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if myPageData[section].title == "프로필"{
+            return nil // 부제목을 표시하지 않음
+        }
         return myPageData[section].title
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60.0 // 원하는 높이로 수정하세요
+        let item = myPageData[indexPath.section].items[indexPath.row]
+        if item == "프로필"{
+            return 128.0 // 프로필인 경우 높이 120
+
+        }else{
+            return 60.0 //프로필이 아닌 경우 높이 60
+        }
+        
     }
 
     // MARK: - UITableViewDelegate 메서드
