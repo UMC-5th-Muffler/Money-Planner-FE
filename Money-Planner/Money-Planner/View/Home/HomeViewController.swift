@@ -10,6 +10,8 @@ import UIKit
 
 class HomeViewController : UIViewController, MainMonthViewDelegate {
     
+    let viewModel = HomeViewModel()
+    
     var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
          layout.scrollDirection = .horizontal
@@ -108,7 +110,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         let contentViewHeight = contentView.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor)
         contentViewHeight.priority = .defaultLow
         contentViewHeight.isActive = true
-        
+                
         setupMonthAndCategoryView()
         setupCollectionView()
     }
@@ -162,9 +164,14 @@ extension HomeViewController{
         // 제목 레이블 추가
         let titleLabel = MPLabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "✈️ 일본여행 가기 전 돈 모으기"
+        titleLabel.text = viewModel.goalText
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.mpFont18M()
+        titleLabel.isUserInteractionEnabled = true
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(monthViewTapped))
+        titleLabel.addGestureRecognizer(tapGesture)
+        
         headerView.addSubview(titleLabel)
         
         // 화면에 헤더 뷰 추가
@@ -190,7 +197,7 @@ extension HomeViewController{
         contentView.addSubview(monthView)
         contentView.addSubview(toggleButton)
         
-        categoryScrollView.categories = [Category(id: 0, name: "전체"), Category(id: 1, name: "식사"), Category(id: 2, name: "카페"), Category(id: 3, name: "교통"), Category(id: 4, name: "쇼핑")]
+        categoryScrollView.categories = viewModel.categories
         
         contentView.addSubview(categoryScrollView)
         
@@ -222,6 +229,11 @@ extension HomeViewController{
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "PagingCell")
         
         contentView.addSubview(collectionView)
+        
+        let collectionViewHeight =
+        collectionView.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor)
+        collectionViewHeight.priority = .defaultLow
+        collectionViewHeight.isActive = true
 
 
         NSLayoutConstraint.activate([
@@ -304,6 +316,10 @@ extension HomeViewController{
 //        let vc = CategoryEditViewController()
 //        vc.hidesBottomBarWhenPushed = true
 //        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func monthViewTapped(){
+        
     }
 }
 

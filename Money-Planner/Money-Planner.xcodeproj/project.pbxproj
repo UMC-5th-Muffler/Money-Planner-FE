@@ -73,6 +73,9 @@
 		D20D70302B68BEB0006D6762 /* Encodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D702F2B68BEB0006D6762 /* Encodable.swift */; };
 		D20D703A2B68C591006D6762 /* TestRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D70392B68C591006D6762 /* TestRepository.swift */; };
 		D20D703C2B68C599006D6762 /* TestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D703B2B68C599006D6762 /* TestAPI.swift */; };
+		D20D701E2B668800006D6762 /* Home.json in Resources */ = {isa = PBXBuildFile; fileRef = D20D701D2B668800006D6762 /* Home.json */; };
+		D20D70212B66FEA0006D6762 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D70202B66FEA0006D6762 /* HomeViewModel.swift */; };
+		D20D70232B67E1DD006D6762 /* GoalListModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D70222B67E1DD006D6762 /* GoalListModalViewController.swift */; };
 		D29536F12B4C0DF000EEA81F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29536F02B4C0DF000EEA81F /* UserDefaults.swift */; };
 		D2D0B72B2B6A704B003B6B5E /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B72A2B6A704B003B6B5E /* BaseResponse.swift */; };
 		D2D0B72D2B6A7067003B6B5E /* BaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B72C2B6A7067003B6B5E /* BaseAPI.swift */; };
@@ -145,6 +148,9 @@
 		D20D702F2B68BEB0006D6762 /* Encodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encodable.swift; sourceTree = "<group>"; };
 		D20D70392B68C591006D6762 /* TestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRepository.swift; sourceTree = "<group>"; };
 		D20D703B2B68C599006D6762 /* TestAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAPI.swift; sourceTree = "<group>"; };
+		D20D701D2B668800006D6762 /* Home.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Home.json; sourceTree = "<group>"; };
+		D20D70202B66FEA0006D6762 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		D20D70222B67E1DD006D6762 /* GoalListModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalListModalViewController.swift; sourceTree = "<group>"; };
 		D29536EF2B4C091400EEA81F /* Money-Planner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Money-Planner.entitlements"; sourceTree = "<group>"; };
 		D29536F02B4C0DF000EEA81F /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		D2D0B72A2B6A704B003B6B5E /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
@@ -189,6 +195,7 @@
 				206C58D72B626465008410C1 /* CategoryModalViewController.swift */,
 				206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */,
 				20EF782C2B68CEA700AA135E /* AddCategoryViewController.swift */,
+				D20D70222B67E1DD006D6762 /* GoalListModalViewController.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -330,6 +337,7 @@
 		7A610ACD2B480B1400D3096F /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				D20D701F2B66FE8F006D6762 /* Home */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -377,6 +385,7 @@
 				D20D700C2B611EE3006D6762 /* SearchConsumeViewController.swift */,
 				D20D700E2B61241F006D6762 /* NotificationsViewController.swift */,
 				D20D70102B612490006D6762 /* CategoryEditViewController.swift */,
+				D20D701D2B668800006D6762 /* Home.json */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -448,6 +457,14 @@
 				D20D703B2B68C599006D6762 /* TestAPI.swift */,
 			);
 			path = Test;
+			sourceTree = "<group>";
+		};
+		D20D701F2B66FE8F006D6762 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				D20D70202B66FEA0006D6762 /* HomeViewModel.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 		D29536ED2B4C076F00EEA81F /* Common */ = {
@@ -546,6 +563,7 @@
 				7A610AC42B47FA8F00D3096F /* LaunchScreen.storyboard in Resources */,
 				D2D0B7332B6A74CD003B6B5E /* Config.xcconfig in Resources */,
 				7A610AC12B47FA8F00D3096F /* Assets.xcassets in Resources */,
+				D20D701E2B668800006D6762 /* Home.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,6 +619,8 @@
 				7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */,
 				20EF782D2B68CEA700AA135E /* AddCategoryViewController.swift in Sources */,
 				20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */,
+				D20D70232B67E1DD006D6762 /* GoalListModalViewController.swift in Sources */,
+				D20D70212B66FEA0006D6762 /* HomeViewModel.swift in Sources */,
 				D20D6FF52B5E5B91006D6762 /* ToggleButton.swift in Sources */,
 				D20D6FE32B5AED6A006D6762 /* String.swift in Sources */,
 				20EF78312B68E3AD00AA135E /* MyPageTableViewCell.swift in Sources */,
