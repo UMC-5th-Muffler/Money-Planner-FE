@@ -25,19 +25,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let homeVC = UINavigationController(rootViewController: HomeViewController())
         let consumeVC = UINavigationController(rootViewController: ConsumeViewController())
         let battleVC = UINavigationController(rootViewController: BattleViewController())
-        let settingVC = UINavigationController(rootViewController: SettingsViewController())
+        let settingVC = UINavigationController(rootViewController: MyPageViewController())
         let loginVC = UINavigationController(rootViewController: LoginViewController())
         
         homeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "home"), tag: 0)
         
         // 아직 목표 페이지가 없어서 임으로 해두었습니다! 나중에 목표페이지 생기면 바꿔서 넣으면됩니다!
-        consumeVC.tabBarItem = UITabBarItem(title: "목표", image: UIImage(named: "goal"), tag: 1)
-//        loginVC.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "add"), tag: 2)
-        battleVC.tabBarItem = UITabBarItem(title: "배틀", image: UIImage(named: "battle"), tag: 2)
-        settingVC.tabBarItem = UITabBarItem(title: "마이페이지", image: UIImage(named: "mypage"), tag: 3)
+        consumeVC.tabBarItem = UITabBarItem(title: "목표", image: UIImage(systemName: "person"), tag: 1)
+        battleVC.tabBarItem = UITabBarItem(title: "소비 배틀", image: UIImage(systemName: "person"), tag: 2)
+        settingVC.tabBarItem = UITabBarItem(title: "마이페이지", image: UIImage(systemName: "person"), tag: 3)
+        settingVC.tabBarItem = UITabBarItem(title: "마이페이지", image: UIImage(systemName: "person"), tag: 4)
         
         tabBarController.setViewControllers([homeVC, consumeVC,battleVC, settingVC], animated: true)
         tabBarController.tabBar.tintColor = .mpMainColor
+        
         
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()

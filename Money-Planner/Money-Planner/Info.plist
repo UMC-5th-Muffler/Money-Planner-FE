@@ -17,5 +17,7 @@
 			</array>
 		</dict>
 	</dict>
+	<key>BaseURL</key>
+	<string>${BASE_SERVER_URL}</string>
 </dict>
 </plist>
