@@ -1,15 +1,9 @@
-//
-//  GitHubAPI.swift
-//  Money-Planner
-//
-//  Created by p_kxn_g on 2/1/24.
-//
-
+// GitHubAPI.swift
 import Foundation
 import Moya
 
 enum MyAPI {
-    case getUserRepos(username: String)
+    case getUserRepos
 }
 
 extension MyAPI: TargetType {
@@ -19,8 +13,8 @@ extension MyAPI: TargetType {
 
     var path: String {
         switch self {
-        case .getUserRepos(let username):
-            return "/api/member/\(username)"
+        case .getUserRepos:
+            return "/api/member/connect"
         }
     }
 

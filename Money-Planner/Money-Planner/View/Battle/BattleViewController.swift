@@ -62,23 +62,14 @@ class BattleViewController: UIViewController {
             apiResultLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
         ])
         
-        // API 호출 및 결과를 구독
-        searchButton.rx.tap
-            .withLatestFrom(usernameTextField.rx.text.orEmpty)
-            .flatMapLatest { username in
-                return self.viewModel.getUserRepos(username: username)
-                    .asObservable()
-                    .catchError { error in
-                        print("Error: \(error)")
-                        return Observable.just([]) // Provide a default value or handle the error appropriately
-                    }
-            }
-            .observeOn(MainScheduler.instance)
-               .subscribe(onNext: { repos in
-                   print(repos)
-                   apiResultLabel.text = "\(repos)"
-                   // 여기에서 가져온 데이터로 UI 업데이트 등을 수행
-               })
-               .disposed(by: disposeBag)
+        viewModel.getUserRepos()
+            .subscribe(onNext: { repos in
+                // 네트워크 응답에 대한 처리
+                print(repos)
+            }, onError: { error in
+                // 에러 처리
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
     }
 }
