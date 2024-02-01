@@ -12,7 +12,7 @@ import RxCocoa
 
 class BattleViewController: UIViewController {
     let disposeBag = DisposeBag()
-    let viewModel = MyViewModel()
+    let viewModel = MufflerViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,10 +62,11 @@ class BattleViewController: UIViewController {
             apiResultLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
         ])
         
-        viewModel.getUserRepos()
+        viewModel.connect()
             .subscribe(onNext: { repos in
                 // 네트워크 응답에 대한 처리
                 print(repos)
+                apiResultLabel.text = repos.message
             }, onError: { error in
                 // 에러 처리
                 print("Error: \(error)")
