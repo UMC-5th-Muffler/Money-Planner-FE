@@ -11,9 +11,9 @@
 		206C58D42B623C43008410C1 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206C58D32B623C43008410C1 /* CategoryCell.swift */; };
 		206C58D82B626465008410C1 /* CategoryModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206C58D72B626465008410C1 /* CategoryModalViewController.swift */; };
 		206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */; };
-		208C908F2B6AB78900C67960 /* MyAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C908E2B6AB78900C67960 /* MyAPI.swift */; };
-		208C90912B6AB7A200C67960 /* MyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90902B6AB7A200C67960 /* MyViewModel.swift */; };
-		208C90932B6AB7DA00C67960 /* MyRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90922B6AB7DA00C67960 /* MyRepo.swift */; };
+		208C908F2B6AB78900C67960 /* MufflerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C908E2B6AB78900C67960 /* MufflerAPI.swift */; };
+		208C90912B6AB7A200C67960 /* MufflerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90902B6AB7A200C67960 /* MufflerViewModel.swift */; };
+		208C90932B6AB7DA00C67960 /* ConnectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90922B6AB7DA00C67960 /* ConnectModel.swift */; };
 		208C90962B6ABBC500C67960 /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 208C90952B6ABBC500C67960 /* RxBlocking */; };
 		208C90982B6ABBC500C67960 /* RxBlocking-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 208C90972B6ABBC500C67960 /* RxBlocking-Dynamic */; };
 		208C909A2B6ABBC500C67960 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 208C90992B6ABBC500C67960 /* RxCocoa */; };
@@ -104,9 +104,9 @@
 		206C58D32B623C43008410C1 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		206C58D72B626465008410C1 /* CategoryModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModalViewController.swift; sourceTree = "<group>"; };
 		206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendartModalViewController.swift; sourceTree = "<group>"; };
-		208C908E2B6AB78900C67960 /* MyAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAPI.swift; sourceTree = "<group>"; };
-		208C90902B6AB7A200C67960 /* MyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyViewModel.swift; sourceTree = "<group>"; };
-		208C90922B6AB7DA00C67960 /* MyRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRepo.swift; sourceTree = "<group>"; };
+		208C908E2B6AB78900C67960 /* MufflerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MufflerAPI.swift; sourceTree = "<group>"; };
+		208C90902B6AB7A200C67960 /* MufflerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MufflerViewModel.swift; sourceTree = "<group>"; };
+		208C90922B6AB7DA00C67960 /* ConnectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectModel.swift; sourceTree = "<group>"; };
 		20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatModalViewController.swift; sourceTree = "<group>"; };
 		20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDayView.swift; sourceTree = "<group>"; };
 		20AFDD902B656034008F8AB9 /* OneDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDayButton.swift; sourceTree = "<group>"; };
@@ -218,11 +218,18 @@
 		208C908D2B6AB76600C67960 /* Test-park */ = {
 			isa = PBXGroup;
 			children = (
-				208C908E2B6AB78900C67960 /* MyAPI.swift */,
-				208C90902B6AB7A200C67960 /* MyViewModel.swift */,
-				208C90922B6AB7DA00C67960 /* MyRepo.swift */,
+				208C908E2B6AB78900C67960 /* MufflerAPI.swift */,
+				208C90902B6AB7A200C67960 /* MufflerViewModel.swift */,
 			);
 			path = "Test-park";
+			sourceTree = "<group>";
+		};
+		208C90A22B6C00F600C67960 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				208C90922B6AB7DA00C67960 /* ConnectModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		7A4C67322B5A47BD008BCAC9 /* CustomView */ = {
@@ -456,6 +463,7 @@
 		D20D702A2B68BB81006D6762 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				208C90A22B6C00F600C67960 /* Model */,
 				208C908D2B6AB76600C67960 /* Test-park */,
 				D20D70382B68C57F006D6762 /* Test */,
 			);
@@ -598,12 +606,12 @@
 				7A4C67412B5A4AF1008BCAC9 /* MainBottomBtn.swift in Sources */,
 				D20D6FDE2B581B20006D6762 /* CALayer.swift in Sources */,
 				7A4C67432B5A4B22008BCAC9 /* SmallButtonView.swift in Sources */,
-				208C90912B6AB7A200C67960 /* MyViewModel.swift in Sources */,
+				208C90912B6AB7A200C67960 /* MufflerViewModel.swift in Sources */,
 				D2D0B72B2B6A704B003B6B5E /* BaseResponse.swift in Sources */,
 				D20D70302B68BEB0006D6762 /* Encodable.swift in Sources */,
 				D2D0B72F2B6A70A1003B6B5E /* BaseRepository.swift in Sources */,
 				7A610AEA2B493EC900D3096F /* MakeGoalViewController.swift in Sources */,
-				208C90932B6AB7DA00C67960 /* MyRepo.swift in Sources */,
+				208C90932B6AB7DA00C67960 /* ConnectModel.swift in Sources */,
 				D20D6FF32B5D67B1006D6762 /* Category.swift in Sources */,
 				D20D6FEB2B5AF62E006D6762 /* MainWeekDayView.swift in Sources */,
 				D20D6FFC2B5FDF00006D6762 /* DailyConsume.swift in Sources */,
@@ -627,7 +635,7 @@
 				D20D6FE32B5AED6A006D6762 /* String.swift in Sources */,
 				20EF78312B68E3AD00AA135E /* MyPageTableViewCell.swift in Sources */,
 				20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */,
-				208C908F2B6AB78900C67960 /* MyAPI.swift in Sources */,
+				208C908F2B6AB78900C67960 /* MufflerAPI.swift in Sources */,
 				7A610AEE2B493F6D00D3096F /* RegisterUsageViewController.swift in Sources */,
 				D20D6FED2B5B9962006D6762 /* MainCalendarView.swift in Sources */,
 				D20D6FE92B5AF1E9006D6762 /* MainMonthView.swift in Sources */,
