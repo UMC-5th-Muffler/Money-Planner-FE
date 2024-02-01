@@ -13,6 +13,9 @@ struct MyRepo : Decodable {
     let result: ResultType?
 
     struct ResultType: Decodable {
-        // You need to define the properties inside ResultType based on the actual response structure
-    }
+            // Update properties based on the actual dictionary structure
+            let key1: String
+            let key2: Int
+            // ...
+        }
 }
