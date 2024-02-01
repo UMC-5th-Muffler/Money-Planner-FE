@@ -50,7 +50,7 @@ extension TestAPI : BaseAPI {
     }
     
     public var headers: [String: String]? {
-        return ["Authorization": "Bearer ??"]
+        return ["Authorization": "Bearer 엑세스토큰"] // 억세스토큰
         // 실제 사용하는 헤더로 변경해야 합니다.
     }
 }
