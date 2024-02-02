@@ -9,10 +9,19 @@ import Foundation
 import UIKit
 import Moya
 
-class GoalPeriodViewController : UIViewController{
+extension GoalPeriodViewController: PeriodSelectionDelegate {
+    func periodSelectionDidSelectDates(startDate: Date, endDate: Date) {
+        periodBtn.setPeriod(startDate: startDate, endDate: endDate)
+        btmbtn.isEnabled = true // btmBtn의 이름은 실제 버튼 변수명에 따라 달라질 수 있음
+        print("변경 실행")
+    }
+}
+
+class GoalPeriodViewController : UIViewController, UINavigationControllerDelegate{
     
     private var header : HeaderView = HeaderView(title: "")
     private var descriptionView : DescriptionView = DescriptionView(text: "도전할 소비 목표의 기간을 선택해주세요", alignToCenter: false)
+    private lazy var periodBtn = PeriodButton()
     private lazy var btmbtn : MainBottomBtn = MainBottomBtn(title: "다음")
     
     private let goalViewModel = GoalViewModel.shared //지금까지 만든 목표 확인용
@@ -23,6 +32,7 @@ class GoalPeriodViewController : UIViewController{
         view.backgroundColor = .systemBackground
         setupHeader()
         setupDescriptionView()
+        setupPeriodBtn()
         setUpBtmBtn()
         
         btmbtn.addTarget(self, action: #selector(btmButtonTapped), for: .touchUpInside)
@@ -31,6 +41,15 @@ class GoalPeriodViewController : UIViewController{
         navigationItem.hidesBackButton = true
         navigationItem.leftBarButtonItem = nil
         
+        btmbtn.isEnabled = false
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // 네비게이션 바 숨기기
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     @objc func btmButtonTapped() {
@@ -68,6 +87,26 @@ class GoalPeriodViewController : UIViewController{
         ])
     }
     
+    private func setupPeriodBtn(){
+        periodBtn.translatesAutoresizingMaskIntoConstraints = false
+        periodBtn.addTarget(self, action: #selector(periodBtnTapped), for: .touchUpInside)
+        view.addSubview(periodBtn)
+        NSLayoutConstraint.activate([
+            periodBtn.topAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: 30),
+            periodBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            periodBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            periodBtn.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
+    @objc private func periodBtnTapped() {
+        let periodSelectionVC = UINavigationController(rootViewController: StartDateSelectionViewController())
+        periodSelectionVC.delegate = self
+        periodSelectionVC.modalPresentationStyle = .popover
+        self.present(periodSelectionVC, animated: true, completion: nil)
+    }
+    
+
     private func setUpBtmBtn(){
         btmbtn.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(btmbtn)
@@ -79,21 +118,92 @@ class GoalPeriodViewController : UIViewController{
         ])
         
     }
-    
-//    goalCreationManager.goalStart = Date() // 셀 안에서 받은 값을 반영할 수 있게 수정해야 함.
-//    goalCreationManager.goalEnd = Date()
-    
-    
-//    // UITableViewDelegate 메서드
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        if indexPath.row == 1 {  // 두 번째 셀에 대한 높이 설정
-//            return 180
-//        } else {
-//            return 60  // 다른 셀에 대한 기본 높이
-//        }
-//    }
 }
 
-class DefaultModalViewController : UIViewController{
+class PeriodButton: UIButton {
     
+    let iconImageView = UIImageView()
+    let periodLabel = MPLabel()
+    let spanLabel = MPLabel()
+    let startDate = Date()
+    let endDate = Date()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupSelf()
+        setupIconImageView()
+        setupSpanLabelField()
+        setupPeriodLabel()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupSelf(){
+        self.backgroundColor = .mpLightGray
+        self.layer.cornerRadius = 10
+    }
+    
+    private func setupIconImageView() {
+        
+        iconImageView.translatesAutoresizingMaskIntoConstraints = false
+        iconImageView.image = UIImage(systemName: "calendar")
+        iconImageView.tintColor = .mpGray
+        self.addSubview(iconImageView)
+        
+        NSLayoutConstraint.activate([
+            iconImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            iconImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            iconImageView.widthAnchor.constraint(equalToConstant: 30),
+            iconImageView.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
+    private func setupPeriodLabel() {
+        periodLabel.translatesAutoresizingMaskIntoConstraints = false
+        periodLabel.text = "목표 기간 설정하기"
+        self.addSubview(periodLabel)
+        
+        periodLabel.textColor = UIColor.mpGray
+        periodLabel.textAlignment = .left
+        
+        NSLayoutConstraint.activate([
+            periodLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 16),
+            periodLabel.trailingAnchor.constraint(equalTo: spanLabel.trailingAnchor, constant: -20),
+            periodLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
+            periodLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8)
+        ])
+    }
+    
+    private func setupSpanLabelField() {
+        spanLabel.translatesAutoresizingMaskIntoConstraints = false
+        spanLabel.text = ""
+        self.addSubview(spanLabel)
+        
+        spanLabel.textColor = .mpMainColor
+        
+        NSLayoutConstraint.activate([
+            spanLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            spanLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            spanLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
+            spanLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8)
+        ])
+    }
+    
+    func setPeriod(startDate: Date, endDate: Date) {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+
+        let startDateString = formatter.string(from: startDate)
+        let endDateString = formatter.string(from: endDate)
+        periodLabel.text = "기간: \(startDateString) - \(endDateString)"
+        
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.day], from: startDate, to: endDate)
+        if let day = components.day {
+            spanLabel.text = "총 \(day)일"
+        }
+    }
 }

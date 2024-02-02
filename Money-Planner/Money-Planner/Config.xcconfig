@@ -1,0 +1,11 @@
+//
+//  Config.xcconfig
+//  Money-Planner
+//
+//  Created by seonwoo on 2024/01/31.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+BASE_SERVER_URL = 13.209.182.17:8080
