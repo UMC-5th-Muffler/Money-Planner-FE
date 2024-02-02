@@ -18,6 +18,17 @@
 		20AFDD952B65B882008F8AB9 /* ChooseDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD942B65B882008F8AB9 /* ChooseDateView.swift */; };
 		552A423E2B671B86007AEAAD /* EditGoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A423D2B671B86007AEAAD /* EditGoalViewController.swift */; };
 		5591601C2B64595E00063F06 /* EvaluationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591601B2B64595E00063F06 /* EvaluationViewController.swift */; };
+		7A0D32B22B68E130007B2736 /* TestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32B12B68E130007B2736 /* TestAPI.swift */; };
+		7A0D32B42B68E13A007B2736 /* TestRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32B32B68E13A007B2736 /* TestRepository.swift */; };
+		7A0D32B62B68E142007B2736 /* BaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32B52B68E142007B2736 /* BaseAPI.swift */; };
+		7A0D32B82B68E14D007B2736 /* BaseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32B72B68E14D007B2736 /* BaseRepository.swift */; };
+		7A0D32BA2B68E15C007B2736 /* GoalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32B92B68E15C007B2736 /* GoalRepository.swift */; };
+		7A0D32BC2B68E23F007B2736 /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32BB2B68E23F007B2736 /* BaseResponse.swift */; };
+		7A0D32BE2B68E9B9007B2736 /* GoalConnectionTestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32BD2B68E9B9007B2736 /* GoalConnectionTestVC.swift */; };
+		7A0D32C62B68EEEE007B2736 /* Money_PlannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32C52B68EEEE007B2736 /* Money_PlannerTests.swift */; };
+		7A0D32CF2B68EF4D007B2736 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D32CE2B68EF4D007B2736 /* RxCocoa */; };
+		7A0D32D12B68EFBB007B2736 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D32D02B68EFBB007B2736 /* RxCocoa */; };
+		7A0D32D32B68F303007B2736 /* ShowPreviousGoalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32D22B68F303007B2736 /* ShowPreviousGoalVC.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -80,6 +91,16 @@
 		D29536F12B4C0DF000EEA81F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29536F02B4C0DF000EEA81F /* UserDefaults.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		7A0D32C72B68EEEE007B2736 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7A610AAC2B47FA8E00D3096F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7A610AB32B47FA8E00D3096F;
+			remoteInfo = "Money-Planner";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		20118A102B56A86100B2569E /* ConsumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumeViewController.swift; sourceTree = "<group>"; };
 		206C58D32B623C43008410C1 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
@@ -92,6 +113,16 @@
 		20AFDD942B65B882008F8AB9 /* ChooseDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDateView.swift; sourceTree = "<group>"; };
 		552A423D2B671B86007AEAAD /* EditGoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGoalViewController.swift; sourceTree = "<group>"; };
 		5591601B2B64595E00063F06 /* EvaluationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationViewController.swift; sourceTree = "<group>"; };
+		7A0D32B12B68E130007B2736 /* TestAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAPI.swift; sourceTree = "<group>"; };
+		7A0D32B32B68E13A007B2736 /* TestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRepository.swift; sourceTree = "<group>"; };
+		7A0D32B52B68E142007B2736 /* BaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAPI.swift; sourceTree = "<group>"; };
+		7A0D32B72B68E14D007B2736 /* BaseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRepository.swift; sourceTree = "<group>"; };
+		7A0D32B92B68E15C007B2736 /* GoalRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalRepository.swift; sourceTree = "<group>"; };
+		7A0D32BB2B68E23F007B2736 /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
+		7A0D32BD2B68E9B9007B2736 /* GoalConnectionTestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalConnectionTestVC.swift; sourceTree = "<group>"; };
+		7A0D32C32B68EEEE007B2736 /* Money-PlannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Money-PlannerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A0D32C52B68EEEE007B2736 /* Money_PlannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Money_PlannerTests.swift; sourceTree = "<group>"; };
+		7A0D32D22B68F303007B2736 /* ShowPreviousGoalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPreviousGoalVC.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -154,12 +185,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		7A0D32C02B68EEEE007B2736 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7A0D32CF2B68EF4D007B2736 /* RxCocoa in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7A610AB12B47FA8E00D3096F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				7A610ADE2B4900C800D3096F /* Moya in Frameworks */,
 				7A610ADC2B4900C800D3096F /* CombineMoya in Frameworks */,
+				7A0D32D12B68EFBB007B2736 /* RxCocoa in Frameworks */,
 				7A610AE22B4900C800D3096F /* RxMoya in Frameworks */,
 				7A610AE02B4900C800D3096F /* ReactiveMoya in Frameworks */,
 			);
@@ -191,6 +231,50 @@
 				7A57677B2B682779009A5972 /* PeriodSelectionModalViewController.swift */,
 			);
 			path = Modal;
+			sourceTree = "<group>";
+		};
+		7A0D32AE2B68E100007B2736 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				7A0D32B52B68E142007B2736 /* BaseAPI.swift */,
+				7A0D32B72B68E14D007B2736 /* BaseRepository.swift */,
+				7A0D32BB2B68E23F007B2736 /* BaseResponse.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		7A0D32AF2B68E10D007B2736 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				7A0D32B12B68E130007B2736 /* TestAPI.swift */,
+				7A0D32B32B68E13A007B2736 /* TestRepository.swift */,
+			);
+			path = Test;
+			sourceTree = "<group>";
+		};
+		7A0D32B02B68E113007B2736 /* Goal */ = {
+			isa = PBXGroup;
+			children = (
+				7A5767732B639A6F009A5972 /* GoalAPI.swift */,
+				7A0D32B92B68E15C007B2736 /* GoalRepository.swift */,
+				7A0D32BD2B68E9B9007B2736 /* GoalConnectionTestVC.swift */,
+			);
+			path = Goal;
+			sourceTree = "<group>";
+		};
+		7A0D32C42B68EEEE007B2736 /* Money-PlannerTests */ = {
+			isa = PBXGroup;
+			children = (
+				7A0D32C52B68EEEE007B2736 /* Money_PlannerTests.swift */,
+			);
+			path = "Money-PlannerTests";
+			sourceTree = "<group>";
+		};
+		7A0D32CC2B68EF10007B2736 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		7A4C67322B5A47BD008BCAC9 /* CustomView */ = {
@@ -276,8 +360,10 @@
 		7A5767702B639A54009A5972 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				7A0D32B02B68E113007B2736 /* Goal */,
+				7A0D32AF2B68E10D007B2736 /* Test */,
+				7A0D32AE2B68E100007B2736 /* Base */,
 				7A5767712B639A65009A5972 /* NetworkMangager.swift */,
-				7A5767732B639A6F009A5972 /* GoalAPI.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -286,7 +372,9 @@
 			isa = PBXGroup;
 			children = (
 				7A610AB62B47FA8E00D3096F /* Money-Planner */,
+				7A0D32C42B68EEEE007B2736 /* Money-PlannerTests */,
 				7A610AB52B47FA8E00D3096F /* Products */,
+				7A0D32CC2B68EF10007B2736 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -294,6 +382,7 @@
 			isa = PBXGroup;
 			children = (
 				7A610AB42B47FA8E00D3096F /* Money-Planner.app */,
+				7A0D32C32B68EEEE007B2736 /* Money-PlannerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -400,6 +489,7 @@
 				7A57675E2B6396B2009A5972 /* GoalFinalViewController.swift */,
 				552A423D2B671B86007AEAAD /* EditGoalViewController.swift */,
 				7A5767792B67CAD6009A5972 /* ViewController.swift */,
+				7A0D32D22B68F303007B2736 /* ShowPreviousGoalVC.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -455,6 +545,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		7A0D32C22B68EEEE007B2736 /* Money-PlannerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7A0D32C92B68EEEE007B2736 /* Build configuration list for PBXNativeTarget "Money-PlannerTests" */;
+			buildPhases = (
+				7A0D32BF2B68EEEE007B2736 /* Sources */,
+				7A0D32C02B68EEEE007B2736 /* Frameworks */,
+				7A0D32C12B68EEEE007B2736 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7A0D32C82B68EEEE007B2736 /* PBXTargetDependency */,
+			);
+			name = "Money-PlannerTests";
+			packageProductDependencies = (
+				7A0D32CE2B68EF4D007B2736 /* RxCocoa */,
+			);
+			productName = "Money-PlannerTests";
+			productReference = 7A0D32C32B68EEEE007B2736 /* Money-PlannerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		7A610AB32B47FA8E00D3096F /* Money-Planner */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7A610AC82B47FA8F00D3096F /* Build configuration list for PBXNativeTarget "Money-Planner" */;
@@ -473,6 +584,7 @@
 				7A610ADD2B4900C800D3096F /* Moya */,
 				7A610ADF2B4900C800D3096F /* ReactiveMoya */,
 				7A610AE12B4900C800D3096F /* RxMoya */,
+				7A0D32D02B68EFBB007B2736 /* RxCocoa */,
 			);
 			productName = "Money-Planner";
 			productReference = 7A610AB42B47FA8E00D3096F /* Money-Planner.app */;
@@ -485,9 +597,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1510;
+				LastSwiftUpdateCheck = 1520;
 				LastUpgradeCheck = 1510;
 				TargetAttributes = {
+					7A0D32C22B68EEEE007B2736 = {
+						CreatedOnToolsVersion = 15.2;
+						TestTargetID = 7A610AB32B47FA8E00D3096F;
+					};
 					7A610AB32B47FA8E00D3096F = {
 						CreatedOnToolsVersion = 15.1;
 					};
@@ -504,17 +620,27 @@
 			mainGroup = 7A610AAB2B47FA8E00D3096F;
 			packageReferences = (
 				7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */,
+				7A0D32CD2B68EF3A007B2736 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				7A0D32D42B6CAB92007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 			);
 			productRefGroup = 7A610AB52B47FA8E00D3096F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				7A610AB32B47FA8E00D3096F /* Money-Planner */,
+				7A0D32C22B68EEEE007B2736 /* Money-PlannerTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		7A0D32C12B68EEEE007B2736 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7A610AB22B47FA8E00D3096F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -527,12 +653,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		7A0D32BF2B68EEEE007B2736 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7A0D32C62B68EEEE007B2736 /* Money_PlannerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7A610AB02B47FA8E00D3096F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				7A5767722B639A65009A5972 /* NetworkMangager.swift in Sources */,
+				7A0D32BE2B68E9B9007B2736 /* GoalConnectionTestVC.swift in Sources */,
 				7A610ABC2B47FA8E00D3096F /* LoginViewController.swift in Sources */,
+				7A0D32D32B68F303007B2736 /* ShowPreviousGoalVC.swift in Sources */,
 				206C58D42B623C43008410C1 /* CategoryCell.swift in Sources */,
 				7A57676E2B6398B0009A5972 /* Goal.swift in Sources */,
 				7A610AF02B49414100D3096F /* RegisterProfileViewController.swift in Sources */,
@@ -567,12 +703,14 @@
 				D20D70042B5FF094006D6762 /* Numeric.swift in Sources */,
 				7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */,
 				7A610AD22B49004200D3096F /* SettingsViewController.swift in Sources */,
+				7A0D32BA2B68E15C007B2736 /* GoalRepository.swift in Sources */,
 				7A5767742B639A6F009A5972 /* GoalAPI.swift in Sources */,
 				D20D70022B5FF088006D6762 /* Formatter.swift in Sources */,
 				7AC060FF2B4C5D78008C0E63 /* Design.swift in Sources */,
 				7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */,
 				20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */,
 				D20D6FF52B5E5B91006D6762 /* ToggleButton.swift in Sources */,
+				7A0D32B82B68E14D007B2736 /* BaseRepository.swift in Sources */,
 				7A5767612B6396BE009A5972 /* GoalMainViewController.swift in Sources */,
 				D20D6FE32B5AED6A006D6762 /* String.swift in Sources */,
 				20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */,
@@ -591,15 +729,27 @@
 				7A57675F2B6396B2009A5972 /* GoalFinalViewController.swift in Sources */,
 				7A57675B2B63969B009A5972 /* GoalComponents.swift in Sources */,
 				20AFDD932B659779008F8AB9 /* RepeatIntervalViewController.swift in Sources */,
+				7A0D32B42B68E13A007B2736 /* TestRepository.swift in Sources */,
+				7A0D32B22B68E130007B2736 /* TestAPI.swift in Sources */,
+				7A0D32BC2B68E23F007B2736 /* BaseResponse.swift in Sources */,
 				7A610AD92B49009300D3096F /* HomeViewController.swift in Sources */,
 				D20D6FF12B5D6635006D6762 /* CategoryButton.swift in Sources */,
 				20118A112B56A86100B2569E /* ConsumeViewController.swift in Sources */,
+				7A0D32B62B68E142007B2736 /* BaseAPI.swift in Sources */,
 				D20D6FDC2B581A5A006D6762 /* UITabBar.swift in Sources */,
 				D20D6FF82B5E974D006D6762 /* MainStatistics.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7A0D32C82B68EEEE007B2736 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7A610AB32B47FA8E00D3096F /* Money-Planner */;
+			targetProxy = 7A0D32C72B68EEEE007B2736 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		7A610AC22B47FA8F00D3096F /* LaunchScreen.storyboard */ = {
@@ -613,6 +763,40 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		7A0D32CA2B68EEEE007B2736 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "umc.Money-PlannerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Money-Planner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Money-Planner";
+			};
+			name = Debug;
+		};
+		7A0D32CB2B68EEEE007B2736 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "umc.Money-PlannerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Money-Planner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Money-Planner";
+			};
+			name = Release;
+		};
 		7A610AC62B47FA8F00D3096F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -795,6 +979,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7A0D32C92B68EEEE007B2736 /* Build configuration list for PBXNativeTarget "Money-PlannerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7A0D32CA2B68EEEE007B2736 /* Debug */,
+				7A0D32CB2B68EEEE007B2736 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7A610AAF2B47FA8E00D3096F /* Build configuration list for PBXProject "Money-Planner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -816,6 +1009,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		7A0D32CD2B68EF3A007B2736 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.6.0;
+			};
+		};
+		7A0D32D42B6CAB92007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk-rx";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.20.0;
+			};
+		};
 		7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya";
@@ -827,6 +1036,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7A0D32CE2B68EF4D007B2736 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D32CD2B68EF3A007B2736 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		7A0D32D02B68EFBB007B2736 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D32CD2B68EF3A007B2736 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
 		7A610ADB2B4900C800D3096F /* CombineMoya */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */;
