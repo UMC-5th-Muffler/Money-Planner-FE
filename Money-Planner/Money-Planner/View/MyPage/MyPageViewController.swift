@@ -9,6 +9,8 @@ import UIKit
 
 class MyPageViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, ProfileViewDelegate {
     var tempUserName : String = ""
+    var tempProfileImage: UIImage?
+
     var user = User()
     // 테이블 뷰 데이터 소스
     let myPageData = [
@@ -75,7 +77,7 @@ class MyPageViewController: UIViewController, UITableViewDataSource, UITableView
         if item == "프로필"{
             text = "프로필 설정"
             cell.optionalLabel.text = text
-            cell.addProfile(user.userNameString)
+            cell.addProfile(user.userNameString, image : tempProfileImage)
 
             // 프로필인 경우 프로필 띄우기
         }
@@ -160,9 +162,11 @@ class MyPageViewController: UIViewController, UITableViewDataSource, UITableView
         var items: [String]
     }
     
-    func profileNameChanged(_ userName: String) {
+    func profileNameChanged(_ userName: String, _ profileImage : UIImage?) {
         user.changeUserName(userName)
         tempUserName = userName
+        tempProfileImage = profileImage // Set the profile image in your User model
+
         // Reload only the cell representing the profile
         if let indexPath = indexPathForProfileCell() {
             tableView.reloadRows(at: [indexPath], with: .none)

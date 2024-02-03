@@ -9,11 +9,12 @@ import Foundation
 import UIKit
 
 protocol ProfileViewDelegate : AnyObject{
-    func profileNameChanged(_ userName : String)
+    func profileNameChanged(_ userName : String, _ profileImage : UIImage?)
     
 }
 class ProfileViewController: UIViewController,UITextFieldDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     private var UserName: String?
+    var profileImage: UIImage?
 
     weak var delegate: ProfileViewDelegate?
     private lazy var headerView = HeaderView(title: "프로필 설정")
@@ -31,16 +32,18 @@ class ProfileViewController: UIViewController,UITextFieldDelegate,UIImagePickerC
         let buttonImg = UIImage(systemName: "pencil")
         button.setImage(buttonImg, for: .normal)
         button.backgroundColor = .red
-        button.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside) //이름 수정 가능하게
         return button
     }()
 
-    @objc func editProfileImage() {
+    @objc 
+    func editProfileImage() {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.sourceType = .photoLibrary
         present(imagePickerController, animated: true, completion: nil)
     }
+    
+    
     let nameContainer : UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.mpGypsumGray
@@ -160,6 +163,7 @@ class ProfileViewController: UIViewController,UITextFieldDelegate,UIImagePickerC
         setupEmailTextField()
         
         nameTextField.delegate = self // Make sure to set the delegate
+        picButton.addTarget( self, action: #selector(editProfileImage), for: .touchUpInside) //이름 수정 가능하게
 
     }
     
@@ -199,7 +203,42 @@ class ProfileViewController: UIViewController,UITextFieldDelegate,UIImagePickerC
                picButton.trailingAnchor.constraint(equalTo: picContainer.trailingAnchor),
                picButton.bottomAnchor.constraint(equalTo: picContainer.bottomAnchor)
            ])
-        
+        let plus: UIView = {
+                 let view = UIView()
+                 view.backgroundColor = .mpWhite
+                 view.layer.cornerRadius = 10
+                 view.layer.masksToBounds = true
+                 return view
+             }()
+        let plusImageView: UIImageView = {
+            let imageView = UIImageView()
+            imageView.image = UIImage(systemName: "plus.circle.fill")?
+                .withTintColor(.mpGray, renderingMode: .alwaysOriginal)
+            .withConfiguration(UIImage.SymbolConfiguration(pointSize: 20, weight: .medium))
+            imageView.contentMode = .scaleAspectFit
+                       return imageView
+                   }()
+
+         view.addSubview(plus)
+         plus.addSubview(plusImageView)
+
+         plus.translatesAutoresizingMaskIntoConstraints = false
+         plusImageView.translatesAutoresizingMaskIntoConstraints = false
+ 
+         NSLayoutConstraint.activate([
+             plus.heightAnchor.constraint(equalToConstant: 20),
+             plus.widthAnchor.constraint(equalToConstant: 20),
+             plus.trailingAnchor.constraint(equalTo: picContainer.trailingAnchor),
+             plus.bottomAnchor.constraint(equalTo: picContainer.bottomAnchor),
+         ])
+ 
+         NSLayoutConstraint.activate([
+             plusImageView.topAnchor.constraint(equalTo: plus.topAnchor),
+             plusImageView.leadingAnchor.constraint(equalTo: plus.leadingAnchor),
+             plusImageView.trailingAnchor.constraint(equalTo: plus.trailingAnchor),
+             plusImageView.bottomAnchor.constraint(equalTo: plus.bottomAnchor),
+         ])
+
         
     }
     private func setupNameLabel(){
@@ -349,6 +388,7 @@ class ProfileViewController: UIViewController,UITextFieldDelegate,UIImagePickerC
         if let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             // 선택한 이미지를 버튼에 적용
             picButton.setImage(selectedImage, for: .normal)
+            profileImage = selectedImage
         }
 
         dismiss(animated: true, completion: nil)
@@ -358,7 +398,7 @@ class ProfileViewController: UIViewController,UITextFieldDelegate,UIImagePickerC
     private func completeButtonTapped(){
         print("프로필 설정이 완료되었습니다..")
         if let changedName = nameTextField.text{
-            delegate?.profileNameChanged (changedName)
+            delegate?.profileNameChanged (changedName, profileImage)
             print(changedName)
         }
        
