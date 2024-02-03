@@ -35,7 +35,6 @@ class MyPageTableViewCell: UITableViewCell {
         let label = MPLabel()
         label.font = UIFont.mpFont20B()
         label.textColor = .mpBlack
-        label.text = "조혜원님"
         return label
     }()
     let userImage : UIImageView = {
@@ -79,12 +78,14 @@ class MyPageTableViewCell: UITableViewCell {
             
         ])
     }
-    func addProfile (){
+    func addProfile (_ name : String){
         let blank : UIView = {
             let view = UIView()
             view.backgroundColor = .mpGypsumGray
             return view
         }()
+        userName.text = "\(name)님"
+
         
         container.addSubview(userImage)
         container.addSubview(userName)
@@ -111,6 +112,9 @@ class MyPageTableViewCell: UITableViewCell {
         ])
         
     }
+    func setUserName(_ name: String) { // 사용자 이름 업데이트
+           userName.text = "\(name)님"
+       }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -6,8 +6,10 @@
 import Foundation
 import UIKit
 
-class MyPageViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+class MyPageViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, ProfileViewDelegate {
+    var tempUserName : String = ""
+    var user = User()
     // 테이블 뷰 데이터 소스
     let myPageData = [
         Section(title: "프로필", items: ["프로필"]),
@@ -26,10 +28,9 @@ class MyPageViewController: UIViewController, UITableViewDataSource, UITableView
   
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        tempUserName = user.userNameString
         // 뷰 컨트롤러의 타이틀 설정
         title = "마이 페이지"
-
         // 커스텀 UITableViewCell 등록
         tableView.register(MyPageTableViewCell.self, forCellReuseIdentifier: "myPageCell")
 
@@ -74,7 +75,8 @@ class MyPageViewController: UIViewController, UITableViewDataSource, UITableView
         if item == "프로필"{
             text = "프로필 설정"
             cell.optionalLabel.text = text
-            cell.addProfile()
+            cell.addProfile(user.userNameString)
+
             // 프로필인 경우 프로필 띄우기
         }
         else{
@@ -116,6 +118,9 @@ class MyPageViewController: UIViewController, UITableViewDataSource, UITableView
         case "프로필":
             // 프로필 뷰로 이동
             print("프로필 선택됨")
+            // 프로필 설정 화면으로 이동
+            settingProfile()
+            
         case "알림 설정":
             // 알림 설정 뷰로 이동
             print("알림 설정 선택됨")
@@ -130,10 +135,16 @@ class MyPageViewController: UIViewController, UITableViewDataSource, UITableView
             print("개인정보 처리 방침 선택됨")
         case "1:1 문의하기":
             // 1:1 문의하기 뷰로 이동
+            Ask()
             print("1:1 문의하기 선택됨")
         case "로그아웃":
             // 로그아웃 처리
             print("로그아웃 선택됨")
+            // 로그아웃 모달로 이동
+            let logoutVC = PopupViewController() // 로그아웃 완료 팝업 띄우기
+            present(logoutVC, animated: true)
+            
+            
         case "탈퇴하기":
             // 계정 탈퇴 처리
             print("탈퇴하기 선택됨")
@@ -146,5 +157,41 @@ class MyPageViewController: UIViewController, UITableViewDataSource, UITableView
     struct Section {
         var title: String
         var items: [String]
+    }
+    
+    func profileNameChanged(_ userName: String) {
+        user.changeUserName(userName)
+        tempUserName = userName
+        // Reload only the cell representing the profile
+        if let indexPath = indexPathForProfileCell() {
+            tableView.reloadRows(at: [indexPath], with: .none)
+        }
+
+        print("프로필 이름이 변경되었습니다")
+        print(user.userNameString)
+        view.layoutIfNeeded()
+    }
+
+    private func indexPathForProfileCell() -> IndexPath? {
+        for (sectionIndex, section) in myPageData.enumerated() {
+            if let rowIndex = section.items.firstIndex(of: "프로필") {
+                return IndexPath(row: rowIndex, section: sectionIndex)
+            }
+        }
+        return nil
+    }
+    
+    func settingProfile() {
+        let profileVC = ProfileViewController(tempUserName: tempUserName) // 프로필 설정 화면으로 이동
+        profileVC.modalPresentationStyle = .fullScreen
+        profileVC.delegate = self
+        present(profileVC, animated: true)
+    }
+    func Ask(){
+        let askVC = AskViewController() // 프로필 설정 화면으로 이동
+        askVC.modalPresentationStyle = .fullScreen
+        //askVC.delegate = self
+        present(askVC, animated: true)
+        
     }
 }
