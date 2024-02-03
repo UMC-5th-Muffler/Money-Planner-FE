@@ -12,7 +12,7 @@ protocol ProfileViewDelegate : AnyObject{
     func profileNameChanged(_ userName : String)
     
 }
-class ProfileViewController: UIViewController,UITextFieldDelegate {
+class ProfileViewController: UIViewController,UITextFieldDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     private var UserName: String?
 
     weak var delegate: ProfileViewDelegate?
@@ -31,12 +31,16 @@ class ProfileViewController: UIViewController,UITextFieldDelegate {
         let buttonImg = UIImage(systemName: "pencil")
         button.setImage(buttonImg, for: .normal)
         button.backgroundColor = .red
+        button.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside) //이름 수정 가능하게
         return button
-        
-        
     }()
 
-    
+    @objc func editProfileImage() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.sourceType = .photoLibrary
+        present(imagePickerController, animated: true, completion: nil)
+    }
     let nameContainer : UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.mpGypsumGray
@@ -171,7 +175,10 @@ class ProfileViewController: UIViewController,UITextFieldDelegate {
             
         ])
         
-        
+        headerView.addBackButtonTarget(target: self, action: #selector(previousScreen), for: .touchUpInside)
+    }
+    @objc private func previousScreen(){
+        dismiss(animated: true)
     }
     private func setupPic(){
         // 컨테이너 추가
@@ -335,6 +342,16 @@ class ProfileViewController: UIViewController,UITextFieldDelegate {
             nameEditButton.setTitleColor(.mpDarkGray, for: .normal)
             return true
         }
+    }
+    
+    // 이미지 선택이 완료되면 호출되는 메소드
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            // 선택한 이미지를 버튼에 적용
+            picButton.setImage(selectedImage, for: .normal)
+        }
+
+        dismiss(animated: true, completion: nil)
     }
     
     @objc

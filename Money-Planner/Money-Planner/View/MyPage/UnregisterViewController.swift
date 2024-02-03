@@ -33,7 +33,7 @@ class UnregisterViewController: UIViewController,UITextFieldDelegate,UITextViewD
     var completeCheck = compeleBtnCheck()
     var currTextSize : Int?
 
-    private lazy var headerView = HeaderView(title: "탈퇴하기")
+    private lazy var headerView = HeaderView(title: "")
 
     private var completeButton = MainBottomBtn(title: "탈퇴하기")
     private let NameTextField : UITextField = {
@@ -112,7 +112,10 @@ class UnregisterViewController: UIViewController,UITextFieldDelegate,UITextViewD
     // 탈퇴사유 선택 버튼
     lazy var reasonChooseButton: UIButton = {
         let button = UIButton()
-        let arrowImage = UIImage(systemName:"pencil") // Replace "arrow_down" with the actual image name in your assets
+        let arrowImage = UIImage(systemName:"chevron.down")?
+            .withTintColor(.mpBlack, renderingMode: .alwaysOriginal)
+            .withConfiguration(UIImage.SymbolConfiguration(pointSize: 15, weight: .medium)) // 조정하고자 하는 크기 설정
+
         button.setImage(arrowImage, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = true  // 클릭 활성화
@@ -172,8 +175,10 @@ class UnregisterViewController: UIViewController,UITextFieldDelegate,UITextViewD
             headerView.heightAnchor.constraint(equalToConstant: 60)
             
         ])
-        
-        
+        headerView.addBackButtonTarget(target: self, action: #selector(previousScreen), for: .touchUpInside)
+    }
+    @objc private func previousScreen(){
+        dismiss(animated: true)
     }
     private func setupTitleLabel(){
         view.addSubview(titleLabel)
@@ -247,10 +252,10 @@ class UnregisterViewController: UIViewController,UITextFieldDelegate,UITextViewD
         view.addSubview(buttonContianer)
         buttonContianer.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            buttonContianer.topAnchor.constraint(equalTo: reasonLabel.bottomAnchor, constant: 10),
-            buttonContianer.widthAnchor.constraint(equalToConstant: 40),
+            buttonContianer.centerYAnchor.constraint(equalTo: reasonTextField.centerYAnchor),
+            buttonContianer.widthAnchor.constraint(equalToConstant: 50),
             buttonContianer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -36),
-            buttonContianer.heightAnchor.constraint(equalToConstant: 64)
+            buttonContianer.heightAnchor.constraint(equalToConstant: 50)
             
         ])
         
