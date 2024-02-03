@@ -25,6 +25,9 @@
 		208C90A62B6D15BB00C67960 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90A52B6D15BB00C67960 /* ProfileViewController.swift */; };
 		208C90A82B6D48B300C67960 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90A72B6D48B300C67960 /* User.swift */; };
 		208C90AA2B6D559F00C67960 /* AskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90A92B6D559F00C67960 /* AskViewController.swift */; };
+		208C90AC2B6E3F8100C67960 /* UnregisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90AB2B6E3F8100C67960 /* UnregisterViewController.swift */; };
+		208C90AE2B6E44FA00C67960 /* TitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90AD2B6E44FA00C67960 /* TitleLabel.swift */; };
+		208C90B02B6E887A00C67960 /* ReasonModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90AF2B6E887A00C67960 /* ReasonModalViewController.swift */; };
 		20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */; };
 		20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */; };
 		20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD902B656034008F8AB9 /* OneDayButton.swift */; };
@@ -115,6 +118,9 @@
 		208C90A52B6D15BB00C67960 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		208C90A72B6D48B300C67960 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		208C90A92B6D559F00C67960 /* AskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskViewController.swift; sourceTree = "<group>"; };
+		208C90AB2B6E3F8100C67960 /* UnregisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnregisterViewController.swift; sourceTree = "<group>"; };
+		208C90AD2B6E44FA00C67960 /* TitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleLabel.swift; sourceTree = "<group>"; };
+		208C90AF2B6E887A00C67960 /* ReasonModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonModalViewController.swift; sourceTree = "<group>"; };
 		20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatModalViewController.swift; sourceTree = "<group>"; };
 		20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDayView.swift; sourceTree = "<group>"; };
 		20AFDD902B656034008F8AB9 /* OneDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDayButton.swift; sourceTree = "<group>"; };
@@ -407,6 +413,9 @@
 				7A610AD12B49004200D3096F /* MyPageViewController.swift */,
 				20EF78302B68E3AD00AA135E /* MyPageTableViewCell.swift */,
 				208C90A72B6D48B300C67960 /* User.swift */,
+				208C90AB2B6E3F8100C67960 /* UnregisterViewController.swift */,
+				208C90AD2B6E44FA00C67960 /* TitleLabel.swift */,
+				208C90AF2B6E887A00C67960 /* ReasonModalViewController.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -615,8 +624,10 @@
 				D2D0B72D2B6A7067003B6B5E /* BaseAPI.swift in Sources */,
 				D20D6FE52B5AEECB006D6762 /* Date.swift in Sources */,
 				552A423E2B671B86007AEAAD /* EditGoalViewController.swift in Sources */,
+				208C90B02B6E887A00C67960 /* ReasonModalViewController.swift in Sources */,
 				208C90A82B6D48B300C67960 /* User.swift in Sources */,
 				20AFDD952B65B882008F8AB9 /* ChooseDateView.swift in Sources */,
+				208C90AC2B6E3F8100C67960 /* UnregisterViewController.swift in Sources */,
 				7A4C67412B5A4AF1008BCAC9 /* MainBottomBtn.swift in Sources */,
 				D20D6FDE2B581B20006D6762 /* CALayer.swift in Sources */,
 				7A4C67432B5A4B22008BCAC9 /* SmallButtonView.swift in Sources */,
@@ -634,6 +645,7 @@
 				7A610AE52B491ED600D3096F /* Dummy.swift in Sources */,
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
 				7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */,
+				208C90AE2B6E44FA00C67960 /* TitleLabel.swift in Sources */,
 				20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */,
 				206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */,
 				D20D70042B5FF094006D6762 /* Numeric.swift in Sources */,

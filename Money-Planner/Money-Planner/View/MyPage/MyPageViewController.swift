@@ -148,6 +148,7 @@ class MyPageViewController: UIViewController, UITableViewDataSource, UITableView
         case "탈퇴하기":
             // 계정 탈퇴 처리
             print("탈퇴하기 선택됨")
+            Unregister()
         default:
             break
         }
@@ -192,6 +193,13 @@ class MyPageViewController: UIViewController, UITableViewDataSource, UITableView
         askVC.modalPresentationStyle = .fullScreen
         //askVC.delegate = self
         present(askVC, animated: true)
+        
+    }
+    func Unregister(){
+        let unregisterVC = UnregisterViewController() // 프로필 설정 화면으로 이동
+        unregisterVC.modalPresentationStyle = .fullScreen
+        //askVC.delegate = self
+        present(unregisterVC, animated: true)
         
     }
 }
