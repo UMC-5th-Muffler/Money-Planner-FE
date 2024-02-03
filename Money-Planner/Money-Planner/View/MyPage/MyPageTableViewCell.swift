@@ -42,7 +42,7 @@ class MyPageTableViewCell: UITableViewCell {
         imageView.backgroundColor = .mpGypsumGray
         imageView.layer.cornerRadius = 32 //지름 64
         imageView.layer.masksToBounds = true
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         //imageView.image = UIImage(systemName: "pencil")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -78,14 +78,14 @@ class MyPageTableViewCell: UITableViewCell {
             
         ])
     }
-    func addProfile (_ name : String){
+    func addProfile (_ name : String, image : UIImage?){
         let blank : UIView = {
             let view = UIView()
             view.backgroundColor = .mpGypsumGray
             return view
         }()
         userName.text = "\(name)님"
-
+        userImage.image = image
         
         container.addSubview(userImage)
         container.addSubview(userName)

@@ -87,8 +87,8 @@ class PopupViewController: UIViewController {
         customModal.addSubview(titleLabel)
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: customModal.topAnchor, constant: 24),
-            titleLabel.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 25),
-            titleLabel.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -25)
+            titleLabel.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -20)
         ])
     }
 
@@ -96,8 +96,8 @@ class PopupViewController: UIViewController {
         customModal.addSubview(contentLabel)
         NSLayoutConstraint.activate([
             contentLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
-            contentLabel.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 25),
-            contentLabel.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -25)
+            contentLabel.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 20),
+            contentLabel.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -20)
         ])
     }
     private func setupCompleteButton(){

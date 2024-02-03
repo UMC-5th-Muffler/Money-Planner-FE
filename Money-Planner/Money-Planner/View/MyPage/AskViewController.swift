@@ -62,6 +62,14 @@ class AskViewController: UIViewController,UITextFieldDelegate,UITextViewDelegate
     private let emailTextField : UITextField = {
         let text = UITextField()
         text.placeholder = "example@email.com"
+        let placeholderColor = UIColor.mpGray // Replace with your desired color
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: placeholderColor,
+        ]
+
+        let attributedPlaceholder = NSAttributedString(string: "example@email.com", attributes: attributes)
+        text.attributedPlaceholder = attributedPlaceholder        
         text.layer.cornerRadius = 8
         text.layer.masksToBounds = true
         text.borderStyle = .none
@@ -70,7 +78,7 @@ class AskViewController: UIViewController,UITextFieldDelegate,UITextViewDelegate
         text.backgroundColor = .mpGypsumGray
         text.keyboardType = .default
         // 여백 추가
-        let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 24, height: text.frame.height)) // 조절하고자 하는 여백 크기
+        let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: text.frame.height)) // 조절하고자 하는 여백 크기
         text.leftView = leftView
         text.leftViewMode = .always
         // 활성화
@@ -83,21 +91,25 @@ class AskViewController: UIViewController,UITextFieldDelegate,UITextViewDelegate
         text.text = "어떤 내용이 궁금하신가요?"
         text.layer.cornerRadius = 8
         text.layer.masksToBounds = true
-        text.font = UIFont.mpFont18M()
+        text.font = UIFont.mpFont16M()
         text.tintColor = UIColor.mpMainColor
         text.textColor = .mpGray
         text.backgroundColor = .mpGypsumGray
         text.keyboardType = .default
         text.isMultipleTouchEnabled = true
+        // 자간 설정
+        // Set letter spacing directly on typingAttributes
+        let letterSpacing: CGFloat = -0.02 // Adjust the value as needed
+            text.typingAttributes[NSAttributedString.Key.kern] = letterSpacing
+
+
         // 여백 추가
-        text.textContainerInset = UIEdgeInsets(top: 16, left: 20, bottom: 0, right: 0)
+        text.textContainerInset = UIEdgeInsets(top: 20, left: 18, bottom: 0, right: 20)
 
         // Set placeholder
         text.textColor = UIColor.lightGray
 
-    // 여백 추가
-        let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 24, height: text.frame.height))
-        text.addSubview(leftView)        // 활성화
+
         
         return text
     }()
@@ -161,7 +173,7 @@ class AskViewController: UIViewController,UITextFieldDelegate,UITextViewDelegate
         //nameTextField.delegate = self // Make sure to set the delegate
         emailTextField.delegate = self
         contentsTextField.delegate = self
-
+       
     }
     
     // 세팅 : 헤더
@@ -176,7 +188,10 @@ class AskViewController: UIViewController,UITextFieldDelegate,UITextViewDelegate
             
         ])
         
-        
+        headerView.addBackButtonTarget(target: self, action: #selector(previousScreen), for: .touchUpInside)
+    }
+    @objc private func previousScreen(){
+        dismiss(animated: true)
     }
                                              
     private func setupEmailLabel(){
@@ -380,6 +395,7 @@ class AskViewController: UIViewController,UITextFieldDelegate,UITextViewDelegate
         let completeVC = PopupViewController() // 로그아웃 완료 팝업 띄우기
         completeVC.titleLabel.text = "문의하기가 완료되었습니다."
         completeVC.contentLabel.text = "1:1 문의에 대한 답변은 이메일로 보내드려요"
+        completeVC.contentLabel.font = .mpFont16M()
         completeVC.delegate = self
         present(completeVC, animated: true)
         //dismiss(animated: true, completion: nil)
