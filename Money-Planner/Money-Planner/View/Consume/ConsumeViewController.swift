@@ -305,7 +305,6 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         
         let buttonContainerView = UIView()
         buttonContainerView.translatesAutoresizingMaskIntoConstraints = false
-
         buttonContainerView.backgroundColor = .mpMainColor
         catContainerView.addSubview(buttonContainerView)
         

@@ -21,6 +21,10 @@
 		208C909E2B6ABBC500C67960 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 208C909D2B6ABBC500C67960 /* RxRelay */; };
 		208C909F2B6ABBE900C67960 /* RxBlocking-Dynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 208C90972B6ABBC500C67960 /* RxBlocking-Dynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		208C90A12B6ABBEB00C67960 /* RxCocoa-Dynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		208C90A42B6CD72000C67960 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90A32B6CD72000C67960 /* PopupViewController.swift */; };
+		208C90A62B6D15BB00C67960 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90A52B6D15BB00C67960 /* ProfileViewController.swift */; };
+		208C90A82B6D48B300C67960 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90A72B6D48B300C67960 /* User.swift */; };
+		208C90AA2B6D559F00C67960 /* AskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90A92B6D559F00C67960 /* AskViewController.swift */; };
 		20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */; };
 		20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */; };
 		20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD902B656034008F8AB9 /* OneDayButton.swift */; };
@@ -107,6 +111,10 @@
 		208C908E2B6AB78900C67960 /* MufflerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MufflerAPI.swift; sourceTree = "<group>"; };
 		208C90902B6AB7A200C67960 /* MufflerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MufflerViewModel.swift; sourceTree = "<group>"; };
 		208C90922B6AB7DA00C67960 /* ConnectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectModel.swift; sourceTree = "<group>"; };
+		208C90A32B6CD72000C67960 /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PopupViewController.swift; path = "Money-Planner/View/MyPage/PopupViewController.swift"; sourceTree = SOURCE_ROOT; };
+		208C90A52B6D15BB00C67960 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		208C90A72B6D48B300C67960 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		208C90A92B6D559F00C67960 /* AskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskViewController.swift; sourceTree = "<group>"; };
 		20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatModalViewController.swift; sourceTree = "<group>"; };
 		20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDayView.swift; sourceTree = "<group>"; };
 		20AFDD902B656034008F8AB9 /* OneDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDayButton.swift; sourceTree = "<group>"; };
@@ -360,7 +368,7 @@
 				7A610AE32B49020700D3096F /* Login */,
 				7A610AD72B49008600D3096F /* Home */,
 				7A610AD42B49005400D3096F /* Battle */,
-				7A610AD32B49004500D3096F /* Settings */,
+				7A610AD32B49004500D3096F /* MyPage */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -390,13 +398,17 @@
 			path = Notification;
 			sourceTree = "<group>";
 		};
-		7A610AD32B49004500D3096F /* Settings */ = {
+		7A610AD32B49004500D3096F /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
+				208C90A32B6CD72000C67960 /* PopupViewController.swift */,
+				208C90A52B6D15BB00C67960 /* ProfileViewController.swift */,
+				208C90A92B6D559F00C67960 /* AskViewController.swift */,
 				7A610AD12B49004200D3096F /* MyPageViewController.swift */,
 				20EF78302B68E3AD00AA135E /* MyPageTableViewCell.swift */,
+				208C90A72B6D48B300C67960 /* User.swift */,
 			);
-			path = Settings;
+			path = MyPage;
 			sourceTree = "<group>";
 		};
 		7A610AD42B49005400D3096F /* Battle */ = {
@@ -596,12 +608,14 @@
 				7A4C67462B5A4B77008BCAC9 /* MainTextField.swift in Sources */,
 				7A4C673F2B5A4AC9008BCAC9 /* CheckBtn.swift in Sources */,
 				206C58D82B626465008410C1 /* CategoryModalViewController.swift in Sources */,
+				208C90A62B6D15BB00C67960 /* ProfileViewController.swift in Sources */,
 				7A610AE72B491F1600D3096F /* HeaderView.swift in Sources */,
 				D20D6FFA2B5FB971006D6762 /* HomeConsumeView.swift in Sources */,
 				D20D6FEF2B5D3909006D6762 /* UIColor.swift in Sources */,
 				D2D0B72D2B6A7067003B6B5E /* BaseAPI.swift in Sources */,
 				D20D6FE52B5AEECB006D6762 /* Date.swift in Sources */,
 				552A423E2B671B86007AEAAD /* EditGoalViewController.swift in Sources */,
+				208C90A82B6D48B300C67960 /* User.swift in Sources */,
 				20AFDD952B65B882008F8AB9 /* ChooseDateView.swift in Sources */,
 				7A4C67412B5A4AF1008BCAC9 /* MainBottomBtn.swift in Sources */,
 				D20D6FDE2B581B20006D6762 /* CALayer.swift in Sources */,
@@ -631,6 +645,7 @@
 				7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */,
 				20EF782D2B68CEA700AA135E /* AddCategoryViewController.swift in Sources */,
 				20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */,
+				208C90A42B6CD72000C67960 /* PopupViewController.swift in Sources */,
 				D20D6FF52B5E5B91006D6762 /* ToggleButton.swift in Sources */,
 				D20D6FE32B5AED6A006D6762 /* String.swift in Sources */,
 				20EF78312B68E3AD00AA135E /* MyPageTableViewCell.swift in Sources */,
@@ -641,6 +656,7 @@
 				D20D6FE92B5AF1E9006D6762 /* MainMonthView.swift in Sources */,
 				7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */,
 				D20D6FDA2B581A05006D6762 /* CustomTabBarController.swift in Sources */,
+				208C90AA2B6D559F00C67960 /* AskViewController.swift in Sources */,
 				7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */,
 				5591601C2B64595E00063F06 /* EvaluationViewController.swift in Sources */,
 				7A610AD62B49007100D3096F /* BattleViewController.swift in Sources */,
