@@ -7,6 +7,12 @@
 
 import Foundation
 
+enum BaseError: Error {
+    case failure(message: String)
+    case networkFail(error : Error)
+}
+
+
 struct BaseResponse<T: Codable>: Codable {
     let isSuccess: Bool?
     let message: String?

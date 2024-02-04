@@ -14,14 +14,14 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     
     var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-         layout.scrollDirection = .horizontal
-         layout.minimumLineSpacing = 0
-         layout.minimumInteritemSpacing = 0
-
-         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-         collectionView.translatesAutoresizingMaskIntoConstraints = false
-         collectionView.isPagingEnabled = true
-         collectionView.showsHorizontalScrollIndicator = false
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.isPagingEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
         collectionView.isScrollEnabled = false
         
@@ -84,7 +84,22 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         return v
     }()
     
+    lazy var titleLabel : MPLabel = {
+        let label = MPLabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "목표를 선택해주세요"
+        label.textAlignment = .center
+        label.font = UIFont.mpFont18M()
+        label.isUserInteractionEnabled = true
+        
+        return label
+    }()
+    
+    var nowGoal : Goal?
+    var inactiveGoal : [CalendarInactive]?
+    
     override func viewDidLoad(){
+        fetchData()
         view.backgroundColor = UIColor.mpWhite
         view.addSubview(contentScrollView)
         contentScrollView.addSubview(contentView)
@@ -110,7 +125,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         let contentViewHeight = contentView.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor)
         contentViewHeight.priority = .defaultLow
         contentViewHeight.isActive = true
-                
+        
         setupMonthAndCategoryView()
         setupCollectionView()
     }
@@ -129,6 +144,47 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
 
 
 extension HomeViewController{
+    
+    func fetchData(){
+        HomeRepository.shared.getHomeNow{
+            (result) in
+            switch result{
+            case .success(let data):
+                // 아예 골이 없는 경우
+                
+                let goal : Goal? = data?.activeGoalResponse
+                let inactive : [CalendarInactive]? = data?.inactiveGoalsResponse
+                
+                self.nowGoal = goal
+                self.inactiveGoal = inactive
+                
+                DispatchQueue.main.async {
+                    self.reloadUI()
+                }
+                
+                
+            case .failure(.failure(message: let message)):
+                print(message)
+            case .failure(.networkFail(let error)):
+                print(error)
+                print("networkFail in loginWithSocialAPI")
+            }
+        }
+    }
+    
+    func reloadUI(){
+        setupHeader()
+        setupMonthAndCategoryView()
+        
+        // calendarView
+        if(self.nowGoal != nil){
+            statisticsView.goal = self.nowGoal
+            
+            statisticsView.progress = getProgress(numerator: self.nowGoal!.totalCost, denominator: self.nowGoal!.goalBudget)
+        }else{
+            statisticsView.progress = 0.0
+        }
+    }
     
     func setupHeader(){
         
@@ -162,12 +218,12 @@ extension HomeViewController{
         headerView.translatesAutoresizingMaskIntoConstraints = false
         
         // 제목 레이블 추가
-        let titleLabel = MPLabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = viewModel.goalText
-        titleLabel.textAlignment = .center
-        titleLabel.font = UIFont.mpFont18M()
-        titleLabel.isUserInteractionEnabled = true
+        
+        var goalText = self.nowGoal?.goalTitle
+        
+        if (goalText != nil && goalText != ""){
+            titleLabel.text = goalText
+        }
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(monthViewTapped))
         titleLabel.addGestureRecognizer(tapGesture)
@@ -234,8 +290,8 @@ extension HomeViewController{
         collectionView.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor)
         collectionViewHeight.priority = .defaultLow
         collectionViewHeight.isActive = true
-
-
+        
+        
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: categoryScrollView.bottomAnchor, constant: 36),
             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -247,18 +303,24 @@ extension HomeViewController{
     
     func setupCalendarView(cell : UICollectionViewCell){
         
-        statisticsView.progress = 0.7
+        if(self.nowGoal != nil){
+            statisticsView.progress = getProgress(numerator: self.nowGoal!.totalCost, denominator: self.nowGoal!.goalBudget)
+        }else{
+            statisticsView.progress = 0.0
+        }
+        
+      
         cell.contentView.addSubview(statisticsView)
-
+        
         calendarView.backgroundColor = UIColor.mpWhite
         cell.contentView.addSubview(calendarView)
-
+        
         NSLayoutConstraint.activate([
             statisticsView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
             statisticsView.rightAnchor.constraint(equalTo: cell.contentView.rightAnchor, constant: -24),
             statisticsView.leftAnchor.constraint(equalTo: cell.contentView.leftAnchor, constant: 24),
             statisticsView.heightAnchor.constraint(equalToConstant: 150),
-
+            
             calendarView.topAnchor.constraint(equalTo: statisticsView.bottomAnchor, constant: 36),
             calendarView.rightAnchor.constraint(equalTo: cell.contentView.rightAnchor),
             calendarView.leftAnchor.constraint(equalTo: cell.contentView.leftAnchor),
@@ -301,25 +363,24 @@ extension HomeViewController{
     
     
     @objc func searchButtonTapped() {
-//        let vc = SearchConsumeViewController()
-//        vc.hidesBottomBarWhenPushed = true
-//        self.navigationController?.pushViewController(vc, animated: true)
+        //        let vc = SearchConsumeViewController()
+        //        vc.hidesBottomBarWhenPushed = true
+        //        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func bellButtonTapped() {
-//        let vc = NotificationViewController()
-//        vc.hidesBottomBarWhenPushed = true
-//        self.navigationController?.pushViewController(vc, animated: true)
+        //        let vc = NotificationViewController()
+        //        vc.hidesBottomBarWhenPushed = true
+        //        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func menuButtonTapped() {
-//        let vc = CategoryEditViewController()
-//        vc.hidesBottomBarWhenPushed = true
-//        self.navigationController?.pushViewController(vc, animated: true)
+        //        let vc = CategoryEditViewController()
+        //        vc.hidesBottomBarWhenPushed = true
+        //        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func monthViewTapped(){
-        
     }
 }
 
@@ -327,7 +388,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 2
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PagingCell", for: indexPath)
@@ -344,11 +405,10 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         }
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return collectionView.bounds.size
     }
-
 }
 
 //extension HomeViewController: PopUpModalDelegate {

@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import RxSwift
 
+//rx 오류로 추후에 사용
 class HomeViewModel {
     let goalText : String = "✈️ 일본여행 가기 전 돈 모으기"
     
