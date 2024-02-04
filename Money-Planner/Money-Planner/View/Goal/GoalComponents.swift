@@ -185,7 +185,7 @@ class GoalPresentationCell: UITableViewCell {
     }
     
     //금액에 , 넣기
-    private func setComma(cash: Int) -> String {
+    private func setComma(cash: Int64) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         return formatter.string(from: NSNumber(value: cash)) ?? ""
@@ -246,17 +246,40 @@ class GoalPresentationCell: UITableViewCell {
         
         //d-day
         dday.font = .mpFont12M()
+        
         let currentDate = Date()
         let isPastGoal = currentDate > goal.goalEnd
         let isFutureGoal = currentDate < goal.goalStart
-        
-        let daysLeft = Calendar.current.dateComponents([.day], from: currentDate, to: goal.goalEnd).day ?? 0
-        
-        var (ddayText, ddayBackgroundColor, ddayTextColor) = isPastGoal ? ("종료", UIColor.mpLightGray, UIColor.mpDarkGray) : ("D\(daysLeft)", UIColor.mpCalendarHighLight, UIColor.mpMainColor)
-        
-        if isFutureGoal {
-            ddayText = "진행 중"
+
+        // 목표가 현재 진행 중인 경우, 오늘 날짜로부터 목표 종료일까지 남은 일수 계산
+        let daysLeft = isPastGoal ? 0 : Calendar.current.dateComponents([.day], from: currentDate, to: goal.goalEnd).day ?? 0
+
+        // 기본적으로 진행 중 상태를 가정하고 색상과 텍스트 설정
+        var ddayText = "D-\(daysLeft)"
+        var ddayBackgroundColor = UIColor.mpCalendarHighLight
+        var ddayTextColor = UIColor.mpMainColor
+
+        if isPastGoal {
+            // 목표가 이미 종료된 경우
+            ddayText = "종료"
+            ddayBackgroundColor = UIColor.mpLightGray
+            ddayTextColor = UIColor.mpDarkGray
+        } else if isFutureGoal {
+            // 목표가 아직 시작되지 않은 경우
+            ddayText = "시작 전"
+            ddayBackgroundColor = UIColor.mpLightGray
+            ddayTextColor = UIColor.mpDarkGray
+        } else {
+            // 목표가 현재 진행 중인 경우, 남은 일수에 따라 텍스트 업데이트
+            if daysLeft == 0 {
+                // 목표 종료일이 오늘인 경우
+                ddayText = "D-Day"
+            } else {
+                // 그 외에는 남은 일수 표시
+                ddayText = "D-\(daysLeft)"
+            }
         }
+
         
         dday.text = ddayText
         dday.backgroundColor = ddayBackgroundColor
@@ -289,15 +312,23 @@ class GoalProgressBar: UIView {
     
     let goalAmtBar = UIView()
     let usedAmtBar = UIView()
-    let goalAmt: Int
-    let usedAmt: Int
+    let goalAmt: Int64
+    let usedAmt: Int64
+    let pointer = UILabel()
+    let line : UIView = {
+        let l = UIView()
+        l.backgroundColor = .clear
+        return l
+    }()
     
-    init(goalAmt: Int, usedAmt: Int) {
+    init(goalAmt: Int64, usedAmt: Int64) {
         self.goalAmt = goalAmt
         self.usedAmt = usedAmt
         super.init(frame: .zero)
         setupGoalAmtBar()
         setupUsedAmtBar()
+        setupPointer()
+        setupLine()
     }
     
     required init?(coder: NSCoder) {
@@ -331,6 +362,49 @@ class GoalProgressBar: UIView {
         ])
     }
     
+    func setupPointer(){
+        addSubview(pointer)
+        pointer.text = "목표"
+        pointer.textColor = .mpDarkGray
+        pointer.font = .mpFont12M()
+        
+        pointer.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            pointer.centerXAnchor.constraint(equalTo: usedAmtBar.leftAnchor, constant: 0),
+            pointer.bottomAnchor.constraint(equalTo: usedAmtBar.topAnchor),
+            pointer.heightAnchor.constraint(equalToConstant: 15)
+        ])
+    }
+    
+    func setupLine(){
+        addSubview(line)
+        line.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            line.centerXAnchor.constraint(equalTo: pointer.centerXAnchor),
+            line.topAnchor.constraint(equalTo: pointer.bottomAnchor),
+            line.bottomAnchor.constraint(equalTo: usedAmtBar.bottomAnchor),
+            line.widthAnchor.constraint(equalToConstant: 1)
+        ])
+    }
+    
+    private func addDashedBorder(to view: UIView) {
+        let lineDashPattern: [NSNumber]? = [3,2]
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.strokeColor = UIColor.mpDarkGray.cgColor
+        shapeLayer.lineWidth = 1
+        shapeLayer.lineDashPattern = lineDashPattern
+        shapeLayer.fillColor = nil
+        
+        let path = CGMutablePath()
+        path.addLines(between: [CGPoint(x: 0, y: 0),
+                                CGPoint(x: 0, y: view.frame.size.height)])
+        shapeLayer.path = path
+        
+        view.layer.addSublayer(shapeLayer)
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
@@ -338,18 +412,25 @@ class GoalProgressBar: UIView {
         let ratio = CGFloat(usedAmt) / CGFloat(goalAmt)
         let usingRatio = ratio > 1 ? 1 : ratio
         let usedAmtWidth = usingRatio * frame.width
+        let pointerX = frame.width / ratio
+
         
         // usedAmtBar의 너비 제약 조건(width constraint) 업데이트
-        for constraint in usedAmtBar.constraints {
-            if constraint.firstAttribute == .width {
-                constraint.constant = usedAmtWidth
-                break
-            }
-        }
+        NSLayoutConstraint.activate([
+            usedAmtBar.widthAnchor.constraint(equalTo: goalAmtBar.widthAnchor, multiplier: usingRatio)
+        ])
+        
+        pointer.center.x = pointerX
+        line.center.x = pointer.center.x
         
         // 바의 모서리 반지름(corner radius) 업데이트
         goalAmtBar.layer.cornerRadius = goalAmtBar.frame.height / 2
         usedAmtBar.layer.cornerRadius = usedAmtBar.frame.height / 2
+        
+        addDashedBorder(to: line)
+        
+        pointer.isHidden = ratio <= 1
+        line.isHidden = ratio <= 1
     }
 }
 
@@ -530,6 +611,170 @@ class WriteNameView: UIView {
     
 }
 
+
+
+protocol MoneyAmountTextCellDelegate: AnyObject {
+    func didChangeAmountText(to newValue: String?, cell: MoneyAmountTextCell)
+}
+
+
+class MoneyAmountTextCell: UITableViewCell, UITextFieldDelegate {
+    
+    weak var delegate: MoneyAmountTextCellDelegate?
+    
+    private let iconImageView = UIImageView()
+    let textField = UITextField()
+    private let unitLabel = MPLabel()
+    private let amountLabel = MPLabel()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupCell()
+        setupIconImageView()
+        setupUnitLabelField()
+        setupTextField()
+        setupAmountLabel()
+        textField.delegate = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // Setup functions omitted for brevity...
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        
+        let digitsOnly = updatedText.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        let number = Int64(digitsOnly) ?? 0
+        
+        // 숫자 길이 제한
+        if digitsOnly.count > 12 {
+            return false
+        }
+
+        textField.text = formatNumber(number)
+        amountLabel.text = formatAmount(number)
+        
+        delegate?.didChangeAmountText(to: textField.text, cell: self)
+        
+        return false
+    }
+
+    private func formatNumber(_ number: Int64) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return  formatter.string(from: NSNumber(value: number)) ?? ""
+    }
+
+    private func formatAmount(_ number: Int64) -> String {
+        if number == 0 { return "0원" }
+        
+        let hundred_million = number / 1_0000_0000 //이름만 hundred_million
+        let ten_thousand = (number % 1_0000_0000) / 1_0000 //이름만 ten_thousand
+        let thousand = (number % 1_0000) / 1000
+        let remainder = number % 1000
+
+        var result = ""
+        if hundred_million > 0 { result += "\(hundred_million)억 " }
+        if ten_thousand > 0 { result += "\(ten_thousand)만 " }
+        if thousand > 0 { result += "\(thousand)천 " }
+        if remainder > 0 || result.isEmpty { result += "\(remainder)" }
+
+        return result + "원"
+    }
+    
+    private func setupCell() {
+        
+        backgroundColor = UIColor.clear  // 셀의 배경을 투명하게 설정
+        contentView.backgroundColor = UIColor.mpLightGray
+        contentView.layer.cornerRadius = 10
+        //        contentView.clipsToBounds = true//" subview들이 view의 bounds에 가둬질 수 있는 지를 판단하는 Boolean 값 "
+        
+        selectionStyle = .none  // 셀 선택 시 배경색 변경 없음
+        
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            contentView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
+            contentView.heightAnchor.constraint(equalToConstant: 64),
+//            contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
+            contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+            contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
+        ])
+        
+    }
+    
+    private func setupIconImageView() {
+        iconImageView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(iconImageView)
+        
+        NSLayoutConstraint.activate([
+            iconImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            iconImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            iconImageView.widthAnchor.constraint(equalToConstant: 30),
+            iconImageView.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
+    private func setupTextField() {
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(textField)
+        
+        textField.textColor = UIColor.mpBlack
+        textField.textAlignment = .left
+        textField.keyboardType = .numberPad // Limit keyboard to numeric input
+        
+        NSLayoutConstraint.activate([
+            textField.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 16),
+            textField.trailingAnchor.constraint(equalTo: unitLabel.trailingAnchor, constant: -20),
+            textField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            textField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+        ])
+    }
+    
+    private func setupUnitLabelField() {
+        unitLabel.translatesAutoresizingMaskIntoConstraints = false
+        unitLabel.text = "원"
+        contentView.addSubview(unitLabel)
+        
+        unitLabel.textColor = .mpBlack
+        
+        NSLayoutConstraint.activate([
+            unitLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            unitLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            unitLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            unitLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+        ])
+    }
+    
+    private func setupAmountLabel(){
+        amountLabel.translatesAutoresizingMaskIntoConstraints = false
+        amountLabel.text = "입력값이 없습니다."
+        amountLabel.font = .mpFont12M()
+        amountLabel.textColor = .mpGray
+        contentView.addSubview(amountLabel)
+        
+        NSLayoutConstraint.activate([
+            amountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            amountLabel.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 1),
+            amountLabel.heightAnchor.constraint(equalToConstant: 30),
+            amountLabel.widthAnchor.constraint(equalToConstant: 150)
+        ])
+    }
+    
+    func configureCell(image: UIImage?, placeholder: String) {
+        if let image = image {
+            iconImageView.image = image.withTintColor(.mpGray, renderingMode: .alwaysOriginal)
+        } else {
+            iconImageView.image = nil
+        }
+        textField.placeholder = placeholder
+    }
+}
+
 //protocol WriteNameCellDelegate: AnyObject {
 //    func didChangeEmojiText(to newValue: String?, cell: WriteNameCell)
 //    func didChangeTitleText(to newValue: String?, cell: WriteNameCell)
@@ -583,242 +828,6 @@ class WriteNameView: UIView {
 //    }
 //    
 //}
-
-
-protocol MoneyAmountTextCellDelegate: AnyObject {
-    func didChangeAmountText(to newValue: String?, cell: MoneyAmountTextCell)
-}
-
-
-// 금액 입력을 위한 cell
-class MoneyAmountTextCell: UITableViewCell, UITextFieldDelegate {
-    
-    weak var delegate: MoneyAmountTextCellDelegate?
-    
-    private let iconImageView = UIImageView()
-    let textField = UITextField()
-    private let unitLabel = MPLabel()
-    private let amountLabel = MPLabel()
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupCell()
-        setupIconImageView()
-        setupUnitLabelField()
-        setupTextField()
-        setupAmountLabel()
-        // Set the delegate for the textField
-        textField.delegate = self
-        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupCell() {
-        
-        backgroundColor = UIColor.clear  // 셀의 배경을 투명하게 설정
-        contentView.backgroundColor = UIColor.mpLightGray
-        contentView.layer.cornerRadius = 10
-        //        contentView.clipsToBounds = true//" subview들이 view의 bounds에 가둬질 수 있는 지를 판단하는 Boolean 값 "
-        
-        selectionStyle = .none  // 셀 선택 시 배경색 변경 없음
-        
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-            contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
-            contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
-        ])
-        
-    }
-    
-    private func setupIconImageView() {
-        iconImageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(iconImageView)
-        
-        NSLayoutConstraint.activate([
-            iconImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            iconImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            iconImageView.widthAnchor.constraint(equalToConstant: 30),
-            iconImageView.heightAnchor.constraint(equalToConstant: 30)
-        ])
-    }
-    
-    private func setupTextField() {
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(textField)
-        
-        textField.textColor = UIColor.mpGray
-        textField.textAlignment = .left
-        textField.keyboardType = .numberPad // Limit keyboard to numeric input
-        
-        NSLayoutConstraint.activate([
-            textField.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 16),
-            textField.trailingAnchor.constraint(equalTo: unitLabel.trailingAnchor, constant: -20),
-            textField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            textField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
-        ])
-    }
-    
-    private func setupUnitLabelField() {
-        unitLabel.translatesAutoresizingMaskIntoConstraints = false
-        unitLabel.text = "원"
-        contentView.addSubview(unitLabel)
-        
-        unitLabel.textColor = .mpBlack
-        
-        NSLayoutConstraint.activate([
-            unitLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            unitLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            unitLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            unitLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
-        ])
-    }
-    
-    private func setupAmountLabel(){
-        amountLabel.translatesAutoresizingMaskIntoConstraints = false
-        amountLabel.text = "입력값이 없습니다."
-        amountLabel.font = .mpFont12M()
-        amountLabel.textColor = .mpGray
-        contentView.addSubview(amountLabel)
-        
-        NSLayoutConstraint.activate([
-            amountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            amountLabel.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 1),
-            amountLabel.heightAnchor.constraint(equalToConstant: 30),
-            amountLabel.widthAnchor.constraint(equalToConstant: 150)
-        ])
-    }
-    
-    func configureCell(image: UIImage?, placeholder: String) {
-        if let image = image {
-            iconImageView.image = image.withTintColor(.mpGray, renderingMode: .alwaysOriginal)
-        } else {
-            iconImageView.image = nil
-        }
-        textField.placeholder = placeholder
-    }
-    
-    func showNeatAmount() {
-        guard let amountText = textField.text else {
-            amountLabel.textColor = .mpGray
-            amountLabel.text = "입력값이 없습니다."
-            return
-        }
-        
-        let allowedCharacterSet = CharacterSet(charactersIn: "0123456789")
-        let stringCharacterSet = CharacterSet(charactersIn: amountText)
-        
-        // Check if the entered characters are numbers
-        if !allowedCharacterSet.isSuperset(of: stringCharacterSet) {
-            amountLabel.textColor = .red
-            amountLabel.text = "숫자만 입력 가능합니다."
-            return
-        }
-        
-        // Convert the text to an integer
-        guard let amount = Int(amountText) else {
-            amountLabel.textColor = .mpGray
-            amountLabel.text = "유효한 숫자를 입력하세요."
-            return
-        }
-        
-        let maximumLimit: Int = 2147483647  // Define your own maximum limit
-        
-        if amount > maximumLimit {
-            amountLabel.textColor = .red
-            amountLabel.text = "숫자가 너무 큽니다."
-            return
-        } else {
-            amountLabel.textColor = .mpGray
-        }
-        
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal // 10진수
-        formatter.maximumFractionDigits = 0 // 소수점 없음
-        
-        if let formattedAmount = formatter.string(from: NSNumber(value: amount)) {
-            var result = ""
-            let hundredMillion = amount / 100_000_000
-            let tenThousand = (amount % 100_000_000) / 10_000
-            let remainder = amount % 10_000
-            
-            if hundredMillion > 0 {
-                result += "\(hundredMillion)억 "
-            }
-            
-            if tenThousand > 0 {
-                result += "\(tenThousand)만 "
-            }
-            
-            if remainder > 0 {
-                result += "\(remainder)원"
-            } else if hundredMillion == 0 && tenThousand == 0 {
-                result += "0원"
-            }
-            
-            amountLabel.text = result
-        }
-    }
-    
-    @objc private func textFieldDidChange(_ textField: UITextField) {
-        showNeatAmount()
-    }
-    
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        delegate?.didChangeAmountText(to: textField.text, cell: self)
-    }
-    
-}
-
-
-//// 기간 입력을 위한 버튼 cell
-//class PeriodCell: UITableViewCell {
-//    
-//    private let periodButton = PeriodCellButton()
-//    
-//    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-//        super.init(style: style, reuseIdentifier: reuseIdentifier)
-//        setupCell()
-//        setupPeriodButton()
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//    
-//    private func setupCell() {
-//        // 기존 PeriodCell setupCell 구현
-//        backgroundColor = UIColor.clear  // 셀의 배경을 투명하게 설정
-//        contentView.clipsToBounds = true//" subview들이 view의 bounds에 가둬질 수 있는 지를 판단하는 Boolean 값 "
-//        
-//        selectionStyle = .none  // 셀 선택 시 배경색 변경 없음
-//        
-//        contentView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            contentView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-//            contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
-//            contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-//            contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
-//        ])
-//    }
-//    
-//    private func setupPeriodButton() {
-//        contentView.addSubview(periodButton)
-//        periodButton.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            periodButton.topAnchor.constraint(equalTo: contentView.topAnchor),
-//            periodButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-//            periodButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-//            periodButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-//        ])
-//    }
-//}
-
-
 
 
 // 새로운 카테고리를 만들때 쓰는 점선이 있는 버튼

@@ -14,6 +14,9 @@ protocol PeriodSelectionDelegate: AnyObject {
 }
 
 class StartDateSelectionViewController: UIViewController {
+    
+    weak var delegate: PeriodSelectionDelegate?
+
     // 사용자 인터페이스 구성 요소 정의
     let customModal = UIView()
     let titleLabel: UILabel = {
@@ -128,6 +131,7 @@ class StartDateSelectionViewController: UIViewController {
     @objc private func nextButtonTapped() {
         // datePicker에서 선택된 날짜를 가져와서 EndDateSelectionViewController로 전달
         let endDateSelectionVC = EndDateSelectionViewController()
+        endDateSelectionVC.delegate = self.delegate
         endDateSelectionVC.selectedStartDate = datePicker.date
         navigationController?.pushViewController(endDateSelectionVC, animated: false)
     }
@@ -135,6 +139,8 @@ class StartDateSelectionViewController: UIViewController {
 
 
 class EndDateSelectionViewController: UIViewController {
+    
+    weak var delegate: PeriodSelectionDelegate?
     
     var selectedStartDate: Date?
     let customModal = UIView()
@@ -275,7 +281,7 @@ class EndDateSelectionViewController: UIViewController {
         let periodConfirmationVC = PeriodConfirmationViewController()
         periodConfirmationVC.selectedStartDate = selectedStartDate
         periodConfirmationVC.selectedEndDate = endDatePicker.date
-        //delegate 설정 있었는데 뺐음.
+        periodConfirmationVC.delegate = self.delegate
         print("완료")
         navigationController?.pushViewController(periodConfirmationVC, animated: false)
     }

@@ -16,7 +16,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     var verticalStack = UIStackView()
     var tableView : UITableView!
     var btmBtn = MainBottomBtn(title: "다음")
-    var sumAmount = 0
+    var sumAmount : Int64 = 0
     var categoryCount = 2
     
     

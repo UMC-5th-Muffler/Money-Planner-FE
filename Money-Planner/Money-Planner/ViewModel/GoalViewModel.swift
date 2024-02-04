@@ -223,10 +223,10 @@ class GoalCreationManager {
 
     var goalEmoji: String?
     var goalName: String?
-    var goalAmount: Int?
+    var goalAmount: Int64?
     var goalStart: Date?
     var goalEnd: Date?
-
+ 
     private init() {} // Private initializer to ensure singleton usage
 
     func createGoalRequest() -> CreateGoalRequest? {

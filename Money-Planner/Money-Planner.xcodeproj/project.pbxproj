@@ -33,6 +33,9 @@
 		7A0D32DA2B6F5DDD007B2736 /* RxKakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D32D92B6F5DDD007B2736 /* RxKakaoSDKAuth */; };
 		7A0D32DC2B6F5DDD007B2736 /* RxKakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D32DB2B6F5DDD007B2736 /* RxKakaoSDKCommon */; };
 		7A0D32DE2B6F5DDD007B2736 /* RxKakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D32DD2B6F5DDD007B2736 /* RxKakaoSDKUser */; };
+		7A0D32E02B6FF5BD007B2736 /* PeriodCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32DF2B6FF5BD007B2736 /* PeriodCalendar.swift */; };
+		7A0D32E22B6FF81F007B2736 /* PeriodCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32E12B6FF81F007B2736 /* PeriodCalendarViewController.swift */; };
+		7A0D32E42B700AB0007B2736 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7A0D32E32B700AB0007B2736 /* Config.xcconfig */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -127,6 +130,9 @@
 		7A0D32C32B68EEEE007B2736 /* Money-PlannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Money-PlannerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A0D32C52B68EEEE007B2736 /* Money_PlannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Money_PlannerTests.swift; sourceTree = "<group>"; };
 		7A0D32D22B68F303007B2736 /* ShowPreviousGoalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPreviousGoalVC.swift; sourceTree = "<group>"; };
+		7A0D32DF2B6FF5BD007B2736 /* PeriodCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodCalendar.swift; sourceTree = "<group>"; };
+		7A0D32E12B6FF81F007B2736 /* PeriodCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodCalendarViewController.swift; sourceTree = "<group>"; };
+		7A0D32E32B700AB0007B2736 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -330,6 +336,7 @@
 				D20D6FE82B5AF1E9006D6762 /* MainMonthView.swift */,
 				D20D6FEA2B5AF62D006D6762 /* MainWeekDayView.swift */,
 				D20D6FEC2B5B9962006D6762 /* MainCalendarView.swift */,
+				7A0D32DF2B6FF5BD007B2736 /* PeriodCalendar.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -398,6 +405,7 @@
 		7A610AB62B47FA8E00D3096F /* Money-Planner */ = {
 			isa = PBXGroup;
 			children = (
+				7A0D32E32B700AB0007B2736 /* Config.xcconfig */,
 				7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */,
 				7A610AB72B47FA8E00D3096F /* AppDelegate.swift */,
 				7A5767702B639A54009A5972 /* Network */,
@@ -498,6 +506,7 @@
 				552A423D2B671B86007AEAAD /* EditGoalViewController.swift */,
 				7A5767792B67CAD6009A5972 /* ViewController.swift */,
 				7A0D32D22B68F303007B2736 /* ShowPreviousGoalVC.swift */,
+				7A0D32E12B6FF81F007B2736 /* PeriodCalendarViewController.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -658,6 +667,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A610AC42B47FA8F00D3096F /* LaunchScreen.storyboard in Resources */,
+				7A0D32E42B700AB0007B2736 /* Config.xcconfig in Resources */,
 				7A610AC12B47FA8F00D3096F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -679,6 +689,7 @@
 			files = (
 				7A5767722B639A65009A5972 /* NetworkMangager.swift in Sources */,
 				7A0D32BE2B68E9B9007B2736 /* GoalConnectionTestVC.swift in Sources */,
+				7A0D32E22B6FF81F007B2736 /* PeriodCalendarViewController.swift in Sources */,
 				7A610ABC2B47FA8E00D3096F /* LoginViewController.swift in Sources */,
 				7A0D32D32B68F303007B2736 /* ShowPreviousGoalVC.swift in Sources */,
 				206C58D42B623C43008410C1 /* CategoryCell.swift in Sources */,
@@ -715,6 +726,7 @@
 				D20D70042B5FF094006D6762 /* Numeric.swift in Sources */,
 				7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */,
 				7A610AD22B49004200D3096F /* SettingsViewController.swift in Sources */,
+				7A0D32E02B6FF5BD007B2736 /* PeriodCalendar.swift in Sources */,
 				7A0D32BA2B68E15C007B2736 /* GoalRepository.swift in Sources */,
 				7A5767742B639A6F009A5972 /* GoalAPI.swift in Sources */,
 				D20D70022B5FF088006D6762 /* Formatter.swift in Sources */,

@@ -35,15 +35,15 @@ struct PostGoalRequest: Encodable {
     let detail: String
     let startDate: String
     let endDate: String
-    let totalBudget: Int
+    let totalBudget: Int64
     let categoryGoals: [CategoryGoal]
-    let dailyBudgets: [Int]
+    let dailyBudgets: [Int64]
 }
 
 // A substructure for the category goals within the PostGoalRequest
 struct CategoryGoal: Encodable {
-    let categoryId: Int
-    let categoryBudget: Int
+    let categoryId: Int64
+    let categoryBudget: Int64
 }
 
 // The response structure after posting a new goal
@@ -62,11 +62,11 @@ struct SomeDecodableType: Decodable {
 struct Goal : Codable{// => 이것만 있으면 사실상 다 됐다고 보면 돼서... => 이거에서
     var goalEmoji : String
     var goalName : String
-    var goalAmount : Int
-    var usedAmount : Int
+    var goalAmount : Int64
+    var usedAmount : Int64
     var goalStart : Date //=> String으로
     var goalEnd : Date //=> String으로
-    var dailyGoal : [Int]
+    var dailyGoal : [Int64]
     var isEdited : [Bool]
 }
 
@@ -76,11 +76,11 @@ struct Goal : Codable{// => 이것만 있으면 사실상 다 됐다고 보면 �
 //struct LoadGoalResponseElement: Codable {
 //    var goalEmoji: String
 //    var goalName: String
-//    var goalAmount: Int
-//    var usedAmount: Int
+//    var goalAmount: Int64
+//    var usedAmount: Int64
 //    var goalStart: Date
 //    var goalEnd: Date
-//    var dailyGoal: [Int]
+//    var dailyGoal: [Int64]
 //    var isEdited: [Bool]
 //}
 //
@@ -88,7 +88,7 @@ struct Goal : Codable{// => 이것만 있으면 사실상 다 됐다고 보면 �
 struct CreateGoalRequest: Codable {
     var goalEmoji: String
     var goalName: String
-    var goalAmount: Int
+    var goalAmount: Int64
     var goalStart: Date
     var goalEnd: Date
 }

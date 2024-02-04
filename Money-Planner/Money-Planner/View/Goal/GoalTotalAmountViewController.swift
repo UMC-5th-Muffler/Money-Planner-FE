@@ -11,7 +11,9 @@ import UIKit
 
 extension GoalTotalAmountViewController: MoneyAmountTextCellDelegate {
     func didChangeAmountText(to newValue: String?, cell: MoneyAmountTextCell) {
-        if let text = newValue, let amount = Int(text), amount > 0 {
+        // 쉼표를 제거하고 숫자로 변환
+        if let text = newValue?.replacingOccurrences(of: ",", with: ""),
+           let amount = Int64(text), amount > 0 {
             goalCreationManager.goalAmount = amount
             btmbtn.isEnabled = true
         } else {
@@ -60,7 +62,7 @@ class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
         if let indexPath = tableView.indexPathForSelectedRow,
            let cell = tableView.cellForRow(at: indexPath) as? MoneyAmountTextCell,
            let text = cell.textField.text,
-           let amount = Int(text) {
+           let amount = Int64(text) {
             goalCreationManager.goalAmount = amount
         }
 
@@ -119,7 +121,7 @@ class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
         tableView = UITableView()
         tableView.dataSource = self
         tableView.register(MoneyAmountTextCell.self, forCellReuseIdentifier: "MoneyAmountTextCell")
-        tableView.rowHeight = 60
+        tableView.rowHeight = 80
         view.addSubview(tableView)
         
         tableView.separatorStyle = .none  // 셀 사이 구분선 제거

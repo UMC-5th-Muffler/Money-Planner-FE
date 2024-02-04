@@ -9,15 +9,11 @@ import Foundation
 import UIKit
 import Moya
 
-extension GoalPeriodViewController: PeriodSelectionDelegate {
-    func periodSelectionDidSelectDates(startDate: Date, endDate: Date) {
-        periodBtn.setPeriod(startDate: startDate, endDate: endDate)
-        btmbtn.isEnabled = true // btmBtn의 이름은 실제 버튼 변수명에 따라 달라질 수 있음
-        print("변경 실행")
-    }
-}
+//extension GoalPeriodViewController: PeriodSelectionDelegate {
+//
+//}
 
-class GoalPeriodViewController : UIViewController, UINavigationControllerDelegate{
+class GoalPeriodViewController : UIViewController, UINavigationControllerDelegate, PeriodSelectionDelegate {
     
     private var header : HeaderView = HeaderView(title: "")
     private var descriptionView : DescriptionView = DescriptionView(text: "도전할 소비 목표의 기간을 선택해주세요", alignToCenter: false)
@@ -55,6 +51,8 @@ class GoalPeriodViewController : UIViewController, UINavigationControllerDelegat
     @objc func btmButtonTapped() {
         print("목표 금액 등록 화면으로 이동")
         let goalTotalAmountVC = GoalTotalAmountViewController()
+        goalCreationManager.goalStart = periodBtn.startDate
+        goalCreationManager.goalEnd = periodBtn.endDate
         navigationController?.pushViewController(goalTotalAmountVC, animated: true)
     }
     
@@ -73,6 +71,8 @@ class GoalPeriodViewController : UIViewController, UINavigationControllerDelegat
     
     @objc private func backButtonTapped() {
         // 뒤로 가기 기능 구현
+        goalCreationManager.goalStart = nil
+        goalCreationManager.goalEnd = nil
         navigationController?.popViewController(animated: true)
     }
     
@@ -95,17 +95,17 @@ class GoalPeriodViewController : UIViewController, UINavigationControllerDelegat
             periodBtn.topAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: 30),
             periodBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             periodBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            periodBtn.heightAnchor.constraint(equalToConstant: 50)
+            periodBtn.heightAnchor.constraint(equalToConstant: 64)
         ])
     }
     
     @objc private func periodBtnTapped() {
-        let periodSelectionVC = UINavigationController(rootViewController: StartDateSelectionViewController())
-        periodSelectionVC.delegate = self
-        periodSelectionVC.modalPresentationStyle = .popover
-        self.present(periodSelectionVC, animated: true, completion: nil)
+        let startDateSelectionVC = StartDateSelectionViewController()
+        startDateSelectionVC.delegate = self
+        let navController = UINavigationController(rootViewController: startDateSelectionVC)
+        navController.modalPresentationStyle = .popover // 혹은 .popover 등 적절한 스타일 선택
+        self.present(navController, animated: true, completion: nil)
     }
-    
 
     private func setUpBtmBtn(){
         btmbtn.translatesAutoresizingMaskIntoConstraints = false
@@ -116,8 +116,14 @@ class GoalPeriodViewController : UIViewController, UINavigationControllerDelegat
             btmbtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             btmbtn.heightAnchor.constraint(equalToConstant: 50)
         ])
-        
     }
+    
+    func periodSelectionDidSelectDates(startDate: Date, endDate: Date) {
+        periodBtn.setPeriod(startDate: startDate, endDate: endDate)
+        btmbtn.isEnabled = true // btmBtn의 이름은 실제 버튼 변수명에 따라 달라질 수 있음
+        print("변경 실행")
+    }
+    
 }
 
 class PeriodButton: UIButton {
@@ -192,18 +198,20 @@ class PeriodButton: UIButton {
     }
     
     func setPeriod(startDate: Date, endDate: Date) {
+        
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
 
         let startDateString = formatter.string(from: startDate)
         let endDateString = formatter.string(from: endDate)
-        periodLabel.text = "기간: \(startDateString) - \(endDateString)"
+        periodLabel.text = "\(startDateString) - \(endDateString)"
+        periodLabel.textColor = .mpBlack
         
         let calendar = Calendar.current
         let components = calendar.dateComponents([.day], from: startDate, to: endDate)
         if let day = components.day {
-            spanLabel.text = "총 \(day)일"
+            spanLabel.text = day%7==0 ? "\(day/7)주" : "\(day)일"
         }
     }
 }
