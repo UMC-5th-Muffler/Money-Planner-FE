@@ -28,6 +28,9 @@
 		208C90AC2B6E3F8100C67960 /* UnregisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90AB2B6E3F8100C67960 /* UnregisterViewController.swift */; };
 		208C90AE2B6E44FA00C67960 /* TitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90AD2B6E44FA00C67960 /* TitleLabel.swift */; };
 		208C90B02B6E887A00C67960 /* ReasonModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90AF2B6E887A00C67960 /* ReasonModalViewController.swift */; };
+		208C90B22B6F589100C67960 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90B12B6F589100C67960 /* Expense.swift */; };
+		208C90B42B6F66A700C67960 /* ExpenseCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90B32B6F66A700C67960 /* ExpenseCreateRequest.swift */; };
+		208C90B62B6F738F00C67960 /* ExpenseCreateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90B52B6F738F00C67960 /* ExpenseCreateResponse.swift */; };
 		20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */; };
 		20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */; };
 		20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD902B656034008F8AB9 /* OneDayButton.swift */; };
@@ -121,6 +124,9 @@
 		208C90AB2B6E3F8100C67960 /* UnregisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnregisterViewController.swift; sourceTree = "<group>"; };
 		208C90AD2B6E44FA00C67960 /* TitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleLabel.swift; sourceTree = "<group>"; };
 		208C90AF2B6E887A00C67960 /* ReasonModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonModalViewController.swift; sourceTree = "<group>"; };
+		208C90B12B6F589100C67960 /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
+		208C90B32B6F66A700C67960 /* ExpenseCreateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCreateRequest.swift; sourceTree = "<group>"; };
+		208C90B52B6F738F00C67960 /* ExpenseCreateResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCreateResponse.swift; sourceTree = "<group>"; };
 		20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatModalViewController.swift; sourceTree = "<group>"; };
 		20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDayView.swift; sourceTree = "<group>"; };
 		20AFDD902B656034008F8AB9 /* OneDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDayButton.swift; sourceTree = "<group>"; };
@@ -209,6 +215,8 @@
 			children = (
 				20118A102B56A86100B2569E /* ConsumeViewController.swift */,
 				5591601B2B64595E00063F06 /* EvaluationViewController.swift */,
+				208C90B32B6F66A700C67960 /* ExpenseCreateRequest.swift */,
+				208C90B52B6F738F00C67960 /* ExpenseCreateResponse.swift */,
 			);
 			path = Consume;
 			sourceTree = "<group>";
@@ -241,7 +249,6 @@
 		208C90A22B6C00F600C67960 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				208C90922B6AB7DA00C67960 /* ConnectModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -389,10 +396,12 @@
 		7A610ACE2B480B5B00D3096F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				208C90922B6AB7DA00C67960 /* ConnectModel.swift */,
 				7A610AE42B491ED600D3096F /* Dummy.swift */,
 				D20D6FF22B5D67B1006D6762 /* Category.swift */,
 				D20D6FFB2B5FDF00006D6762 /* DailyConsume.swift */,
 				D20D6FFD2B5FDF4C006D6762 /* ConsumeDetail.swift */,
+				208C90B12B6F589100C67960 /* Expense.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -625,6 +634,7 @@
 				D20D6FE52B5AEECB006D6762 /* Date.swift in Sources */,
 				552A423E2B671B86007AEAAD /* EditGoalViewController.swift in Sources */,
 				208C90B02B6E887A00C67960 /* ReasonModalViewController.swift in Sources */,
+				208C90B22B6F589100C67960 /* Expense.swift in Sources */,
 				208C90A82B6D48B300C67960 /* User.swift in Sources */,
 				20AFDD952B65B882008F8AB9 /* ChooseDateView.swift in Sources */,
 				208C90AC2B6E3F8100C67960 /* UnregisterViewController.swift in Sources */,
@@ -645,6 +655,7 @@
 				7A610AE52B491ED600D3096F /* Dummy.swift in Sources */,
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
 				7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */,
+				208C90B42B6F66A700C67960 /* ExpenseCreateRequest.swift in Sources */,
 				208C90AE2B6E44FA00C67960 /* TitleLabel.swift in Sources */,
 				20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */,
 				206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */,
@@ -670,6 +681,7 @@
 				D20D6FDA2B581A05006D6762 /* CustomTabBarController.swift in Sources */,
 				208C90AA2B6D559F00C67960 /* AskViewController.swift in Sources */,
 				7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */,
+				208C90B62B6F738F00C67960 /* ExpenseCreateResponse.swift in Sources */,
 				5591601C2B64595E00063F06 /* EvaluationViewController.swift in Sources */,
 				7A610AD62B49007100D3096F /* BattleViewController.swift in Sources */,
 				D29536F12B4C0DF000EEA81F /* UserDefaults.swift in Sources */,

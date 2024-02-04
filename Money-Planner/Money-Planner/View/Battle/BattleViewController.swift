@@ -65,6 +65,7 @@ class BattleViewController: UIViewController {
         viewModel.connect()
             .subscribe(onNext: { repos in
                 // 네트워크 응답에 대한 처리
+                print("소비등록 성공!")
                 print(repos)
                 apiResultLabel.text = repos.message
             }, onError: { error in
