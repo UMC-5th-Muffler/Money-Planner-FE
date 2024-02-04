@@ -249,7 +249,15 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             headerView.heightAnchor.constraint(equalToConstant: 60)
         ])
         
+//       
+//           let customBarButtonItem = UIBarButtonItem(customView: customHeaderView)
+//            navigationItem.leftBarButtonItem = customBarButtonItem
+//            navigationItem.title = "소비등록"
+//            customBarButtonItem.addBackButtonTarget(target: self, action: #selector(previousScreen), for: .touchUpInside)
         
+    }
+    @objc private func previousScreen(){
+        dismiss(animated: true)
     }
     // 세팅 : 소비금액 추가
     private func setupAmountTextField() {
@@ -681,18 +689,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             }, onFailure: {error in
                 print(error)
             }).disposed(by: disposeBag)
-        //        // Call the view model function to create the expense
-        //        viewModel.createExpense(expenseRequest: expenseRequest)
-        //            .subscribe(onNext: { createdExpense in
-        //                // Handle the created expense
-        //                print("소비등록 성공!")
-        //                print(createdExpense)
-        //                print("Expense created: \(createdExpense)")
-        //            }, onError: { error in
-        //                // Handle the error
-        //                print("Error creating expense: \(error)")
-        //            })
-        //            .disposed(by: disposeBag)
         
     }
 }
+
