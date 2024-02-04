@@ -29,6 +29,10 @@
 		7A0D32CF2B68EF4D007B2736 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D32CE2B68EF4D007B2736 /* RxCocoa */; };
 		7A0D32D12B68EFBB007B2736 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D32D02B68EFBB007B2736 /* RxCocoa */; };
 		7A0D32D32B68F303007B2736 /* ShowPreviousGoalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32D22B68F303007B2736 /* ShowPreviousGoalVC.swift */; };
+		7A0D32D82B6F5DDD007B2736 /* RxKakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D32D72B6F5DDD007B2736 /* RxKakaoSDK */; };
+		7A0D32DA2B6F5DDD007B2736 /* RxKakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D32D92B6F5DDD007B2736 /* RxKakaoSDKAuth */; };
+		7A0D32DC2B6F5DDD007B2736 /* RxKakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D32DB2B6F5DDD007B2736 /* RxKakaoSDKCommon */; };
+		7A0D32DE2B6F5DDD007B2736 /* RxKakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D32DD2B6F5DDD007B2736 /* RxKakaoSDKUser */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -198,10 +202,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A610ADE2B4900C800D3096F /* Moya in Frameworks */,
+				7A0D32DA2B6F5DDD007B2736 /* RxKakaoSDKAuth in Frameworks */,
 				7A610ADC2B4900C800D3096F /* CombineMoya in Frameworks */,
 				7A0D32D12B68EFBB007B2736 /* RxCocoa in Frameworks */,
+				7A0D32DC2B6F5DDD007B2736 /* RxKakaoSDKCommon in Frameworks */,
 				7A610AE22B4900C800D3096F /* RxMoya in Frameworks */,
+				7A0D32DE2B6F5DDD007B2736 /* RxKakaoSDKUser in Frameworks */,
 				7A610AE02B4900C800D3096F /* ReactiveMoya in Frameworks */,
+				7A0D32D82B6F5DDD007B2736 /* RxKakaoSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -585,6 +593,10 @@
 				7A610ADF2B4900C800D3096F /* ReactiveMoya */,
 				7A610AE12B4900C800D3096F /* RxMoya */,
 				7A0D32D02B68EFBB007B2736 /* RxCocoa */,
+				7A0D32D72B6F5DDD007B2736 /* RxKakaoSDK */,
+				7A0D32D92B6F5DDD007B2736 /* RxKakaoSDKAuth */,
+				7A0D32DB2B6F5DDD007B2736 /* RxKakaoSDKCommon */,
+				7A0D32DD2B6F5DDD007B2736 /* RxKakaoSDKUser */,
 			);
 			productName = "Money-Planner";
 			productReference = 7A610AB42B47FA8E00D3096F /* Money-Planner.app */;
@@ -1045,6 +1057,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7A0D32CD2B68EF3A007B2736 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxCocoa;
+		};
+		7A0D32D72B6F5DDD007B2736 /* RxKakaoSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D32D42B6CAB92007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDK;
+		};
+		7A0D32D92B6F5DDD007B2736 /* RxKakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D32D42B6CAB92007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKAuth;
+		};
+		7A0D32DB2B6F5DDD007B2736 /* RxKakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D32D42B6CAB92007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKCommon;
+		};
+		7A0D32DD2B6F5DDD007B2736 /* RxKakaoSDKUser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D32D42B6CAB92007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKUser;
 		};
 		7A610ADB2B4900C800D3096F /* CombineMoya */ = {
 			isa = XCSwiftPackageProductDependency;

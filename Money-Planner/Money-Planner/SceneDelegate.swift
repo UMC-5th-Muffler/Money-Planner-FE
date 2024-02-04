@@ -6,11 +6,16 @@
 //
 
 import UIKit
+import RxSwift
 import RxMoya
+import KakaoSDKAuth
+import KakaoSDKUser
+import KakaoSDKCommon
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
+    var needsLogin : Bool = true // false로 나중에 수정
     
     //기존 storyboard 대신 진입점(rootViewController) 설정
     func scene(_ scene: UIScene,
@@ -20,28 +25,61 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         
-        ///userdefaults 안에서 이전 로그인 여부 파악하고 자동로그인.
-        ///없으면 로그인 화면으로 이동
-        let loginVC = UINavigationController(rootViewController: LoginViewController())
+        //카카오 로그인 필요성 확인
+        // Class member property
+        let disposeBag = DisposeBag()
+                            
+        if (AuthApi.hasToken()) {
+            UserApi.shared.rx.accessTokenInfo()
+                .subscribe(onSuccess:{ (accessTokenInfo) in
+                    //토큰 유효성 체크 성공(필요 시 토큰 갱신됨)
+                    print("accessTokenInfo() success.")
+                    
+                    //do something
+                    
+                    self.needsLogin = false
+                    _ = accessTokenInfo
+                    
+                }, onFailure: {error in
+                    if let sdkError = error as? SdkError, sdkError.isInvalidTokenError() == true  {
+                        //로그인 필요
+                        self.needsLogin = true
+                    }
+                    else {
+                        //기타 에러
+                        print(error)
+                    }
+                })
+                .disposed(by: disposeBag)
+        }
+        else {
+            //로그인 필요
+            self.needsLogin = true
+        }
         
-        ///이후 tabbar로 이동
-        let tabBarController = CustomTabBarController()
+        // vc 제작
         
-        let homeVC = UINavigationController(rootViewController: HomeViewController())
-        let goalVC = UINavigationController(rootViewController: GoalMainViewController())
-        let battleVC = UINavigationController(rootViewController: BattleViewController())
-        let settingVC = UINavigationController(rootViewController: SettingsViewController())
-        
-        
-        homeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(systemName: "house"), tag: 0)
-        goalVC.tabBarItem = UITabBarItem(title: "목표", image: UIImage(systemName: "list.clipboard"), tag: 1)
-        battleVC.tabBarItem = UITabBarItem(title: "소비 배틀", image: UIImage(systemName: "person"), tag: 2)
-        settingVC.tabBarItem = UITabBarItem(title: "마이페이지", image: UIImage(systemName: "person"), tag: 3)
-        
-        tabBarController.setViewControllers([homeVC, goalVC, battleVC, settingVC], animated: true)
-        
-        window?.rootViewController = tabBarController
-//        window?.rootViewController = ViewController()
+        if needsLogin {
+            let loginVC = UINavigationController(rootViewController: LoginViewController())
+            window?.rootViewController = loginVC
+        }else{
+            let tabBarController = CustomTabBarController()
+            
+            let homeVC = UINavigationController(rootViewController: HomeViewController())
+            let goalVC = UINavigationController(rootViewController: GoalMainViewController())
+            let battleVC = UINavigationController(rootViewController: BattleViewController())
+            let settingVC = UINavigationController(rootViewController: SettingsViewController())
+            
+            
+            homeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(systemName: "house"), tag: 0)
+            goalVC.tabBarItem = UITabBarItem(title: "목표", image: UIImage(systemName: "list.clipboard"), tag: 1)
+            battleVC.tabBarItem = UITabBarItem(title: "소비 배틀", image: UIImage(systemName: "person"), tag: 2)
+            settingVC.tabBarItem = UITabBarItem(title: "마이페이지", image: UIImage(systemName: "person"), tag: 3)
+            
+            tabBarController.setViewControllers([homeVC, goalVC, battleVC, settingVC], animated: true)
+            
+            window?.rootViewController = tabBarController
+        }
         
         window?.makeKeyAndVisible()
         
@@ -73,6 +111,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+    }
+    
+    //kakao 권한용
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.rx.handleOpenUrl(url: url)
+            }
+        }
     }
     
     

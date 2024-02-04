@@ -6,14 +6,26 @@
 //
 
 import UIKit
+import KakaoSDKCommon
+import RxKakaoSDKCommon
+import KakaoSDKAuth
+import RxKakaoSDKAuth
+import KakaoSDKUser
+import RxKakaoSDKUser
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        KakaoSDK.initSDK(appKey: "150fd3f3b9b656ef2c160bf37d9ecb70")
         return true
     }
+
+//    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+//        // Override point for customization after application launch.
+//        return true
+//    }
 
     // MARK: UISceneSession Lifecycle
 
