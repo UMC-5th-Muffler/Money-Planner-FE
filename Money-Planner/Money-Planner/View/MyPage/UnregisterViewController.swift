@@ -79,8 +79,8 @@ class UnregisterViewController: UIViewController,UITextFieldDelegate,UITextViewD
         
         return text
     }()
-    private let titleLabel : TitleLabel = {
-        let label = TitleLabel()
+    private let titleLabel : UnregisterTitleLabel = {
+        let label = UnregisterTitleLabel()
         label.font = .mpFont26B()
         label.text = "머플러를 탈퇴하기 전에\n확인해주세요"
         label.numberOfLines = 2

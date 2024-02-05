@@ -10,10 +10,6 @@ import RxSwift
 import RxMoya
 import Moya
 
-// 각자 맡은 파트 알아서 수정해서 사용
-// MyRepo에 활용할 모델 이름 넣으면 됩니다. 만약 connect Model 을 만들었다하면 ConnectModel을 MyRepo 자리에 넣는 겁니다.
-// 헷갈린다면 func connect()를 참고하세요.
-
 class MufflerViewModel {
     private let provider = MoyaProvider<MufflerAPI>().rx
 
@@ -61,14 +57,26 @@ class MufflerViewModel {
 //    }
 //
 //    // Expense Controller
-//    func createExpense() -> Observable<MyRepo> {
-//        return provider.request(.createExpense)
+    // 소비등록
+    func createExpense(expenseRequest: ExpenseCreateRequest) -> Single<ExpenseCreateResponse> {
+        return provider.request(.createExpense(expenseRequest: expenseRequest))
+                .map(ExpenseCreateResponse.self)
+    }
+//
+//    func updateExpense(expenseId: String, expenseRequest: ExpenseCreateRequest) -> Observable<MyRepo> {
+//        return provider.request(.updateExpense(expenseId: expenseId, expenseRequest: expenseRequest))
 //            .map(MyRepo.self)
 //            .asObservable()
 //    }
 //
 //    func getExpense(expenseId: String) -> Observable<MyRepo> {
 //        return provider.request(.getExpense(expenseId: expenseId))
+//            .map(MyRepo.self)
+//            .asObservable()
+//    }
+//
+//    func deleteExpense(expenseId: String) -> Observable<MyRepo> {
+//        return provider.request(.deleteExpense(expenseId: expenseId))
 //            .map(MyRepo.self)
 //            .asObservable()
 //    }

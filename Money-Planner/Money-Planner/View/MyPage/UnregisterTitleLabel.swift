@@ -1,14 +1,14 @@
 //
-//  TitleLabel.swift
+//  UnregisterTitleLabel.swift
 //  Money-Planner
 //
-//  Created by p_kxn_g on 2/3/24.
+//  Created by p_kxn_g on 2/5/24.
 //
 
 import Foundation
 import UIKit
 
-class TitleLabel: MPLabel {
+class UnregisterTitleLabel: MPLabel {
     // 줄 바꿈 간격을 조절하기 위한 프로퍼티
     var lineSpacing: CGFloat = 8.0 {
         didSet {
