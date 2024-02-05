@@ -225,15 +225,15 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
         view1.translatesAutoresizingMaskIntoConstraints = false
         view2.delegate = self
         view2.translatesAutoresizingMaskIntoConstraints = false
-        stackView2.backgroundColor = .red
-        stackView.backgroundColor = .red
+        //stackView2.backgroundColor = .red
+        //stackView.backgroundColor = .red
 
     }
     func presentCustomModal() {
         // Instantiate your custom modal view
         customModal.backgroundColor = UIColor.mpWhite
         view.addSubview(customModal)
-        view.backgroundColor = .red
+       // view.backgroundColor = .red
         customModal.center = view.center
 
         

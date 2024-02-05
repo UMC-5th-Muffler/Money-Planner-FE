@@ -36,7 +36,7 @@ class CheckBtn: UIButton {
     // 이미지 업데이트 메소드
     private func updateImage() {
         let systemName = "checkmark.circle.fill"
-        let color = isChecked ? UIColor.mpMainColor : UIColor.mpGray
+        let color = isChecked ? UIColor.mpMainColor : UIColor.mpLightGray
         setImage(UIImage(systemName: systemName)?.withTintColor(color, renderingMode: .alwaysOriginal), for: .normal)
     }
     

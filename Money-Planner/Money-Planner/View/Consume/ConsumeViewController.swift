@@ -11,7 +11,8 @@ import RxSwift
 import RxCocoa
 
 class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelectionDelegate,CalendarSelectionDelegate,RepeatModalViewDelegate,AddCategoryViewDelegate {
-    
+    let StackView = UIStackView()
+
     // api 연결
     let disposeBag = DisposeBag()
     let viewModel = MufflerViewModel()
@@ -62,11 +63,11 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     //소비금액 입력필드 추가
     
     private let amountTextField: UITextField = MainTextField(placeholder: "소비금액을 입력하세요", iconName: "icon_Wallet", keyboardType: .numberPad)
-    
+
     // 소비금액 실시간 금액 표시
     private let amountLabel: UILabel = {
         let label = UILabel()
-        label.text = "0 원"
+        label.text = "0원"
         label.font = UIFont.mpFont14M()
         label.textColor = UIColor.mpDarkGray
         return label
@@ -74,24 +75,34 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     // 제목 에러 표시
     private let titleErrorLabel: UILabel = {
         let label = UILabel()
-        label.text = "최대 16글자로 입력해주세요"
-        label.font = UIFont.systemFont(ofSize : 11)// 폰트 사이즈
+        label.text = "\t 최대 16글자로 입력해주세요"
+        label.font = .mpFont14M()
         label.textColor = UIColor.mpRed
         return label
     }()
-    let catContainerView : UIView = {
-        let uiView = UIView()
-        uiView.backgroundColor = UIColor.mpGypsumGray
-        uiView.layer.cornerRadius = 8
-        uiView.translatesAutoresizingMaskIntoConstraints = false // Add this line
-        return uiView
+
+
+    let catContainerView = TextFieldContainerView()
+    let calContainerView = TextFieldContainerView()
+    
+    let titleDeleteContainer : UIStackView = {
+        let v = UIStackView()
+        v.axis = .vertical
+        v.alignment = .leading
+        return v
+    }()
+    let memoDeleteContainer : UIStackView = {
+        let v = UIStackView()
+        v.axis = .vertical
+        v.alignment = .leading
+        return v
     }()
     private let cateogoryTextField = MainTextField(placeholder: "카테고리를 입력해주세요", iconName: "icon_category", keyboardType: .default)
     
     // 카테고리 선택 버튼 추가
     lazy var categoryChooseButton: UIButton = {
         let button = UIButton()
-        let arrowImage = UIImage(systemName:"pencil") // Replace "arrow_down" with the actual image name in your assets
+        let arrowImage = UIImage(systemName:"chevron.down")?.withTintColor(.mpBlack, renderingMode: .alwaysOriginal)
         button.setImage(arrowImage, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = true  // 클릭 활성화
@@ -116,16 +127,51 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         cateogoryTextField.changeIcon(iconName: iconName)
         checkAndEnableCompleteButton()
     }
-    
+    let deleteButton: UIButton = {
+        
+        let arrowImage = UIImage(systemName: "xmark")?.withTintColor(.mpWhite, renderingMode: .alwaysOriginal)
+        let button = UIButton()
+        button.setImage(arrowImage, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isUserInteractionEnabled = true
+        button.backgroundColor = .mpMidGray
+        button.layer.cornerRadius = 9
+        button.layer.masksToBounds = true
+        
+        return button
+    }()
+    @objc
+    private func deleteTitle() {
+        print("제목의 내용을 삭제합니다")
+        titleTextField.text = ""
+        titleDeleteContainer.removeArrangedSubview(deleteButton)
+        deleteButton.removeFromSuperview()
+        StackView.removeArrangedSubview(titleErrorLabel)
+        titleErrorLabel.removeFromSuperview()
+        titleTextField.layer.borderColor = UIColor.clear.cgColor
+        titleTextField.layer.borderWidth = 0.0
+    }
+    let deleteButton2 : UIButton = {
+        let arrowImage = UIImage(systemName: "xmark")?.withTintColor(.mpWhite, renderingMode: .alwaysOriginal)
+        let button = UIButton()
+        button.setImage(arrowImage, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isUserInteractionEnabled = true
+        button.backgroundColor = .mpMidGray
+        button.layer.cornerRadius = 9
+        button.layer.masksToBounds = true
+        //button.addTarget(self, action: #selector(delete), for: .touchUpInside)
+        return button
+    }()
+    @objc
+    private func deleteTitle2() {
+        print("메모의 내용을 삭제합니다")
+        memoTextField.text = ""
+        memoDeleteContainer.removeArrangedSubview(deleteButton2)
+        deleteButton2.removeFromSuperview()
+    }
     private let titleTextField = MainTextField(placeholder: "제목", iconName: "icon_Paper", keyboardType: .default)
     private let memoTextField = MainTextField(placeholder: "메모", iconName: "icon_Edit", keyboardType: .default)
-    let calContainerView : UIView = {
-        let uiView = UIView()
-        uiView.layer.cornerRadius = 8
-        uiView.backgroundColor = .mpGypsumGray
-        uiView.translatesAutoresizingMaskIntoConstraints = false // Add this line
-        return uiView
-    }()
     private let calTextField = MainTextField(placeholder: "", iconName: "icon_date", keyboardType: .default)
     // 카테고리 선택 버튼 추가
     lazy var calChooseButton: UIButton = {
@@ -136,7 +182,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         button.setTitleColor(UIColor.mpMainColor, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = true  //클릭 활성화
-        button.backgroundColor = .red
+        //button.backgroundColor = .red
         button.addTarget(self, action: #selector(showCalModal), for: .touchUpInside) //클릭시 모달 띄우기
         return button
         
@@ -168,7 +214,6 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     @objc
     private func showCalModal() {
         print("클릭 : 소비날짜 버튼 클리")
-        calChooseButton.backgroundColor = UIColor.green
         let calModalVC = CalendartModalViewController()
         calModalVC.delegate = self
         present(calModalVC, animated: true)
@@ -218,6 +263,10 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         
         // 헤더
         setupHeader()
+        // 완료 버튼 추가
+        setupCompleteButton()
+        setupLayout()
+
         // 소비금액
         setupAmountTextField()
         // 카테고리
@@ -225,53 +274,75 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         // 제목
         setuptitleTextField()
         // 메모
-        setupmemoTextField()
+        setupMemoTextField()
         // 날짜
         setupcalTextField()
         // 반복
         setupRepeatButton()
-        // 완료 버튼 추가
-        setupCompleteButton()
+        setupAmountLabel()
+        
+        deleteButton.addTarget(self, action: #selector(deleteTitle), for: .touchUpInside)
+        deleteButton2.addTarget(self, action: #selector(deleteTitle2), for: .touchUpInside)
+
+        memoTextField.delegate = self
+
         
     }
     
     
     // 세팅 : 헤더
     private func setupHeader(){
-        view.addSubview(headerView)
-        headerView.backgroundColor = .red
+//        view.addSubview(headerView)
+//        headerView.backgroundColor = .red
+//        
+//        headerView.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            headerView.topAnchor.constraint(equalTo:    view.safeAreaLayoutGuide.topAnchor),
+//            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            headerView.heightAnchor.constraint(equalToConstant: 60)
+//        ])
         
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 60)
-        ])
+        // 네비게이션 아이템 타이틀 폰트 설정
+        if let navigationBar = navigationController?.navigationBar {
+            let navBarTitleFont = UIFont.mpFont18B()
+            let navBarTitleTextAttributes: [NSAttributedString.Key: Any] = [
+                .font: navBarTitleFont,
+                .foregroundColor: UIColor.black // 타이틀 색상 설정
+            ]
+            navigationBar.titleTextAttributes = navBarTitleTextAttributes
+        }
         
-//       
-//           let customBarButtonItem = UIBarButtonItem(customView: customHeaderView)
-//            navigationItem.leftBarButtonItem = customBarButtonItem
-//            navigationItem.title = "소비등록"
-//            customBarButtonItem.addBackButtonTarget(target: self, action: #selector(previousScreen), for: .touchUpInside)
-        
-    }
+        let BackButton : UIBarButtonItem = {
+            let btn = UIBarButtonItem()
+            if let chevronImage = UIImage(systemName: "chevron.left")?.withRenderingMode(.alwaysOriginal) {
+                let darkGrayChevron = chevronImage.withTintColor(.mpGray)
+                btn.image  = darkGrayChevron
+                //btn.addTarget(target, action: action, for: controlEvents) // 뒤로 가기
+            }
+                return btn
+            }()
+            
+            navigationItem.leftBarButtonItem = BackButton
+            navigationItem.title = "소비내역 입력"
+            
+        }
+    
     @objc private func previousScreen(){
         dismiss(animated: true)
     }
+   
     // 세팅 : 소비금액 추가
     private func setupAmountTextField() {
-        view.addSubview(amountTextField)
+        NSLayoutConstraint.activate([
+            amountTextField.heightAnchor.constraint(equalToConstant: 64),
+            amountTextField.leadingAnchor.constraint(equalTo: StackView.leadingAnchor),
+            amountTextField.trailingAnchor.constraint(equalTo: StackView.trailingAnchor)
+        ])
         
         amountTextField.delegate = self
         amountTextField.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            amountTextField.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 20),
-            amountTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
-            amountTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
-            amountTextField.heightAnchor.constraint(equalToConstant: 64)
-        ])
+
         // 원 추가
         let infoLabel: UILabel = {
             let label = UILabel()
@@ -281,46 +352,51 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             return label
         }()
         
-        let wonContainerView = UIView(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
+        let wonContainerView = UIStackView()
+
+        NSLayoutConstraint.activate([
+   
+            wonContainerView.widthAnchor.constraint(equalToConstant: 45),
+            wonContainerView.heightAnchor.constraint(equalToConstant: 50),
+        ])
         wonContainerView.addSubview(infoLabel)
-        
+
         // Set the frame for infoLabel relative to wonContainerView
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
+   
             infoLabel.leadingAnchor.constraint(equalTo: wonContainerView.leadingAnchor),
-            infoLabel.trailingAnchor.constraint(equalTo: wonContainerView.trailingAnchor,constant: -25),
+            infoLabel.trailingAnchor.constraint(equalTo: wonContainerView.trailingAnchor),
             infoLabel.topAnchor.constraint(equalTo: wonContainerView.topAnchor),
-            infoLabel.bottomAnchor.constraint(equalTo: wonContainerView.bottomAnchor)
+            infoLabel.bottomAnchor.constraint(equalTo: wonContainerView.bottomAnchor),
         ])
-        
+        // amountTextField의 rightAnchor를 이용하여 wonContainerView의 위치를 설정합니다.
+        // 여백을 조절하여 텍스트 필드에서 원을 떨어뜨립니다.
         amountTextField.rightView = wonContainerView
         amountTextField.rightViewMode = .always
-        // 입력 중인 금액 표시 레이블 추가
-        view.addSubview(amountLabel)
+    
+    }
+
+    private func setupAmountLabel(){
+       
         amountLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            amountLabel.topAnchor.constraint(equalTo: amountTextField.bottomAnchor, constant: 8),
-            amountLabel.leadingAnchor.constraint(equalTo: amountTextField.leadingAnchor),
-            amountLabel.trailingAnchor.constraint(equalTo: amountTextField.trailingAnchor),
+            
             amountLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
-    
     // 세팅 : 카테고리 텍스트 필트
     private func setupCategoryTextField(){
-        
-        view.addSubview(catContainerView)
-        NSLayoutConstraint.activate([
+                NSLayoutConstraint.activate([
             
-            catContainerView.topAnchor.constraint(equalTo: amountLabel.bottomAnchor, constant: 10),
-            catContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
-            catContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+//            catContainerView.topAnchor.constraint(equalTo: amountTextField.bottomAnchor, constant: 10),
+                    catContainerView.leadingAnchor.constraint(equalTo: StackView.leadingAnchor),
+                    catContainerView.trailingAnchor.constraint(equalTo: StackView.trailingAnchor),
             catContainerView.heightAnchor.constraint(equalToConstant: 64)
         ])
         
         let buttonContainerView = UIView()
         buttonContainerView.translatesAutoresizingMaskIntoConstraints = false
-        buttonContainerView.backgroundColor = .mpMainColor
         catContainerView.addSubview(buttonContainerView)
         
         NSLayoutConstraint.activate([
@@ -373,55 +449,77 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     
     // 세팅 : 제목 텍스트 필트
     private func setuptitleTextField(){
-        view.addSubview(titleTextField)
         titleTextField.translatesAutoresizingMaskIntoConstraints = false
         titleTextField.delegate = self
         
         NSLayoutConstraint.activate([
-            
-            titleTextField.topAnchor.constraint(equalTo: catContainerView.bottomAnchor, constant: 10),
-            titleTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
-            titleTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            titleTextField.leadingAnchor.constraint(equalTo: StackView.leadingAnchor),
+            titleTextField.trailingAnchor.constraint(equalTo: StackView.trailingAnchor),
             titleTextField.heightAnchor.constraint(equalToConstant: 64)
         ])
+        // 삭제 버튼 추가
+        NSLayoutConstraint.activate([
+   
+            titleDeleteContainer.widthAnchor.constraint(equalToConstant: 45),
+            titleDeleteContainer.heightAnchor.constraint(equalToConstant: 18),
+        ])
+
+        // Set the frame for infoLabel relative to wonContainerView
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            //deleteButton.centerYAnchor.constraint(equalTo: titleDeleteContainer.centerYAnchor),
+            deleteButton.widthAnchor.constraint(equalToConstant: 18),
+            deleteButton.heightAnchor.constraint(equalToConstant: 18),
+           
+        ])
+        // amountTextField의 rightAnchor를 이용하여 wonContainerView의 위치를 설정합니다.
+        // 여백을 조절하여 텍스트 필드에서 원을 떨어뜨립니다.
+        titleTextField.rightView = titleDeleteContainer
+        titleTextField.rightViewMode = .always
         
     }
     
     
     // 세팅 : 메모 텍스트 필트
-    private func setupmemoTextField(){
-        view.addSubview(memoTextField)
+    private func setupMemoTextField() {
         memoTextField.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
-            
-            memoTextField.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 10),
-            memoTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
-            memoTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            memoTextField.leadingAnchor.constraint(equalTo: StackView.leadingAnchor),
+            memoTextField.trailingAnchor.constraint(equalTo: StackView.trailingAnchor),
             memoTextField.heightAnchor.constraint(equalToConstant: 64)
         ])
-        
-        // 간격 24
-        let blank = UIView(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
-        memoTextField.rightView = blank
+        // 삭제 버튼 추가
+        NSLayoutConstraint.activate([
+   
+            memoDeleteContainer.widthAnchor.constraint(equalToConstant: 45),
+            memoDeleteContainer.heightAnchor.constraint(equalToConstant: 18),
+        ])
+
+        // Set the frame for infoLabel relative to wonContainerView
+        deleteButton2.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            //deleteButton.centerYAnchor.constraint(equalTo: titleDeleteContainer.centerYAnchor),
+            deleteButton2.widthAnchor.constraint(equalToConstant: 18),
+            deleteButton2.heightAnchor.constraint(equalToConstant: 18),
+           
+        ])
+        // amountTextField의 rightAnchor를 이용하여 wonContainerView의 위치를 설정합니다.
+        // 여백을 조절하여 텍스트 필드에서 원을 떨어뜨립니다.
+        memoTextField.rightView = memoDeleteContainer
         memoTextField.rightViewMode = .always
     }
     // 세팅 : 달력 텍스트 필트
     private func setupcalTextField(){
-        
-        view.addSubview(calContainerView)
         NSLayoutConstraint.activate([
             
-            calContainerView.topAnchor.constraint(equalTo: memoTextField.bottomAnchor, constant: 10),
-            calContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
-            calContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            calContainerView.leadingAnchor.constraint(equalTo: StackView.leadingAnchor),
+            calContainerView.trailingAnchor.constraint(equalTo: StackView.trailingAnchor),
             calContainerView.heightAnchor.constraint(equalToConstant: 64)
         ])
         
         let calbuttonContainerView = UIView()
         calbuttonContainerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        calbuttonContainerView.backgroundColor = .mpMainColor
         calContainerView.addSubview(calbuttonContainerView)
         
         NSLayoutConstraint.activate([
@@ -470,7 +568,6 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     // 세팅 : 반복 버튼 + 반복 선택 결과 표시
     private func setupRepeatButton(){
         
-        view.addSubview(containerview)
         NSLayoutConstraint.activate([
             checkButton.widthAnchor.constraint(equalToConstant:24),
             checkButton.heightAnchor.constraint(equalToConstant: 24),
@@ -478,10 +575,11 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         ])
         containerview.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            containerview.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            containerview.heightAnchor.constraint(equalToConstant: 30),
-            containerview.topAnchor.constraint(equalTo: calContainerView.bottomAnchor, constant: 16),
-            containerview.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 16)
+            
+            containerview.leadingAnchor.constraint(equalTo: StackView.leadingAnchor),
+            containerview.trailingAnchor.constraint(equalTo: StackView.trailingAnchor),
+            containerview.heightAnchor.constraint(equalToConstant: 30)
+            
             
         ])
         // >> containerview.backgroundColor = .red
@@ -497,7 +595,34 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         repeatLabel.translatesAutoresizingMaskIntoConstraints = false
         
     }
-    
+    private func setupLayout(){
+        StackView.axis = .vertical
+        StackView.distribution = .fill
+        StackView.alignment = .leading
+        StackView.spacing = 12
+        
+        view.addSubview(StackView)
+        StackView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            StackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 35),
+            StackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+            StackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            StackView.bottomAnchor.constraint(equalTo: completeButton.topAnchor, constant: 10)
+        ])
+        
+        StackView.addArrangedSubview(amountTextField)
+        StackView.addArrangedSubview(catContainerView)
+        StackView.addArrangedSubview(titleTextField)
+        StackView.addArrangedSubview(memoTextField)
+        StackView.addArrangedSubview(calContainerView)
+        StackView.addArrangedSubview(containerview)
+
+        let blank = UIView()
+        StackView.addArrangedSubview(blank)
+
+
+    }
     // 세팅 : 완료 버튼
     private func setupCompleteButton(){
         completeButton.isEnabled = false
@@ -508,12 +633,11 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             completeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             completeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             completeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            completeButton.heightAnchor.constraint(equalToConstant: 50)
+            completeButton.heightAnchor.constraint(equalToConstant: 56)
         ])
         completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)    }
     // UITextFieldDelegate 메서드 구현
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
         // Check if the current text field is amountTextField
         if textField == amountTextField {
             // 입력 중인 금액 업데이트
@@ -524,11 +648,14 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             amountTextField.layer.borderWidth = 0.0
             // 입력된 것이 없는 경우
             if newText.isEmpty{
-                amountLabel.text = "0 원"
-                
+                StackView.removeArrangedSubview(amountLabel)
+                amountLabel.removeFromSuperview()
             }
             // 입력된 금액이 있는 경우
             else{
+                // amountLabel
+                StackView.insertArrangedSubview(amountLabel, at: 1)
+
                 amountAdd = true // 입력된 것이 있는 것 확인
                 checkAndEnableCompleteButton()
                 // 유효한 숫자인 경우
@@ -546,7 +673,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
                     // 입력할 수 있는 범위를 초과한 경우
                     if digitOfAmount > 16 {
                         // 소비금액 보여주는 곳에 에러 메세지 표시
-                        amountLabel.text = "입력할 수 있는 범위를 초과했습니다."
+                        amountLabel.text = "\t입력할 수 있는 범위를 초과했습니다."
                         amountLabel.textColor = .red
                         // 소비금액 텍스트필드에 에러 표시 - 빨간색 스트로크
                         amountTextField.layer.borderColor = UIColor.mpRed.cgColor
@@ -556,7 +683,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
                         
                         // 입력할 수 있는 범위인 경우
                     } else {
-                        amountLabel.text = "\(numberToKorean(amount))  원" // 숫자 -> 한국어로 변경하여 입력함
+                        amountLabel.text = "\t\(numberToKorean(amount))원" // 숫자 -> 한국어로 변경하여 입력함
                         // 소비금액 텍스트필드에 에러 표시 취소 - 빨간색 스트로크
                         amountTextField.layer.borderColor = UIColor.clear.cgColor
                         amountTextField.layer.borderWidth = 0.0
@@ -567,7 +694,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
                     
                     
                     print("유효한 숫자가 아님 : ")
-                    amountLabel.text = "유효한 숫자가 아닙니다."
+                    amountLabel.text = "    유효한 숫자가 아닙니다."
                     amountLabel.textColor = UIColor.mpRed
                     // 소비금액 텍스트필드에 에러 표시 - 빨간색 스트로크
                     amountTextField.layer.borderColor = UIColor.mpRed.cgColor
@@ -591,7 +718,16 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             if !newText.isEmpty {
                 titleAdd = true // 입력된 것이 있는 것 확인
                 checkAndEnableCompleteButton()
+                if titleDeleteContainer.arrangedSubviews.contains(deleteButton) == false {
+                    print("추가 완료")
+                           titleDeleteContainer.addArrangedSubview(deleteButton)
+                       }
             }
+            else{
+                titleDeleteContainer.removeArrangedSubview(deleteButton)
+                deleteButton.removeFromSuperview()
+            }
+
             
             // Apply character count limit
             if newText.count > 16 {
@@ -600,33 +736,54 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
                 titleTextField.layer.borderWidth = 1.0
                 view.addSubview(titleErrorLabel)
                 titleErrorLabel.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate([
-                    titleErrorLabel.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 8),
-                    titleErrorLabel.leadingAnchor.constraint(equalTo: titleTextField.leadingAnchor),
-                    titleErrorLabel.trailingAnchor.constraint(equalTo: titleTextField.trailingAnchor),
-                    titleErrorLabel.heightAnchor.constraint(equalToConstant: 20)
-                ])
-                // Move memoTextField down
-                memoTextField.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate([
-                    memoTextField.topAnchor.constraint(equalTo: titleErrorLabel.bottomAnchor, constant: 30), // Adjust the constant as needed
-                    memoTextField.leadingAnchor.constraint(equalTo: titleTextField.leadingAnchor),
-                    memoTextField.trailingAnchor.constraint(equalTo: titleTextField.trailingAnchor),
-                    memoTextField.heightAnchor.constraint(equalToConstant: 64)
-                ])
-                
+                // titleErrorLabel 레이아웃에 추가
+                // 제목 텍스트 필드의 인덱스 찾기
+                if let index = indexOfLabel(text : titleTextField) {
+                    StackView.insertArrangedSubview(titleErrorLabel, at: index+1)
+                }
                 
                 return false
+            }else{
+                
+                StackView.removeArrangedSubview(titleErrorLabel)
+                titleErrorLabel.removeFromSuperview()
+                titleTextField.layer.borderColor = UIColor.clear.cgColor
+                titleTextField.layer.borderWidth = 0.0
+                return true
             }
-            titleTextField.layer.borderColor = UIColor.clear.cgColor
-            titleTextField.layer.borderWidth = 0.0
+            
+        }else if textField == memoTextField {
+            guard let text = textField.text else { return false }
+            let newText = (text as NSString).replacingCharacters(in: range, with: string)
+            
+            if !newText.isEmpty {
+                if memoDeleteContainer.arrangedSubviews.contains(deleteButton2) == false {
+                    print("추가 완료")
+                    memoDeleteContainer.addArrangedSubview(deleteButton2)
+                }
+            }
+            else{
+                memoDeleteContainer.removeArrangedSubview(deleteButton2)
+                deleteButton2.removeFromSuperview()
+            }
+            return true
         }
-        
-        return true
+        else{
+            return true
+            
+        }
         
         
     }
-    
+    // 인덱스 찾아내는 함수
+    func indexOfLabel(text : MainTextField) -> Int? {
+            return StackView.arrangedSubviews.firstIndex { view in
+                if let i = view as? MainTextField, i == titleTextField {
+                    return true
+                }
+                return false
+            }
+        }
     //숫자를 한글로 표현하는 함수(2000 -> 0부터 9999999999999999까지가능)
     func numberToKorean(_ number: Int) -> String {
         let unitLarge = ["", "만", "억", "조"]
