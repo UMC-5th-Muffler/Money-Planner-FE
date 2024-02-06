@@ -18,7 +18,7 @@ struct Goal : Codable {
 
     enum CodingKeys: String, CodingKey {
         case goalID = "goalId"
-        case goalTitle = "title"
+        case goalTitle
         case goalBudget, startDate, endDate, totalCost, icon
     }
 }

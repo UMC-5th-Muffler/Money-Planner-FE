@@ -95,6 +95,13 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         return label
     }()
     
+    let arrow_small : UIImageView = {
+        let img = UIImageView()
+        img.translatesAutoresizingMaskIntoConstraints = false
+        img.image = UIImage(named: "btn_arrow_small")
+        return img
+    }()
+    
     var nowGoal : Goal?
     var dailyList : [CalendarDaily?] = []
     
@@ -227,7 +234,7 @@ extension HomeViewController{
         
         // 제목 레이블 추가
         
-        var goalText = self.nowGoal?.goalTitle
+        let goalText = self.nowGoal?.goalTitle
         
         if (goalText != nil && goalText != ""){
             titleLabel.text = goalText
@@ -237,6 +244,7 @@ extension HomeViewController{
         titleLabel.addGestureRecognizer(tapGesture)
         
         headerView.addSubview(titleLabel)
+        headerView.addSubview(arrow_small)
         
         // 화면에 헤더 뷰 추가
         view.addSubview(headerView)
@@ -251,6 +259,9 @@ extension HomeViewController{
             
             titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            
+            arrow_small.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 4),
+            arrow_small.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
         ])
     }
     
