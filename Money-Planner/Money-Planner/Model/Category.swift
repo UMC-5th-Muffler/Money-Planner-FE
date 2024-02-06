@@ -9,7 +9,9 @@ import Foundation
 
 // MARK: - Category
 struct Category: Codable, Identifiable {
-    let id: Int
-    let name: String
-    var categoryBudget: Int? = 0
+    let id: Int?
+    let name: String?
+    var categoryBudget: Int64? = 0
 }
+
+

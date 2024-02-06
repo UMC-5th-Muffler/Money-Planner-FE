@@ -10,7 +10,7 @@ import UIKit
 
 
 extension GoalTotalAmountViewController: MoneyAmountTextCellDelegate {
-    func didChangeAmountText(to newValue: String?, cell: MoneyAmountTextCell) {
+    func didChangeAmountText(to newValue: String?, cell: MoneyAmountTextCell, oldValue: String?) {
         // 쉼표를 제거하고 숫자로 변환
         if let text = newValue?.replacingOccurrences(of: ",", with: ""),
            let amount = Int64(text), amount > 0 {
@@ -22,7 +22,6 @@ extension GoalTotalAmountViewController: MoneyAmountTextCellDelegate {
         }
     }
 }
-
 
 class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
     

@@ -7,12 +7,25 @@
 
 import Foundation
 import Moya
+import RxSwift
+import RxCocoa
 
 class GoalViewModel: ObservableObject {
     
     static let shared = GoalViewModel()
     
-    @Published var goals: [Goal]
+    // Use BehaviorSubject or PublishSubject to publish goals
+    let goalsSubject = BehaviorSubject<[Goal]>(value: [])
+    var goalsObservable: Observable<[Goal]> {
+        return goalsSubject.asObservable()
+    }
+    
+    var goals: [Goal] = [] {
+        didSet {
+            // Whenever goals change, push the new array to subscribers
+            goalsSubject.onNext(goals)
+        }
+    }
     
     var pastGoals: [Goal] {
         print(goals.filter { $0.goalEnd < Date() })
@@ -37,14 +50,16 @@ class GoalViewModel: ObservableObject {
     }
     
     init() {
-//        self.goals = [pastGoal1, pastGoal2, pastGoal3, currentGoal] //dummy data
-//        self.goals = [currentGoal] //dummy data
+        //        self.goals = [pastGoal1, pastGoal2, pastGoal3, currentGoal] //dummy data
+        //        self.goals = [currentGoal] //dummy data
         self.goals = [futureGoal, pastGoal1, pastGoal2, pastGoal3] //dummy data
     }
     
     func goalExistsWithName(goalName: String?) -> Bool {
         return goals.contains { $0.goalName == goalName }
     }
+    
+}
     
 //    private func requestUsergoal(uuid: String, completion: @escaping ([Goal]?) -> Void) {
 //        NetworkManager.shared.goal_provider.request(
@@ -215,17 +230,21 @@ class GoalViewModel: ObservableObject {
 //            }
 //        }
 //    }
-}
+
 
 // GoalCreationManager
 class GoalCreationManager {
+    
     static let shared = GoalCreationManager()
+    let goalViewModel = GoalViewModel.shared
 
     var goalEmoji: String?
     var goalName: String?
     var goalAmount: Int64?
     var goalStart: Date?
     var goalEnd: Date?
+    
+    var categories : [Category] = []
  
     private init() {} // Private initializer to ensure singleton usage
 
@@ -240,6 +259,20 @@ class GoalCreationManager {
 
         return CreateGoalRequest(goalEmoji: goalEmoji, goalName: goalName, goalAmount: goalAmount, goalStart: goalStart, goalEnd: goalEnd)
     }
+    
+    func addGoal() {
+        var currentGoals = try! goalViewModel.goalsSubject.value()
+        var goal = Goal(goalEmoji: goalEmoji!, goalName: goalName!, goalAmount: goalAmount!, usedAmount: Int64(0), goalStart: goalStart!, goalEnd: goalEnd!, dailyGoal: [], isEdited: [])
+        currentGoals.append(goal)
+        goalViewModel.goals = currentGoals // This will trigger the update
+    }
+//    func createCategoryRequest() -> CreateCategoryRequest {
+//        
+//    }
+//    
+//    func postMultipleCreateCategoryRequest(){
+//        
+//    }
 
     func clear() {
         goalEmoji = nil

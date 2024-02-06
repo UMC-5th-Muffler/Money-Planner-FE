@@ -147,7 +147,7 @@ class PeriodButton: UIButton {
     }
     
     private func setupSelf(){
-        self.backgroundColor = .mpLightGray
+        self.backgroundColor = .mpGypsumGray
         self.layer.cornerRadius = 10
     }
     

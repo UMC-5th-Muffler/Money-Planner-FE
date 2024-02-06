@@ -15,6 +15,11 @@ class GoalFinalViewController : UIViewController{
     private let header = HeaderView(title: "")
     private let descriptionView = DescriptionView(text: "목표 생성이\n완료되었어요!", alignToCenter: false)
     private let subDescriptionView = SubDescriptionView(text: "혜원님의 알뜰한 소비를 응원해요!", alignToCenter: false)
+    private let cheerImageView : UIImageView = {
+        var u = UIImageView()
+        u.image = UIImage(systemName: "hands.sparkles")
+        return u
+    }()
     private let goalCard = GoalCard()
     private let btmButton = MainBottomBtn(title: "목표 시작하기")
     
@@ -25,12 +30,14 @@ class GoalFinalViewController : UIViewController{
         view.backgroundColor = .systemBackground
         setupViews()
         setupConstraints()
+        btmButton.addTarget(self, action: #selector(completeBtnTapped), for: .touchUpInside)
     }
     
     func setupViews(){
         view.addSubview(header)
         view.addSubview(descriptionView)
         view.addSubview(subDescriptionView)
+        view.addSubview(cheerImageView)
         view.addSubview(goalCard)
         view.addSubview(btmButton)
     }
@@ -39,15 +46,16 @@ class GoalFinalViewController : UIViewController{
         header.translatesAutoresizingMaskIntoConstraints = false
         descriptionView.translatesAutoresizingMaskIntoConstraints = false
         subDescriptionView.translatesAutoresizingMaskIntoConstraints = false
+        cheerImageView.translatesAutoresizingMaskIntoConstraints = false
         goalCard.translatesAutoresizingMaskIntoConstraints = false
         btmButton.translatesAutoresizingMaskIntoConstraints = false
         
         // Constraints for the header
         NSLayoutConstraint.activate([
-            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            header.topAnchor.constraint(equalTo: view.topAnchor, constant: 128),
             header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            header.heightAnchor.constraint(equalToConstant: 60)
+            header.heightAnchor.constraint(equalToConstant: 72)
         ])
         
         // Constraints for the descriptionView
@@ -63,6 +71,15 @@ class GoalFinalViewController : UIViewController{
             subDescriptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             subDescriptionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
+        
+//        //cheerImageView
+//        NSLayoutConstraint.activate([
+//            cheerImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 60),
+//            cheerImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60),
+//            cheerImageView.heightAnchor.constraint(equalToConstant: 250),
+//            cheerImageView.topAnchor.constraint(equalTo: subDescriptionView.bottomAnchor, constant: 10),
+//            cheerImageView.bottomAnchor.constraint(equalTo: goalCard.topAnchor, constant: -30)
+//        ])
         
         // Constraints for the goalCard
         NSLayoutConstraint.activate([
@@ -88,12 +105,15 @@ class GoalFinalViewController : UIViewController{
     }
     
     @objc func completeBtnTapped(){
-        //navigation을 시작한 첫 화면인 GoalMainViewController 으로 돌아가기
-        
-        //post하기
+        //post하기 => 이건 별도로 구현하기
+        goalCreationManager.addGoal()
         
         //manager 비우기
         goalCreationManager.clear()
+        
+        if let navigationController = navigationController {
+            navigationController.popToRootViewController(animated: true)
+        }
     }
 }
 
@@ -190,7 +210,7 @@ class GoalCard : UIView {
         amountTitle.textColor = .mpDarkGray
         amountTitle.font = .mpFont16M()
         
-        goalAmount.text = String(goalCreationManager.goalAmount!) // , 필요해.
+        goalAmount.text = formatNumber(goalCreationManager.goalAmount!) + "원"
         goalAmount.textColor = .mpBlack
         goalAmount.font = .mpFont16M()
         
@@ -225,6 +245,12 @@ class GoalCard : UIView {
         
         goalPeriod.text = tmpStr
         
+    }
+    
+    private func formatNumber(_ number: Int64) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal // Use .decimal for formatting with commas.
+        return numberFormatter.string(from: NSNumber(value: number)) ?? "0"
     }
     
 }

@@ -12,6 +12,7 @@ protocol CategorySelectionDelegate: AnyObject {
     func didSelectCategory(_ category: String, iconName : String)
 }
 
+
 class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
     weak var delegate: CategorySelectionDelegate?
     struct Category {
@@ -127,8 +128,6 @@ class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UI
         categoryCollectionView.isUserInteractionEnabled = true
     }
 
-    
-    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // Return the number of items in your collection view

@@ -36,6 +36,8 @@
 		7A0D32E02B6FF5BD007B2736 /* PeriodCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32DF2B6FF5BD007B2736 /* PeriodCalendar.swift */; };
 		7A0D32E22B6FF81F007B2736 /* PeriodCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32E12B6FF81F007B2736 /* PeriodCalendarViewController.swift */; };
 		7A0D32E42B700AB0007B2736 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7A0D32E32B700AB0007B2736 /* Config.xcconfig */; };
+		7A0D32E62B710F83007B2736 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32E52B710F83007B2736 /* LoadingViewController.swift */; };
+		7A0D32E82B72A4C9007B2736 /* GoalDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32E72B72A4C9007B2736 /* GoalDetailsViewController.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -74,8 +76,6 @@
 		7A610AE72B491F1600D3096F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AE62B491F1600D3096F /* HeaderView.swift */; };
 		7A610AEE2B493F6D00D3096F /* RegisterUsageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AED2B493F6D00D3096F /* RegisterUsageViewController.swift */; };
 		7A610AF02B49414100D3096F /* RegisterProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AEF2B49414100D3096F /* RegisterProfileViewController.swift */; };
-		7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF12B49421F00D3096F /* KakaoLoginViewController.swift */; };
-		7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF32B49422E00D3096F /* AppleLoginViewController.swift */; };
 		7AC060FF2B4C5D78008C0E63 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC060FE2B4C5D78008C0E63 /* Design.swift */; };
 		D20D6FDA2B581A05006D6762 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D6FD92B581A05006D6762 /* CustomTabBarController.swift */; };
 		D20D6FDC2B581A5A006D6762 /* UITabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D6FDB2B581A5A006D6762 /* UITabBar.swift */; };
@@ -133,6 +133,8 @@
 		7A0D32DF2B6FF5BD007B2736 /* PeriodCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodCalendar.swift; sourceTree = "<group>"; };
 		7A0D32E12B6FF81F007B2736 /* PeriodCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodCalendarViewController.swift; sourceTree = "<group>"; };
 		7A0D32E32B700AB0007B2736 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		7A0D32E52B710F83007B2736 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
+		7A0D32E72B72A4C9007B2736 /* GoalDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalDetailsViewController.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -169,8 +171,6 @@
 		7A610AE62B491F1600D3096F /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		7A610AED2B493F6D00D3096F /* RegisterUsageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUsageViewController.swift; sourceTree = "<group>"; };
 		7A610AEF2B49414100D3096F /* RegisterProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterProfileViewController.swift; sourceTree = "<group>"; };
-		7A610AF12B49421F00D3096F /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
-		7A610AF32B49422E00D3096F /* AppleLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewController.swift; sourceTree = "<group>"; };
 		7AC060FE2B4C5D78008C0E63 /* Design.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design.swift; sourceTree = "<group>"; };
 		D20D6FD92B581A05006D6762 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		D20D6FDB2B581A5A006D6762 /* UITabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBar.swift; sourceTree = "<group>"; };
@@ -485,9 +485,8 @@
 			isa = PBXGroup;
 			children = (
 				7A610ABB2B47FA8E00D3096F /* LoginViewController.swift */,
-				7A610AF12B49421F00D3096F /* KakaoLoginViewController.swift */,
-				7A610AF32B49422E00D3096F /* AppleLoginViewController.swift */,
 				7A610AEF2B49414100D3096F /* RegisterProfileViewController.swift */,
+				7A0D32E52B710F83007B2736 /* LoadingViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -504,6 +503,7 @@
 				7A57675C2B6396A8009A5972 /* GoalDailyViewController.swift */,
 				7A57675E2B6396B2009A5972 /* GoalFinalViewController.swift */,
 				552A423D2B671B86007AEAAD /* EditGoalViewController.swift */,
+				7A0D32E72B72A4C9007B2736 /* GoalDetailsViewController.swift */,
 				7A5767792B67CAD6009A5972 /* ViewController.swift */,
 				7A0D32D22B68F303007B2736 /* ShowPreviousGoalVC.swift */,
 				7A0D32E12B6FF81F007B2736 /* PeriodCalendarViewController.swift */,
@@ -696,6 +696,7 @@
 				7A57676E2B6398B0009A5972 /* Goal.swift in Sources */,
 				7A610AF02B49414100D3096F /* RegisterProfileViewController.swift in Sources */,
 				7A4C67462B5A4B77008BCAC9 /* MainTextField.swift in Sources */,
+				7A0D32E62B710F83007B2736 /* LoadingViewController.swift in Sources */,
 				7A4C673F2B5A4AC9008BCAC9 /* CheckBtn.swift in Sources */,
 				206C58D82B626465008410C1 /* CategoryModalViewController.swift in Sources */,
 				7A610AE72B491F1600D3096F /* HeaderView.swift in Sources */,
@@ -719,7 +720,6 @@
 				7A610AE52B491ED600D3096F /* Dummy.swift in Sources */,
 				7A5767672B6396F1009A5972 /* GoalTotalAmountViewController.swift in Sources */,
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
-				7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */,
 				7A5767762B64D64A009A5972 /* CategoryViewModel.swift in Sources */,
 				20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */,
 				206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */,
@@ -731,7 +731,6 @@
 				7A5767742B639A6F009A5972 /* GoalAPI.swift in Sources */,
 				D20D70022B5FF088006D6762 /* Formatter.swift in Sources */,
 				7AC060FF2B4C5D78008C0E63 /* Design.swift in Sources */,
-				7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */,
 				20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */,
 				D20D6FF52B5E5B91006D6762 /* ToggleButton.swift in Sources */,
 				7A0D32B82B68E14D007B2736 /* BaseRepository.swift in Sources */,
@@ -756,6 +755,7 @@
 				7A0D32B42B68E13A007B2736 /* TestRepository.swift in Sources */,
 				7A0D32B22B68E130007B2736 /* TestAPI.swift in Sources */,
 				7A0D32BC2B68E23F007B2736 /* BaseResponse.swift in Sources */,
+				7A0D32E82B72A4C9007B2736 /* GoalDetailsViewController.swift in Sources */,
 				7A610AD92B49009300D3096F /* HomeViewController.swift in Sources */,
 				D20D6FF12B5D6635006D6762 /* CategoryButton.swift in Sources */,
 				20118A112B56A86100B2569E /* ConsumeViewController.swift in Sources */,

@@ -149,7 +149,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             // Update the category text field in ConsumeViewController
             cateogoryTextField.text = category
             cateogoryTextField.changeIcon(iconName: iconName)
-        }
+    }
     
     func didSelectCalendarDate(_ date: String) {
         print("Selected Date in YourPresentingViewController: \(date)")

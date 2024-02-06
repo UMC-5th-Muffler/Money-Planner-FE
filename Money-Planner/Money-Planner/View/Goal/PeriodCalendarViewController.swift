@@ -43,4 +43,11 @@ class PeriodCalendarViewController: UIViewController {
 //            print("Selected Month: \(month), Year: \(year)")
 //        }
     }
+    
+    //btmBtn 눌렀을때
+    @objc func btmButtonTapped() {
+        print("목표 생성 완료. 목표 화면으로.")
+        //api 호출
+        //navigation root로 돌아가기
+    }
 }

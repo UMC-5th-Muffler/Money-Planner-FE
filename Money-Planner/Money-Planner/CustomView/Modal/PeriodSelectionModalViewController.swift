@@ -276,14 +276,20 @@ class EndDateSelectionViewController: UIViewController {
     }
 
     @objc func completeButtonTapped() {
+        
+        if let start = selectedStartDate {
+            delegate?.periodSelectionDidSelectDates(startDate: start, endDate: endDatePicker.date)
+        }
+        dismiss(animated: true, completion: nil)
+        
         // 종료일 선택 완료 로직
-        print("종료일 선택")
-        let periodConfirmationVC = PeriodConfirmationViewController()
-        periodConfirmationVC.selectedStartDate = selectedStartDate
-        periodConfirmationVC.selectedEndDate = endDatePicker.date
-        periodConfirmationVC.delegate = self.delegate
-        print("완료")
-        navigationController?.pushViewController(periodConfirmationVC, animated: false)
+//        print("종료일 선택")
+//        let periodConfirmationVC = PeriodConfirmationViewController()
+//        periodConfirmationVC.selectedStartDate = selectedStartDate
+//        periodConfirmationVC.selectedEndDate = endDatePicker.date
+//        periodConfirmationVC.delegate = self.delegate
+//        print("완료")
+//        navigationController?.pushViewController(periodConfirmationVC, animated: false)
     }
     
 }

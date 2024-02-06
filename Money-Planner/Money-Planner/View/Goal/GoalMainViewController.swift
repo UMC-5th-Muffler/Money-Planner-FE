@@ -7,9 +7,12 @@
 
 import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
 
 class GoalMainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
 
+    private let disposeBag = DisposeBag()
     private let headerView = GoalMainHeaderView()
     private let goalTable = UITableView()
     private let goalViewModel = GoalViewModel.shared
@@ -19,6 +22,14 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
         view.backgroundColor = .mpHomeBackground
         setupHeaderView()
         setupGoalTable()
+        
+        goalViewModel.goalsObservable
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                self?.goalTable.reloadData()
+            })
+            .disposed(by: disposeBag)
+        
         headerView.addNewGoalBtn.addTarget(self, action: #selector(addNewGoalButtonTapped), for: .touchUpInside)
     }
     

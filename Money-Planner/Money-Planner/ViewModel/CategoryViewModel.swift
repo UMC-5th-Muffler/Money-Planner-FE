@@ -26,7 +26,7 @@ class CategoryViewModel: ObservableObject {
     }
     
     // 카테고리를 추가하는 메서드
-    func addCategory(name: String, budget: Int) {
+    func addCategory(name: String, budget: Int64) {
         // 카테고리 이름 중복 확인
         guard !categoryExistsWithName(name) else {
             // 처리: 카테고리 이름이 이미 존재할 경우
@@ -54,7 +54,7 @@ class CategoryCreationManager {
     private init() {} // Private initializer to ensure singleton usage
 
     // 카테고리 생성 요청 메서드
-    func createCategory(name: String, budget: Int) {
+    func createCategory(name: String, budget: Int64) {
         let newCategory = Category(id: creatingCategories.count + 1, name: name, categoryBudget: budget)
         creatingCategories.append(newCategory)
     }
@@ -66,11 +66,11 @@ class CategoryCreationManager {
 
     // 실제 네트워크 요청을 보낼 때 사용될 데이터 구조체를 만드는 메서드
     // 예를 들어, 여러 카테고리를 한 번에 서버로 전송하는 경우에 사용될 수 있습니다.
-    func createCategoriesRequest() -> [CreateCategoryRequest] {
-        return creatingCategories.map { category in
-            CreateCategoryRequest(name: category.name, budget: category.categoryBudget ?? 0)
-        }
-    }
+//    func createCategoriesRequest() -> [CreateCategoryRequest] {
+//        return creatingCategories.map { category in
+//            CreateCategoryRequest(name: category.name, budget: category.categoryBudget ?? 0)
+//        }
+//    }
 }
 
 // 카테고리 생성 요청에 사용될 구조체
@@ -78,4 +78,5 @@ struct CreateCategoryRequest: Codable {
     let name: String
     let budget: Int
 }
+
 
