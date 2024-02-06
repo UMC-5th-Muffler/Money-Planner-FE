@@ -10,9 +10,6 @@ import UIKit
 
 extension GoalCategoryViewController: CategorySelectionDelegate{
     func didSelectCategory(_ category: String, iconName: String) {
-        //selectedIndexPath에 해당하는 셀에 대해 configureCell
-//        guard let indexPath = selectedIndexPath else { return }
-        
         // 선택된 인덱스 패스에 해당하는 카테고리를 업데이트
         if let cell = tableView.cellForRow(at: selectedIndexPath!) as? GoalCategoryTableViewCell {
             cell.configureCell(text: category, iconName: iconName)
@@ -41,10 +38,10 @@ extension GoalCategoryViewController: MoneyAmountTextCellDelegate {
         // Update sumAmount
         sumAmount = categoryGoalMaker.reduce(0) { $0 + ($1.categoryBudget ?? 0) }
         
-        // Optionally, update UI elements that display sumAmount
+        //총합 업데이트 및 디스플레이 반영
         updateSumAmountDisplay()
         
-        // Also, you might want to update the progressBar with the new sumAmount
+        //progressBar 업데이트
         progressBar.changeUsedAmt(usedAmt: sumAmount, goalAmt: goalCreationManager.goalAmount!)
     }
 }
@@ -53,8 +50,6 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     
     ///카테고리 셀을 만들기 위함.
     weak var delegate: CategorySelectionDelegate?
-//    var tmpCategoryName : String?
-//    var tmpCategoryIcon : String?
     
     //화면 구성 요소
     var header = HeaderView(title: "")
@@ -96,6 +91,8 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
         // 기본 네비게이션 바의 뒤로 가기 버튼 숨기기
         navigationItem.hidesBackButton = true
         navigationItem.leftBarButtonItem = nil
+        
+        btmBtn.isEnabled = false
     }
     
     // 여기서부터 setup 메서드들을 정의합니다.
@@ -345,19 +342,35 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
         present(categoryModalVC, animated: true, completion: nil)
     }
     
-   //총금액 알려주는 구간 업데이트
+    //총금액 알려주는 구간 업데이트
     private func updateSumAmountDisplay() {
         let formattedSumAmount = formatNumber(sumAmount)
         let goalAmount = goalCreationManager.goalAmount ?? 0
         let formattedGoalAmount = formatNumber(goalAmount)
-        usedAmountLabel.text = "\(formattedSumAmount)원 / \(formattedGoalAmount)원"
+        
+        let text = "\(formattedSumAmount)원 / \(formattedGoalAmount)원"
+        
+        // NSAttributedString을 사용하여 다른 색상 적용
+        let attributedString = NSMutableAttributedString(string: text)
+        
+        // '/' 기호를 기준으로 전후 텍스트의 범위를 찾음
+        if let range = text.range(of: "/") {
+            let preSlashRange = NSRange(text.startIndex..<range.lowerBound, in: text)
+            let fromSlashRange = NSRange(range.lowerBound..<text.endIndex, in: text) //endIndex 포함시 오버플로우
+            attributedString.addAttribute(.foregroundColor, value: UIColor.mpDarkGray, range: preSlashRange )
+            attributedString.addAttribute(.foregroundColor, value: UIColor.mpGray, range: fromSlashRange)
+        }
+        
+        usedAmountLabel.attributedText = attributedString
         
         let leftAmount = goalAmount > sumAmount ? goalAmount - sumAmount : 0
         let formattedLeftAmount = formatNumber(leftAmount)
         leftAmountLabel.text = "남은 금액 \(formattedLeftAmount)원"
-        leftAmountLabel.textColor = goalAmount > sumAmount ? .mpBlack : .mpRed
+        leftAmountLabel.textColor = goalAmount >= sumAmount ? .mpBlack : .mpRed
+        
+        btmBtn.isEnabled = !(sumAmount > goalAmount) // 사실 모든 카테고리가 다 선택되었는지 점검하는 기능도 추가해야함.
     }
-    
+
     //컴마 넣기
     private func formatNumber(_ number: Int64) -> String {
         let numberFormatter = NumberFormatter()
@@ -417,6 +430,7 @@ class CustomSectionHeaderView: UITableViewHeaderFooterView {
         ])
     }
     
+    //+셀에서 x 없애기
     func disableDeleteBtn(){
         deleteButton.isHidden = true
     }

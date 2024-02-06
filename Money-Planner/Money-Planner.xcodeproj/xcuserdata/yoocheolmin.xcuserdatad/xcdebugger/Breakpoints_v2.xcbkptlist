@@ -382,8 +382,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1054"
-            endingLineNumber = "1054"
+            startingLineNumber = "1090"
+            endingLineNumber = "1090"
             landmarkName = "setupCell()"
             landmarkType = "7">
          </BreakpointContent>
@@ -398,8 +398,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1058"
-            endingLineNumber = "1058"
+            startingLineNumber = "1094"
+            endingLineNumber = "1094"
             landmarkName = "setupCell()"
             landmarkType = "7">
          </BreakpointContent>
@@ -414,8 +414,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1056"
-            endingLineNumber = "1056"
+            startingLineNumber = "1092"
+            endingLineNumber = "1092"
             landmarkName = "setupCell()"
             landmarkType = "7">
          </BreakpointContent>
@@ -430,8 +430,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1065"
-            endingLineNumber = "1065"
+            startingLineNumber = "1101"
+            endingLineNumber = "1101"
             landmarkName = "setupIconImageView()"
             landmarkType = "7">
          </BreakpointContent>
@@ -446,8 +446,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1068"
-            endingLineNumber = "1068"
+            startingLineNumber = "1104"
+            endingLineNumber = "1104"
             landmarkName = "setupIconImageView()"
             landmarkType = "7">
          </BreakpointContent>
@@ -462,8 +462,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1069"
-            endingLineNumber = "1069"
+            startingLineNumber = "1105"
+            endingLineNumber = "1105"
             landmarkName = "setupIconImageView()"
             landmarkType = "7">
          </BreakpointContent>
@@ -478,8 +478,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1070"
-            endingLineNumber = "1070"
+            startingLineNumber = "1106"
+            endingLineNumber = "1106"
             landmarkName = "setupIconImageView()"
             landmarkType = "7">
          </BreakpointContent>
@@ -494,8 +494,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1072"
-            endingLineNumber = "1072"
+            startingLineNumber = "1108"
+            endingLineNumber = "1108"
             landmarkName = "setupIconImageView()"
             landmarkType = "7">
          </BreakpointContent>
@@ -510,8 +510,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1071"
-            endingLineNumber = "1071"
+            startingLineNumber = "1107"
+            endingLineNumber = "1107"
             landmarkName = "setupIconImageView()"
             landmarkType = "7">
          </BreakpointContent>
@@ -526,8 +526,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1057"
-            endingLineNumber = "1057"
+            startingLineNumber = "1093"
+            endingLineNumber = "1093"
             landmarkName = "setupCell()"
             landmarkType = "7">
          </BreakpointContent>
@@ -542,8 +542,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1078"
-            endingLineNumber = "1078"
+            startingLineNumber = "1114"
+            endingLineNumber = "1114"
             landmarkName = "setupTextField()"
             landmarkType = "7">
          </BreakpointContent>
@@ -558,8 +558,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1081"
-            endingLineNumber = "1081"
+            startingLineNumber = "1117"
+            endingLineNumber = "1117"
             landmarkName = "setupTextField()"
             landmarkType = "7">
          </BreakpointContent>
@@ -574,8 +574,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1082"
-            endingLineNumber = "1082"
+            startingLineNumber = "1118"
+            endingLineNumber = "1118"
             landmarkName = "setupTextField()"
             landmarkType = "7">
          </BreakpointContent>
@@ -590,8 +590,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1083"
-            endingLineNumber = "1083"
+            startingLineNumber = "1119"
+            endingLineNumber = "1119"
             landmarkName = "setupTextField()"
             landmarkType = "7">
          </BreakpointContent>
@@ -606,8 +606,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1092"
-            endingLineNumber = "1092"
+            startingLineNumber = "1128"
+            endingLineNumber = "1128"
             landmarkName = "setupCategoryModalBtn()"
             landmarkType = "7">
          </BreakpointContent>
@@ -622,8 +622,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1093"
-            endingLineNumber = "1093"
+            startingLineNumber = "1129"
+            endingLineNumber = "1129"
             landmarkName = "setupCategoryModalBtn()"
             landmarkType = "7">
          </BreakpointContent>
@@ -638,8 +638,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1094"
-            endingLineNumber = "1094"
+            startingLineNumber = "1130"
+            endingLineNumber = "1130"
             landmarkName = "setupCategoryModalBtn()"
             landmarkType = "7">
          </BreakpointContent>
@@ -654,8 +654,8 @@
             filePath = "Money-Planner/View/Goal/GoalComponents.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1095"
-            endingLineNumber = "1095"
+            startingLineNumber = "1131"
+            endingLineNumber = "1131"
             landmarkName = "setupCategoryModalBtn()"
             landmarkType = "7">
          </BreakpointContent>
@@ -663,7 +663,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "97F4A369-2F1D-487B-9F49-51A501A7C194"
+            uuid = "28F919A6-D673-44B9-AA74-9440FEBE54F4"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -679,22 +679,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "28F919A6-D673-44B9-AA74-9440FEBE54F4"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Money-Planner/View/Goal/GoalCategoryViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "17"
-            endingLineNumber = "17"
-            landmarkName = "didSelectCategory(_:iconName:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "5CB031E0-1BFB-4EB5-85AB-17E481EF0E2E"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -702,13 +686,13 @@
             filePath = "Money-Planner/View/Goal/GoalCategoryViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "333"
-            endingLineNumber = "333"
+            startingLineNumber = "330"
+            endingLineNumber = "330"
             landmarkName = "categoryModalButtonTapped(sender:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "5CB031E0-1BFB-4EB5-85AB-17E481EF0E2E - c722657388dbccb4"
+                  uuid = "5CB031E0-1BFB-4EB5-85AB-17E481EF0E2E - c722657388dbccd7"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -718,12 +702,12 @@
                   urlString = "file:///Users/yoocheolmin/Money-Planner-FE/Money-Planner/Money-Planner/View/Goal/GoalCategoryViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "331"
-                  endingLineNumber = "331"
+                  startingLineNumber = "332"
+                  endingLineNumber = "332"
                   offsetFromSymbolStart = "1548">
                </Location>
                <Location
-                  uuid = "5CB031E0-1BFB-4EB5-85AB-17E481EF0E2E - c722657388dbccb4"
+                  uuid = "5CB031E0-1BFB-4EB5-85AB-17E481EF0E2E - c722657388dbcc95"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -733,8 +717,8 @@
                   urlString = "file:///Users/yoocheolmin/Money-Planner-FE/Money-Planner/Money-Planner/View/Goal/GoalCategoryViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "331"
-                  endingLineNumber = "331"
+                  startingLineNumber = "330"
+                  endingLineNumber = "330"
                   offsetFromSymbolStart = "1008">
                </Location>
             </Locations>
@@ -750,8 +734,8 @@
             filePath = "Money-Planner/View/Goal/GoalCategoryViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "334"
-            endingLineNumber = "334"
+            startingLineNumber = "331"
+            endingLineNumber = "331"
             landmarkName = "categoryModalButtonTapped(sender:)"
             landmarkType = "7">
             <Locations>
@@ -768,10 +752,10 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "332"
                   endingLineNumber = "332"
-                  offsetFromSymbolStart = "1564">
+                  offsetFromSymbolStart = "1548">
                </Location>
                <Location
-                  uuid = "37C61FAB-CC90-4831-9A9C-05647ECB140B - c722657388dbccd7"
+                  uuid = "37C61FAB-CC90-4831-9A9C-05647ECB140B - c722657388dbccb4"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -781,8 +765,8 @@
                   urlString = "file:///Users/yoocheolmin/Money-Planner-FE/Money-Planner/Money-Planner/View/Goal/GoalCategoryViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "332"
-                  endingLineNumber = "332"
+                  startingLineNumber = "331"
+                  endingLineNumber = "331"
                   offsetFromSymbolStart = "1140">
                </Location>
             </Locations>
@@ -798,13 +782,13 @@
             filePath = "Money-Planner/View/Goal/GoalCategoryViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "335"
-            endingLineNumber = "335"
+            startingLineNumber = "332"
+            endingLineNumber = "332"
             landmarkName = "categoryModalButtonTapped(sender:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "DD1F966D-FFD7-49AE-8C88-DB6348C4585B - c722657388dbccf6"
+                  uuid = "DD1F966D-FFD7-49AE-8C88-DB6348C4585B - c722657388dbccd7"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -814,12 +798,12 @@
                   urlString = "file:///Users/yoocheolmin/Money-Planner-FE/Money-Planner/Money-Planner/View/Goal/GoalCategoryViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "333"
-                  endingLineNumber = "333"
-                  offsetFromSymbolStart = "1576">
+                  startingLineNumber = "332"
+                  endingLineNumber = "332"
+                  offsetFromSymbolStart = "1548">
                </Location>
                <Location
-                  uuid = "DD1F966D-FFD7-49AE-8C88-DB6348C4585B - c722657388dbcf30"
+                  uuid = "DD1F966D-FFD7-49AE-8C88-DB6348C4585B - c722657388dbcf11"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -829,8 +813,8 @@
                   urlString = "file:///Users/yoocheolmin/Money-Planner-FE/Money-Planner/Money-Planner/View/Goal/GoalCategoryViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "335"
-                  endingLineNumber = "335"
+                  startingLineNumber = "334"
+                  endingLineNumber = "334"
                   offsetFromSymbolStart = "1548">
                </Location>
             </Locations>
@@ -846,28 +830,13 @@
             filePath = "Money-Planner/View/Goal/GoalCategoryViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "336"
-            endingLineNumber = "336"
+            startingLineNumber = "333"
+            endingLineNumber = "333"
             landmarkName = "categoryModalButtonTapped(sender:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "0084FC19-5F0B-43EE-840C-6874EB57EE49 - b380a1e0e36f7f92"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Money_Planner.GoalCategoryViewController.showCategoryModal() -&gt; ()"
-                  moduleName = "Money-Planner"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/yoocheolmin/Money-Planner-FE/Money-Planner/Money-Planner/View/Goal/GoalCategoryViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "336"
-                  endingLineNumber = "336"
-                  offsetFromSymbolStart = "108">
-               </Location>
-               <Location
-                  uuid = "0084FC19-5F0B-43EE-840C-6874EB57EE49 - c722657388dbcf30"
+                  uuid = "0084FC19-5F0B-43EE-840C-6874EB57EE49 - c722657388dbccf6"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -877,8 +846,23 @@
                   urlString = "file:///Users/yoocheolmin/Money-Planner-FE/Money-Planner/Money-Planner/View/Goal/GoalCategoryViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "335"
-                  endingLineNumber = "335"
+                  startingLineNumber = "333"
+                  endingLineNumber = "333"
+                  offsetFromSymbolStart = "1564">
+               </Location>
+               <Location
+                  uuid = "0084FC19-5F0B-43EE-840C-6874EB57EE49 - c722657388dbcf11"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Money_Planner.GoalCategoryViewController.categoryModalButtonTapped(sender: __C.UIButton) -&gt; ()"
+                  moduleName = "Money-Planner"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yoocheolmin/Money-Planner-FE/Money-Planner/Money-Planner/View/Goal/GoalCategoryViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "334"
+                  endingLineNumber = "334"
                   offsetFromSymbolStart = "1548">
                </Location>
             </Locations>
@@ -894,8 +878,8 @@
             filePath = "Money-Planner/View/Goal/GoalCategoryViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "337"
-            endingLineNumber = "337"
+            startingLineNumber = "334"
+            endingLineNumber = "334"
             landmarkName = "categoryModalButtonTapped(sender:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -910,8 +894,8 @@
             filePath = "Money-Planner/View/Goal/GoalCategoryViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "297"
-            endingLineNumber = "297"
+            startingLineNumber = "294"
+            endingLineNumber = "294"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -926,8 +910,8 @@
             filePath = "Money-Planner/View/Goal/GoalCategoryViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "298"
-            endingLineNumber = "298"
+            startingLineNumber = "295"
+            endingLineNumber = "295"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -942,8 +926,8 @@
             filePath = "Money-Planner/View/Goal/GoalCategoryViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "296"
-            endingLineNumber = "296"
+            startingLineNumber = "293"
+            endingLineNumber = "293"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>

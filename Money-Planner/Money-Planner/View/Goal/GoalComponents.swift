@@ -321,6 +321,8 @@ class GoalProgressBar: UIView {
         return l
     }()
     
+    var usedAmtBarWidthConstraint: NSLayoutConstraint?
+    
     init(goalAmt: Int64, usedAmt: Int64) {
         self.goalAmt = goalAmt
         self.usedAmt = usedAmt
@@ -354,11 +356,15 @@ class GoalProgressBar: UIView {
         usedAmtBar.layer.cornerRadius = usedAmtBar.frame.height / 2
         usedAmtBar.translatesAutoresizingMaskIntoConstraints = false
         
+        let widthConstraint = usedAmtBar.widthAnchor.constraint(equalToConstant: 0)
+           widthConstraint.isActive = true
+           usedAmtBarWidthConstraint = widthConstraint
+        
         NSLayoutConstraint.activate([
             usedAmtBar.leftAnchor.constraint(equalTo: goalAmtBar.leftAnchor),
             usedAmtBar.topAnchor.constraint(equalTo: goalAmtBar.topAnchor),
             usedAmtBar.heightAnchor.constraint(equalTo: goalAmtBar.heightAnchor),
-            usedAmtBar.widthAnchor.constraint(equalToConstant: 0)
+//            usedAmtBar.widthAnchor.constraint(equalToConstant: 0)
         ])
     }
     
@@ -405,40 +411,70 @@ class GoalProgressBar: UIView {
         view.layer.addSublayer(shapeLayer)
     }
     
+//    override func layoutSubviews() {
+//        super.layoutSubviews()
+//        
+//        // 현재 프레임 너비를 기반으로 usedAmtBar의 너비 계산
+//        let ratio = CGFloat(usedAmt) / CGFloat(goalAmt)
+//        let usingRatio = min(max(ratio, 0), 1) //ratio > 1 ? 1 : ratio 도 가능
+//        let usedAmtWidth = usingRatio * frame.width
+//        let pointerX = ratio == 0 ?  0 : frame.width / ratio
+//        
+//        
+//        // usedAmtBar의 너비 제약 조건(width constraint) 업데이트
+//        NSLayoutConstraint.activate([
+//            usedAmtBar.widthAnchor.constraint(equalTo: goalAmtBar.widthAnchor, multiplier: usingRatio)
+//        ])
+//        
+//        pointer.center.x = pointerX
+//        line.center.x = pointer.center.x
+//        
+//        // 바의 모서리 반지름(corner radius) 업데이트
+//        goalAmtBar.layer.cornerRadius = goalAmtBar.frame.height / 2
+//        usedAmtBar.layer.cornerRadius = usedAmtBar.frame.height / 2
+//        
+//        addDashedBorder(to: line)
+//        
+//        pointer.isHidden = ratio <= 1
+//        line.isHidden = ratio <= 1
+//        
+//        usedAmtBar.backgroundColor = usedAmt > goalAmt ? .mpRed : .mpMainColor
+//    }
+    
     override func layoutSubviews() {
+        
         super.layoutSubviews()
-        
-        // 현재 프레임 너비를 기반으로 usedAmtBar의 너비 계산
+
+        // goalAmtBar의 레이아웃 설정
+        goalAmtBar.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: 10)
+        goalAmtBar.layer.cornerRadius = goalAmtBar.frame.height / 2
+
+        // usedAmtBar의 너비 계산
         let ratio = CGFloat(usedAmt) / CGFloat(goalAmt)
-        let usingRatio = min(max(ratio, 0), 1) //ratio > 1 ? 1 : ratio 도 가능
-        let usedAmtWidth = usingRatio * frame.width
-        let pointerX = frame.width / ratio
-        
-        
-        // usedAmtBar의 너비 제약 조건(width constraint) 업데이트
-        NSLayoutConstraint.activate([
-            usedAmtBar.widthAnchor.constraint(equalTo: goalAmtBar.widthAnchor, multiplier: usingRatio)
-        ])
-        
+        let usingRatio = min(max(ratio, 0), 1) // ratio가 0과 1 사이의 값이 되도록 조정
+        let usedAmtWidth = usingRatio * self.bounds.width
+
+        // usedAmtBar의 프레임 설정
+        usedAmtBar.frame = CGRect(x: 0, y: 0, width: usedAmtWidth, height: 10)
+        usedAmtBar.layer.cornerRadius = usedAmtBar.frame.height / 2
+
+        // usedAmtBar의 배경색 업데이트
+        usedAmtBar.backgroundColor = usedAmt > goalAmt ? .mpRed : .mpMainColor
+
+        // pointer 및 line의 레이아웃 조정
+        let pointerX = ratio == 0 ?  0 : frame.width / ratio
         pointer.center.x = pointerX
         line.center.x = pointer.center.x
-        
-        // 바의 모서리 반지름(corner radius) 업데이트
-        goalAmtBar.layer.cornerRadius = goalAmtBar.frame.height / 2
-        usedAmtBar.layer.cornerRadius = usedAmtBar.frame.height / 2
-        
+        line.center.x = pointer.center.x
         addDashedBorder(to: line)
-        
         pointer.isHidden = ratio <= 1
         line.isHidden = ratio <= 1
-        
-        usedAmtBar.backgroundColor = usedAmt > goalAmt ? .mpRed : .mpMainColor
     }
-    
+
     func changeUsedAmt (usedAmt : Int64, goalAmt : Int64){
         self.goalAmt = goalAmt
         self.usedAmt = usedAmt
-        setNeedsLayout() // 이걸 쓰면 layoutSubview가 재업
+        setNeedsLayout() // 이걸 쓰면 layoutSubview가 재업. 어째서, 막대 길이에 오류가 생겼는지는 불명...
     }
 }
 

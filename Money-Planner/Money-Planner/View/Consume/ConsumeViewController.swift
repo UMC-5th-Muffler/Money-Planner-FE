@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelectionDelegate,CalendarSelectionDelegate,RepeatModalViewDelegate {
-   
+    
     // 오늘 날짜
     let currentDate = Date()
     let dateFormatter = DateFormatter()
@@ -24,10 +24,10 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     private let titleTextField = MainTextField(placeholder: "제목", iconName: "icon_Paper", keyboardType: .default)
     private let memoTextField = MainTextField(placeholder: "메모", iconName: "icon_Edit", keyboardType: .default)
     private let calTextField = MainTextField(placeholder: "", iconName: "icon_date", keyboardType: .default)
-
+    
     // 뷰
     private lazy var headerView = HeaderView(title: "소비내역 입력")
-
+    
     let catContainerView : UIView = {
         let uiView = UIView()
         uiView.backgroundColor = UIColor.mpGypsumGray
@@ -42,7 +42,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         uiView.translatesAutoresizingMaskIntoConstraints = false // Add this line
         return uiView
     }()
-
+    
     // 라벨
     private let amountLabel: UILabel = {
         let label = UILabel()
@@ -87,7 +87,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         return button
         
     }()
-
+    
     lazy var calChooseButton: UIButton = {
         let button = UIButton()
         
@@ -109,7 +109,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     
     
     private var completeButton = MainBottomBtn(title: "완료")
-
+    
     
     
     
@@ -120,7 +120,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         let calModalVC = CalendartModalViewController()
         calModalVC.delegate = self
         present(calModalVC, animated: true)
-        }
+    }
     
     @objc
     private func showRepeatModal() {
@@ -143,21 +143,21 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         let categoryModalVC = CategoryModalViewController()
         categoryModalVC.delegate = self
         present(categoryModalVC, animated: true)
-        }
+    }
     
     func didSelectCategory(_ category: String, iconName : String) {
-            // Update the category text field in ConsumeViewController
-            cateogoryTextField.text = category
-            cateogoryTextField.changeIcon(iconName: iconName)
+        // Update the category text field in ConsumeViewController
+        cateogoryTextField.text = category
+        cateogoryTextField.changeIcon(iconName: iconName)
     }
     
     func didSelectCalendarDate(_ date: String) {
         print("Selected Date in YourPresentingViewController: \(date)")
         calTextField.text = date
-        }
-
+    }
     
-        
+    
+    
     override func viewDidLoad() {
         setupUI()
     }
@@ -223,10 +223,10 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             label.font = UIFont.mpFont20M()
             return label
         }()
-
+        
         let wonContainerView = UIView(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
         wonContainerView.addSubview(infoLabel)
-
+        
         // Set the frame for infoLabel relative to wonContainerView
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -235,7 +235,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             infoLabel.topAnchor.constraint(equalTo: wonContainerView.topAnchor),
             infoLabel.bottomAnchor.constraint(equalTo: wonContainerView.bottomAnchor)
         ])
-
+        
         amountTextField.rightView = wonContainerView
         amountTextField.rightViewMode = .always
         // 입력 중인 금액 표시 레이블 추가
@@ -263,18 +263,18 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         
         let buttonContainerView = UIView()
         buttonContainerView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         buttonContainerView.backgroundColor = .mpMainColor
         catContainerView.addSubview(buttonContainerView)
         
         NSLayoutConstraint.activate([
             buttonContainerView.widthAnchor.constraint(equalToConstant: 40),
-                buttonContainerView.heightAnchor.constraint(equalToConstant: 40),
-                buttonContainerView.centerYAnchor.constraint(equalTo: catContainerView.centerYAnchor),
-                buttonContainerView.trailingAnchor.constraint(equalTo: catContainerView.trailingAnchor, constant: -16)
-              
-    
-        
+            buttonContainerView.heightAnchor.constraint(equalToConstant: 40),
+            buttonContainerView.centerYAnchor.constraint(equalTo: catContainerView.centerYAnchor),
+            buttonContainerView.trailingAnchor.constraint(equalTo: catContainerView.trailingAnchor, constant: -16)
+            
+            
+            
         ])
         //
         buttonContainerView.addSubview(categoryChooseButton)
@@ -325,7 +325,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         ])
         
     }
-   
+    
     
     // 세팅 : 메모 텍스트 필트
     private func setupmemoTextField(){
@@ -339,7 +339,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             memoTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
             memoTextField.heightAnchor.constraint(equalToConstant: 64)
         ])
-    
+        
         // 간격 24
         let blank = UIView(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
         memoTextField.rightView = blank
@@ -359,7 +359,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         
         let calbuttonContainerView = UIView()
         calbuttonContainerView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         calbuttonContainerView.backgroundColor = .mpMainColor
         calContainerView.addSubview(calbuttonContainerView)
         
@@ -368,9 +368,9 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             calbuttonContainerView.heightAnchor.constraint(equalToConstant: 40),
             calbuttonContainerView.centerYAnchor.constraint(equalTo: calContainerView.centerYAnchor),
             calbuttonContainerView.trailingAnchor.constraint(equalTo: catContainerView.trailingAnchor, constant: -16)
-              
-    
-        
+            
+            
+            
         ])
         calbuttonContainerView.addSubview(calChooseButton)
         
@@ -388,7 +388,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             calChooseButton.topAnchor.constraint(equalTo: calbuttonContainerView.topAnchor),
             calChooseButton.bottomAnchor.constraint(equalTo: calbuttonContainerView.bottomAnchor)
         ])
-
+        
         calContainerView.addSubview(calTextField)
         calTextField.translatesAutoresizingMaskIntoConstraints = false
         calTextField.isUserInteractionEnabled = false // 수정 불가능하도록 설정
@@ -407,11 +407,11 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     // 세팅 : 반복 버튼
     private func setupRepeatButton(){
         let containerview: UIStackView = {
-                let stackView = UIStackView()
-                stackView.axis = .horizontal
-                stackView.spacing = 8
-                return stackView
-            }()
+            let stackView = UIStackView()
+            stackView.axis = .horizontal
+            stackView.spacing = 8
+            return stackView
+        }()
         
         
         let repeatLabel : UILabel = {
@@ -425,7 +425,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         NSLayoutConstraint.activate([
             checkButton.widthAnchor.constraint(equalToConstant:24),
             checkButton.heightAnchor.constraint(equalToConstant: 24),
-
+            
         ])
         containerview.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -433,7 +433,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             containerview.heightAnchor.constraint(equalToConstant: 30),
             containerview.topAnchor.constraint(equalTo: calContainerView.bottomAnchor, constant: 16),
             containerview.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 16)
-
+            
         ])
         containerview.backgroundColor = .red
         containerview.addArrangedSubview(checkButton)
@@ -443,10 +443,10 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         containerview.addArrangedSubview(repeatResultButton)
         
         checkButton.setChecked(false)
-
+        
         checkButton.translatesAutoresizingMaskIntoConstraints = false
         repeatLabel.translatesAutoresizingMaskIntoConstraints = false
-      
+        
     }
     
     // 세팅 : 완료 버튼
@@ -466,101 +466,101 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         // Check if the current text field is amountTextField
-          if textField == amountTextField {
-              // 입력 중인 금액 업데이트
-              let currentText = textField.text ?? ""
-              let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
-              amountTextField.layer.borderColor = UIColor.clear.cgColor
-              amountTextField.layer.borderWidth = 0.0
-              // 입력된 것이 없는 경우
-              if newText.isEmpty{
-                  amountLabel.text = "0 원"
-                 
-              }
-              // 입력된 금액이 있는 경우
-              else{
-                  // 유효한 숫자인 경우
-                  amountLabel.textColor = UIColor.mpBlack
-                  // 소비금액 텍스트필드에 에러 표시 취소 - 빨간색 스트로크
-                  amountTextField.layer.borderColor = UIColor.clear.cgColor
-                  amountTextField.layer.borderWidth = 0.0
-                  if let amount = Int(currentText + string) {
-                      let digitOfAmount = String(describing: amount).count
-                      // 소비금액 텍스트필드에 에러 표시 취소 - 빨간색 스트로크
-                      amountTextField.layer.borderColor = UIColor.clear.cgColor
-                      amountTextField.layer.borderWidth = 0.0
-                      // 입력할 수 있는 범위를 초과한 경우
-                      if digitOfAmount > 16 {
-                          // 소비금액 보여주는 곳에 에러 메세지 표시
-                          amountLabel.text = "입력할 수 있는 범위를 초과했습니다."
-                          amountLabel.textColor = .red
-                          // 소비금액 텍스트필드에 에러 표시 - 빨간색 스트로크
-                          amountTextField.layer.borderColor = UIColor.mpRed.cgColor
-                          amountTextField.layer.borderWidth = 1.0
-                          
-                          return false // 더 이상 입력할 수 없도록 함
-                          
-                          // 입력할 수 있는 범위인 경우
-                      } else {
-                          amountLabel.text = "\(numberToKorean(amount))  원" // 숫자 -> 한국어로 변경하여 입력함
-                          // 소비금액 텍스트필드에 에러 표시 취소 - 빨간색 스트로크
-                          amountTextField.layer.borderColor = UIColor.clear.cgColor
-                          amountTextField.layer.borderWidth = 0.0
-                      }
-                      
-                      // 유효한 숫자가 아닌 경우 (현재 텍스트 + 새로운 문자열)
-                  } else {
-                      amountLabel.text = "유효한 숫자가 아닙니다."
-                      amountLabel.textColor = UIColor.mpRed
-                      // 소비금액 텍스트필드에 에러 표시 - 빨간색 스트로크
-                      amountTextField.layer.borderColor = UIColor.mpRed.cgColor
-                      amountTextField.layer.borderWidth = 1.0
-                      
-                  }
-              }
-              
-              
-              return true
-              
-
-          } else if textField == titleTextField {
-              // Handle character count limit for titleTextField
-              // Calculate the resulting text after replacement
-              guard let text = textField.text else { return false }
-              let newText = (text as NSString).replacingCharacters(in: range, with: string)
-
-              // Apply character count limit
-              if newText.count > 16 {
-                  // 소비금액 텍스트필드에 에러 표시 - 빨간색 스트로크
-                  titleTextField.layer.borderColor = UIColor.mpRed.cgColor
-                  titleTextField.layer.borderWidth = 1.0
-                  view.addSubview(titleErrorLabel)
-                  titleErrorLabel.translatesAutoresizingMaskIntoConstraints = false
-                  NSLayoutConstraint.activate([
+        if textField == amountTextField {
+            // 입력 중인 금액 업데이트
+            let currentText = textField.text ?? ""
+            let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
+            amountTextField.layer.borderColor = UIColor.clear.cgColor
+            amountTextField.layer.borderWidth = 0.0
+            // 입력된 것이 없는 경우
+            if newText.isEmpty{
+                amountLabel.text = "0 원"
+                
+            }
+            // 입력된 금액이 있는 경우
+            else{
+                // 유효한 숫자인 경우
+                amountLabel.textColor = UIColor.mpBlack
+                // 소비금액 텍스트필드에 에러 표시 취소 - 빨간색 스트로크
+                amountTextField.layer.borderColor = UIColor.clear.cgColor
+                amountTextField.layer.borderWidth = 0.0
+                if let amount = Int(currentText + string) {
+                    let digitOfAmount = String(describing: amount).count
+                    // 소비금액 텍스트필드에 에러 표시 취소 - 빨간색 스트로크
+                    amountTextField.layer.borderColor = UIColor.clear.cgColor
+                    amountTextField.layer.borderWidth = 0.0
+                    // 입력할 수 있는 범위를 초과한 경우
+                    if digitOfAmount > 16 {
+                        // 소비금액 보여주는 곳에 에러 메세지 표시
+                        amountLabel.text = "입력할 수 있는 범위를 초과했습니다."
+                        amountLabel.textColor = .red
+                        // 소비금액 텍스트필드에 에러 표시 - 빨간색 스트로크
+                        amountTextField.layer.borderColor = UIColor.mpRed.cgColor
+                        amountTextField.layer.borderWidth = 1.0
+                        
+                        return false // 더 이상 입력할 수 없도록 함
+                        
+                        // 입력할 수 있는 범위인 경우
+                    } else {
+                        amountLabel.text = "\(numberToKorean(amount))  원" // 숫자 -> 한국어로 변경하여 입력함
+                        // 소비금액 텍스트필드에 에러 표시 취소 - 빨간색 스트로크
+                        amountTextField.layer.borderColor = UIColor.clear.cgColor
+                        amountTextField.layer.borderWidth = 0.0
+                    }
+                    
+                    // 유효한 숫자가 아닌 경우 (현재 텍스트 + 새로운 문자열)
+                } else {
+                    amountLabel.text = "유효한 숫자가 아닙니다."
+                    amountLabel.textColor = UIColor.mpRed
+                    // 소비금액 텍스트필드에 에러 표시 - 빨간색 스트로크
+                    amountTextField.layer.borderColor = UIColor.mpRed.cgColor
+                    amountTextField.layer.borderWidth = 1.0
+                    
+                }
+            }
+            
+            
+            return true
+            
+            
+        } else if textField == titleTextField {
+            // Handle character count limit for titleTextField
+            // Calculate the resulting text after replacement
+            guard let text = textField.text else { return false }
+            let newText = (text as NSString).replacingCharacters(in: range, with: string)
+            
+            // Apply character count limit
+            if newText.count > 16 {
+                // 소비금액 텍스트필드에 에러 표시 - 빨간색 스트로크
+                titleTextField.layer.borderColor = UIColor.mpRed.cgColor
+                titleTextField.layer.borderWidth = 1.0
+                view.addSubview(titleErrorLabel)
+                titleErrorLabel.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
                     titleErrorLabel.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 8),
                     titleErrorLabel.leadingAnchor.constraint(equalTo: titleTextField.leadingAnchor),
                     titleErrorLabel.trailingAnchor.constraint(equalTo: titleTextField.trailingAnchor),
                     titleErrorLabel.heightAnchor.constraint(equalToConstant: 20)
-                  ])
-                  // Move memoTextField down
-                          memoTextField.translatesAutoresizingMaskIntoConstraints = false
-                          NSLayoutConstraint.activate([
-                              memoTextField.topAnchor.constraint(equalTo: titleErrorLabel.bottomAnchor, constant: 30), // Adjust the constant as needed
-                              memoTextField.leadingAnchor.constraint(equalTo: titleTextField.leadingAnchor),
-                              memoTextField.trailingAnchor.constraint(equalTo: titleTextField.trailingAnchor),
-                              memoTextField.heightAnchor.constraint(equalToConstant: 64)
-                          ])
-
-                        
-                  return false
-              }
-              titleTextField.layer.borderColor = UIColor.clear.cgColor
-              titleTextField.layer.borderWidth = 0.0
-          }
+                ])
+                // Move memoTextField down
+                memoTextField.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    memoTextField.topAnchor.constraint(equalTo: titleErrorLabel.bottomAnchor, constant: 30), // Adjust the constant as needed
+                    memoTextField.leadingAnchor.constraint(equalTo: titleTextField.leadingAnchor),
+                    memoTextField.trailingAnchor.constraint(equalTo: titleTextField.trailingAnchor),
+                    memoTextField.heightAnchor.constraint(equalToConstant: 64)
+                ])
+                
+                
+                return false
+            }
+            titleTextField.layer.borderColor = UIColor.clear.cgColor
+            titleTextField.layer.borderWidth = 0.0
+        }
         
-          return true
+        return true
         
-       
+        
     }
     
     //숫자를 한글로 표현하는 함수(2000 -> 0부터 9999999999999999까지가능)
@@ -587,5 +587,5 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         repeatResultButton.backgroundColor = .mpGypsumGray
         super.view.layoutIfNeeded() // 화면 다시 로딩
     }
-
+    
 }
