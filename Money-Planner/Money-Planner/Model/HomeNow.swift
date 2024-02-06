@@ -8,6 +8,6 @@
 import Foundation
 
 struct HomeNow : Codable {
-    let activeGoalResponse : Goal?
-    let inactiveGoalsResponse: [CalendarInactive]?
+    let goalInfo : Goal?
+    let dailyList: [CalendarDaily]?
 }

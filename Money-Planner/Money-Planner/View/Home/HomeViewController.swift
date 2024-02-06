@@ -96,7 +96,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     }()
     
     var nowGoal : Goal?
-    var inactiveGoal : [CalendarInactive]?
+    var dailyList : [CalendarDaily?] = []
     
     override func viewDidLoad(){
         fetchData()
@@ -137,6 +137,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     
     // MainMonthView의 delegate
     func didChangeMonth(monthIndex: Int, year: Int) {
+        // 값 있을 때는 넘겨주고 없으면 초기화 하기
         calendarView.changeMonth(monthIndex: monthIndex, year: year)
     }
     
@@ -152,11 +153,13 @@ extension HomeViewController{
             case .success(let data):
                 // 아예 골이 없는 경우
                 
-                let goal : Goal? = data?.activeGoalResponse
-                let inactive : [CalendarInactive]? = data?.inactiveGoalsResponse
+                let goal : Goal? = data?.goalInfo
                 
                 self.nowGoal = goal
-                self.inactiveGoal = inactive
+                
+                if(data?.dailyList != nil){
+                    self.dailyList = data!.dailyList!
+                }
                 
                 DispatchQueue.main.async {
                     self.reloadUI()
@@ -180,9 +183,13 @@ extension HomeViewController{
         if(self.nowGoal != nil){
             statisticsView.goal = self.nowGoal
             
-            statisticsView.progress = getProgress(numerator: self.nowGoal!.totalCost, denominator: self.nowGoal!.goalBudget)
+            statisticsView.progress = getProgress(numerator: self.nowGoal!.totalCost!, denominator: self.nowGoal!.goalBudget!)
         }else{
             statisticsView.progress = 0.0
+        }
+        
+        if(!self.dailyList.isEmpty){
+            calendarView.dailyList = getDailyList(rawData: self.dailyList)
         }
     }
     
@@ -304,12 +311,11 @@ extension HomeViewController{
     func setupCalendarView(cell : UICollectionViewCell){
         
         if(self.nowGoal != nil){
-            statisticsView.progress = getProgress(numerator: self.nowGoal!.totalCost, denominator: self.nowGoal!.goalBudget)
+            statisticsView.progress = getProgress(numerator: self.nowGoal!.totalCost!, denominator: self.nowGoal!.goalBudget!)
         }else{
             statisticsView.progress = 0.0
         }
         
-      
         cell.contentView.addSubview(statisticsView)
         
         calendarView.backgroundColor = UIColor.mpWhite
@@ -381,6 +387,60 @@ extension HomeViewController{
     }
     
     @objc func monthViewTapped(){
+        let goalListModalVC = GoalListModalViewController()
+        goalListModalVC.delegate = self
+        present(goalListModalVC, animated: true)
+    }
+    
+    func getDailyList(rawData : [CalendarDaily?]) -> [CalendarDaily?]{
+        var result : [CalendarDaily?] = [CalendarDaily?](repeating: nil, count: calendarView.getDateCount())
+        
+        for dailyData in rawData {
+            let index = calculateIndex(for: dailyData!.date)
+            
+            result[index] = dailyData
+        }
+        
+        return result
+    }
+    
+    func calculateIndex(for dateString: String) -> Int {
+        // 날짜에 해당하는 인덱스 구하기
+        
+        var index : Int = -1
+        
+        // 이번달 달력 시작 인덱스(1일)
+        let calendarMonth = calendarView.currentMonth
+        let numOfDaysInMonth = calendarView.numOfDaysInMonth
+        let startMonthIndex = calendarView.firstWeekDayOfMonth - 1
+        
+        let previousMonth = (calendarMonth == 1) ? 12 : calendarMonth - 1
+        
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        guard let date = dateFormatter.date(from: dateString) else {
+            return -1
+        }
+        
+        
+        let calendar = Calendar.current
+        let nowMonth = calendar.component(.month, from: date)
+        let nowDay = calendar.component(.day, from: date)
+        
+        if(previousMonth == nowMonth){
+            // 이전달
+            index = (startMonthIndex-1) - (numOfDaysInMonth[previousMonth] - nowDay)
+            
+        }else if(calendarMonth == nowMonth){
+            // 이번달
+            index = startMonthIndex + nowDay - 1
+        }else{
+            // 다음달
+            index = startMonthIndex + numOfDaysInMonth[calendarMonth] + nowDay - 1
+        }
+        
+        return index
     }
 }
 
@@ -408,6 +468,12 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return collectionView.bounds.size
+    }
+}
+
+extension HomeViewController : GoalListModalViewDelegate{
+    func changeGoal(category: Category) {
+        print("hi")
     }
 }
 

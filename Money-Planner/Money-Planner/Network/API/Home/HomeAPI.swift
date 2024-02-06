@@ -4,6 +4,7 @@ import Moya
 enum HomeAPI  {
     // 홈 화면의 첫 API 요청
     case getHomeNow
+    case getGoalList
 
 }
 
@@ -11,14 +12,14 @@ extension HomeAPI : BaseAPI {
 
     public var task: Task {
         switch self {
-        case .getHomeNow:
+        case .getHomeNow, .getGoalList:
             return .requestPlain
         }
     }
     
     public var method: Moya.Method {
         switch self {
-        case .getHomeNow:
+        case .getHomeNow, .getGoalList:
             return .get
         }
     }
@@ -27,10 +28,12 @@ extension HomeAPI : BaseAPI {
         switch self {
         case .getHomeNow:
             return "/api/home/now"
+        case .getGoalList:
+            return "/api/goal/list"
         }
     }
     
     public var headers: [String: String]? {
-        return ["Authorization": "Bearer "]
+        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDcyMTg5NzV9.oKXo_FtQhY3HjZ6BN_Ddo6akqUJUm4DF0hP4bUau2Ag"]
     }
 }

@@ -95,9 +95,9 @@ class MainStatisticsView : UIView {
     private func setupView() {
         backgroundColor = UIColor.clear
         if(goal != nil){
-            useAmount.text = goal!.totalCost.formattedWithSeparator()+"원"
-            totalAmount.text = "/ "+goal!.goalBudget.formattedWithSeparator() + "원"
-            remainAmount.text = (goal!.goalBudget-goal!.totalCost).formattedWithSeparator() +  "원"
+            useAmount.text = goal!.totalCost!.formattedWithSeparator()+"원"
+            totalAmount.text = "/ "+goal!.goalBudget!.formattedWithSeparator() + "원"
+            remainAmount.text = (goal!.goalBudget!-goal!.totalCost!).formattedWithSeparator() +  "원"
         }
         
         addSubview(useAmountLabel)

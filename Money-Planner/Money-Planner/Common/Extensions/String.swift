@@ -14,7 +14,7 @@ extension String{
         return formatter
     }()
     
-    var date: Date? {
+    var toDate: Date? {
         return String.dateFormatter.date(from: self)
     }
 }

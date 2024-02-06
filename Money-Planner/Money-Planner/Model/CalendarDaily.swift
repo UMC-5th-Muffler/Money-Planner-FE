@@ -8,8 +8,9 @@
 import Foundation
 
 struct CalendarDaily: Codable {
-    let dailyBudget : Int
-    let dailyTotalCost: Int
+    let date : String
+    let dailyBudget : Int?
+    let dailyTotalCost: Int?
     let dailyRate: String?
-    let isZeroDay: Bool
+    var isZeroDay: Bool? = false
 }

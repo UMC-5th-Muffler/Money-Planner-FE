@@ -9,14 +9,20 @@ import Foundation
 
 struct Goal : Codable {
     let goalID: Int
-    let goalTitle: String
-    let goalBudget: Int
-    let startDate, endDate: String
-    let totalCost: Int
-    let dailyList: [CalendarDaily]
+    let goalTitle: String? = nil
+    let goalBudget: Int? = nil
+    let startDate : String? = nil
+    let endDate: String? = nil
+    let totalCost: Int? = nil
+    let icon : String? = nil
 
     enum CodingKeys: String, CodingKey {
         case goalID = "goalId"
-        case goalTitle, goalBudget, startDate, endDate, totalCost, dailyList
+        case goalTitle = "title"
+        case goalBudget, startDate, endDate, totalCost, icon
     }
+}
+
+struct GoalList : Codable {
+    let goalList : [Goal]?
 }

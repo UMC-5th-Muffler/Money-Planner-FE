@@ -10,7 +10,17 @@ import Foundation
 // MARK: - Category
 struct Category: Codable {
     let id: Int
-    let name: String
     var categoryIcon : String? = ""
+    let name: String
+    var priority : Int? = -1
     var categoryBudget: Int? = 0
+    var isVisible : Bool? = nil
+    var type : String? = nil
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "categoryId"
+        case categoryIcon = "icon"
+        case name, priority, isVisible, type
+        
+    }
 }
