@@ -12,5 +12,5 @@ struct CalendarDaily: Codable {
     let dailyBudget : Int?
     let dailyTotalCost: Int?
     let dailyRate: String?
-    var isZeroDay: Bool? = false
+    var isZeroDay: Bool?
 }

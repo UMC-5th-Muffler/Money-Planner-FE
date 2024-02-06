@@ -17,7 +17,7 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         }
     }
     
-    var goal : Goal? = nil
+    var goal : Goal?
     
     // 0인덱스를 없애기 위해 처리
     var numOfDaysInMonth = [-1,31,28,31,30,31,30,31,31,30,31,30,31]
@@ -139,10 +139,9 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         let daily = dailyList[indexPath.item]
         
         if(daily != nil){
-            
             if(self.goal != nil && daily!.date.toDate!.isInRange(startDate: self.goal!.startDate!.toDate!, endDate: self.goal!.endDate!.toDate!)){
                 // 목표가 있고 목표 안의 범위 일 경우
-                
+                               
                 // 평가 이미지
                 if(daily!.dailyRate == "HIGH"){
                     cell.imageView.image = UIImage(named: "btn_date_green")
@@ -160,6 +159,26 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                 
                 if(daily!.dailyBudget != nil){
                     cell.dayGoalAmount.text = daily!.dailyBudget?.formattedWithSeparator()
+                }
+                
+                // 예산
+                if(daily!.dailyBudget != nil){
+                    cell.dayGoalAmount.text = daily!.dailyBudget?.formattedWithSeparator()
+                    
+                    if(daily!.dailyTotalCost != nil){
+                        // 예산과 소비액 둘다 있을 경우 색상 처리
+                        if(daily!.dailyBudget! >= daily!.dailyTotalCost!){
+                            cell.dayConsumeAmount.textColor = .mpMainColor
+                        }else{
+                            cell.dayConsumeAmount.textColor = .mpRed
+                        }
+                        
+                    }
+                }
+                
+                // 소비액
+                if(daily!.dailyTotalCost != nil){
+                    cell.dayConsumeAmount.text = daily!.dailyTotalCost?.formattedWithSeparator()
                 }
                 
                 
@@ -183,16 +202,6 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             
             if(daily!.dailyRate != nil){
                 cell.lbl.text = ""
-            }
-            
-            // 예산
-            if(daily!.dailyBudget != nil){
-                cell.dayGoalAmount.text = daily!.dailyBudget?.formattedWithSeparator()
-            }
-            
-            // 소비액
-            if(daily!.dailyTotalCost != nil){
-                cell.dayConsumeAmount.text = daily!.dailyTotalCost?.formattedWithSeparator()
             }
             
         }else{

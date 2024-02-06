@@ -11,7 +11,7 @@ import UIKit
 class MainStatisticsView : UIView {
     // 게이지의 진행도 (0.0 ~ 1.0)
     
-    var goal : Goal? {
+    var goal : Goal? = nil {
         didSet{
             setupView()
         }

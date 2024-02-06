@@ -182,6 +182,7 @@ extension HomeViewController{
         // calendarView
         if(self.nowGoal != nil){
             statisticsView.goal = self.nowGoal
+            calendarView.goal = self.nowGoal
             
             statisticsView.progress = getProgress(numerator: self.nowGoal!.totalCost!, denominator: self.nowGoal!.goalBudget!)
         }else{
