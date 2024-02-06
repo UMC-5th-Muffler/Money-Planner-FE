@@ -12,22 +12,115 @@ protocol RepeatModalViewDelegate : AnyObject{
 }
 
 
-class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,CalendarSelectionDelegate, RepeatIntervalDelegate, ChooseDateViewDelegate {
-
+class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,CalendarSelectionDelegate, ChooseDateViewDelegate , RepeatIntervalDelegate{
     
-    func didIntervalSelected(_ Interval: String,_ num : Int) {
+    
+    weak var delegate: ChooseDayViewDelegate?
+
+   
+    
+    // MARK: - 날짜 선택  - ChooseDateViewDelegate
+    
+    // 반복 날짜 선택
+    func chooseIntervalDate(_ view: UIViewController) {
+        present(view, animated: true)
+    }
+    // 반복종료일 추가
+    func addEndDate(_ view : UIStackView) {
+        //view.backgroundColor = .green
+        updateHeightConstraint(forView: contentsContainer, height: 260)
+        updateHeightConstraint(forView: customModal, height: 502)
+        // 요일 선택 시 나오는 화면 추가
+        if let index = indexOfView(view2) {
+            contentsContainer.insertArrangedSubview(view, at: index+1)
+        }
+        view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            view2.calChooseButton.heightAnchor.constraint(equalToConstant: 38),
+            view2.calChooseButton.widthAnchor.constraint(equalToConstant: 137),
+            view2.RepeatEndDate2Label.heightAnchor.constraint(equalToConstant: 38)
+        ])
+        view2.calChooseButton.addTarget(self, action: #selector(showCalModal), for: .touchUpInside)
+        endDay = view
+        view.addArrangedSubview(view2.blank)
+        view.addArrangedSubview(view2.calChooseButton)
+        view.addArrangedSubview(view2.RepeatEndDate2Label)
+        //
+        
+        //view2.calChooseButton.addTarget(self, action: #selector(showCalModal2), for: .touchUpInside)
+    }
+    
+    // 반복종료일 삭제
+    func removeEndDate() {
+        
+        if (endDay != nil){
+            contentsContainer.removeArrangedSubview(endDay!)
+        }
+        endDay?.removeFromSuperview()
+        updateHeightConstraint(forView: contentsContainer, height: 200)
+        updateHeightConstraint(forView: customModal, height: 448)
+    }
+    
+    // MARK: - 요일 선택 - ChooseDayViewDelegate
+    
+    // 반복 요일 선택
+    func chooseIntervalDay(_ view: UIViewController) {
+        present(view, animated: true)
+
+    }
+    var endDay : UIStackView?
+    // 반복종료일 추가
+    func addEndDay(_ view : UIStackView) {
+        updateHeightConstraint(forView: customModal, height: 554)
+        updateHeightConstraint(forView: contentsContainer, height: 310)
+        // 요일 선택 시 나오는 화면 추가
+        if let index = indexOfView(view1) {
+            contentsContainer.insertArrangedSubview(view, at: index+1)
+        }
+        endDay = view
+        view.addArrangedSubview(view1.blank)
+        view.addArrangedSubview(view1.calChooseButton)
+        view.addArrangedSubview(view1.RepeatEndDate2Label)
+        view1.calChooseButton.addTarget(self, action: #selector(showCalModal), for: .touchUpInside)
+    }
+    // 반복종료일 삭제
+    func removeEndDay() {
+        updateHeightConstraint(forView: customModal, height: 499)
+        updateHeightConstraint(forView: contentsContainer, height: 252)
+        if (endDay != nil){
+            contentsContainer.removeArrangedSubview(endDay!)
+        }
+        endDay?.removeFromSuperview()
+        
+    }
+    @objc func showCalModal(_ sender: UIDatePicker) {
+        print("날짜 선택")
+        let calVC = CalendartModalViewController()
+        calVC.delegate = self
+        present(calVC, animated: true)
+    }
+   
+    func didIntervalSelected(_ index : Int){
         UIView.animate(withDuration: 0.3) {
                 self.view.layoutIfNeeded()
             }
-        if num == 1{
-            view1.weekIntervalButton.setTitle(Interval, for: .normal)
-
+        print(" 간격 반복을 선택하였습니다 ")
+        // 요일 선택인 경유
+        if chooseDayButton.isChecked {
+            print("log : 요일 선택을 감지함")
+            view1.weekIntervalButton.setTitle("\(index+1)", for: .normal)
         }
-        if num == 2{
-            view2.weekIntervalButton.setTitle(Interval, for: .normal)
-
+        // 날짜 선택인 경우
+        if chooseDateButton.isChecked{
+            var dateString: String = {
+                dateFormatter.dateFormat = "dd일"
+                return dateFormatter.string(from: currentDate)}()
+            let intervalList = ["\(dateString)","첫째 날", "마지막 날"]
+            print(intervalList[index])
+            view2.weekIntervalButton.setTitle(intervalList[index], for: .normal)
+            //view2.weekIBtnConstraint?.constant = 110
         }
-        print(Interval)
+
     }
     
     func didSelectCalendarDate(_ date: String) {
@@ -44,24 +137,26 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
          dateFormatter.dateFormat = "dd일"
          return dateFormatter.string(from: currentDate)
      }()
-    var dayContainerViewBottomConstraint: NSLayoutConstraint?
-    var dateContainerViewBottomConstraint: NSLayoutConstraint?
-    var ChooseDayHeightConstraint : NSLayoutConstraint?
-    var ChooseDateHeightConstraint : NSLayoutConstraint?
-    var lineConstraint : NSLayoutConstraint?
-    var containerViewBottomConstraint : NSLayoutConstraint?
-    weak var delegate: RepeatModalViewDelegate?
+    // 모달의 메인 컨테이너 뷰
+    private let customModal: UIStackView = {
+        let view = UIStackView()
+        view.axis = .vertical
+        view.spacing = 40
+        view.backgroundColor = .mpWhite
+        view.layer.cornerRadius = 25
+        view.layer.masksToBounds = true
+        return view
+    }()
+    var heightConstraint : NSLayoutConstraint?
+    
+    
 
 
     let IntervalSelectionModalVC = RepeatIntervalViewController()
-    let customModal = UIView(frame: CGRect(x: 0, y: 0, width: 361, height: 355))
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "언제 반복할까요?"
-        label.textAlignment = .center
-        label.font = UIFont.mpFont20B()
-        return label
-    }()
+    
+    
+    let headerView = UIView()
+    let titleLabel = UILabel()
     // 제목 위에 작은 바
     let modalBar : UIView = {
         let view = UIView()
@@ -127,7 +222,13 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
         return label
         
     }()
-    
+    let contentsContainer : UIStackView = {
+        let s = UIStackView()
+        s.axis = .vertical
+        s.spacing = 24
+        s.distribution = .fill
+        return s
+    }()
     let chooseDayButton  = CheckBtn()
     let chooseDateButton = CheckBtn()
     
@@ -141,70 +242,6 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
     let stackView2 = UIStackView()
     let view1 = ChooseDayView()
     let view2 = ChooseDateView()
-
-    @objc
-        private func repeatEndDateButtonTapped() {
-//
-//            UIView.animate(withDuration: 0.5) {
-//                    self.view.layoutIfNeeded()
-//                }
-            print("반복 종료일 설정 클릭함 ")
-            view1.updateViewFrame(newHeight: 210)
-            
-            
-        }
-    func chooseDayViewDidUpdateFrame(_ newHeight: CGFloat) {
-        if newHeight == 0 {
-            calSelectionModal()
-        }
-        if newHeight == 1{
-            print("스위치 완료 - 매월 언제 반복할까요?")
-            IntervalSelectionModal(1)
-        }
-        if newHeight == 200{ // 요일 선택 > 반복 종료일 설정 누름
-            print("log1")
-            customModal.frame.size = CGSize(width: 361, height: 554)
-            stackView.frame.size = CGSize(width: 313 , height: 202)
-            //frame = CGRect(x: 0, y: 0, width:313, height: 200)
-            changeContainer(-22 ,1)
-            self.customModal.layoutIfNeeded()
-
-        }
-        if newHeight == 201 {
-            print("log2")
-            changeContainer(-60,1)
-        }
-        
-       
-        
-    }
-    func chooseDateViewDidUpdateFrame(_ newHeight: CGFloat) {
-        if newHeight == 0 {
-            calSelectionModal()
-        }
-        if newHeight == 1{
-            print("스위치 완료 - 매월 언제 반복할까요?")
-            IntervalSelectionModal(2)
-            
-        }
-        if newHeight == 200{
-            print("log1")
-            changeContainer(-60,2)
-            customModal.frame.size = CGSize(width: 361, height: 502)
-        }
-        if newHeight == 201 {
-            print("log2")
-           
-            changeContainer(-60,2)
-            customModal.frame.size = CGSize(width: 361, height: 448)
-        }
-    }
-
-    
-    //let view1 = ChooseDayView(frame: CGRect(x: 0, y: 0, width: 313, height: 171) )
-    //let view1 = UIView(frame: CGRect(x: 0, y: 0, width: 313, height: 147))
-    //let view2 = UIView(frame: CGRect(x: 0, y: 0, width: 313, height: 97))
-    
     let cancelNcomplte = SmallBtnView()
     
     // 날짜 선택 시 나오는 화면
@@ -214,177 +251,199 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        presentCustomModal()
-        setupBackground()
+        presentCustomModal() // 배경설정
         setuptitleLabel()
-        setupCancelNComplte()
+        setupContentsContainer()
+        setupCancelNComplete()
         setupRepeatView()
-        print(chooseDayButton.isChecked)
         // 요일 선택
         view1.delegate = self
-        view1.translatesAutoresizingMaskIntoConstraints = false
+        // 날짜 선택
         view2.delegate = self
-        view2.translatesAutoresizingMaskIntoConstraints = false
-        //stackView2.backgroundColor = .red
-        //stackView.backgroundColor = .red
 
-    }
-    func presentCustomModal() {
-        // Instantiate your custom modal view
-        customModal.backgroundColor = UIColor.mpWhite
-        view.addSubview(customModal)
-       // view.backgroundColor = .red
-        customModal.center = view.center
-
-        
-    }
-    private func setupBackground() {
-        customModal.backgroundColor = .white
-        customModal.layer.cornerRadius = 25
-        customModal.layer.masksToBounds = true
     }
     
-    private func setuptitleLabel() {
+    
+    func presentCustomModal() {
+        view.addSubview(customModal)
+        customModal.translatesAutoresizingMaskIntoConstraints = false
 
+        NSLayoutConstraint.activate([
+                customModal.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+                customModal.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                customModal.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                
+                // 필요하다면 customModal의 높이에 대한 제약 조건도 추가
+            ])
+        // UIStackView에 높이 제약조건 추가
+        heightConstraint = customModal.heightAnchor.constraint(equalToConstant: 355)
+        heightConstraint!.isActive = true // 이를 활성화합니다.
         
-        customModal.addSubview(modalBar)
-        customModal.addSubview(titleLabel)
+
+   
+    }
+    func updateHeightConstraint(forView view: UIStackView, height: CGFloat) {
+        // 뷰의 높이 제약 조건을 찾아서 업데이트합니다.
+        if let heightConstraint = view.constraints.first(where: { $0.firstAttribute == .height }) {
+            heightConstraint.constant = height
+        } else {
+            // 뷰에 높이 제약 조건이 없다면 새로 생성합니다.
+            let heightConstraint = view.heightAnchor.constraint(equalToConstant: height)
+            heightConstraint.isActive = true
+        }
+    }
+    func updateViewHeightConstraint(forView view: UIView, height: CGFloat) {
+        // 뷰의 높이 제약 조건을 찾아서 업데이트합니다.
+        if let heightConstraint = view.constraints.first(where: { $0.firstAttribute == .height }) {
+            heightConstraint.constant = height
+        } else {
+            // 뷰에 높이 제약 조건이 없다면 새로 생성합니다.
+            let heightConstraint = view.heightAnchor.constraint(equalToConstant: height)
+            heightConstraint.isActive = true
+        }
+    }
+    private func setuptitleLabel() {
+        // 스타일
+        UIHelper.configureLabel(titleLabel, text: "언제 반복할까요?", font: UIFont.mpFont20B(), textColor: .mpBlack, textAlignment: .center)
+        let titleContainerView = UIView()
+        titleContainerView.addSubview(modalBar)
+        titleContainerView.addSubview(titleLabel)
+        
         modalBar.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             modalBar.widthAnchor.constraint(equalToConstant: 49),
             modalBar.heightAnchor.constraint(equalToConstant: 4),
-            modalBar.topAnchor.constraint(equalTo: customModal.topAnchor, constant: 12),
-            modalBar.centerXAnchor.constraint(equalTo: customModal.centerXAnchor),
+            modalBar.topAnchor.constraint(equalTo: titleContainerView.topAnchor, constant: 12),
+            modalBar.centerXAnchor.constraint(equalTo: titleContainerView.centerXAnchor),
             titleLabel.heightAnchor.constraint(equalToConstant: 28),
             titleLabel.topAnchor.constraint(equalTo: modalBar.bottomAnchor, constant: 40),
-            titleLabel.centerXAnchor.constraint(equalTo: customModal.centerXAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: titleContainerView.centerXAnchor),
+            titleContainerView.heightAnchor.constraint(equalToConstant: 72)
         ])
         
-        
+        customModal.addArrangedSubview(titleContainerView)
         
     }
-    
+    private func setupContentsContainer(){
+        customModal.addArrangedSubview(contentsContainer)
+    }
     private func setupRepeatView() {
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        // >> containerView.backgroundColor = .mpDim
-        customModal.addSubview(containerView)
-        containerViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: cancelNcomplte.topAnchor, constant: -60)
-        NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 24),
-            containerView.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -24),
-            containerView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
-            containerViewBottomConstraint!
-        ])
-        
-        
-
-        //>>dayContainerView.backgroundColor = .green
+        updateHeightConstraint(forView: contentsContainer, height: 107)
+        contentsContainer.addArrangedSubview(dayContainerView)
+        contentsContainer.addArrangedSubview(line)
+        contentsContainer.addArrangedSubview(dateContainerView)
         line.backgroundColor = .mpLightGray
-        //>>dateContainerView.backgroundColor = .green
-        //>>stackView.backgroundColor = .red
+
         
         dayContainerView.translatesAutoresizingMaskIntoConstraints = false
         line.translatesAutoresizingMaskIntoConstraints = false
         dateContainerView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView2.translatesAutoresizingMaskIntoConstraints = false
-        
-        containerView.addSubview(dayContainerView)
-        containerView.addSubview(stackView)
-        containerView.addSubview(stackView2)
-        containerView.addSubview(line)
-        containerView.addSubview(dateContainerView)
-        
-        dayContainerViewBottomConstraint = dayContainerView.bottomAnchor.constraint(equalTo: line.topAnchor,constant: -24)
-        lineConstraint = line.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
-        dateContainerViewBottomConstraint = dateContainerView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+
+  
         NSLayoutConstraint.activate([
             
+            // 변경되는 컨텐츠를 담는 뷰
+            contentsContainer.leadingAnchor.constraint(equalTo: customModal.leadingAnchor,constant: 24),
+            contentsContainer.trailingAnchor.constraint(equalTo: customModal.trailingAnchor,constant: -24),
+            
             // 요일 선택 컨테이너 박스
-            dayContainerView.widthAnchor.constraint(equalTo: containerView.widthAnchor),
-            //dayContainerView.heightAnchor.constraint(equalToConstant:40),
-            dayContainerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            dayContainerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            dayContainerView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            dayContainerViewBottomConstraint!,
-            
-            // 요일 선택 시 등장 화면
-            //stackView.widthAnchor.constraint(equalTo: containerView.widthAnchor),
-            //stackView.heightAnchor.constraint(equalToConstant: 0),
-            stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: dayContainerView.bottomAnchor),
-            stackView.bottomAnchor.constraint(equalTo: line.topAnchor),
-            
-            // containerView의 top에 맞춰서 위치
+            dayContainerView.leadingAnchor.constraint(equalTo: contentsContainer.leadingAnchor),
+            dayContainerView.trailingAnchor.constraint(equalTo: contentsContainer.trailingAnchor),
+            dayContainerView.heightAnchor.constraint(equalToConstant: 28),
+            // 구분선
             line.heightAnchor.constraint(equalToConstant: 1),
-            line.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            line.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            lineConstraint!,
-            line.topAnchor.constraint(equalTo: stackView.bottomAnchor),
+            line.leadingAnchor.constraint(equalTo: contentsContainer.leadingAnchor),
+            line.trailingAnchor.constraint(equalTo: contentsContainer.trailingAnchor),
             
             // 날짜 선택 컨테이너 박스
-            
-            //ChooseDayHeightConstraint!,
-            dateContainerView.widthAnchor.constraint(equalTo: containerView.widthAnchor),
-            dateContainerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            dateContainerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            dateContainerView.topAnchor.constraint(equalTo: line.bottomAnchor,constant: 24),
-            dateContainerViewBottomConstraint!,
-            // 날짜 선택 시 등장 화면
-            stackView2.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            stackView2.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            stackView2.topAnchor.constraint(equalTo: dateContainerView.bottomAnchor),
-            stackView2.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+            dateContainerView.heightAnchor.constraint(equalToConstant: 28),
+            dateContainerView.leadingAnchor.constraint(equalTo: contentsContainer.leadingAnchor),
+            dateContainerView.trailingAnchor.constraint(equalTo: contentsContainer.trailingAnchor),
+
         ])
         
-        chooseDayButton.addTarget(self, action: #selector(showChooseDayModal), for: .touchUpInside)
-        chooseDateButton.addTarget(self, action: #selector(showChooseDateModal), for: .touchUpInside)
-        chooseDayButton.setChecked(false)
-        chooseDateButton.setChecked(false)
+       
         dayContainerView.addSubview(chooseDayButton)
         dayContainerView.addSubview(chooseDay)
         dateContainerView.addSubview(chooseDateButton)
         dateContainerView.addSubview(chooseDate)
+        
         chooseDay.translatesAutoresizingMaskIntoConstraints = false
         chooseDate.translatesAutoresizingMaskIntoConstraints = false
         chooseDayButton.translatesAutoresizingMaskIntoConstraints = false
         chooseDateButton.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
+            // 요일 선택 - 체크 버튼
             chooseDayButton.widthAnchor.constraint(equalToConstant:28),
             chooseDayButton.heightAnchor.constraint(equalToConstant: 28),
             chooseDayButton.trailingAnchor.constraint(equalTo: dayContainerView.trailingAnchor),
             chooseDayButton.centerYAnchor.constraint(equalTo: dayContainerView.centerYAnchor),
+            // 날짜 선택 - 체크 버튼
             chooseDateButton.widthAnchor.constraint(equalToConstant:28),
             chooseDateButton.heightAnchor.constraint(equalToConstant: 28),
             chooseDateButton.trailingAnchor.constraint(equalTo: dateContainerView.trailingAnchor),
             chooseDateButton.centerYAnchor.constraint(equalTo: dateContainerView.centerYAnchor),
-            
+            // 요일 선택 라벨
             chooseDay.leadingAnchor.constraint(equalTo: dayContainerView.leadingAnchor),
             chooseDay.centerYAnchor.constraint(equalTo: dayContainerView.centerYAnchor),
             chooseDay.topAnchor.constraint(equalTo: dayContainerView.topAnchor),
             chooseDay.bottomAnchor.constraint(equalTo: dayContainerView.bottomAnchor),
+            // 날짜 선택 라벨
             chooseDate.leadingAnchor.constraint(equalTo: dateContainerView.leadingAnchor),
             chooseDate.centerYAnchor.constraint(equalTo: dateContainerView.centerYAnchor),
             chooseDate.topAnchor.constraint(equalTo: dateContainerView.topAnchor),
             chooseDate.bottomAnchor.constraint(equalTo: dateContainerView.bottomAnchor),
         ])
+        // 체크버튼 초기화 - 비활성화
+        chooseDayButton.setChecked(false)
+        chooseDateButton.setChecked(false)
+        
+        // 체크버튼 - 타겟 추가
+        chooseDayButton.addTarget(self, action: #selector(showChooseDayModal), for: .touchUpInside)
+        chooseDateButton.addTarget(self, action: #selector(showChooseDateModal), for: .touchUpInside)
+    }
+    private func setupView1(){
+        view1.translatesAutoresizingMaskIntoConstraints = false
+  
+        NSLayoutConstraint.activate([
+            // 요일 선택 시 나오는 화면
+            view1.leadingAnchor.constraint(equalTo: contentsContainer.leadingAnchor),
+            view1.trailingAnchor.constraint(equalTo: contentsContainer.trailingAnchor),
+    
+        ])
         
     }
-    private func setupCancelNComplte(){
+    private func setupView2(){
+        view1.translatesAutoresizingMaskIntoConstraints = false
+  
+        NSLayoutConstraint.activate([
+            // 날짜 선택 시 나오는 화면
+            view2.leadingAnchor.constraint(equalTo: contentsContainer.leadingAnchor),
+            view2.trailingAnchor.constraint(equalTo: contentsContainer.trailingAnchor),
+        ])
         
-        customModal.addSubview(cancelNcomplte)
+    }
+    private func setupCancelNComplete(){
+        let completeContainer = UIView()
+        completeContainer.translatesAutoresizingMaskIntoConstraints = false
+        completeContainer.addSubview(cancelNcomplte)
+        
         cancelNcomplte.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            cancelNcomplte.bottomAnchor.constraint(equalTo: customModal.bottomAnchor,constant: -20),
+            cancelNcomplte.bottomAnchor.constraint(equalTo: completeContainer.bottomAnchor,constant: -20),
             cancelNcomplte.heightAnchor.constraint(equalToConstant: 56),
-            cancelNcomplte.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 20),
-            cancelNcomplte.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -20),
+            cancelNcomplte.leadingAnchor.constraint(equalTo: completeContainer.leadingAnchor, constant: 20),
+            cancelNcomplte.trailingAnchor.constraint(equalTo: completeContainer.trailingAnchor, constant: -20),
         ])
+        // 버튼 액션 추가
         cancelNcomplte.addCancelAction(target: self, action: #selector(cancelButtonTapped))
         cancelNcomplte.addCompleteAction(target: self, action: #selector(completeButtonTapped))
+        
+        // 컨테이너 화면에 추가
+        customModal.addArrangedSubview(completeContainer)
     }
     
     
@@ -420,152 +479,171 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
         // 완료 버튼 액션 처리
         
         
-        if IntervalSelectionModalVC.type == 1{
-            delegate?.GetResultofInterval(returnValue)
-        }
-        if IntervalSelectionModalVC.type == 2{
-            delegate?.GetResultofInterval("매월 "+(view2.weekIntervalButton.titleLabel?.text ?? "") )
-            
-        }
+//        if IntervalSelectionModalVC.type == 1{
+//            delegate?.GetResultofInterval(returnValue)
+//        }
+//        if IntervalSelectionModalVC.type == 2{
+//            delegate?.GetResultofInterval("매월 "+(view2.weekIntervalButton.titleLabel?.text ?? "") )
+//            
+//        }
         dismiss(animated: true, completion: nil)
+    }
+    // 인덱스 찾아내는 함수
+    func indexOfView(_ viewToFind: UIView) -> Int? {
+        return contentsContainer.arrangedSubviews.firstIndex { subview in
+            return subview === viewToFind
+        }
     }
     @objc
     private func showChooseDayModal() {
-        
         if chooseDayButton.isChecked {
+            if chooseDateButton.isChecked{
+                // 날짜 선택이 이미 선택된 경우
+                
+                // 날짜 선택 시 나온 화면 삭제 - view2, endDay
+                contentsContainer.removeArrangedSubview(view2)
+                if (endDay != nil){
+                    contentsContainer.removeArrangedSubview(endDay!)
+                }
+                
+                view2.removeFromSuperview()
+                endDay?.removeFromSuperview()
+                updateViewHeightConstraint(forView: view1, height: 116)
+                view1.RepeatEndDateButton.isChecked = false
+            }
             print("요일 선택")
+            // 날짜 버튼 선택 취소
             chooseDateButton.isChecked = false
+            
+            // 요일/날짜 선택 텍스트 색상 변경
             chooseDay.textColor = .mpMainColor
             chooseDate.textColor = .mpBlack
-            // 선택 시 나오는 화면 삭제 - 날짜 선택
-            stackView.removeArrangedSubview(view2)
-            view2.removeFromSuperview()
             
-            stackView.addArrangedSubview(view1)
-            //view1.backgroundColor = .mpMainColor
-            view1.translatesAutoresizingMaskIntoConstraints = false
-            customModal.frame.size = CGSize(width: 361, height: 499)
-            //stackView.frame.size = CGSize(width: 313 , height: 147)
-            NSLayoutConstraint.deactivate([
-                dayContainerViewBottomConstraint!,
-                lineConstraint!,
-            ])
-            dayContainerViewBottomConstraint = dayContainerView.bottomAnchor.constraint(equalTo: stackView.topAnchor)
-            ChooseDayHeightConstraint = dayContainerView.heightAnchor.constraint(equalToConstant: 28)
-            ChooseDateHeightConstraint = dateContainerView.heightAnchor.constraint(equalToConstant: 28)
-            lineConstraint = line.topAnchor.constraint(equalTo: stackView.bottomAnchor)
-            NSLayoutConstraint.activate([
-                dayContainerViewBottomConstraint!,
-                ChooseDayHeightConstraint!,
-                lineConstraint!,
-                ChooseDateHeightConstraint!,
-                
-            ])
-            IntervalSelectionModalVC.type = 1 // 서브화면 종류 설정 (1:요일선택)
+            // 가변높이 설정
+            updateHeightConstraint(forView: customModal, height: 500)
+            updateHeightConstraint(forView: contentsContainer, height: 255)
+            updateViewHeightConstraint(forView: view1, height: 132)
+            
+            // 요일 선택 시 나오는 화면 추가
+            if let index = indexOfView(dayContainerView) {
+                contentsContainer.insertArrangedSubview(view1, at: index+1)
+            }
+            view1.weekIntervalButton.addTarget(self, action: #selector(buttonTapped2), for: .touchUpInside)
+            setupView1()
+            // 애니메이션 0.3초
             UIView.animate(withDuration: 0.3) {
-                    self.view.layoutIfNeeded()
+                    self.contentsContainer.layoutIfNeeded()
                 }
             
         }
         else{
+            // 가변높이 설정
+            updateHeightConstraint(forView: contentsContainer, height: 105)
+            updateHeightConstraint(forView: customModal, height: 355)
+            
+            // 요일 버튼 선택 취소
             chooseDayButton.isChecked = false
+            
+            // 요일 선택 라벨 색상 변경 -> 검정색
             chooseDay.textColor = .mpBlack
             
-            // 선택 시 나오는 화면 삭제
-            stackView.removeArrangedSubview(view1)
+            // 요일 선택 시 나온 화면 삭제
+            contentsContainer.removeArrangedSubview(view1)
             view1.removeFromSuperview()
-            // 커스텀 모달 (가장 큰 화면 ) 초기화
-            customModal.frame.size = CGSize(width: 361, height: 355)
-            //stackView.frame.size = CGSize(width: 313 , height: 0)
-            dayContainerViewBottomConstraint = dayContainerView.bottomAnchor.constraint(equalTo: line.topAnchor, constant:  -24)
-            NSLayoutConstraint.deactivate([
-                ChooseDayHeightConstraint!,
-                ChooseDateHeightConstraint!,
-                lineConstraint!,])
-            lineConstraint = line.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
-            NSLayoutConstraint.activate([
-                dayContainerViewBottomConstraint!,
-                lineConstraint!,
-            
-            ])
+            if (endDay != nil){
+                contentsContainer.removeArrangedSubview(endDay!)
+            }
+            endDay?.removeFromSuperview()
+            //애니메이션 0.3초
             UIView.animate(withDuration: 0.3) {
-                self.customModal.layoutIfNeeded()
                     self.view.layoutIfNeeded()
-                }
+            }
         }
-        
     }
 
+    // 버튼 탭 시 호출되는 메서드
+    @objc private func buttonTapped2() {
+        let IntervalSelectionVC = RepeatIntervalViewController()
+        delegate?.chooseIntervalDay(IntervalSelectionVC)
+        IntervalSelectionVC.delegate = self
+
+        if chooseDayButton.isChecked{
+            IntervalSelectionVC.changeTitle(title: "몇 주 간격으로 반복할까요?")
+        }
+        if chooseDateButton.isChecked{
+            IntervalSelectionVC.changeTitle(title: "매월 언제 반복할까요?")
+            IntervalSelectionVC.intervals = ["매월 \(dateString)에 반복","매월 첫째 날에 반복", "매월 마지막 날에 반복"]
+        }
+       
+
+        present(IntervalSelectionVC, animated: true)
+        print("간격 모달 뷰로 스위치")
+    }
     
     @objc
     private func showChooseDateModal() {
         if chooseDateButton.isChecked {
+            if chooseDayButton.isChecked{
+                // 요일 선택이 이미 선택된 경우
+                
+                // 요일 선택 시 나온 화면 삭제 - view1, endDay
+                contentsContainer.removeArrangedSubview(view1)
+                if (endDay != nil){
+                    contentsContainer.removeArrangedSubview(endDay!)
+                }
+                
+                view1.removeFromSuperview()
+                endDay?.removeFromSuperview()
+                view2.RepeatEndDateButton.isChecked = false
+            }
             print("날짜 선택")
-            view1.removeFromSuperview()
+            // 날짜 버튼 선택 취소
             chooseDayButton.isChecked = false
+            
+            // 요일/날짜 선택 텍스트 색상 변경
             chooseDate.textColor = .mpMainColor
             chooseDay.textColor = .mpBlack
-            customModal.frame.size = CGSize(width: 361, height: 448)
             
-            
-            stackView2.addArrangedSubview(view2)
-            view2.backgroundColor = .mpMainColor
-            view2.translatesAutoresizingMaskIntoConstraints = false
-            //stackView.frame.size = CGSize(width: 313 , height: 147)
-            NSLayoutConstraint.deactivate([
-                dateContainerViewBottomConstraint!,
-                lineConstraint!,
-            ])
-            dateContainerViewBottomConstraint = dateContainerView.bottomAnchor.constraint(equalTo: stackView2.topAnchor)
-            ChooseDayHeightConstraint = dayContainerView.heightAnchor.constraint(equalToConstant: 50)
-            ChooseDateHeightConstraint = dateContainerView.heightAnchor.constraint(equalToConstant: 28)
-            lineConstraint = line.topAnchor.constraint(equalTo: dayContainerView.bottomAnchor)
-            NSLayoutConstraint.activate([
-                dateContainerViewBottomConstraint!,
-                ChooseDayHeightConstraint!,
-                lineConstraint!,
-                ChooseDateHeightConstraint!,
-                
-            ])
-            IntervalSelectionModalVC.type = 2 // 서브화면 종류 설정 (2:날짜 선택)
-
+            // 가변높이 설정
+            updateHeightConstraint(forView: customModal, height: 448)
+            updateHeightConstraint(forView: contentsContainer, height: 200)
+            //updateViewHeightConstraint(forView: view2, height: 78)
+            // 요일 선택 시 나오는 화면 추가
+            if let index = indexOfView(dateContainerView) {
+                contentsContainer.insertArrangedSubview(view2, at: index+1)
+            }
+            view2.weekIntervalButton.addTarget(self, action: #selector(buttonTapped2), for: .touchUpInside)
+            setupView2()
+            // 애니메이션 0.3초
             UIView.animate(withDuration: 0.3) {
-                    self.view.layoutIfNeeded()
+                    self.contentsContainer.layoutIfNeeded()
                 }
+            
         }
         else{
+            // 가변높이 설정
+            updateHeightConstraint(forView: contentsContainer, height: 105)
+            updateHeightConstraint(forView: customModal, height: 355)
+            
+            // 요일 버튼 선택 취소
             chooseDateButton.isChecked = false
+            
+            // 요일 선택 라벨 색상 변경 -> 검정색
             chooseDate.textColor = .mpBlack
-            // 커스텀 모달 (가장 큰 화면 ) 초기화
             
-            // 선택 시 나오는 화면 삭제
-            stackView2.removeArrangedSubview(view2)
+            // 요일 선택 시 나온 화면 삭제
+            contentsContainer.removeArrangedSubview(view2)
             view2.removeFromSuperview()
-            // 커스텀 모달 (가장 큰 화면 ) 초기화
-            customModal.frame.size = CGSize(width: 361, height: 355)
-            //stackView.frame.size = CGSize(width: 313 , height: 0)
-            
-            NSLayoutConstraint.deactivate([
-                ChooseDayHeightConstraint!,
-                ChooseDateHeightConstraint!,
-                lineConstraint!,])
-            
-            lineConstraint = line.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
-            dateContainerViewBottomConstraint = dateContainerView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-            
-            NSLayoutConstraint.activate([
-                dateContainerViewBottomConstraint!,
-                lineConstraint!,
-            
-            ])
+            if (endDay != nil){
+                contentsContainer.removeArrangedSubview(endDay!)
+            }
+            endDay?.removeFromSuperview()
+            //애니메이션 0.3초
             UIView.animate(withDuration: 0.3) {
                     self.view.layoutIfNeeded()
-                }
-            
+            }
         }
-        
-        
-        }
+    }
     func calSelectionModal(){
         print("종료 날짜 선택 모달")
         let calModalVC = CalendartModalViewController()
@@ -576,55 +654,9 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
                 self.view.layoutIfNeeded()
             }
     }
-    func IntervalSelectionModal(_ num : Int ){
-        print("반복 모달")
-       
-        if num == 1{
-            IntervalSelectionModalVC.changeTitle(title: "몇 주 간격으로 반복할까요?")
-        }
-        if num == 2{
-            IntervalSelectionModalVC.changeTitle(title: "매월 언제 반복할까요?")
-
-            IntervalSelectionModalVC.intervals = ["매월 \(dateString)에 반복","매월 첫째 날에 반복", "매월 마지막 날에 반복"]
-            IntervalSelectionModalVC.return2 = ["\(dateString)", "첫째 날", "마지막 날"]
-            IntervalSelectionModalVC.type = num
-        }
-
-        IntervalSelectionModalVC.delegate = self
-        present(IntervalSelectionModalVC, animated: true)
-        UIView.animate(withDuration: 0.5) {
-                self.view.layoutIfNeeded()
-            }
-    }
-    func changeContainer( _ constant : CGFloat, _ num : Int){
-     
-        print("log1")
-
-        UIView.animate(withDuration: 0.5) {
-                self.view.layoutIfNeeded()
-            }
-        NSLayoutConstraint.deactivate([
-            containerViewBottomConstraint!
-        ])
-        if num == 1{
-            containerViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: cancelNcomplte.topAnchor, constant: constant )
-        }
-        if num == 2 {
-            containerViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: cancelNcomplte.topAnchor, constant: constant )
-            
-            
-        }
-
-        NSLayoutConstraint.activate([
-            containerViewBottomConstraint!
-        ])
-    }
-    // 간격 :  버튼 탭 시 호출되는 메서드
-    @objc private func buttonTapped2() {
-        print("간격 모달 뷰로 스위치")
-        
-    }
     
+
+   
 }
 
 

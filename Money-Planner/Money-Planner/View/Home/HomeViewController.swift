@@ -10,6 +10,7 @@ import UIKit
 
 class HomeViewController : UIViewController, MainMonthViewDelegate {
     
+    
     lazy var pageViewController: UIPageViewController = {
         let vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         
@@ -107,8 +108,16 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     func didChangeMonth(monthIndex: Int, year: Int) {
         calendarView.changeMonth(monthIndex: monthIndex, year: year)
     }
-    
-}
+    // ConsumeRecordCell의 delegate
+    func didTapCell(_ cell: ConsumeRecordCell) {
+            print("소비 내역으로 이동")
+            // Create an instance of the detail view controller
+            let detailViewController = ConsumeViewController() // Replace with your actual detail view controller clas
+            // Push the detail view controller onto the navigation stack
+            navigationController?.pushViewController(detailViewController, animated: true)
+        }
+    }
+
 
 
 extension HomeViewController{
