@@ -94,8 +94,8 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         
         setupMonthAndCategoryView()
         
-                                setupCalendarView()
-        //        setUpConsumeView()
+//                                setupCalendarView()
+                setUpConsumeView()
     }
     
     override func viewWillLayoutSubviews() {
