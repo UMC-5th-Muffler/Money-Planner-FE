@@ -34,6 +34,6 @@ extension HomeAPI : BaseAPI {
     }
     
     public var headers: [String: String]? {
-        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDcyMTg5NzV9.oKXo_FtQhY3HjZ6BN_Ddo6akqUJUm4DF0hP4bUau2Ag"]
+        return ["Authorization": "Bearer "]
     }
 }
