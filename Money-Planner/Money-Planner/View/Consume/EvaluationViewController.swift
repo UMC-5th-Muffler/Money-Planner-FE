@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class EvaluaionViewController : UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class EvaluationViewController : UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     let headerView = HeaderView(title:"")
     
@@ -97,7 +97,7 @@ class EvaluaionViewController : UIViewController, UICollectionViewDelegate, UICo
     
 }
 
-extension EvaluaionViewController : UITextViewDelegate {
+extension EvaluationViewController : UITextViewDelegate {
     func setupHeader() {
         headerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(headerView)
