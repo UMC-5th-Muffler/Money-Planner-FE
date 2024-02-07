@@ -16,8 +16,12 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     // api 연결
     let disposeBag = DisposeBag()
     let viewModel = MufflerViewModel()
+    var currentAmount : Int64 = 0
+    var currnetCal : String = ""
+    // 반복
+    var routineRequest : ExpenseCreateRequest.RoutineRequest?
     //
-    
+
     func AddCategoryCompleted(_ name: String, iconName: String) {
         print("카테고리 추가 반영 완료\(name)\(iconName)")
         cateogoryTextField.text = name
@@ -233,9 +237,10 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         }
     }
     
-    func didSelectCalendarDate(_ date: String) {
+    func didSelectCalendarDate(_ date: String , api : String) {
         print("Selected Date in YourPresentingViewController: \(date)")
         calTextField.text = date
+        currnetCal = api
         // 선택한 날짜가 오늘이 아닌 경우, 선택으로 달력 버튼 텍스트 변경
         // 오늘인 경우에는 오늘로 세팅
         if date == todayDate {
@@ -672,7 +677,9 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
                 amountTextField.layer.borderWidth = 0.0
                 
                 if let removeAllSeprator = textField.text?.replacingOccurrences(of: formatter.groupingSeparator, with: "") {
-                    var beforeForemattedString = removeAllSeprator + string
+                    let beforeForemattedString = removeAllSeprator + string
+                    // api 연결을 위한 소비금액 저장
+                    currentAmount = Int64(beforeForemattedString)!
                     // 입력된 문자열이 숫자가 아닌 경우
                     if !beforeForemattedString.isEmpty && !beforeForemattedString.allSatisfy({ $0.isNumber }) {
                         
@@ -836,11 +843,12 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         return result.isEmpty ? "0" : result
     }
     
-    func GetResultofInterval(_ result: String) {
+    func GetResultofInterval(_ result: String, api : ExpenseCreateRequest.RoutineRequest?) {
         print("버튼에 데이터 반영합니다\(result)")
         resultbutton.text = "  \(result)  "
         resultbutton.backgroundColor = .mpGypsumGray
         view.layoutIfNeeded()
+        routineRequest = api
     }
     private func checkAndEnableCompleteButton() {
         let enableButton = amountAdd && catAdd && titleAdd
@@ -856,18 +864,25 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         print("소비등록을 완료하였습니다")
         // api 연결
         // Create an Expense object with the required data
+        let cost = currentAmount
+        let Id : Int64 = 2
+        let title : String = titleTextField.text ?? "제목 없음"
+        let memo = memoTextField.text ?? nil
+        let date = currnetCal
+        let isRoutine = checkButton.isChecked
         
-        // Create an ExpenseCreateRequest object with the required data
+    
         let expenseRequest = ExpenseCreateRequest(
-            expenseCost: 11,
-            categoryId: 2,
-            expenseTitle: "Sample Expense",
-            expenseMemo: "Sample Memo",
-            expenseDate: "2024-01-23",
-            routineRequest: nil,
+            expenseCost: cost,
+            categoryId: Id, // 카테고리 조회 api 연결하면
+            expenseTitle: title,
+            expenseMemo: memo,
+            expenseDate: date,
+            routineRequest: routineRequest,
             isRoutine: false
         )
         
+        print(expenseRequest)
         
         
         

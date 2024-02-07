@@ -8,17 +8,15 @@
 import Foundation
 import UIKit
 protocol RepeatModalViewDelegate : AnyObject{
-    func GetResultofInterval(_ result : String)
+    func GetResultofInterval(_ result : String, api : ExpenseCreateRequest.RoutineRequest?)
 }
 
 
 class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,CalendarSelectionDelegate, ChooseDateViewDelegate , RepeatIntervalDelegate{
-    
-    
-    weak var delegate: ChooseDayViewDelegate?
 
    
-    
+    weak var delegate: RepeatModalViewDelegate?
+
     // MARK: - 날짜 선택  - ChooseDateViewDelegate
     
     // 반복 날짜 선택
@@ -123,7 +121,7 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
 
     }
     
-    func didSelectCalendarDate(_ date: String) {
+    func didSelectCalendarDate(_ date: String, api : String) {
         print("Selected Date in YourPresentingViewController: \(date)")
         view1.calChooseButton.setTitle(date, for: .normal)
         view2.calChooseButton.setTitle(date, for: .normal)
@@ -453,9 +451,12 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
         dismiss(animated: true, completion: nil)
     }
     
+    // 완료 버튼 액션 처리
     @objc private func completeButtonTapped() {
         let lst = [view1.button1, view1.button2,view1.button3, view1.button4,view1.button5, view1.button6,view1.button7]
         let days = ["월","화","수","목","금","토","일"]
+        let apiDays = [ "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY" ]
+        var apiWeeklyRepeatDays : [String]? = []
         var returnLst = ""
         var returnInterval = (view1.weekIntervalButton.titleLabel?.text ?? "") + "주마다 "
         var returnValue = ""
@@ -468,24 +469,72 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
                     returnLst += "," + days[lst.firstIndex(of: item)!] // 해당 버튼의 인덱스를 사용하여 days 배열에서 요일을 가져옴
 
                 }
+                
+                // api
+                let index = lst.firstIndex(of: item)!
+                apiWeeklyRepeatDays?.append(apiDays[index])
             }
         }
+        print(apiWeeklyRepeatDays as Any)
         print(view1.weekIntervalButton.titleLabel?.text ?? "")
         print(returnLst)
         print("완료 버튼이 탭되었습니다.")
         if returnInterval == "1주마다 "{ returnInterval = "매주 "}
         returnValue = returnInterval + returnLst
-        print(returnValue)
         // 완료 버튼 액션 처리
         
+        // 화면에 띄워줄 텍스트
+        var resultButtonString : String = ""
+
+        // api 용
         
-//        if IntervalSelectionModalVC.type == 1{
-//            delegate?.GetResultofInterval(returnValue)
-//        }
-//        if IntervalSelectionModalVC.type == 2{
-//            delegate?.GetResultofInterval("매월 "+(view2.weekIntervalButton.titleLabel?.text ?? "") )
-//            
-//        }
+        let routineRequest : ExpenseCreateRequest.RoutineRequest?
+        // 반복종료일
+        var endDate : String?
+        // 요일 선택 - 주 반복 날짜
+        var weeklyRepeatDays : [String]?
+        // 요일 선택 - 주 반복 간격
+        var weeklyTerm : String?
+        // 날짜 선택 - 매월 반복되는 날짜
+        var monthlyRepeatDay : String?
+        
+        var routineType : ExpenseCreateRequest.RoutineType = .weekly // 초기화 - 요일 선택
+        if chooseDayButton.isChecked {
+            // 요일 선택을 한 경우
+            
+            // 화면에 띄워줄 텍스트
+            resultButtonString = returnValue
+            // api
+            // 반복 종료일 체크하면
+            routineType = .weekly
+            if view1.RepeatEndDateButton.isChecked {
+                endDate = ""
+            }
+            // 요일 반복 - 월,화,수,목,금,토
+            weeklyRepeatDays = apiWeeklyRepeatDays
+            weeklyTerm = view1.weekIntervalButton.title(for: .normal)
+            // 날짜 선택 시 나오는 것 nill 처리
+            monthlyRepeatDay = nil
+            
+        }
+        if chooseDateButton.isChecked{
+            // 날짜 선택이 눌린 경우
+
+            // 화면에 띄워줄 텍스트
+            resultButtonString = "매월 \(String(describing: view2.weekIntervalButton.titleLabel?.text)) "
+            // api
+            routineType = .monthly
+            // 반복 종료일 체크하면
+            if view1.RepeatEndDateButton.isChecked {
+                endDate = ""
+            }
+            monthlyRepeatDay = view2.weekIntervalButton.title(for: .normal)
+        }
+        
+        routineRequest  = ExpenseCreateRequest.RoutineRequest(type: routineType, endDate: endDate, weeklyRepeatDays:weeklyRepeatDays, weeklyTerm: weeklyTerm, monthlyRepeatDay: monthlyRepeatDay)
+        // 소비등록 화면으로 전달
+        delegate?.GetResultofInterval(resultButtonString,api : routineRequest)
+      
         dismiss(animated: true, completion: nil)
     }
     // 인덱스 찾아내는 함수
@@ -564,7 +613,6 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
     // 버튼 탭 시 호출되는 메서드
     @objc private func buttonTapped2() {
         let IntervalSelectionVC = RepeatIntervalViewController()
-        delegate?.chooseIntervalDay(IntervalSelectionVC)
         IntervalSelectionVC.delegate = self
 
         if chooseDayButton.isChecked{

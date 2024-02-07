@@ -221,12 +221,14 @@
 		20118A0E2B56A83400B2569E /* Consume */ = {
 			isa = PBXGroup;
 			children = (
+				20AFDD922B659779008F8AB9 /* RepeatIntervalViewController.swift */,
+				20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */,
 				20118A102B56A86100B2569E /* ConsumeViewController.swift */,
 				208C90BD2B710F4800C67960 /* TextFieldContainerView.swift */,
+				208C90BF2B72636C00C67960 /* UIHelper.swift */,
 				208C90B72B6FDE7600C67960 /* ConsumeView.swift */,
 				5591601B2B64595E00063F06 /* EvaluationViewController.swift */,
 				552A42662B72200E007AEAAD /* DailyComsumeViewController.swift */,
-				208C90BF2B72636C00C67960 /* UIHelper.swift */,
 			);
 			path = Consume;
 			sourceTree = "<group>";
@@ -238,8 +240,6 @@
 				206C58D32B623C43008410C1 /* CategoryCell.swift */,
 				20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */,
 				20AFDD942B65B882008F8AB9 /* ChooseDateView.swift */,
-				20AFDD922B659779008F8AB9 /* RepeatIntervalViewController.swift */,
-				20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */,
 				206C58D72B626465008410C1 /* CategoryModalViewController.swift */,
 				206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */,
 				20EF782C2B68CEA700AA135E /* AddCategoryViewController.swift */,
