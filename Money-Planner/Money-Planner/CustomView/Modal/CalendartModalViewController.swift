@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 protocol CalendarSelectionDelegate : AnyObject{
-    func didSelectCalendarDate(_ date : String)
+    func didSelectCalendarDate(_ date : String,  api : String)
 }
 class CalendartModalViewController : UIViewController {
     weak var delegate: CalendarSelectionDelegate?
@@ -162,7 +162,10 @@ class CalendartModalViewController : UIViewController {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy년 MM월 dd일"
         let selectedDate = dateFormatter.string(from: datePicker.date)
-        delegate?.didSelectCalendarDate(selectedDate)
+        // api 전달용
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let apiDate = dateFormatter.string(from: datePicker.date)
+        delegate?.didSelectCalendarDate(selectedDate, api : apiDate)
         dismiss(animated: true, completion: nil as (() -> Void)?)
         // 완료 버튼 액션 처리
     }

@@ -28,10 +28,7 @@ class ProfileViewController: UIViewController,UITextFieldDelegate,UIImagePickerC
         let button = UIButton()
         button.layer.cornerRadius = 45
         button.layer.masksToBounds = true
-        button.backgroundColor = .red
-        let buttonImg = UIImage(systemName: "pencil")
-        button.setImage(buttonImg, for: .normal)
-        button.backgroundColor = .red
+        button.backgroundColor = .mpGypsumGray
         return button
     }()
 

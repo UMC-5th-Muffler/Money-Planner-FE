@@ -39,12 +39,13 @@ class OneDayButton: UIButton {
         setTitle(title, for: .normal)
         layer.cornerRadius = 6  // 둥근 모서리 설정
         titleLabel?.font = UIFont.mpFont14R()// 폰트 크기 설정
-        backgroundColor = .mpLightGray
+        backgroundColor = .mpGypsumGray
         setTitleColor(.mpDarkGray, for: .normal)
         NSLayoutConstraint.activate([
-            widthAnchor.constraint(equalToConstant: 38),
+            //widthAnchor.constraint(equalToConstant: 38),
             heightAnchor.constraint(equalToConstant: 38)
         ])
+    
        
     }
     

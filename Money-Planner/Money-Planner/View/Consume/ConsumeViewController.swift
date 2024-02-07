@@ -16,8 +16,12 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     // api 연결
     let disposeBag = DisposeBag()
     let viewModel = MufflerViewModel()
+    var currentAmount : Int64 = 0
+    var currnetCal : String = ""
+    // 반복
+    var routineRequest : ExpenseCreateRequest.RoutineRequest?
     //
-    
+
     func AddCategoryCompleted(_ name: String, iconName: String) {
         print("카테고리 추가 반영 완료\(name)\(iconName)")
         cateogoryTextField.text = name
@@ -225,7 +229,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         if checkButton.isChecked {
             print("반복 모달로 이동합니다")
             let repeatModalVC = RepeatModalViewController()
-            repeatModalVC.delegate = self
+            //repeatModalVC.delegate = self
             present(repeatModalVC, animated: true)
         }
         else{
@@ -233,9 +237,10 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         }
     }
     
-    func didSelectCalendarDate(_ date: String) {
+    func didSelectCalendarDate(_ date: String , api : String) {
         print("Selected Date in YourPresentingViewController: \(date)")
         calTextField.text = date
+        currnetCal = api
         // 선택한 날짜가 오늘이 아닌 경우, 선택으로 달력 버튼 텍스트 변경
         // 오늘인 경우에는 오늘로 세팅
         if date == todayDate {
@@ -640,7 +645,15 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // Check if the current text field is amountTextField
         if textField == amountTextField {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal // 1,000,000
+            formatter.locale = Locale.current
+            formatter.maximumFractionDigits = 0 // 허용하는 소숫점 자리수
             // 입력 중인 금액 업데이트
+            // formatter.groupingSeparator // .decimal -> ,
+            
+            
+            
             let currentText = textField.text ?? ""
             let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
             print(newText)
@@ -655,7 +668,6 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             else{
                 // amountLabel
                 StackView.insertArrangedSubview(amountLabel, at: 1)
-
                 amountAdd = true // 입력된 것이 있는 것 확인
                 checkAndEnableCompleteButton()
                 // 유효한 숫자인 경우
@@ -664,9 +676,22 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
                 amountTextField.layer.borderColor = UIColor.clear.cgColor
                 amountTextField.layer.borderWidth = 0.0
                 
-                if let amount = Int(currentText + string) {
-                    print(amount)
-                    let digitOfAmount = String(describing: amount).count
+                if let removeAllSeprator = textField.text?.replacingOccurrences(of: formatter.groupingSeparator, with: "") {
+                    let beforeForemattedString = removeAllSeprator + string
+                    // api 연결을 위한 소비금액 저장
+                    currentAmount = Int64(beforeForemattedString)!
+                    // 입력된 문자열이 숫자가 아닌 경우
+                    if !beforeForemattedString.isEmpty && !beforeForemattedString.allSatisfy({ $0.isNumber }) {
+                        
+                        print("유효한 숫자가 아님 : ")
+                        amountLabel.text = "    유효한 숫자가 아닙니다."
+                        amountLabel.textColor = UIColor.mpRed
+                        // 소비금액 텍스트필드에 에러 표시 - 빨간색 스트로크
+                        amountTextField.layer.borderColor = UIColor.mpRed.cgColor
+                        amountTextField.layer.borderWidth = 1.0
+                        return false
+                    }
+                    let digitOfAmount = String(describing: beforeForemattedString).count
                     // 소비금액 텍스트필드에 에러 표시 취소 - 빨간색 스트로크
                     
                     
@@ -683,32 +708,37 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
                         
                         // 입력할 수 있는 범위인 경우
                     } else {
-                        amountLabel.text = "\t\(numberToKorean(amount))원" // 숫자 -> 한국어로 변경하여 입력함
+                        
+                        amountLabel.text = "\t\(numberToKorean(Int(beforeForemattedString)!))원" // 숫자 -> 한국어로 변경하여 입력함
                         // 소비금액 텍스트필드에 에러 표시 취소 - 빨간색 스트로크
                         amountTextField.layer.borderColor = UIColor.clear.cgColor
                         amountTextField.layer.borderWidth = 0.0
+                        if let removeAllSeprator = textField.text?.replacingOccurrences(of: formatter.groupingSeparator, with: ""){
+                            var beforeForemattedString = removeAllSeprator + string
+                            if formatter.number(from: string) != nil {
+                                if let formattedNumber = formatter.number(from: beforeForemattedString), let formattedString = formatter.string(from: formattedNumber){
+                                    textField.text = formattedString
+                                    return false
+                                }
+                            }else{ // 숫자가 아닐 때먽
+                                if string == "" { // 백스페이스일때
+                                    let lastIndex = beforeForemattedString.index(beforeForemattedString.endIndex, offsetBy: -1)
+                                    beforeForemattedString = String(beforeForemattedString[..<lastIndex])
+                                    if let formattedNumber = formatter.number(from: beforeForemattedString), let formattedString = formatter.string(from: formattedNumber){
+                                        textField.text = formattedString
+                                        return false
+                                    }
+                                }else{ // 문자일 때
+                                    return false
+                                }
+                            }
+                            
+                        }
                     }
-                    
-                    // 유효한 숫자가 아닌 경우 (현재 텍스트 + 새로운 문자열)
-                } else {
-                    
-                    
-                    print("유효한 숫자가 아님 : ")
-                    amountLabel.text = "    유효한 숫자가 아닙니다."
-                    amountLabel.textColor = UIColor.mpRed
-                    // 소비금액 텍스트필드에 에러 표시 - 빨간색 스트로크
-                    amountTextField.layer.borderColor = UIColor.mpRed.cgColor
-                    amountTextField.layer.borderWidth = 1.0
-                    
-                    
-                    
                 }
+                
+                return true
             }
-            
-            
-            return true
-            
-            
         } else if textField == titleTextField {
             // Handle character count limit for titleTextField
             // Calculate the resulting text after replacement
@@ -768,12 +798,8 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             }
             return true
         }
-        else{
-            return true
-            
-        }
         
-        
+        return true
     }
     // 인덱스 찾아내는 함수
     func indexOfLabel(text : MainTextField) -> Int? {
@@ -784,6 +810,19 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
                 return false
             }
         }
+    // 숫자 천단위로 끊는 함수
+    func formatAmount(_ amountString: String) -> String? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+
+        if let number = formatter.number(from: amountString)?.intValue {
+            let formattedAmount = formatter.string(from: NSNumber(value: number))
+            return formattedAmount
+        }
+
+        return nil
+    }
+    
     //숫자를 한글로 표현하는 함수(2000 -> 0부터 9999999999999999까지가능)
     func numberToKorean(_ number: Int) -> String {
         let unitLarge = ["", "만", "억", "조"]
@@ -804,11 +843,12 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         return result.isEmpty ? "0" : result
     }
     
-    func GetResultofInterval(_ result: String) {
+    func GetResultofInterval(_ result: String, api : ExpenseCreateRequest.RoutineRequest?) {
         print("버튼에 데이터 반영합니다\(result)")
         resultbutton.text = "  \(result)  "
         resultbutton.backgroundColor = .mpGypsumGray
         view.layoutIfNeeded()
+        routineRequest = api
     }
     private func checkAndEnableCompleteButton() {
         let enableButton = amountAdd && catAdd && titleAdd
@@ -824,18 +864,25 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         print("소비등록을 완료하였습니다")
         // api 연결
         // Create an Expense object with the required data
+        let cost = currentAmount
+        let Id : Int64 = 2
+        let title : String = titleTextField.text ?? "제목 없음"
+        let memo = memoTextField.text ?? nil
+        let date = currnetCal
+        let isRoutine = checkButton.isChecked
         
-        // Create an ExpenseCreateRequest object with the required data
+    
         let expenseRequest = ExpenseCreateRequest(
-            expenseCost: 11,
-            categoryId: 2,
-            expenseTitle: "Sample Expense",
-            expenseMemo: "Sample Memo",
-            expenseDate: "2024-01-23",
-            routineRequest: nil,
+            expenseCost: cost,
+            categoryId: Id, // 카테고리 조회 api 연결하면
+            expenseTitle: title,
+            expenseMemo: memo,
+            expenseDate: date,
+            routineRequest: routineRequest,
             isRoutine: false
         )
         
+        print(expenseRequest)
         
         
         
