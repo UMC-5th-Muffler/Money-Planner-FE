@@ -94,6 +94,7 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
     @objc func showCalModal(_ sender: UIDatePicker) {
         print("날짜 선택")
         let calVC = CalendartModalViewController()
+        calVC.titleLabel.text = "종료 날짜를 선택해주세요"
         calVC.delegate = self
         present(calVC, animated: true)
     }
@@ -110,7 +111,7 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
         }
         // 날짜 선택인 경우
         if chooseDateButton.isChecked{
-            var dateString: String = {
+            let dateString: String = {
                 dateFormatter.dateFormat = "dd일"
                 return dateFormatter.string(from: currentDate)}()
             let intervalList = ["\(dateString)","첫째 날", "마지막 날"]
@@ -268,8 +269,8 @@ class RepeatModalViewController : UIViewController, ChooseDayViewDelegate,Calend
 
         NSLayoutConstraint.activate([
                 customModal.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-                customModal.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                customModal.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                customModal.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                customModal.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
                 
                 // 필요하다면 customModal의 높이에 대한 제약 조건도 추가
             ])

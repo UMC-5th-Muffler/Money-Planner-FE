@@ -34,6 +34,7 @@
 		208C90BA2B6FE45B00C67960 /* UnregisterTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90B92B6FE45B00C67960 /* UnregisterTitleLabel.swift */; };
 		208C90BE2B710F4800C67960 /* TextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90BD2B710F4800C67960 /* TextFieldContainerView.swift */; };
 		208C90C02B72636C00C67960 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90BF2B72636C00C67960 /* UIHelper.swift */; };
+		208C90C22B74E01700C67960 /* UnregisterPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90C12B74E01700C67960 /* UnregisterPopupViewController.swift */; };
 		20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */; };
 		20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */; };
 		20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD902B656034008F8AB9 /* OneDayButton.swift */; };
@@ -134,6 +135,7 @@
 		208C90B92B6FE45B00C67960 /* UnregisterTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnregisterTitleLabel.swift; sourceTree = "<group>"; };
 		208C90BD2B710F4800C67960 /* TextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldContainerView.swift; sourceTree = "<group>"; };
 		208C90BF2B72636C00C67960 /* UIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
+		208C90C12B74E01700C67960 /* UnregisterPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnregisterPopupViewController.swift; sourceTree = "<group>"; };
 		20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatModalViewController.swift; sourceTree = "<group>"; };
 		20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDayView.swift; sourceTree = "<group>"; };
 		20AFDD902B656034008F8AB9 /* OneDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDayButton.swift; sourceTree = "<group>"; };
@@ -445,6 +447,7 @@
 			isa = PBXGroup;
 			children = (
 				208C90A32B6CD72000C67960 /* PopupViewController.swift */,
+				208C90C12B74E01700C67960 /* UnregisterPopupViewController.swift */,
 				208C90A52B6D15BB00C67960 /* ProfileViewController.swift */,
 				208C90A92B6D559F00C67960 /* AskViewController.swift */,
 				7A610AD12B49004200D3096F /* MyPageViewController.swift */,
@@ -708,6 +711,7 @@
 				208C908F2B6AB78900C67960 /* MufflerAPI.swift in Sources */,
 				7A610AEE2B493F6D00D3096F /* RegisterUsageViewController.swift in Sources */,
 				D20D6FED2B5B9962006D6762 /* MainCalendarView.swift in Sources */,
+				208C90C22B74E01700C67960 /* UnregisterPopupViewController.swift in Sources */,
 				D20D6FE92B5AF1E9006D6762 /* MainMonthView.swift in Sources */,
 				7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */,
 				D20D6FDA2B581A05006D6762 /* CustomTabBarController.swift in Sources */,

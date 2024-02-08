@@ -8,28 +8,10 @@
 import Foundation
 import UIKit
 
-//protocol ProfileViewDelegate : AnyObject{
-//    func profileNameChanged(_ userName : String)
-//
-//}
-class UnregisterViewController: UIViewController,UITextFieldDelegate,UITextViewDelegate, ReasonModalDelegate {
-    func reasonChecked(_ reason: String) {
-        reasonTextField.text = reason
-        print(reason)
-        view.layoutIfNeeded()
 
-    }
-    
-
-    
-    
-//    func popupChecked() {
-//        // 확인 누르면 문의하기 화면도 없어짐
-//        dismiss(animated: true)
-//    }
+class UnregisterViewController: UIViewController,UITextFieldDelegate,UITextViewDelegate {
     
     private var UserName: String?
-    //weak var delegate: ProfileViewDelegate?
     var completeCheck = compeleBtnCheck()
     var currTextSize : Int?
 
@@ -341,8 +323,11 @@ class UnregisterViewController: UIViewController,UITextFieldDelegate,UITextViewD
     
     @objc
     private func completeButtonTapped(){
-        print("탈퇴가 완료되었습니다..")
-        dismiss(animated: true)
+        print("탈퇴 확인 모달로 이동")
+        let completeVC = UnregisterPopupViewController() // 탈퇴 완료 팝업 띄우기
+        completeVC.delegate = self
+        present(completeVC, animated: true)
+        //dismiss(animated: true)
     }
     
     struct compeleBtnCheck {
@@ -365,4 +350,20 @@ class UnregisterViewController: UIViewController,UITextFieldDelegate,UITextViewD
 
             completeButton.isEnabled = isButtonEnabled
         }
+}
+extension UnregisterViewController: UnregisterPopupViewDelegate {
+    func UnregisterpopupChecked() {
+        print("탈퇴하기 완료")
+        // 탈퇴하기 완료 로직 추가
+        dismiss(animated: true)
+    }
+}
+
+extension UnregisterViewController: ReasonModalDelegate {
+    func reasonChecked(_ reason: String) {
+        reasonTextField.text = reason
+        print(reason)
+        view.layoutIfNeeded()
+
+    }
 }

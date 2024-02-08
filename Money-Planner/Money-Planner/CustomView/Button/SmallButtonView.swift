@@ -11,8 +11,9 @@ import UIKit
 //smallButton 이 2개 있는 view. 주로 하단에 위치
 class SmallBtnView: UIView {
     // 버튼 생성
-    private let cancelButton = UIButton()
-    private let completeButton = UIButton()
+    // 버튼 타이틀 변경을 위해서 private 해체함 - Park
+    let cancelButton = UIButton()
+    let completeButton = UIButton()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

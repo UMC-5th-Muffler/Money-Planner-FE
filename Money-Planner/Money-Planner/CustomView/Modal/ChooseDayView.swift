@@ -45,7 +45,9 @@ class ChooseDayView: UIView {
     private let weekButtons: UIStackView = {
             let stackView = UIStackView()
             stackView.axis = .horizontal
-            stackView.spacing = 10
+            stackView.distribution = .fillEqually
+        stackView.backgroundColor = .red
+            stackView.spacing = 8
             return stackView
         }()
     
@@ -133,7 +135,8 @@ class ChooseDayView: UIView {
             repeatEndDate.heightAnchor.constraint(equalToConstant: 24),
                //weekButtons.bottomAnchor.constraint(equalTo: weekInterval.topAnchor),
                weekButtons.topAnchor.constraint(equalTo: topAnchor),
-              
+            weekButtons.leadingAnchor.constraint(equalTo: leadingAnchor),
+            weekButtons.trailingAnchor.constraint(equalTo: trailingAnchor),
             weekButtons.centerXAnchor.constraint(equalTo: centerXAnchor),
             
                weekInterval.topAnchor.constraint(equalTo: weekButtons.bottomAnchor,constant: 16),
@@ -150,13 +153,13 @@ class ChooseDayView: UIView {
     private func setupWeekButtons(){
 
         NSLayoutConstraint.activate([
-            button1.widthAnchor.constraint(equalToConstant: 38),
-            button2.widthAnchor.constraint(equalToConstant: 38),
-            button3.widthAnchor.constraint(equalToConstant: 38),
-            button4.widthAnchor.constraint(equalToConstant: 38),
-            button5.widthAnchor.constraint(equalToConstant: 38),
-            button6.widthAnchor.constraint(equalToConstant: 38),
-            button7.widthAnchor.constraint(equalToConstant: 38),
+//            button1.widthAnchor.constraint(equalToConstant: 38),
+//            button2.widthAnchor.constraint(equalToConstant: 38),
+//            button3.widthAnchor.constraint(equalToConstant: 38),
+//            button4.widthAnchor.constraint(equalToConstant: 38),
+//            button5.widthAnchor.constraint(equalToConstant: 38),
+//            button6.widthAnchor.constraint(equalToConstant: 38),
+//            button7.widthAnchor.constraint(equalToConstant: 38),
         ])
         weekButtons.addArrangedSubview(button1)
         weekButtons.addArrangedSubview(button2)
