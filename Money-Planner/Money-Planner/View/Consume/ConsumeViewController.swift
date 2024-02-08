@@ -16,6 +16,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     // api 연결
     let disposeBag = DisposeBag()
     let viewModel = MufflerViewModel()
+    var expenseRequest : ExpenseCreateRequest = ExpenseCreateRequest(expenseCost: 0, categoryId: 0, expenseTitle: "", expenseMemo:"", expenseDate: "", routineRequest: nil, isRoutine: false)
     var currentAmount : Int64 = 0
     var currnetCal : String = ""
     // 반복
@@ -38,17 +39,17 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     }
     
     
-    let resultbutton : UITextField = {
-        let button = UITextField()
+    let resultbutton : UIButton = {
+        let button = UIButton()
         button.layer.cornerRadius = 6
         button.layer.masksToBounds = true
-        button.borderStyle = .none
-        button.textColor = .mpDarkGray
-        button.font = UIFont.mpFont16M()
+        button.setTitleColor(.mpDarkGray, for: .normal)
+        button.titleLabel?.font = UIFont.mpFont16M()
         button.tintColor = UIColor.mpMainColor
         //button.backgroundColor = .mpGypsumGray // 수정 - 근영/ 텍스트 필드 배경 색상 F6F6F6
-        button.isUserInteractionEnabled = false
-        button.text = ""
+        button.setTitle("", for: .normal)
+        button.isEnabled = false
+
         return button
     }()
     // 소비 등록 여부 확인 (메모 제외)
@@ -229,12 +230,24 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         if checkButton.isChecked {
             print("반복 모달로 이동합니다")
             let repeatModalVC = RepeatModalViewController()
-            //repeatModalVC.delegate = self
+            repeatModalVC.delegate = self
             present(repeatModalVC, animated: true)
         }
         else{
             checkButton.isChecked = false
+            resultbutton.isHidden = false
+            resultbutton.setTitle("", for: .normal)
+            resultbutton.backgroundColor = .clear
         }
+    }
+    
+    @objc private func showRepeatModalResult() {
+        print("반복 모달로 이동합니다")
+        let repeatModalVC = RepeatModalViewController()
+        repeatModalVC.routineRequest = routineRequest
+        repeatModalVC.delegate = self
+        present(repeatModalVC, animated: true)
+    
     }
     
     func didSelectCalendarDate(_ date: String , api : String) {
@@ -599,6 +612,9 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         checkButton.translatesAutoresizingMaskIntoConstraints = false
         repeatLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        resultbutton.addTarget(self, action: #selector(showRepeatModalResult), for: .touchUpInside)
+
+        
     }
     private func setupLayout(){
         StackView.axis = .vertical
@@ -844,12 +860,16 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     }
     
     func GetResultofInterval(_ result: String, api : ExpenseCreateRequest.RoutineRequest?) {
-        print("버튼에 데이터 반영합니다\(result)")
-        resultbutton.text = "  \(result)  "
+        print("버튼에 데이터 반영합니다 \(result)")
+        let repeatResult = result 
+        resultbutton.setTitle("  \(repeatResult)  ", for: .normal)
         resultbutton.backgroundColor = .mpGypsumGray
+        resultbutton.isEnabled = true
         view.layoutIfNeeded()
         routineRequest = api
     }
+    
+    
     private func checkAndEnableCompleteButton() {
         let enableButton = amountAdd && catAdd && titleAdd
         completeButton.isEnabled = enableButton
@@ -862,8 +882,9 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     @objc
     private func completeButtonTapped(){
         print("소비등록을 완료하였습니다")
+        
+        
         // api 연결
-        // Create an Expense object with the required data
         let cost = currentAmount
         let Id : Int64 = 2
         let title : String = titleTextField.text ?? "제목 없음"
@@ -872,7 +893,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         let isRoutine = checkButton.isChecked
         
     
-        let expenseRequest = ExpenseCreateRequest(
+        expenseRequest = ExpenseCreateRequest(
             expenseCost: cost,
             categoryId: Id, // 카테고리 조회 api 연결하면
             expenseTitle: title,
