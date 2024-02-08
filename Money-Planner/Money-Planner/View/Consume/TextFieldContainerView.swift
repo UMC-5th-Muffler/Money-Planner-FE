@@ -4,7 +4,7 @@
 //
 //  Created by p_kxn_g on 2/5/24.
 //
-
+// 소비등록 화면 - 카테고리, 달력 텍스트 필드 컨테이너 뷰 구현
 import Foundation
 import UIKit
 class TextFieldContainerView : UIView {
