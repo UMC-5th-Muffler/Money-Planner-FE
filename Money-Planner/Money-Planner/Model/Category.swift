@@ -24,3 +24,7 @@ struct Category: Codable {
         
     }
 }
+
+struct CategoryList : Codable {
+    let categories : [Category]?
+}

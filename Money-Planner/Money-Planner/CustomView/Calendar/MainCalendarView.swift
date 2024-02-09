@@ -108,6 +108,10 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell=collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! dateCVCell
         cell.backgroundColor=UIColor.clear
+        cell.dayGoalAmount.text = ""
+        cell.dayConsumeAmount.text = ""
+        cell.imageView.image = UIImage(named: "btn_date_off")
+        cell.lbl.text = ""
         
         // 이번달 달력 시작 인덱스
         let startMonthIndex = firstWeekDayOfMonth - 1
@@ -252,8 +256,7 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         currentMonth=monthIndex
         currentYear = year
         
-        //for leap year, make february month of 29 days
-        if monthIndex == 1 {
+        if monthIndex == 2 {
             if currentYear % 4 == 0 {
                 numOfDaysInMonth[monthIndex] = 29
             } else {
@@ -263,7 +266,7 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         //end
         
         firstWeekDayOfMonth=getFirstWeekDay()
-        myCollectionView.reloadData()
+        // 데이터 변경은 HomeViewController의 fetchChangeMonthData에서 함
     }
     
     func setupViews() {

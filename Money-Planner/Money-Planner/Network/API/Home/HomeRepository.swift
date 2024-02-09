@@ -65,4 +65,58 @@ final class HomeRepository : BaseRepository<HomeAPI> {
             }
         }
     }
+    
+    func getCalendarListWithDate(yearMonth : String, completion: @escaping (Result<HomeNow?, BaseError>) -> Void){
+        provider.request(.getCalendarListWithDate(yearMonth: yearMonth)) {
+            result in
+            switch result {
+            case let .success(response):
+                do {
+                    let response = try response.map(BaseResponse<HomeNow?>.self)
+                    
+                    if(response.isSuccess!){
+                        completion(.success(response.result!))
+                    }else{
+                        completion(.failure(.failure(message: response.message!)))
+                    }
+                    
+                } catch {
+                    // 디코딩 오류 처리
+                    print("Decoding error: \(error)")
+                }
+            case let .failure(error):
+                // 네트워크 요청 실패 처리
+                print("Network request failed: \(error)")
+                completion(.failure(.networkFail(error: error)))
+            }
+        }
+    }
+    
+    
+    func getCalendarListWithGoal(goalId : Int, yearMonth : String, completion: @escaping (Result<HomeNow?, BaseError>) -> Void){
+        provider.request(.getCalendarListWithGoal(goalId: goalId, yearMonth: yearMonth)) {
+            result in
+            switch result {
+            case let .success(response):
+                do {
+                    let response = try response.map(BaseResponse<HomeNow?>.self)
+                    
+                    if(response.isSuccess!){
+                        completion(.success(response.result!))
+                    }else{
+                        completion(.failure(.failure(message: response.message!)))
+                    }
+                    
+                } catch {
+                    // 디코딩 오류 처리
+                    print("Decoding error: \(error)")
+                }
+            case let .failure(error):
+                // 네트워크 요청 실패 처리
+                print("Network request failed: \(error)")
+                completion(.failure(.networkFail(error: error)))
+            }
+        }
+    }
+    
 }

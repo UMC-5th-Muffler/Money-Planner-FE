@@ -102,7 +102,7 @@ class GoalListModalViewController: UIViewController {
 
 extension GoalListModalViewController{
     func fetchData(){
-        HomeRepository().getGoalList{
+        HomeRepository.shared.getGoalList{
             (result) in
             switch result{
             case .success(let data):

@@ -14,13 +14,6 @@
 		208C908F2B6AB78900C67960 /* MufflerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C908E2B6AB78900C67960 /* MufflerAPI.swift */; };
 		208C90912B6AB7A200C67960 /* MufflerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90902B6AB7A200C67960 /* MufflerViewModel.swift */; };
 		208C90932B6AB7DA00C67960 /* ConnectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90922B6AB7DA00C67960 /* ConnectModel.swift */; };
-		208C90962B6ABBC500C67960 /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 208C90952B6ABBC500C67960 /* RxBlocking */; };
-		208C90982B6ABBC500C67960 /* RxBlocking-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 208C90972B6ABBC500C67960 /* RxBlocking-Dynamic */; };
-		208C909A2B6ABBC500C67960 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 208C90992B6ABBC500C67960 /* RxCocoa */; };
-		208C909C2B6ABBC500C67960 /* RxCocoa-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */; };
-		208C909E2B6ABBC500C67960 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 208C909D2B6ABBC500C67960 /* RxRelay */; };
-		208C909F2B6ABBE900C67960 /* RxBlocking-Dynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 208C90972B6ABBC500C67960 /* RxBlocking-Dynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		208C90A12B6ABBEB00C67960 /* RxCocoa-Dynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */; };
 		20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */; };
 		20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD902B656034008F8AB9 /* OneDayButton.swift */; };
@@ -86,6 +79,9 @@
 		D20D70302B68BEB0006D6762 /* Encodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D702F2B68BEB0006D6762 /* Encodable.swift */; };
 		D20D703A2B68C591006D6762 /* TestRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D70392B68C591006D6762 /* TestRepository.swift */; };
 		D20D703C2B68C599006D6762 /* TestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D703B2B68C599006D6762 /* TestAPI.swift */; };
+		D217EBEC2B6F846400EB6BF3 /* Progress.swift in Sources */ = {isa = PBXBuildFile; fileRef = D217EBEB2B6F846400EB6BF3 /* Progress.swift */; };
+		D217EBEF2B7460BC00EB6BF3 /* CategoryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D217EBEE2B7460BC00EB6BF3 /* CategoryAPI.swift */; };
+		D217EBF12B7460CC00EB6BF3 /* CategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D217EBF02B7460CC00EB6BF3 /* CategoryRepository.swift */; };
 		D29536F12B4C0DF000EEA81F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29536F02B4C0DF000EEA81F /* UserDefaults.swift */; };
 		D2D0B72B2B6A704B003B6B5E /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B72A2B6A704B003B6B5E /* BaseResponse.swift */; };
 		D2D0B72D2B6A7067003B6B5E /* BaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B72C2B6A7067003B6B5E /* BaseAPI.swift */; };
@@ -94,7 +90,6 @@
 		D2D0B7382B6BA845003B6B5E /* HomeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B7372B6BA845003B6B5E /* HomeAPI.swift */; };
 		D2D0B73A2B6BAB02003B6B5E /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B7392B6BAB02003B6B5E /* Goal.swift */; };
 		D2D0B73D2B6BAB7A003B6B5E /* CalendarDaily.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B73C2B6BAB7A003B6B5E /* CalendarDaily.swift */; };
-		D2D0B73F2B6BAC1A003B6B5E /* CalendarInactive.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B73E2B6BAC1A003B6B5E /* CalendarInactive.swift */; };
 		D2D0B7412B6BACAB003B6B5E /* HomeNow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B7402B6BACAB003B6B5E /* HomeNow.swift */; };
 /* End PBXBuildFile section */
 
@@ -105,9 +100,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				208C90A12B6ABBEB00C67960 /* RxCocoa-Dynamic in Embed Frameworks */,
-				D2B61F182B6CBFE800332998 /* RxSwift-Dynamic in Embed Frameworks */,
-				208C909F2B6ABBE900C67960 /* RxBlocking-Dynamic in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -185,6 +177,9 @@
 		D20D702F2B68BEB0006D6762 /* Encodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encodable.swift; sourceTree = "<group>"; };
 		D20D70392B68C591006D6762 /* TestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRepository.swift; sourceTree = "<group>"; };
 		D20D703B2B68C599006D6762 /* TestAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAPI.swift; sourceTree = "<group>"; };
+		D217EBEB2B6F846400EB6BF3 /* Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progress.swift; sourceTree = "<group>"; };
+		D217EBEE2B7460BC00EB6BF3 /* CategoryAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryAPI.swift; sourceTree = "<group>"; };
+		D217EBF02B7460CC00EB6BF3 /* CategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRepository.swift; sourceTree = "<group>"; };
 		D29536EF2B4C091400EEA81F /* Money-Planner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Money-Planner.entitlements"; sourceTree = "<group>"; };
 		D29536F02B4C0DF000EEA81F /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		D2D0B72A2B6A704B003B6B5E /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
@@ -195,7 +190,6 @@
 		D2D0B7372B6BA845003B6B5E /* HomeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAPI.swift; sourceTree = "<group>"; };
 		D2D0B7392B6BAB02003B6B5E /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		D2D0B73C2B6BAB7A003B6B5E /* CalendarDaily.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDaily.swift; sourceTree = "<group>"; };
-		D2D0B73E2B6BAC1A003B6B5E /* CalendarInactive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarInactive.swift; sourceTree = "<group>"; };
 		D2D0B7402B6BACAB003B6B5E /* HomeNow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -204,15 +198,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				208C909E2B6ABBC500C67960 /* RxRelay in Frameworks */,
-				208C909C2B6ABBC500C67960 /* RxCocoa-Dynamic in Frameworks */,
 				7A610ADE2B4900C800D3096F /* Moya in Frameworks */,
 				7A610ADC2B4900C800D3096F /* CombineMoya in Frameworks */,
 				7A610AE22B4900C800D3096F /* RxMoya in Frameworks */,
-				208C909A2B6ABBC500C67960 /* RxCocoa in Frameworks */,
-				208C90982B6ABBC500C67960 /* RxBlocking-Dynamic in Frameworks */,
 				7A610AE02B4900C800D3096F /* ReactiveMoya in Frameworks */,
-				208C90962B6ABBC500C67960 /* RxBlocking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,7 +403,6 @@
 				D20D6FFD2B5FDF4C006D6762 /* ConsumeDetail.swift */,
 				D2D0B7392B6BAB02003B6B5E /* Goal.swift */,
 				D2D0B73C2B6BAB7A003B6B5E /* CalendarDaily.swift */,
-				D2D0B73E2B6BAC1A003B6B5E /* CalendarInactive.swift */,
 				D2D0B7402B6BACAB003B6B5E /* HomeNow.swift */,
 			);
 			path = Model;
@@ -520,6 +508,7 @@
 		D20D702A2B68BB81006D6762 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				D217EBED2B7460A700EB6BF3 /* Category */,
 				208C90A22B6C00F600C67960 /* Model */,
 				208C908D2B6AB76600C67960 /* Test-park */,
 				D2D0B7342B6BA82C003B6B5E /* Home */,
@@ -537,10 +526,20 @@
 			path = Test;
 			sourceTree = "<group>";
 		};
+		D217EBED2B7460A700EB6BF3 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				D217EBEE2B7460BC00EB6BF3 /* CategoryAPI.swift */,
+				D217EBF02B7460CC00EB6BF3 /* CategoryRepository.swift */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
 		D29536ED2B4C076F00EEA81F /* Common */ = {
 			isa = PBXGroup;
 			children = (
 				D29536EE2B4C077700EEA81F /* Extensions */,
+				D217EBEB2B6F846400EB6BF3 /* Progress.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -601,11 +600,6 @@
 				7A610ADD2B4900C800D3096F /* Moya */,
 				7A610ADF2B4900C800D3096F /* ReactiveMoya */,
 				7A610AE12B4900C800D3096F /* RxMoya */,
-				208C90952B6ABBC500C67960 /* RxBlocking */,
-				208C90972B6ABBC500C67960 /* RxBlocking-Dynamic */,
-				208C90992B6ABBC500C67960 /* RxCocoa */,
-				208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */,
-				208C909D2B6ABBC500C67960 /* RxRelay */,
 			);
 			productName = "Money-Planner";
 			productReference = 7A610AB42B47FA8E00D3096F /* Money-Planner.app */;
@@ -637,7 +631,6 @@
 			mainGroup = 7A610AAB2B47FA8E00D3096F;
 			packageReferences = (
 				7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */,
-				208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 7A610AB52B47FA8E00D3096F /* Products */;
 			projectDirPath = "";
@@ -683,6 +676,7 @@
 				D20D6FE52B5AEECB006D6762 /* Date.swift in Sources */,
 				552A423E2B671B86007AEAAD /* EditGoalViewController.swift in Sources */,
 				20AFDD952B65B882008F8AB9 /* ChooseDateView.swift in Sources */,
+				D217EBEC2B6F846400EB6BF3 /* Progress.swift in Sources */,
 				7A4C67412B5A4AF1008BCAC9 /* MainBottomBtn.swift in Sources */,
 				D20D6FDE2B581B20006D6762 /* CALayer.swift in Sources */,
 				D2D0B7412B6BACAB003B6B5E /* HomeNow.swift in Sources */,
@@ -722,8 +716,10 @@
 				D20D6FF52B5E5B91006D6762 /* ToggleButton.swift in Sources */,
 				D20D6FE32B5AED6A006D6762 /* String.swift in Sources */,
 				20EF78312B68E3AD00AA135E /* MyPageTableViewCell.swift in Sources */,
+				D217EBF12B7460CC00EB6BF3 /* CategoryRepository.swift in Sources */,
 				20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */,
 				208C908F2B6AB78900C67960 /* MufflerAPI.swift in Sources */,
+				D217EBEF2B7460BC00EB6BF3 /* CategoryAPI.swift in Sources */,
 				7A610AEE2B493F6D00D3096F /* RegisterUsageViewController.swift in Sources */,
 				D20D6FED2B5B9962006D6762 /* MainCalendarView.swift in Sources */,
 				D20D6FE92B5AF1E9006D6762 /* MainMonthView.swift in Sources */,
@@ -740,7 +736,6 @@
 				D20D6FF12B5D6635006D6762 /* CategoryButton.swift in Sources */,
 				20118A112B56A86100B2569E /* ConsumeViewController.swift in Sources */,
 				D20D6FDC2B581A5A006D6762 /* UITabBar.swift in Sources */,
-				D2D0B73F2B6BAC1A003B6B5E /* CalendarInactive.swift in Sources */,
 				D20D6FF82B5E974D006D6762 /* MainStatistics.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -964,14 +959,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.6.0;
-			};
-		};
 		7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya";
@@ -983,31 +970,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		208C90952B6ABBC500C67960 /* RxBlocking */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxBlocking;
-		};
-		208C90972B6ABBC500C67960 /* RxBlocking-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = "RxBlocking-Dynamic";
-		};
-		208C90992B6ABBC500C67960 /* RxCocoa */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxCocoa;
-		};
-		208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = "RxCocoa-Dynamic";
-		};
-		208C909D2B6ABBC500C67960 /* RxRelay */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxRelay;
-		};
 		7A610ADB2B4900C800D3096F /* CombineMoya */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */;

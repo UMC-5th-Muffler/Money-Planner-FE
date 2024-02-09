@@ -9,9 +9,7 @@ import Foundation
 import UIKit
 
 class HomeViewController : UIViewController, MainMonthViewDelegate {
-    
-    let viewModel = HomeViewModel()
-    
+        
     var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -104,6 +102,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     
     var nowGoal : Goal?
     var dailyList : [CalendarDaily?] = []
+    var categoryList : [Category] = [Category(id: 0, name: "전체"), Category(id: 1, name: "식사"), Category(id: 2, name: "카페"), Category(id: 3, name: "교통"), Category(id: 4, name: "쇼핑")]
     
     override func viewDidLoad(){
         fetchData()
@@ -135,6 +134,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         
         setupMonthAndCategoryView()
         setupCollectionView()
+        
     }
     
     override func viewWillLayoutSubviews() {
@@ -146,6 +146,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     func didChangeMonth(monthIndex: Int, year: Int) {
         // 값 있을 때는 넘겨주고 없으면 초기화 하기
         calendarView.changeMonth(monthIndex: monthIndex, year: year)
+        fetchChangeMonthData()
     }
     
 }
@@ -162,7 +163,10 @@ extension HomeViewController{
                 
                 let goal : Goal? = data?.goalInfo
                 
-                self.nowGoal = goal
+                if(goal != nil){
+                    self.nowGoal = goal
+                }
+                
                 
                 if(data?.dailyList != nil){
                     self.dailyList = data!.dailyList!
@@ -180,6 +184,87 @@ extension HomeViewController{
                 print("networkFail in loginWithSocialAPI")
             }
         }
+        
+    }
+    
+    func fetchChangeMonthData(){
+        let currentYear = monthView.currentYear
+        let currentMonth = monthView.currentMonth
+        
+        var yearMonthStr = ""
+        if(currentMonth >= 10){
+            yearMonthStr = "\(currentYear)-\(currentMonth)"
+        }else{
+            yearMonthStr = "\(currentYear)-0\(currentMonth)"
+        }
+        
+        
+        if(self.nowGoal != nil){
+            // 목표가 있는 경우
+            HomeRepository.shared.getCalendarListWithGoal(goalId: self.nowGoal!.goalID, yearMonth: yearMonthStr){
+                (result) in
+                switch result{
+                case .success(let data):
+                    // 아예 골이 없는 경우
+                    
+                    let goal : Goal? = data?.goalInfo
+                    
+                    if(goal != nil){
+                        self.nowGoal = goal
+                    }
+                    
+                    if(data?.dailyList != nil){
+                        self.dailyList = data!.dailyList!
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.reloadUI()
+                    }
+                    
+                    
+                case .failure(.failure(message: let message)):
+                    print(message)
+                case .failure(.networkFail(let error)):
+                    print(error)
+                    print("networkFail in loginWithSocialAPI")
+                }
+            }
+            
+        }else{
+            // 목표가 없는 경우
+            HomeRepository.shared.getCalendarListWithDate(yearMonth: yearMonthStr){
+                (result) in
+                switch result{
+                case .success(let data):
+                    // 아예 골이 없는 경우
+                    
+                    let goal : Goal? = data?.goalInfo
+                    
+                    if(goal != nil){
+                        self.nowGoal = goal
+                    }
+                    
+                    if(data?.dailyList != nil){
+                        self.dailyList = data!.dailyList!
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.reloadUI()
+                    }
+                    
+                    
+                case .failure(.failure(message: let message)):
+                    print(message)
+                case .failure(.networkFail(let error)):
+                    print(error)
+                    print("networkFail in loginWithSocialAPI")
+                }
+            }
+        }
+    }
+    
+    func fetchCategoryList(){
+        
     }
     
     func reloadUI(){
@@ -196,9 +281,8 @@ extension HomeViewController{
             statisticsView.progress = 0.0
         }
         
-        if(!self.dailyList.isEmpty){
-            calendarView.dailyList = getDailyList(rawData: self.dailyList)
-        }
+        calendarView.dailyList = getDailyList(rawData: self.dailyList)
+        
     }
     
     func setupHeader(){
@@ -272,7 +356,7 @@ extension HomeViewController{
         contentView.addSubview(monthView)
         contentView.addSubview(toggleButton)
         
-        categoryScrollView.categories = viewModel.categories
+        categoryScrollView.categories = self.categoryList
         
         contentView.addSubview(categoryScrollView)
         

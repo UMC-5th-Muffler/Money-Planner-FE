@@ -8,7 +8,18 @@
 import Foundation
 import UIKit
 
+protocol CategoryButtonDelegate{
+    func onTapCategoryButton(categoryId : Int)
+}
+
 class CategoryButton: UIView {
+    var delegate : CategoryButtonDelegate?
+    
+    var isSelected : Bool = false {
+        didSet{
+            setBackGroundColor()
+        }
+    }
     
     var category : Category = Category(id: -1, name: "테스트"){
         didSet{
@@ -37,11 +48,14 @@ class CategoryButton: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
+        setBackGroundColor()
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapButton)))
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupUI()
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapButton)))
     }
     
     func setupUI() {
@@ -56,7 +70,6 @@ class CategoryButton: UIView {
         
         textLabel.text = category.name
         // UIView의 기본적인 설정
-        backgroundColor = .mpMainColor
         layer.cornerRadius = 18
         
         stackView.addArrangedSubview(circleView)
@@ -76,9 +89,25 @@ class CategoryButton: UIView {
             circleView.widthAnchor.constraint(equalToConstant: 13),
         ])
     }
+    
+    func setBackGroundColor(){
+        if(self.isSelected){
+            backgroundColor = .mpMainColor
+            textLabel.textColor = .mpWhite
+            textLabel.font = .mpFont14B()
+        }else{
+            backgroundColor = UIColor(hexCode: "E4E6EB")
+            textLabel.textColor = .mpBlack
+            textLabel.font = .mpFont14M()
+        }
+    }
+    
+    @objc func onTapButton(){
+        delegate?.onTapCategoryButton(categoryId: category.id)
+    }
 }
 
-class CategoryButtonsScrollView: UIScrollView {
+class CategoryButtonsScrollView: UIScrollView , CategoryButtonDelegate{
     private lazy var stackView: UIStackView = {
         let view = UIStackView()
         view.axis = .horizontal
@@ -92,6 +121,8 @@ class CategoryButtonsScrollView: UIScrollView {
             bind()
         }
     }
+    
+    var categoryButtons : [CategoryButton] = []
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -117,11 +148,36 @@ class CategoryButtonsScrollView: UIScrollView {
     }
     
     func bind() {
+        categoryButtons.removeAll()
+        
+        for subview in stackView.arrangedSubviews {
+            stackView.removeArrangedSubview(subview)
+            subview.removeFromSuperview()
+        }
+        
         for category in categories {
             let categoryButton = CategoryButton()
+            categoryButton.delegate = self
             categoryButton.category = category
+            categoryButtons.append(categoryButton)
             
             stackView.addArrangedSubview(categoryButton)
+        }
+        
+        if let firstButton = categoryButtons.first {
+            firstButton.isSelected = true
+        }
+    }
+}
+
+extension CategoryButtonsScrollView {
+    func onTapCategoryButton(categoryId: Int) {
+        if let targetButton = categoryButtons.first(where: { $0.category.id == categoryId }) {
+            targetButton.isSelected = true
+            
+            for button in categoryButtons where button !== targetButton {
+                button.isSelected = false
+            }
         }
     }
 }
