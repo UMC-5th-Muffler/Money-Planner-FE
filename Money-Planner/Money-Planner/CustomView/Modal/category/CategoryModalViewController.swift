@@ -70,7 +70,6 @@ class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UI
         
     }
     private func setupBackground() {
-        customModal.backgroundColor = .white
         customModal.layer.cornerRadius = 25
         customModal.layer.masksToBounds = true
     }

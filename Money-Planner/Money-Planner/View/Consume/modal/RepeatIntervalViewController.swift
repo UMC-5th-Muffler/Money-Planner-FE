@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 protocol RepeatIntervalDelegate : AnyObject{
-    func didIntervalSelected(_ Interval: String,_ num : Int)
+    func didIntervalSelected(_ index : Int)
 }
 class RepeatIntervalViewController : UIViewController,UIPickerViewDelegate,UIPickerViewDataSource {
     weak var delegate: RepeatIntervalDelegate?
@@ -196,17 +196,7 @@ class RepeatIntervalViewController : UIViewController,UIPickerViewDelegate,UIPic
         print("완료 버튼이 탭되었습니다.")
         print(returnValue)
         var  stirngReturnValue = ""
-        if type == 1{
-            stirngReturnValue = "\(returnValue+1)"
-
-        }
-        if type == 2{
-            stirngReturnValue = return2[returnValue]
-
-        }
-        print("반복 버튼 완료 : 결과) \(stirngReturnValue)")
-        print(type)
-        delegate?.didIntervalSelected(stirngReturnValue, type)
+        delegate?.didIntervalSelected(returnValue)
         // 완료 버튼 액션 처리
         dismiss(animated: true, completion: nil)
     }

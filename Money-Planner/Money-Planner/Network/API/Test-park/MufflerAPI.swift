@@ -14,8 +14,10 @@ enum MufflerAPI {
     case deleteGoal(goalId: String)
 
     // Expense Controller
-    case createExpense
+    case createExpense(expenseRequest: ExpenseCreateRequest)
+    case updateExpense(expenseId: String, expenseRequest: ExpenseCreateRequest)
     case getExpense(expenseId: String)
+    case deleteExpense(expenseId: String)
     case getWeeklyExpense
     case searchExpense
     case getMonthlyExpense
@@ -23,6 +25,9 @@ enum MufflerAPI {
 
     // Category Controller
     case createCategory
+
+    // Daily Plan Controller
+    case updateZeroDay
 
     // Rate Controller
     case updateRate(date: String)
@@ -36,7 +41,7 @@ enum MufflerAPI {
     case getBasicHomeInfo
 }
 
-extension MufflerAPI : TargetType {
+extension MufflerAPI: TargetType {
     var baseURL: URL {
         return URL(string: "http://13.209.182.17:8080")!
     }
@@ -64,7 +69,11 @@ extension MufflerAPI : TargetType {
         // Expense Controller
         case .createExpense:
             return "/api/expense"
+        case .updateExpense(let expenseId, _):
+            return "/api/expense/\(expenseId)"
         case .getExpense(let expenseId):
+            return "/api/expense/\(expenseId)"
+        case .deleteExpense(let expenseId):
             return "/api/expense/\(expenseId)"
         case .getWeeklyExpense:
             return "/api/expense/weekly"
@@ -78,6 +87,10 @@ extension MufflerAPI : TargetType {
         // Category Controller
         case .createCategory:
             return "/api/category"
+
+        // Daily Plan Controller
+        case .updateZeroDay:
+            return "/dailyPlan/zeroDay"
 
         // Rate Controller
         case .updateRate(let date):
@@ -100,42 +113,49 @@ extension MufflerAPI : TargetType {
     }
 
     var method: Moya.Method {
-        // 각 API에 맞는 HTTP 메서드를 설정합니다.
         switch self {
+        // Define HTTP methods for each API endpoint
         case .refreshToken, .loginKakao, .loginApple,
-             .createGoal, .createExpense, .createCategory, .updateRate:
+             .createGoal, .createExpense, .createCategory, .updateRate, .updateZeroDay:
             return .post
         case .connect, .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
              .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo:
             return .get
-        case .deleteGoal:
+        case .deleteGoal, .deleteExpense:
             return .delete
-
+        case .updateExpense:
+            return .patch
         }
     }
 
-    // 각 API에 맞는 request 파라미터를 설정합니다.
+    // Define request parameters for each API endpoint
     var task: Task {
         switch self {
         case .refreshToken, .loginKakao, .loginApple, .connect,
-             .createGoal, .createExpense, .createCategory, .updateRate:
+             .createGoal, .createCategory, .updateRate, .updateZeroDay:
             return .requestPlain
         case .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
              .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo:
             return .requestPlain
-        case .deleteGoal:
+        case .deleteGoal, .deleteExpense:
             return .requestPlain
+        case .updateExpense(_, let expenseRequest):
+            return .requestJSONEncodable(expenseRequest as! Encodable)
+        case .createExpense(let expenseRequest):
+                return .requestJSONEncodable(expenseRequest)
         }
+        
     }
 
+    // Define sample data for each API endpoint
     var sampleData: Data {
         return Data()
     }
 
+    // Define headers for the request
     var headers: [String: String]? {
-        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMzI0NjEzNzk1IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDY4Njc2NzN9.SV_8eU2l19lQL87eGKHkAjy2Ls7sVRsDznWkZ4dJlOE"] // 엑세스 토큰 넣는 자리!
+        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDc0MDA3NjN9.wsu2awnVWZoZkj5V_Wddd0NvoobzdoqhOMSliswq_jI"] // Replace with your actual access token
     }
 }
-

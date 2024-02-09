@@ -8,8 +8,9 @@
 import Foundation
 import UIKit
 
-class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
 
+class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
+  
     private let tableView: UITableView = {
         let table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -99,6 +100,7 @@ extension HomeConsumeView {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ConsumeRecordCell", for: indexPath) as? ConsumeRecordCell else {
+            
             fatalError("Unable to dequeue ConsumeRecordCell")
         }
         
@@ -161,11 +163,12 @@ extension HomeConsumeView {
         
         return headerView
     }
+    
 }
 
 
 class ConsumeRecordCell: UITableViewCell {
-   
+    
     private let costLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.mpFont16B()
@@ -222,6 +225,7 @@ class ConsumeRecordCell: UITableViewCell {
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: circleView.bottomAnchor, constant: -2)
         ])
+        
     }
 
     func configure(with consumeRecord: ConsumeDetail) {
