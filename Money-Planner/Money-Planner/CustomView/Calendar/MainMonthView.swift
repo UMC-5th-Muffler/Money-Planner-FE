@@ -17,18 +17,6 @@ class MainMonthView: UIView {
     var currentMonth : Int = 0
     var delegate : MainMonthViewDelegate?
     
-    //    var yearAndMonth: String = "0000.00" {
-    //        didSet {
-    //            let year = yearAndMonth.split (separator: ".") [0]
-    //            var month = yearAndMonth.split(separator: ".") [1]
-    //            if Int(month)! < 10 {
-    //                month = "O" + month
-    //            }
-    //            yearAndMonth = String(year + "." + month)
-    //            monthLabel.text = yearAndMonth
-    //        }
-    //    }
-    
     var monthLabel: UILabel = {
         let label = UILabel()
         label.text = ""

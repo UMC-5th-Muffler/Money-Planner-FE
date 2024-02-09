@@ -9,7 +9,18 @@ import Foundation
 import UIKit
 
 class MainStatisticsView : UIView {
-    var progress: CGFloat = 0.7 // 게이지의 진행도 (0.0 ~ 1.0)
+    // 게이지의 진행도 (0.0 ~ 1.0)
+    
+    var goal : Goal? = nil {
+        didSet{
+            setupView()
+        }
+    }
+    var progress: CGFloat = 0.0 {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
     
     
     let useAmountLabel: UILabel = {
@@ -35,7 +46,7 @@ class MainStatisticsView : UIView {
         label.textColor = UIColor.mpBlack
         label.font = UIFont.mpFont26B()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "125,000원"
+        label.text = "0원"
         return label
     }()
     
@@ -44,7 +55,7 @@ class MainStatisticsView : UIView {
         label.textColor = UIColor(hexCode: "#979797")
         label.font = UIFont.mpFont16M()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "/ 300,000원"
+        label.text = "/ 0원"
         return label
     }()
     
@@ -53,7 +64,7 @@ class MainStatisticsView : UIView {
         label.textColor = UIColor.mpMainColor
         label.font = UIFont.mpFont14B()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "300,000원"
+        label.text = "0원"
         return label
     }()
     
@@ -83,6 +94,11 @@ class MainStatisticsView : UIView {
     
     private func setupView() {
         backgroundColor = UIColor.clear
+        if(goal != nil){
+            useAmount.text = goal!.totalCost!.formattedWithSeparator()+"원"
+            totalAmount.text = "/ "+goal!.goalBudget!.formattedWithSeparator() + "원"
+            remainAmount.text = (goal!.goalBudget!-goal!.totalCost!).formattedWithSeparator() +  "원"
+        }
         
         addSubview(useAmountLabel)
         addSubview(useAmount)
