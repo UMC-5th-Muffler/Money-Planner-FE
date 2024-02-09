@@ -106,6 +106,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     
     override func viewDidLoad(){
         fetchData()
+        fetchCategoryList()
         view.backgroundColor = UIColor.mpWhite
         view.addSubview(contentScrollView)
         contentScrollView.addSubview(contentView)
@@ -272,7 +273,26 @@ extension HomeViewController{
     }
     
     func fetchCategoryList(){
-        
+        CategoryRepository.shared.getCategoryFilteredList{
+            (result) in
+            switch result{
+            case .success(let data):
+                // 아예 골이 없는 경우
+                
+                let categoryList = data
+                self.categoryList = categoryList!
+                DispatchQueue.main.async {
+                    self.setupMonthAndCategoryView()
+                }
+                
+                
+            case .failure(.failure(message: let message)):
+                print(message)
+            case .failure(.networkFail(let error)):
+                print(error)
+                print("networkFail in loginWithSocialAPI")
+            }
+        }
     }
     
     func reloadUI(){
