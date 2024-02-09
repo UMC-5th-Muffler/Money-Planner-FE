@@ -121,6 +121,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				208C90A12B6ABBEB00C67960 /* RxCocoa-Dynamic in Embed Frameworks */,
+				208C909F2B6ABBE900C67960 /* RxBlocking-Dynamic in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -233,10 +235,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				208C909E2B6ABBC500C67960 /* RxRelay in Frameworks */,
+				208C909C2B6ABBC500C67960 /* RxCocoa-Dynamic in Frameworks */,
 				7A610ADE2B4900C800D3096F /* Moya in Frameworks */,
 				7A610ADC2B4900C800D3096F /* CombineMoya in Frameworks */,
 				7A610AE22B4900C800D3096F /* RxMoya in Frameworks */,
+				208C909A2B6ABBC500C67960 /* RxCocoa in Frameworks */,
+				208C90982B6ABBC500C67960 /* RxBlocking-Dynamic in Frameworks */,
 				7A610AE02B4900C800D3096F /* ReactiveMoya in Frameworks */,
+				208C90962B6ABBC500C67960 /* RxBlocking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -681,6 +688,11 @@
 				7A610ADD2B4900C800D3096F /* Moya */,
 				7A610ADF2B4900C800D3096F /* ReactiveMoya */,
 				7A610AE12B4900C800D3096F /* RxMoya */,
+				208C90952B6ABBC500C67960 /* RxBlocking */,
+				208C90972B6ABBC500C67960 /* RxBlocking-Dynamic */,
+				208C90992B6ABBC500C67960 /* RxCocoa */,
+				208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */,
+				208C909D2B6ABBC500C67960 /* RxRelay */,
 			);
 			productName = "Money-Planner";
 			productReference = 7A610AB42B47FA8E00D3096F /* Money-Planner.app */;
@@ -712,6 +724,7 @@
 			mainGroup = 7A610AAB2B47FA8E00D3096F;
 			packageReferences = (
 				7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */,
+				208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 7A610AB52B47FA8E00D3096F /* Products */;
 			projectDirPath = "";
@@ -1054,6 +1067,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.6.0;
+			};
+		};
 		7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya";
@@ -1065,6 +1086,31 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		208C90952B6ABBC500C67960 /* RxBlocking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxBlocking;
+		};
+		208C90972B6ABBC500C67960 /* RxBlocking-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = "RxBlocking-Dynamic";
+		};
+		208C90992B6ABBC500C67960 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = "RxCocoa-Dynamic";
+		};
+		208C909D2B6ABBC500C67960 /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
 		7A610ADB2B4900C800D3096F /* CombineMoya */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */;
