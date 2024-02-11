@@ -95,7 +95,7 @@ extension HomeConsumeView {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data[section].expenseDetailList.count
+        return data[section].expenseDetailList!.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -104,7 +104,7 @@ extension HomeConsumeView {
             fatalError("Unable to dequeue ConsumeRecordCell")
         }
         
-        let consumeRecord = data[indexPath.section].expenseDetailList[indexPath.row]
+        let consumeRecord = data[indexPath.section].expenseDetailList![indexPath.row]
         
         cell.configure(with: consumeRecord)
 
@@ -139,7 +139,7 @@ extension HomeConsumeView {
         // "Cost" 텍스트를 추가
         let costLabel = UILabel()
         
-        let result: String = data[section].dailyTotalCost.formattedWithSeparator()
+        let result: String = data[section].dailyTotalCost!.formattedWithSeparator()
         
         costLabel.text = "\(result)원"
         costLabel.textColor = UIColor.mpDarkGray
