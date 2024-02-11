@@ -103,9 +103,15 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     var nowGoal : Goal?
     var dailyList : [CalendarDaily?] = []
     var categoryList : [Category] = [Category(id: 0, name: "전체"), Category(id: 1, name: "식사"), Category(id: 2, name: "카페"), Category(id: 3, name: "교통"), Category(id: 4, name: "쇼핑")]
+    var consumeList : [DailyConsume] = []
+    
+    var currentYear : Int = Calendar.current.component (.year, from: Date())
+    var currentMonth : Int = Calendar.current.component (.month, from: Date())
+    
+    var hasNext : Bool = false
     
     override func viewDidLoad(){
-        fetchData()
+        fetchCalendarData()
         fetchCategoryList()
         view.backgroundColor = UIColor.mpWhite
         view.addSubview(contentScrollView)
@@ -163,7 +169,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
 
 extension HomeViewController{
     
-    func fetchData(){
+    func fetchCalendarData(){
         HomeRepository.shared.getHomeNow{
             (result) in
             switch result{
@@ -283,6 +289,33 @@ extension HomeViewController{
                 self.categoryList = categoryList!
                 DispatchQueue.main.async {
                     self.setupMonthAndCategoryView()
+                }
+                
+                
+            case .failure(.failure(message: let message)):
+                print(message)
+            case .failure(.networkFail(let error)):
+                print(error)
+                print("networkFail in loginWithSocialAPI")
+            }
+        }
+    }
+    
+    func fetchConsumeData(order : String?, lastDate: String?, lastExpenseId: Int?, categoryId: Int?){
+        
+        let dateStr = (currentMonth >= 10) ? "\(currentYear)-\(currentMonth)" : "\(currentYear)-0\(currentMonth)"
+        
+        HomeRepository.shared.getExpenseList(yearMonth: dateStr, size: nil, goalId: self.nowGoal?.goalID, order: order, lastDate: lastDate, lastExpenseId: lastExpenseId, categoryId: categoryId){
+            (result) in
+            switch result{
+            case .success(let data):
+               
+                self.hasNext = data!.hasNext
+                let consumeList = data?.dailyExpenseList ?? []
+                self.consumeList.append(contentsOf: consumeList)
+                
+                DispatchQueue.main.async {
+                    self.consumeView.data = self.consumeList
                 }
                 
                 
@@ -483,6 +516,7 @@ extension HomeViewController{
         if(collectionView.currentPage == 0){
             let indexPath = IndexPath(item: 1, section: 0)
             collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil, categoryId: nil)
         }
         
         if(collectionView.currentPage == 1){

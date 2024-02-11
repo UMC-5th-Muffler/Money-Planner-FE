@@ -14,6 +14,18 @@ extension String{
         return formatter
     }()
     
+    var formatMonthAndDate : String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        if let date = dateFormatter.date(from: self) {
+            dateFormatter.dateFormat = "M월 d일"
+            return dateFormatter.string(from: date)
+        } else {
+            return nil
+        }
+    }
+    
     var toDate: Date? {
         return String.dateFormatter.date(from: self)
     }
