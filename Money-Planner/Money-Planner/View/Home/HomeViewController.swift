@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class HomeViewController : UIViewController, MainMonthViewDelegate {
-        
+    
     var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -87,7 +87,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "목표를 선택해주세요"
         label.textAlignment = .center
-        label.font = UIFont.mpFont18M()
+        label.font = UIFont.mpFont18B()
         label.isUserInteractionEnabled = true
         
         return label
@@ -109,8 +109,11 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     var currentMonth : Int = Calendar.current.component (.month, from: Date())
     
     var hasNext : Bool = false
+    var loading : Bool = false
     
     override func viewDidLoad(){
+        contentScrollView.delegate = self
+        
         fetchCalendarData()
         fetchCategoryList()
         view.backgroundColor = UIColor.mpWhite
@@ -157,13 +160,13 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     }
     // ConsumeRecordCell의 delegate
     func didTapCell(_ cell: ConsumeRecordCell) {
-            print("소비 내역으로 이동")
-            // Create an instance of the detail view controller
-            let detailViewController = ConsumeViewController() // Replace with your actual detail view controller clas
-            // Push the detail view controller onto the navigation stack
-            navigationController?.pushViewController(detailViewController, animated: true)
-        }
+        print("소비 내역으로 이동")
+        // Create an instance of the detail view controller
+        let detailViewController = ConsumeViewController() // Replace with your actual detail view controller clas
+        // Push the detail view controller onto the navigation stack
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
+}
 
 
 
@@ -302,6 +305,7 @@ extension HomeViewController{
     }
     
     func fetchConsumeData(order : String?, lastDate: String?, lastExpenseId: Int?, categoryId: Int?){
+        self.loading = true
         
         let dateStr = (currentMonth >= 10) ? "\(currentYear)-\(currentMonth)" : "\(currentYear)-0\(currentMonth)"
         
@@ -309,7 +313,7 @@ extension HomeViewController{
             (result) in
             switch result{
             case .success(let data):
-               
+                
                 self.hasNext = data!.hasNext
                 let consumeList = data?.dailyExpenseList ?? []
                 self.consumeList.append(contentsOf: consumeList)
@@ -317,13 +321,15 @@ extension HomeViewController{
                 DispatchQueue.main.async {
                     self.consumeView.data = self.consumeList
                 }
-                
+                self.loading = false
                 
             case .failure(.failure(message: let message)):
                 print(message)
+                self.loading = false
             case .failure(.networkFail(let error)):
                 print(error)
                 print("networkFail in loginWithSocialAPI")
+                self.loading = false
             }
         }
     }
@@ -517,11 +523,14 @@ extension HomeViewController{
             let indexPath = IndexPath(item: 1, section: 0)
             collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
             fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil, categoryId: nil)
+//            contentScrollView.updateContentSize()
         }
         
         if(collectionView.currentPage == 1){
             let indexPath = IndexPath(item: 0, section: 0)
             collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            self.consumeList.removeAll()
+//            contentScrollView.updateContentSize()
         }
     }
     
@@ -627,6 +636,19 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return collectionView.bounds.size
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        if(collectionView.currentPage == 0 || self.loading){
+            return
+        }
+        
+        if scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.bounds.height {
+            if self.hasNext {
+                fetchConsumeData(order: nil, lastDate: self.consumeList.last?.date, lastExpenseId: self.consumeList.last?.expenseDetailList?.last?.expenseId, categoryId: nil)
+            }
+        }
+    }
 }
 
 extension HomeViewController : GoalListModalViewDelegate{
@@ -635,18 +657,3 @@ extension HomeViewController : GoalListModalViewDelegate{
     }
 }
 
-//extension HomeViewController: PopUpModalDelegate {
-//    func didTapPresent() {
-//            PopUpModalViewController.present(
-//                initialView: self,
-//                delegate: self)
-//        }
-//
-//    func didTapCancel() {
-//        self.dismiss(animated: true)
-//    }
-//
-//    func didTapAccept(){
-//
-//    }
-//}
