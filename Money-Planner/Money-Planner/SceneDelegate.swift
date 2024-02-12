@@ -26,8 +26,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let consumeVC = UINavigationController(rootViewController: ConsumeViewController())
         let battleVC = UINavigationController(rootViewController: BattleViewController())
         let settingVC = UINavigationController(rootViewController: MyPageViewController())
-
-        consumeVC.isNavigationBarHidden = false
         
         homeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "btn_home_on"), tag: 0)
         goalVC.tabBarItem = UITabBarItem(title: "목표", image: UIImage(named: "btn_goal_on"), tag: 1)
