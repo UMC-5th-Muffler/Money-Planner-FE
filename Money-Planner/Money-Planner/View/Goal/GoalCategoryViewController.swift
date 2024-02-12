@@ -16,6 +16,8 @@ extension GoalCategoryViewController: CategorySelectionDelegate{
             print(selectedIndexPath)
         }
         
+        //btmBtn 활성화 결정
+        checkAllSectionsAndEnableButton()
 //        tableView.reloadSections([selectedIndexPath!.section], with: .none) => 이거 있으면 오히려 안됨
     }
 }
@@ -28,6 +30,8 @@ extension GoalCategoryViewController: MoneyAmountTextCellDelegate {
         
         let newValueNumeric = parseNumericValue(from: newValue)
         let oldValueNumeric = parseNumericValue(from: oldValue)
+        var categoryGoalOver = false
+        var categoryGoalSumOver = false
         
         // Assuming categoryGoalMaker array has elements for each category with corresponding section
         if categoryGoalMaker.count > indexPath.section {
@@ -41,8 +45,30 @@ extension GoalCategoryViewController: MoneyAmountTextCellDelegate {
         //총합 업데이트 및 디스플레이 반영
         updateSumAmountDisplay()
         
+        //moneyAmountTextCell 경고문 변경
+        if let cell = tableView.cellForRow(at: indexPath) as? MoneyAmountTextCell {
+            if let ga = goalCreationManager.goalAmount {
+                if ga < newValueNumeric {
+                    categoryGoalOver = true
+                    categoryGoalSumOver = true
+                }else{
+                    categoryGoalOver = false
+                }
+                
+                if ga < sumAmount {
+                    categoryGoalSumOver = true
+                }else{
+                    categoryGoalSumOver = false
+                }
+            }
+            cell.setAmountLabel(categoryGoalSumOver: categoryGoalSumOver, categoryGoalOver: categoryGoalOver)
+        }
+        
         //progressBar 업데이트
         progressBar.changeUsedAmt(usedAmt: sumAmount, goalAmt: goalCreationManager.goalAmount!)
+        
+        //btmBtn 활성화 결정
+        checkAllSectionsAndEnableButton()
     }
 }
 
@@ -255,21 +281,40 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
 //        return "카테고리 목표 \(section + 1)"
 //    }
     
-    //헤더 뷰 지정 (텍스트보다 발전)
+    //헤더 뷰 지정 (헤더 텍스트보다 발전)
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: CustomSectionHeaderView.identifier) as? CustomSectionHeaderView else { return nil }
         
         headerView.titleLabel.text = "카테고리 목표 \(section + 1)"
         headerView.onDeleteButtonTapped = { [weak self] in
             guard let self = self else { return }
-            // 섹션 삭제 로직
+            //금액 빼고
+            sumAmount -= categoryGoalMaker[section].categoryBudget ?? 0
+            //초기화 시키고
+            self.resetCategorySection(section)
+            //삭제
             self.categoryGoalMaker.remove(at: section)
             self.categoryCount -= 1
-            tableView.deleteSections([section], with: .automatic)
+            
+            // 섹션 삭제 후 테이블 뷰 업데이트
+            tableView.performBatchUpdates({
+                tableView.deleteSections([section], with: .automatic)
+            }) { completed in
+                // 삭제 완료 후 필요한 경우 추가 작업 수행
+                tableView.reloadData() // 전체 테이블 뷰를 새로고침하여 헤더 타이틀 업데이트
+            }
+            
+            updateSumAmountDisplay()
+            progressBar.changeUsedAmt(usedAmt: sumAmount, goalAmt: goalCreationManager.goalAmount!)
+            
+            //btmBtn 활성화 체크
+            checkAllSectionsAndEnableButton()
         }
         
         if section == categoryCount - 1 {
             headerView.disableDeleteBtn()
+        }else {
+            headerView.ableDeleteBtn()
         }
         
         return headerView
@@ -292,17 +337,24 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
                 self.tableView.insertSections([self.categoryCount - 2], with: .automatic)
                 let newCategory = Category(id: nil, name: nil, categoryBudget: 0) // TODO : id는 나중에
                 self.categoryGoalMaker.append(newCategory)
+                
+                //btmBtn 체크
+                checkAllSectionsAndEnableButton()
             }
             return cell
         } else {
             if indexPath.row == 0 {
                 // Dequeue GoalCategoryTableViewCell for category name input
                 let cell = tableView.dequeueReusableCell(withIdentifier: "GoalCategoryTableViewCell", for: indexPath) as! GoalCategoryTableViewCell
+                cell.configureCell(text: "카테고리 선택", iconName: "icon_category")
+                cell.isModified = false
                 cell.categoryModalBtn.addTarget(self, action: #selector(categoryModalButtonTapped), for: .touchUpInside)
                 return cell
             } else {
                 // Dequeue MoneyAmountTextCell for amount input
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MoneyAmountTextCell", for: indexPath) as! MoneyAmountTextCell
+                cell.textField.text = nil
+                cell.amountLabel.text = ""
                 cell.configureCell(image: UIImage(named: "icon_Wallet"), placeholder: "목표 금액")
                 cell.delegate = self
                 
@@ -332,6 +384,10 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
             
             // 모달 표시
             showCategoryModal()
+            //indexpath로 찾은 cell의 isModified를 true로 바꾸기
+            if let cell = tableView.cellForRow(at: indexPath) as? GoalCategoryTableViewCell {
+                cell.isModified = true
+            }
         }
     }
     
@@ -363,9 +419,9 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
         
         usedAmountLabel.attributedText = attributedString
         
-        let leftAmount = goalAmount > sumAmount ? goalAmount - sumAmount : 0
+        let leftAmount = goalAmount > sumAmount ? goalAmount - sumAmount : sumAmount - goalAmount
         let formattedLeftAmount = formatNumber(leftAmount)
-        leftAmountLabel.text = "남은 금액 \(formattedLeftAmount)원"
+        leftAmountLabel.text = goalAmount > sumAmount ? "남은 금액 \(formattedLeftAmount)원" : "초과 금액 \(formattedLeftAmount)원"
         leftAmountLabel.textColor = goalAmount >= sumAmount ? .mpBlack : .mpRed
         
         btmBtn.isEnabled = !(sumAmount > goalAmount) // 사실 모든 카테고리가 다 선택되었는지 점검하는 기능도 추가해야함.
@@ -383,7 +439,78 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
         guard let value = value?.replacingOccurrences(of: ",", with: "") else { return 0 }
         return Int64(value) ?? 0
     }
+    
+    
+    func resetCategorySection(_ section: Int) {
+        // 데이터 모델 초기화
+        let resetCategory = Category(id: nil, name: nil, categoryBudget: 0)
+        categoryGoalMaker[section] = resetCategory
+        
+        // 섹션 리로드 전에 셀 내용 초기화
+        if let categoryCell = tableView.cellForRow(at: IndexPath(row: 0, section: section)) as? GoalCategoryTableViewCell {
+            // 카테고리 셀 내용 초기화
+            categoryCell.textField.text = "카테고리를 선택해주세요" // 또는 기본 텍스트
+            categoryCell.iconImageView.image = UIImage(systemName: "icon_category") // 기본 아이콘 설정
+            categoryCell.isModified = false //수정 여부 판단
+        }
+        
+        if let amountCell = tableView.cellForRow(at: IndexPath(row: 1, section: section)) as? MoneyAmountTextCell {
+            // 금액 입력 셀 내용 초기화
+            amountCell.textField.text = nil // 텍스트 필드 초기화
+            amountCell.amountLabel.text = "입력값이 없습니다." // 금액 레이블 초기화
+        }
+        
+        // 해당 섹션만 리로드하여 변경사항 반영
+        tableView.reloadSections(IndexSet(integer: section), with: .fade)
+    }
 
+    //모든 셀이 준비가 됐는지 확인함.
+    func checkAllSectionsAndEnableButton() {
+        var allConditionsMet = true
+
+        for section in 0..<categoryCount - 1 {  // Exclude the last section which is the add button
+            // Check if the category has been modified
+            if let categoryCell = tableView.cellForRow(at: IndexPath(row: 0, section: section)) as? GoalCategoryTableViewCell,
+               !categoryCell.isModified {
+                allConditionsMet = false
+                break
+            }
+
+            // Check if the amount text is not empty
+            if let amountCell = tableView.cellForRow(at: IndexPath(row: 1, section: section)) as? MoneyAmountTextCell,
+               amountCell.textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+                allConditionsMet = false
+                break
+            }
+        }
+        
+        //목표금액 언더인가 체크
+        if sumAmount > goalCreationManager.goalAmount! {
+            allConditionsMet = false
+        }
+
+        // Enable or disable the button based on whether all conditions are met
+        btmBtn.isEnabled = allConditionsMet
+    }
+    
+//    func updateCellsForGoalAmountChange() {
+//        // goalAmount가 goalCreationManager.goalAmount보다 작거나 같은지 확인
+//        let isGoalAmountExceeded = sumAmount > goalCreationManager.goalAmount!
+//
+//        for section in 0..<categoryCount - 1 {  // 마지막 "추가" 섹션은 제외
+//            if let amountCell = tableView.cellForRow(at: IndexPath(row: 1, section: section)) as? MoneyAmountTextCell {
+//                // 각 MoneyAmountTextCell의 상태 업데이트
+//                if !isGoalAmountExceeded {
+//                    // 개별 카테고리 금액이 목표 금액을 초과하지 않는 경우
+//                    amountCell.categoryGoalOver = false
+//                    amountCell.categoryGoalSumOver = false
+//                }
+//            }
+//        }
+//
+//        // 모든 조건이 충족되는지 확인하고 버튼 상태 업데이트
+//        checkAllSectionsAndEnableButton()
+//    }
     
 }
 
@@ -430,7 +557,11 @@ class CustomSectionHeaderView: UITableViewHeaderFooterView {
         ])
     }
     
-    //+셀에서 x 없애기
+    //+셀에서 x 없애고 나타내기
+    func ableDeleteBtn(){
+        deleteButton.isHidden = false
+    }
+    
     func disableDeleteBtn(){
         deleteButton.isHidden = true
     }
@@ -438,6 +569,8 @@ class CustomSectionHeaderView: UITableViewHeaderFooterView {
     @objc func deleteButtonTapped() {
         onDeleteButtonTapped?()
     }
+    
+    
 }
 
 

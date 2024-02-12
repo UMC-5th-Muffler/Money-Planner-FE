@@ -102,6 +102,8 @@ class LoginViewController: UIViewController {
                             print("me() success.")
                             
                             //do something
+                            let registerProfileVC = RegisterProfileViewController()
+                            self.navigationController?.pushViewController(registerProfileVC, animated: true)
                             _ = user
                         }, onFailure: {error in
                             print(error)
@@ -137,6 +139,8 @@ class LoginViewController: UIViewController {
                             print(String(user.id!))
                             print("=========================")
                             
+                            let registerProfileVC = RegisterProfileViewController()
+                            self.navigationController?.pushViewController(registerProfileVC, animated: true)
                             
                             //                            _ = user
                         }, onFailure: {error in
@@ -205,10 +209,6 @@ class LoginViewController: UIViewController {
         //                print(error)
         //            })
         //            .disposed(by: disposeBag)
-        
-        //LoginViewVC에서 토큰 발급받아서 바로 넘기지 않고, 다 받은 다음에 하자.
-        var registerProfileVC = RegisterProfileViewController()
-        navigationController?.pushViewController(registerProfileVC, animated: true)
     }
     
     @objc func appleLogin() {
@@ -221,10 +221,6 @@ class LoginViewController: UIViewController {
         authorizationController.delegate = self
         authorizationController.presentationContextProvider = self
         authorizationController.performRequests()
-        
-        //LoginViewVC에서 토큰 발급받아서 바로 넘기지 않고, 다 받은 다음에 하자.
-        var registerProfileVC = RegisterProfileViewController()
-        navigationController?.pushViewController(registerProfileVC, animated: true)
     }
 }
 
@@ -258,6 +254,12 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             print("fullName: \(String(describing: fullName))")
             print("email: \(String(describing: email))")
             
+            //vc 넘어가기
+            DispatchQueue.main.async { [weak self] in
+                let registerProfileVC = RegisterProfileViewController()
+                self?.navigationController?.pushViewController(registerProfileVC, animated: true)
+            }
+            
             //Move to MainPage
             //let validVC = SignValidViewController()
             //validVC.modalPresentationStyle = .fullScreen
@@ -270,6 +272,12 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             
             print("username: \(username)")
             print("password: \(password)")
+            
+            //vc 넘어가기
+            DispatchQueue.main.async { [weak self] in
+                let registerProfileVC = RegisterProfileViewController()
+                self?.navigationController?.pushViewController(registerProfileVC, animated: true)
+            }
             
         default:
             break

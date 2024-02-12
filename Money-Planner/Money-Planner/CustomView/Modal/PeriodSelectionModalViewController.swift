@@ -8,10 +8,6 @@
 import Foundation
 import UIKit
 
-// 기간 선택 대리자 프로토콜 정의
-protocol PeriodSelectionDelegate: AnyObject {
-    func periodSelectionDidSelectDates(startDate: Date, endDate: Date)
-}
 
 class StartDateSelectionViewController: UIViewController {
     
@@ -19,15 +15,15 @@ class StartDateSelectionViewController: UIViewController {
 
     // 사용자 인터페이스 구성 요소 정의
     let customModal = UIView()
-    let titleLabel: UILabel = {
-        let label = UILabel()
+    let titleLabel: MPLabel = {
+        let label = MPLabel()
         label.text = "시작일을 선택해주세요"
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         return label
     }()
-    let subTitleLabel: UILabel = {
-        let label = UILabel()
+    let subTitleLabel: MPLabel = {
+        let label = MPLabel()
         label.text = "-"
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16)
@@ -144,15 +140,15 @@ class EndDateSelectionViewController: UIViewController {
     
     var selectedStartDate: Date?
     let customModal = UIView()
-    let titleLabel: UILabel = {
-        let label = UILabel()
+    let titleLabel: MPLabel = {
+        let label = MPLabel()
         label.text = "종료일을 선택해주세요"
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         return label
     }()
-    let subTitleLabel: UILabel = {
-        let label = UILabel()
+    let subTitleLabel: MPLabel = {
+        let label = MPLabel()
         // 초기 텍스트 설정은 viewDidLoad에서 설정됩니다.
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16)
@@ -304,15 +300,15 @@ class PeriodConfirmationViewController: UIViewController {
     var selectedEndDate: Date?
     
     let customModal = UIView()
-    let titleLabel: UILabel = {
-        let label = UILabel()
+    let titleLabel: MPLabel = {
+        let label = MPLabel()
         label.text = "선택한 기간 확인"
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         return label
     }()
-    let subTitleLabel: UILabel = {
-        let label = UILabel()
+    let subTitleLabel: MPLabel = {
+        let label = MPLabel()
         // 초기 텍스트 설정은 viewDidLoad에서 설정됩니다.
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16)
@@ -334,9 +330,9 @@ class PeriodConfirmationViewController: UIViewController {
         return button
     }()
     // 이 예제에서는 달력 뷰를 직접 구현하지 않습니다.
-    // 대신, 선택된 기간을 표시하는 데모 방식으로 UILabel을 사용합니다.
-    let periodLabel: UILabel = {
-        let label = UILabel()
+    // 대신, 선택된 기간을 표시하는 데모 방식으로 MPLabel을 사용합니다.
+    let periodLabel: MPLabel = {
+        let label = MPLabel()
         label.textAlignment = .center
         label.numberOfLines = 0 // 여러 줄 표시 가능
         return label

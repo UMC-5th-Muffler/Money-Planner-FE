@@ -23,6 +23,12 @@ extension GoalTotalAmountViewController: MoneyAmountTextCellDelegate {
     }
 }
 
+extension GoalTotalAmountViewController: WarnAboutUneditableModalDelegate {
+    func modalDismissed() {
+        goToGoalCategoryVC()
+    }
+}
+
 class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
     
     private var header : HeaderView = HeaderView(title: "")
@@ -57,6 +63,15 @@ class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
 
     
     @objc func btmButtonTapped() {
+        let modal = WarnAboutUneditableModal()
+        modal.modalPresentationStyle = .popover
+        modal.delegate = self
+        self.present(modal, animated: true)
+    }
+    
+    func goToGoalCategoryVC(){
+        let goalCategoryViewController = GoalCategoryViewController()
+        navigationController?.pushViewController(goalCategoryViewController, animated: true)
         // Extract the textField's text from the cell and convert it to an Int
         if let indexPath = tableView.indexPathForSelectedRow,
            let cell = tableView.cellForRow(at: indexPath) as? MoneyAmountTextCell,
@@ -64,11 +79,7 @@ class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
            let amount = Int64(text) {
             goalCreationManager.goalAmount = amount
         }
-
-        let goalCategoryViewController = GoalCategoryViewController()
-        navigationController?.pushViewController(goalCategoryViewController, animated: true)
     }
-    
     
     private func setupHeader() {
         header.translatesAutoresizingMaskIntoConstraints = false

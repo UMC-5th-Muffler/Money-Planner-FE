@@ -26,12 +26,10 @@ class MainBottomBtn: UIButton {
         }
     }
     
-    
-    
     private func setupButton(title: String) {
         setTitle(title, for: .normal)
-        layer.cornerRadius = 10  // 둥근 모서리 설정
-        titleLabel?.font = UIFont.systemFont(ofSize: 16)  // 폰트 크기 설정
+        layer.cornerRadius = 12  // 둥근 모서리 설정
+        titleLabel?.font = .mpFont18M() // 수정!!
         updateButtonStyle()
     }
     

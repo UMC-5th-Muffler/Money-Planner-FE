@@ -10,8 +10,8 @@ import UIKit
 
 class RegisterProfileViewController : UIViewController{
     
-    var subDescriptionView : SubDescriptionView{
-        let s = SubDescriptionView(text: "닉네임을 입력해주세요", alignToCenter: false)
+    var descriptionView : DescriptionView{
+        let s = DescriptionView(text: "닉네임을 입력해주세요", alignToCenter: false)
         s.textColor = .mpBlack
         s.font = .mpFont26B()
         return s
@@ -22,7 +22,8 @@ class RegisterProfileViewController : UIViewController{
         l.text = "닉네임"
         l.textColor = .mpDarkGray
         l.font = .mpFont14M()
-        l.translatesAutoresizingMaskIntoConstraints = false
+        l.textAlignment = .left
+//        l.translatesAutoresizingMaskIntoConstraints = false
         return l
     }()
     let nickNameTextField : UITextField = {
@@ -36,12 +37,13 @@ class RegisterProfileViewController : UIViewController{
         l.text = "이미 존재하는 닉네임입니다."
         l.textColor = .mpRed
         l.font = .mpFont14M()
-        l.translatesAutoresizingMaskIntoConstraints = false
+//        l.translatesAutoresizingMaskIntoConstraints = false
         return l
     }()
+    
     let mainBtmBtn = MainBottomBtn(title: "다음")
     
-    var btmbtnBottomConstraint: NSLayoutConstraint! //키보드 이동용
+    var mainBtmbtnBottomConstraint: NSLayoutConstraint! //키보드 이동용
     
     private let goalViewModel = GoalViewModel.shared //지금까지 만든 목표 확인용
     private let goalCreationManager = GoalCreationManager.shared //목표 생성용
@@ -50,7 +52,7 @@ class RegisterProfileViewController : UIViewController{
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         mainBtmBtn.isEnabled = false
-        mainBtmBtn.addTarget(self, action: #selector(btmButtonTapped), for: .touchUpInside)
+        mainBtmBtn.addTarget(self, action: #selector(mainBtmButtonTapped), for: .touchUpInside)
         setupLayout()
         
         // 키보드 알림 구독
@@ -59,39 +61,72 @@ class RegisterProfileViewController : UIViewController{
         
     }
     
-    //레이아웃
-    func setupLayout() {
-        [subDescriptionView, nickNameTitle, nickNameTextField, warningLabel, mainBtmBtn].forEach {
-            view.addSubview($0)
-        }
+    func setupLayout(){
         
-        btmbtnBottomConstraint = mainBtmBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30)
+        view.addSubview(descriptionView)
+//        view.addSubview(roundProfileImagePicker)
+//        view.addSubview(nickNameTitle)
+//        view.addSubview(nickNameTextField)
+//        view.addSubview(warningLabel)
+//        view.addSubview(mainBtmBtn)
+        
+        descriptionView.translatesAutoresizingMaskIntoConstraints = false
+//        roundProfileImagePicker.translatesAutoresizingMaskIntoConstraints = false
+//        nickNameTitle.translatesAutoresizingMaskIntoConstraints = false
+//        nickNameTextField.translatesAutoresizingMaskIntoConstraints = false
+//        warningLabel.translatesAutoresizingMaskIntoConstraints = false
+//        mainBtmBtn.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            subDescriptionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            subDescriptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            subDescriptionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            descriptionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 36),
+            descriptionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            descriptionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            descriptionView.heightAnchor.constraint(equalToConstant: 72),
             
-            nickNameTitle.topAnchor.constraint(equalTo: subDescriptionView.bottomAnchor, constant: 40),
-            nickNameTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            nickNameTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
-            nickNameTextField.topAnchor.constraint(equalTo: nickNameTitle.bottomAnchor, constant: 8),
-            nickNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            nickNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
-            warningLabel.topAnchor.constraint(equalTo: nickNameTextField.bottomAnchor, constant: 8),
-            warningLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            warningLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
-            
-            mainBtmBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            mainBtmBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            mainBtmBtn.heightAnchor.constraint(equalToConstant: 50),
-            btmbtnBottomConstraint
+//            roundProfileImagePicker.topAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: 78),
+//            roundProfileImagePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            roundProfileImagePicker.widthAnchor.constraint(equalToConstant: 114),
+//            roundProfileImagePicker.heightAnchor.constraint(equalToConstant: 114),
+//            
+//            nickNameTextField.topAnchor.constraint(equalTo: roundProfileImagePicker.bottomAnchor, constant: 80),
+//            nickNameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            nickNameTextField.heightAnchor.constraint(equalToConstant: 40),
+//            nickNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+//            nickNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+//            
+//            nickNameTitle.bottomAnchor.constraint(equalTo: nickNameTextField.topAnchor, constant: 10),
+//            nickNameTitle.leadingAnchor.constraint(equalTo: nickNameTextField.leadingAnchor),
+//            nickNameTitle.widthAnchor.constraint(equalToConstant: 210),
+//            nickNameTitle.heightAnchor.constraint(equalToConstant: 20),
+//            
+//            warningLabel.topAnchor.constraint(equalTo: nickNameTextField.bottomAnchor, constant: 10),
+//            warningLabel.leadingAnchor.constraint(equalTo: nickNameTextField.leadingAnchor),
+//            warningLabel.widthAnchor.constraint(equalToConstant: 210),
+//            warningLabel.heightAnchor.constraint(equalToConstant: 20),
         ])
     }
     
+    private func setupmainBtmBtn() {
+        mainBtmBtn.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(mainBtmBtn)
+        mainBtmBtn.addTarget(self, action: #selector(mainBtmButtonTapped), for: .touchUpInside)
+        
+        let guide = view.safeAreaLayoutGuide
+        let bottomConstraint = mainBtmBtn.bottomAnchor.constraint(equalTo: guide.bottomAnchor)
+        bottomConstraint.isActive = true // 키보드에 의해 변경될 수 있는 제약 조건
+        
+        NSLayoutConstraint.activate([
+            mainBtmBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            mainBtmBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            mainBtmBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
+            mainBtmBtn.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
+        // 키보드 알림 구독
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
     //키보드 노티
     @objc func keyboardWillShow(notification: NSNotification) {
         adjustButtonWithKeyboard(notification: notification, show: true)
@@ -114,14 +149,14 @@ class RegisterProfileViewController : UIViewController{
         let bottomConstraintValue = show ? -keyboardHeight : -30  // -30은 키보드가 없을 때의 기본 간격입니다.
         
         UIView.animate(withDuration: animationDuration) { [weak self] in
-            self?.btmbtnBottomConstraint.constant = bottomConstraintValue
+            self?.mainBtmbtnBottomConstraint.constant = bottomConstraintValue
             self?.view.layoutIfNeeded()
         }
     }
     
     
-    //btmBtn 눌렀을때
-    @objc func btmButtonTapped() {
+    //mainBtmBtn 눌렀을때
+    @objc func mainBtmButtonTapped() {
         print("계정 생성 완료, 홈화면으로 이동")
         
         //userdefaults에 닉네임, 이미지
@@ -141,8 +176,6 @@ class RegisterProfileViewController : UIViewController{
             window.makeKeyAndVisible()
             UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
         }
-        
-        
     }
     
     func saveImageToDocumentDirectory(_ image: UIImage, fileName: String) -> URL? {

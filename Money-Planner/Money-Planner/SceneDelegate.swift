@@ -16,7 +16,7 @@ import AuthenticationServices
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
-    var needsLogin : Bool = false// false로 나중에 수정
+    var needsLogin : Bool = false
     
     //기존 storyboard 대신 진입점(rootViewController) 설정
     func scene(_ scene: UIScene,
@@ -81,7 +81,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             window?.rootViewController = tabBarController
             
-//            let vc = PeriodCalendarViewController()
+//            let vc = PeriodCalendarModal()
 //            window?.rootViewController = vc
         }
         

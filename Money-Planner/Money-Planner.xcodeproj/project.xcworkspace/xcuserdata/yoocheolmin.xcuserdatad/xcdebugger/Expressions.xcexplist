@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "closure #1 in GoalCategoryViewController.tableView(_:viewForHeaderInSection:):GoalCategoryViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "GoalCategoryViewController.tableView(_:viewForHeaderInSection:):GoalCategoryViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "-[FSCalendarDelegationProxy forwardInvocation:]:FSCalendarDelegationProxy.m">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in GoalCategoryViewController.tableView(_:cellForRowAt:):GoalCategoryViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "PeriodCalendarModal.calendar(_:didSelect:at:):PeriodCalendarViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "PeriodCalendarModal.selectDate(_:):PeriodCalendarViewController.swift">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

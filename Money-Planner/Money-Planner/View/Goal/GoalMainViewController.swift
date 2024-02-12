@@ -146,7 +146,7 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
         headerView.backgroundColor = .clear // Set the background color of the header
         
         // Create a label for the section title with your desired font
-        let titleLabel = UILabel()
+        let titleLabel = MPLabel()
         titleLabel.font = .mpFont16M() // Set your desired font
         titleLabel.text = self.tableView(tableView, titleForHeaderInSection: section)
         

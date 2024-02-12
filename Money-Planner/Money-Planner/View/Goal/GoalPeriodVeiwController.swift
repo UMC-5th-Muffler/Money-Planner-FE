@@ -9,11 +9,21 @@ import Foundation
 import UIKit
 import Moya
 
-//extension GoalPeriodViewController: PeriodSelectionDelegate {
-//
-//}
+extension GoalPeriodViewController: PeriodSelectionDelegate {
+    func periodSelectionDidSelectDates(startDate: Date, endDate: Date) {
+        periodBtn.setPeriod(startDate: startDate, endDate: endDate)
+        btmbtn.isEnabled = true // btmBtn의 이름은 실제 버튼 변수명에 따라 달라질 수 있음
+        print("보여지는 period 변경 실행")
+    }
+}
 
-class GoalPeriodViewController : UIViewController, UINavigationControllerDelegate, PeriodSelectionDelegate {
+extension GoalPeriodViewController: FoundPreviousConsumeRecordModalDelegate {
+    func modalGoToGoalAmountVC() {
+        goToGoalAmountVC()
+    }
+}
+
+class GoalPeriodViewController : UIViewController, UINavigationControllerDelegate {
     
     private var header : HeaderView = HeaderView(title: "")
     private var descriptionView : DescriptionView = DescriptionView(text: "도전할 소비 목표의 기간을 선택해주세요", alignToCenter: false)
@@ -40,6 +50,7 @@ class GoalPeriodViewController : UIViewController, UINavigationControllerDelegat
         btmbtn.isEnabled = false
         
     }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -49,6 +60,19 @@ class GoalPeriodViewController : UIViewController, UINavigationControllerDelegat
     }
     
     @objc func btmButtonTapped() {
+        
+        //이전 소비내역 발견, 모달 띄우기.
+        if findOutPreviousConsumeRecord() {
+            let modal = FoundPreviousConsumeRecordModal(startDate: periodBtn.startDate, endDate: periodBtn.endDate)
+            modal.modalPresentationStyle = .popover
+            modal.delegate = self
+            self.present(modal, animated: true)
+        } else {
+            goToGoalAmountVC()
+        }
+    }
+    
+    func goToGoalAmountVC(){
         print("목표 금액 등록 화면으로 이동")
         let goalTotalAmountVC = GoalTotalAmountViewController()
         goalCreationManager.goalStart = periodBtn.startDate
@@ -100,12 +124,20 @@ class GoalPeriodViewController : UIViewController, UINavigationControllerDelegat
     }
     
     @objc private func periodBtnTapped() {
-        let startDateSelectionVC = StartDateSelectionViewController()
-        startDateSelectionVC.delegate = self
-        let navController = UINavigationController(rootViewController: startDateSelectionVC)
-        navController.modalPresentationStyle = .popover // 혹은 .popover 등 적절한 스타일 선택
-        self.present(navController, animated: true, completion: nil)
+        let modal = PeriodCalendarModal()
+        modal.delegate = self
+        let navigationController = UINavigationController(rootViewController: modal)
+        navigationController.modalPresentationStyle = .popover
+        // popover 관련 설정을 할 수 있습니다. 예를 들어, 어디서 popover가 나타나야 할지 등을 설정할 수 있습니다.
+        if let popoverController = navigationController.popoverPresentationController {
+//            popoverController.sourceView = self.view // Popover가 나타날 뷰를 지정합니다.
+//            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+//            popoverController.permittedArrowDirections = [] // 화살표 방향을 없애고 싶을 때 사용합니다.
+        }
+        // 현재 뷰 컨트롤러에서 navigationController를 모달로 표시합니다.
+        self.present(navigationController, animated: true, completion: nil)
     }
+
 
     private func setUpBtmBtn(){
         btmbtn.translatesAutoresizingMaskIntoConstraints = false
@@ -118,10 +150,16 @@ class GoalPeriodViewController : UIViewController, UINavigationControllerDelegat
         ])
     }
     
-    func periodSelectionDidSelectDates(startDate: Date, endDate: Date) {
-        periodBtn.setPeriod(startDate: startDate, endDate: endDate)
-        btmbtn.isEnabled = true // btmBtn의 이름은 실제 버튼 변수명에 따라 달라질 수 있음
-        print("변경 실행")
+    //다음 버튼을 눌렀을때,
+    func findOutPreviousConsumeRecord() -> Bool {
+        
+        let startDate = periodBtn.startDate
+        let endDate = periodBtn.endDate
+        
+        //startDate, endDate를 포함한 데이터를 보냄.
+        //소비내역 있으면 true 없으면 false
+        
+        return true
     }
     
 }
@@ -131,8 +169,8 @@ class PeriodButton: UIButton {
     let iconImageView = UIImageView()
     let periodLabel = MPLabel()
     let spanLabel = MPLabel()
-    let startDate = Date()
-    let endDate = Date()
+    var startDate = Date()
+    var endDate = Date()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -198,10 +236,9 @@ class PeriodButton: UIButton {
     }
     
     func setPeriod(startDate: Date, endDate: Date) {
-        
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
+        formatter.dateFormat = "M월 d일" // Custom format for "month day"
+        formatter.locale = Locale(identifier: "ko_KR") // Korean locale to ensure month names are in Korean
 
         let startDateString = formatter.string(from: startDate)
         let endDateString = formatter.string(from: endDate)
@@ -211,7 +248,11 @@ class PeriodButton: UIButton {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.day], from: startDate, to: endDate)
         if let day = components.day {
-            spanLabel.text = day%7==0 ? "\(day/7)주" : "\(day)일"
+            spanLabel.text = day % 7 == 0 ? "\(day / 7)주" : "\(day)일"
         }
+        
+        self.startDate = startDate
+        self.endDate = endDate
     }
+    
 }

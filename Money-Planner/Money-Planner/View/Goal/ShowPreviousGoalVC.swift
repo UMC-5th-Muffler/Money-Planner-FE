@@ -10,4 +10,7 @@ import UIKit
 import RxSwift
 import Moya
 
-
+class ShowPreviousGoalVC : UIViewController {
+    
+    
+}

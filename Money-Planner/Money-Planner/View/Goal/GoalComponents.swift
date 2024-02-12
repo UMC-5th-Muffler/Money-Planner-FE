@@ -458,23 +458,42 @@ class GoalProgressBar: UIView {
         usedAmtBar.frame = CGRect(x: 0, y: 0, width: usedAmtWidth, height: 10)
         usedAmtBar.layer.cornerRadius = usedAmtBar.frame.height / 2
 
-        // usedAmtBar의 배경색 업데이트
-        usedAmtBar.backgroundColor = usedAmt > goalAmt ? .mpRed : .mpMainColor
-
         // pointer 및 line의 레이아웃 조정
         let pointerX = ratio == 0 ?  0 : frame.width / ratio
         pointer.center.x = pointerX
         line.center.x = pointer.center.x
-        line.center.x = pointer.center.x
-        addDashedBorder(to: line)
-        pointer.isHidden = ratio <= 1
-        line.isHidden = ratio <= 1
+//        addDashedBorder(to: line)
+    
     }
 
     func changeUsedAmt (usedAmt : Int64, goalAmt : Int64){
         self.goalAmt = goalAmt
         self.usedAmt = usedAmt
-        setNeedsLayout() // 이걸 쓰면 layoutSubview가 재업. 어째서, 막대 길이에 오류가 생겼는지는 불명...
+        //setNeedsLayout() // 이걸 쓰면 layoutSubview가 재업. 어째서, 막대 길이에 오류가 생겼는지는 불명...
+        
+        //애니메이션 적용
+        UIView.animate(withDuration: 0.5, animations: {
+            // usedAmtBar의 너비 계산 및 업데이트
+            let ratio = CGFloat(self.usedAmt) / CGFloat(self.goalAmt)
+            let usingRatio = min(max(ratio, 0), 1) // 0과 1 사이의 값으로 조정
+            let usedAmtWidth = usingRatio * self.bounds.width
+            
+            // usedAmtBar의 프레임 조정
+            self.usedAmtBar.frame.size.width = usedAmtWidth
+            
+            // pointer 및 line의 위치 조정
+            let pointerX = ratio == 0 ?  0 : self.frame.width / ratio
+            self.pointer.center.x = pointerX
+            self.line.center.x = self.pointer.center.x
+            
+            self.layoutIfNeeded() // 현재 뷰와 관련된 레이아웃을 강제로 업데이트
+        })
+        
+        // usedAmtBar의 배경색 조건부 업데이트는 애니메이션 블록 외부에서 진행
+        self.usedAmtBar.backgroundColor = usedAmt > goalAmt ? .mpRed : .mpMainColor
+        self.pointer.isHidden = CGFloat(self.usedAmt) / CGFloat(self.goalAmt) <= 1
+        self.line.isHidden = CGFloat(self.usedAmt) / CGFloat(self.goalAmt) <= 1
+        addDashedBorder(to: line)
     }
 }
 
@@ -669,7 +688,7 @@ class MoneyAmountTextCell: UITableViewCell, UITextFieldDelegate {
     private let iconImageView = UIImageView()
     let textField = UITextField()
     private let unitLabel = MPLabel()
-    private let amountLabel = MPLabel()
+    let amountLabel = MPLabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -685,8 +704,6 @@ class MoneyAmountTextCell: UITableViewCell, UITextFieldDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // Setup functions omitted for brevity...
-    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText = textField.text ?? ""
         guard let stringRange = Range(range, in: currentText) else { return false }
@@ -697,15 +714,51 @@ class MoneyAmountTextCell: UITableViewCell, UITextFieldDelegate {
         
         // 숫자 길이 제한
         if digitsOnly.count > 12 {
+            amountLabel.text = "12자리 이상 입력하실 수 없습니다."
+            amountLabel.textColor = .mpRed
+            self.contentView.layer.borderWidth = 1
+            self.contentView.layer.borderColor = UIColor.mpRed.cgColor
             return false
+        }else{
+            amountLabel.textColor = .mpBlack
+            self.contentView.layer.borderWidth = 0
         }
         
         textField.text = formatNumber(number)
         amountLabel.text = formatAmount(number)
-        
+    
         delegate?.didChangeAmountText(to: textField.text, cell: self, oldValue: currentText)
         
         return false
+    }
+    
+    ///경고문을 외부에서 설정하기 위해서 만듦. 피그마 경고문 반영
+    ///우선순위는 위의 textField 함수에 의한 금액 -> 이 함수로 설정하는 경고문 -> 위의 12자 이상일때 경고문
+    func setAmountLabel(categoryGoalSumOver : Bool, categoryGoalOver : Bool){
+        
+        //단독 오버
+        if categoryGoalOver {
+            amountLabel.text = "전체 목표 금액을 초과했어요."
+            amountLabel.textColor = .mpRed
+            self.contentView.layer.borderWidth = 1
+            self.contentView.layer.borderColor = UIColor.mpRed.cgColor
+            return
+        }else{
+            amountLabel.textColor = .mpBlack
+            self.contentView.layer.borderWidth = 0
+        }
+        
+        //총합이 오버
+        if categoryGoalSumOver {
+            amountLabel.text = "다른 카테고리의 금액을 낮춰주세요."
+            amountLabel.textColor = .mpRed
+            self.contentView.layer.borderWidth = 1
+            self.contentView.layer.borderColor = UIColor.mpRed.cgColor
+        }else{
+            amountLabel.textColor = .mpBlack
+            self.contentView.layer.borderWidth = 0
+        }
+        
     }
     
     private func formatNumber(_ number: Int64) -> String {
@@ -717,12 +770,14 @@ class MoneyAmountTextCell: UITableViewCell, UITextFieldDelegate {
     private func formatAmount(_ number: Int64) -> String {
         if number == 0 { return "0원" }
         
-        let hundred_million = number / 1_0000_0000 //이름만 hundred_million
-        let ten_thousand = (number % 1_0000_0000) / 1_0000 //이름만 ten_thousand
+//        let thousand_billion = number / 1_0000_0000_0000
+        let hundred_million = (number % 1_0000_0000_0000) / 1_0000_0000
+        let ten_thousand = (number % 1_0000_0000) / 1_0000
         let thousand = (number % 1_0000) / 1000
         let remainder = number % 1000
         
         var result = ""
+//        if thousand_billion > 0 {result += "\(thousand_billion)조 "}
         if hundred_million > 0 { result += "\(hundred_million)억 " }
         if ten_thousand > 0 { result += "\(ten_thousand)만 " }
         if thousand > 0 { result += "\(thousand)천 " }
@@ -806,7 +861,7 @@ class MoneyAmountTextCell: UITableViewCell, UITextFieldDelegate {
             amountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             amountLabel.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 1),
             amountLabel.heightAnchor.constraint(equalToConstant: 30),
-            amountLabel.widthAnchor.constraint(equalToConstant: 150)
+            amountLabel.widthAnchor.constraint(equalToConstant: 200)
         ])
     }
     
@@ -818,6 +873,7 @@ class MoneyAmountTextCell: UITableViewCell, UITextFieldDelegate {
         }
         textField.placeholder = placeholder
     }
+    
 }
 
 //protocol WriteNameCellDelegate: AnyObject {
@@ -1041,9 +1097,9 @@ class GoalCreateCategoryBtnCell: UITableViewCell {
 //    }
 //}
 
-
 class GoalCategoryTableViewCell: UITableViewCell {
     
+    var isModified = false // 추후에 새로운 카테고리 목표를 저장하는 목적
     var iconImageView : UIImageView = {
         let i = UIImageView(image: UIImage(named: "icon_category"))
         i.contentMode = .scaleAspectFit
@@ -1133,7 +1189,7 @@ class GoalCategoryTableViewCell: UITableViewCell {
     }
     
     func configureCell(text : String, iconName : String){
-        iconImageView.image = UIImage(systemName: iconName)
+        iconImageView.image = UIImage(named: iconName)
         textField.text = text
     }
     

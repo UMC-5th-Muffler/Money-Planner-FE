@@ -38,6 +38,11 @@
 		7A0D32E42B700AB0007B2736 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7A0D32E32B700AB0007B2736 /* Config.xcconfig */; };
 		7A0D32E62B710F83007B2736 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32E52B710F83007B2736 /* LoadingViewController.swift */; };
 		7A0D32E82B72A4C9007B2736 /* GoalDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32E72B72A4C9007B2736 /* GoalDetailsViewController.swift */; };
+		7A0D32EB2B72BC3F007B2736 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D32EA2B72BC3F007B2736 /* FSCalendar */; };
+		7A0D32ED2B7340BF007B2736 /* FoundPreviousConsumeRecordModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32EC2B7340BF007B2736 /* FoundPreviousConsumeRecordModal.swift */; };
+		7A0D32EF2B7359A2007B2736 /* WarnAboutUneditableModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32EE2B7359A2007B2736 /* WarnAboutUneditableModal.swift */; };
+		7A0D32F12B73860A007B2736 /* DdayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32F02B73860A007B2736 /* DdayLabel.swift */; };
+		7A0D32F32B77E867007B2736 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32F22B77E867007B2736 /* UIImage.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -135,6 +140,10 @@
 		7A0D32E32B700AB0007B2736 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		7A0D32E52B710F83007B2736 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		7A0D32E72B72A4C9007B2736 /* GoalDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalDetailsViewController.swift; sourceTree = "<group>"; };
+		7A0D32EC2B7340BF007B2736 /* FoundPreviousConsumeRecordModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundPreviousConsumeRecordModal.swift; sourceTree = "<group>"; };
+		7A0D32EE2B7359A2007B2736 /* WarnAboutUneditableModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarnAboutUneditableModal.swift; sourceTree = "<group>"; };
+		7A0D32F02B73860A007B2736 /* DdayLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdayLabel.swift; sourceTree = "<group>"; };
+		7A0D32F22B77E867007B2736 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -210,6 +219,7 @@
 				7A610ADE2B4900C800D3096F /* Moya in Frameworks */,
 				7A0D32DA2B6F5DDD007B2736 /* RxKakaoSDKAuth in Frameworks */,
 				7A610ADC2B4900C800D3096F /* CombineMoya in Frameworks */,
+				7A0D32EB2B72BC3F007B2736 /* FSCalendar in Frameworks */,
 				7A0D32D12B68EFBB007B2736 /* RxCocoa in Frameworks */,
 				7A0D32DC2B6F5DDD007B2736 /* RxKakaoSDKCommon in Frameworks */,
 				7A610AE22B4900C800D3096F /* RxMoya in Frameworks */,
@@ -243,6 +253,9 @@
 				206C58D72B626465008410C1 /* CategoryModalViewController.swift */,
 				206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */,
 				7A57677B2B682779009A5972 /* PeriodSelectionModalViewController.swift */,
+				7A0D32EC2B7340BF007B2736 /* FoundPreviousConsumeRecordModal.swift */,
+				7A0D32EE2B7359A2007B2736 /* WarnAboutUneditableModal.swift */,
+				7A0D32E12B6FF81F007B2736 /* PeriodCalendarViewController.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -326,6 +339,7 @@
 				7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */,
 				7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */,
 				7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */,
+				7A0D32F02B73860A007B2736 /* DdayLabel.swift */,
 			);
 			path = Label;
 			sourceTree = "<group>";
@@ -502,11 +516,10 @@
 				7A5767582B63968F009A5972 /* GoalCategoryViewController.swift */,
 				7A57675C2B6396A8009A5972 /* GoalDailyViewController.swift */,
 				7A57675E2B6396B2009A5972 /* GoalFinalViewController.swift */,
-				552A423D2B671B86007AEAAD /* EditGoalViewController.swift */,
 				7A0D32E72B72A4C9007B2736 /* GoalDetailsViewController.swift */,
+				552A423D2B671B86007AEAAD /* EditGoalViewController.swift */,
 				7A5767792B67CAD6009A5972 /* ViewController.swift */,
 				7A0D32D22B68F303007B2736 /* ShowPreviousGoalVC.swift */,
-				7A0D32E12B6FF81F007B2736 /* PeriodCalendarViewController.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -555,6 +568,7 @@
 				D20D6FEE2B5D3909006D6762 /* UIColor.swift */,
 				D20D70012B5FF088006D6762 /* Formatter.swift */,
 				D20D70032B5FF094006D6762 /* Numeric.swift */,
+				7A0D32F22B77E867007B2736 /* UIImage.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -606,6 +620,7 @@
 				7A0D32D92B6F5DDD007B2736 /* RxKakaoSDKAuth */,
 				7A0D32DB2B6F5DDD007B2736 /* RxKakaoSDKCommon */,
 				7A0D32DD2B6F5DDD007B2736 /* RxKakaoSDKUser */,
+				7A0D32EA2B72BC3F007B2736 /* FSCalendar */,
 			);
 			productName = "Money-Planner";
 			productReference = 7A610AB42B47FA8E00D3096F /* Money-Planner.app */;
@@ -643,6 +658,7 @@
 				7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */,
 				7A0D32CD2B68EF3A007B2736 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				7A0D32D42B6CAB92007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
+				7A0D32E92B72BC3F007B2736 /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			productRefGroup = 7A610AB52B47FA8E00D3096F /* Products */;
 			projectDirPath = "";
@@ -692,7 +708,9 @@
 				7A0D32E22B6FF81F007B2736 /* PeriodCalendarViewController.swift in Sources */,
 				7A610ABC2B47FA8E00D3096F /* LoginViewController.swift in Sources */,
 				7A0D32D32B68F303007B2736 /* ShowPreviousGoalVC.swift in Sources */,
+				7A0D32EF2B7359A2007B2736 /* WarnAboutUneditableModal.swift in Sources */,
 				206C58D42B623C43008410C1 /* CategoryCell.swift in Sources */,
+				7A0D32F32B77E867007B2736 /* UIImage.swift in Sources */,
 				7A57676E2B6398B0009A5972 /* Goal.swift in Sources */,
 				7A610AF02B49414100D3096F /* RegisterProfileViewController.swift in Sources */,
 				7A4C67462B5A4B77008BCAC9 /* MainTextField.swift in Sources */,
@@ -735,6 +753,7 @@
 				D20D6FF52B5E5B91006D6762 /* ToggleButton.swift in Sources */,
 				7A0D32B82B68E14D007B2736 /* BaseRepository.swift in Sources */,
 				7A5767612B6396BE009A5972 /* GoalMainViewController.swift in Sources */,
+				7A0D32F12B73860A007B2736 /* DdayLabel.swift in Sources */,
 				D20D6FE32B5AED6A006D6762 /* String.swift in Sources */,
 				20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */,
 				7A610AEE2B493F6D00D3096F /* RegisterUsageViewController.swift in Sources */,
@@ -750,6 +769,7 @@
 				7A5767592B63968F009A5972 /* GoalCategoryViewController.swift in Sources */,
 				7A5767652B6396E0009A5972 /* GoalPeriodVeiwController.swift in Sources */,
 				7A57675F2B6396B2009A5972 /* GoalFinalViewController.swift in Sources */,
+				7A0D32ED2B7340BF007B2736 /* FoundPreviousConsumeRecordModal.swift in Sources */,
 				7A57675B2B63969B009A5972 /* GoalComponents.swift in Sources */,
 				20AFDD932B659779008F8AB9 /* RepeatIntervalViewController.swift in Sources */,
 				7A0D32B42B68E13A007B2736 /* TestRepository.swift in Sources */,
@@ -1049,6 +1069,14 @@
 				minimumVersion = 2.20.0;
 			};
 		};
+		7A0D32E92B72BC3F007B2736 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.4;
+			};
+		};
 		7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya";
@@ -1089,6 +1117,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7A0D32D42B6CAB92007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
 			productName = RxKakaoSDKUser;
+		};
+		7A0D32EA2B72BC3F007B2736 /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D32E92B72BC3F007B2736 /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
 		};
 		7A610ADB2B4900C800D3096F /* CombineMoya */ = {
 			isa = XCSwiftPackageProductDependency;

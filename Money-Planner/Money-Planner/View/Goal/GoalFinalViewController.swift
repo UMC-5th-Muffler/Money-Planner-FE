@@ -119,12 +119,12 @@ class GoalFinalViewController : UIViewController{
 
 class GoalCard : UIView {
     
-    var nameTitle = UILabel()
-    var periodTitle = UILabel()
-    var amountTitle = UILabel()
-    var goalName = UILabel()
-    var goalPeriod = UILabel()
-    var goalAmount = UILabel()
+    var nameTitle = MPLabel()
+    var periodTitle = MPLabel()
+    var amountTitle = MPLabel()
+    var goalName = MPLabel()
+    var goalPeriod = MPLabel()
+    var goalAmount = MPLabel()
     
     var goalCreationManager = GoalCreationManager.shared
     var goalViewModel = GoalViewModel.shared
@@ -226,8 +226,8 @@ class GoalCard : UIView {
     func setPeriod() {
         
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
+        formatter.dateFormat = "M월 d일"
+        formatter.locale = Locale(identifier: "ko_KR")
         
         let startDate = goalCreationManager.goalStart!
         let endDate = goalCreationManager.goalEnd!
@@ -246,6 +246,7 @@ class GoalCard : UIView {
         goalPeriod.text = tmpStr
         
     }
+    
     
     private func formatNumber(_ number: Int64) -> String {
         let numberFormatter = NumberFormatter()
