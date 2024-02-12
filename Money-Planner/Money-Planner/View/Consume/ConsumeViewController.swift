@@ -588,7 +588,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         
         NSLayoutConstraint.activate([
             checkButton.widthAnchor.constraint(equalToConstant:24),
-            checkButton.heightAnchor.constraint(equalToConstant: 24),
+            //checkButton.heightAnchor.constraint(equalToConstant: 24),
             
         ])
         containerview.translatesAutoresizingMaskIntoConstraints = false
