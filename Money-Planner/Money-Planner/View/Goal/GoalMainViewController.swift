@@ -110,6 +110,18 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
                 // 현재 목표가 있으면 GoalPresentationCell을 반환
                 let goal = goalViewModel.currentGoals[indexPath.row]
                 let cell = GoalPresentationCell(goal: goal, reuseIdentifier: "GoalPresentationCell")
+                
+                cell.btnTapped = { [weak self] in
+                    guard let self = self else { return }
+                    
+                    //해당 cell의 goal에 대한 정보를 api로 요청
+                    print("detailVC로")
+                    //해당 객체를 인자로 받고, 이동
+                    let goalDetailsVC = GoalDetailsViewController(goal: cell.goal)
+                    self.navigationController?.pushViewController(goalDetailsVC, animated: true)
+                    self.tabBarController?.tabBar.isHidden = true
+                }
+                
                 return cell
             }
         } else {
@@ -123,6 +135,16 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
                 // 이전 목표가 있으면 GoalPresentationCell을 반환
                 let goal = goalViewModel.notCurrentGoals[indexPath.row] //좀 더 깔끔한 로직이 없을까?
                 let cell = GoalPresentationCell(goal: goal, reuseIdentifier: "GoalPresentationCell")
+                cell.btnTapped = { [weak self] in
+                    guard let self = self else { return }
+                    
+                    //해당 cell의 goal에 대한 정보를 api로 요청
+                    print("detailVC로")
+                    //해당 객체를 인자로 받고, 이동
+                    let goalDetailsVC = GoalDetailsViewController(goal: cell.goal)
+                    navigationController?.pushViewController(goalDetailsVC, animated: true)
+                    self.tabBarController?.tabBar.isHidden = true
+                }
                 return cell
             }
         }
@@ -161,6 +183,36 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
         
         return headerView
     }
+    
+    // UITableViewDelegate 메서드
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true) // 선택된 셀의 하이라이트 제거
+
+        let goal: Goal
+        if indexPath.section == 0 {
+            if goalViewModel.currentGoals.isEmpty {
+                // 현재 진행 중인 목표가 없는 경우
+                return // 또는 적절한 액션 수행
+            } else {
+                // 현재 진행 중인 목표가 있는 경우
+                goal = goalViewModel.currentGoals[indexPath.row]
+            }
+        } else {
+            if goalViewModel.pastGoals.isEmpty && goalViewModel.futureGoals.isEmpty {
+                // 이전 목표가 없는 경우
+                return // 또는 적절한 액션 수행
+            } else {
+                // 이전 목표가 있는 경우
+                goal = goalViewModel.notCurrentGoals[indexPath.row] // 적절한 배열 인덱스 접근 방식으로 수정 필요
+            }
+        }
+
+        // GoalDetailsViewController로 화면 전환
+        let goalDetailsVC = GoalDetailsViewController(goal: goal)
+        navigationController?.pushViewController(goalDetailsVC, animated: true)
+        self.tabBarController?.tabBar.isHidden = true
+    }
+
 
 }
 

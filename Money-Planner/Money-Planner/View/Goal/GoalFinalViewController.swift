@@ -112,7 +112,9 @@ class GoalFinalViewController : UIViewController{
         goalCreationManager.clear()
         
         if let navigationController = navigationController {
+            self.tabBarController?.tabBar.isHidden = false
             navigationController.popToRootViewController(animated: true)
+            
         }
     }
 }

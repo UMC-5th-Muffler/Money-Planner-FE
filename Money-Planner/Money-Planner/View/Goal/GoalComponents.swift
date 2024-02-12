@@ -171,6 +171,8 @@ class GoalPresentationCell: UITableViewCell {
     let progressPercentage = MPLabel()
     let usedAmount = MPLabel()
     
+    var btnTapped : (() -> Void)?
+    
     init(goal: Goal, reuseIdentifier: String?) {
         self.goal = goal // goal을 초기화
         self.progressBar = GoalProgressBar(goalAmt: goal.goalAmount, usedAmt: goal.usedAmount)
@@ -178,6 +180,11 @@ class GoalPresentationCell: UITableViewCell {
         backgroundColor = .clear
         setupCellLayout()
         configureCell(with: goal) // 바로 cell을 설정
+        btn.addTarget(self, action: #selector(onBtnTapped), for: .touchUpInside)
+    }
+    
+    @objc func onBtnTapped(){
+        btnTapped!()
     }
     
     required init?(coder: NSCoder) {
@@ -331,6 +338,7 @@ class GoalProgressBar: UIView {
         setupUsedAmtBar()
         setupPointer()
         setupLine()
+        changeUsedAmt(usedAmt: self.usedAmt, goalAmt: self.goalAmt)
     }
     
     required init?(coder: NSCoder) {

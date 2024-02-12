@@ -1,29 +1,36 @@
 //
-//  PeriodCalendarViewController.swift
+//  ShowingPeriodSelectionModal.swift
 //  Money-Planner
 //
-//  Created by 유철민 on 2/5/24.
+//  Created by 유철민 on 2/12/24.
 //
 
 import Foundation
 import UIKit
 import FSCalendar
 
-//기간 선택 프로토콜 정의
-protocol PeriodSelectionDelegate: AnyObject {
-    func periodSelectionDidSelectDates(startDate: Date, endDate: Date)
-}
 
 //선택된 날짜의 배경색 설정
-extension PeriodCalendarModal: FSCalendarDelegateAppearance {
+extension ShowingPeriodSelectionModal : FSCalendarDelegateAppearance {
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
         return .mpMainColor
     }
 }
 
-class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
+class ShowingPeriodSelectionModal : UIViewController, FSCalendarDelegate, FSCalendarDataSource {
     
     weak var delegate: PeriodSelectionDelegate?
+    
+    init(startDate: Date, endDate: Date) {
+        self.selectableDateRanges = [[startDate, endDate]]
+        self.startDate = startDate
+        self.endDate = endDate
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // 구성요소
     let customModal = UIView()
@@ -36,14 +43,13 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
     }()
     let titleLabel: MPLabel = {
         let label = MPLabel()
-        label.text = "시작일을 선택해주세요"
+        label.text = "선택 기간"
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         return label
     }()
     let subTitleLabel: MPLabel = {
         let label = MPLabel()
-        label.text = "-"
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16)
         return label
@@ -80,7 +86,7 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
     var startDate: Date?
     var endDate: Date?
     
-    var unselectableDateRanges: [[Date]] = []
+    var selectableDateRanges: [[Date]] = []
     
     let headerStackView = UIStackView()
     
@@ -104,10 +110,10 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
     let oneWeekButton : UIButton = createDurationButton(title: "1주")
     let twoWeeksButton : UIButton = createDurationButton(title: "2주")
     let oneMonthButton : UIButton = createDurationButton(title: "한 달")
-    let selectTodayButton: UIButton = {
+    let selectWholeButton: UIButton = {
         let button = UIButton()
         let titleString = NSAttributedString(
-            string: "오늘 선택하기",
+            string: "전체 기간 선택",
             attributes: [
                 .font: UIFont.mpFont14R(),
                 .foregroundColor: UIColor.mpBlack,
@@ -157,7 +163,7 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
         oneWeekButton.addTarget(self, action: #selector(selectOneWeek), for: .touchUpInside)
         twoWeeksButton.addTarget(self, action: #selector(selectTwoWeeks), for: .touchUpInside)
         oneMonthButton.addTarget(self, action: #selector(selectOneMonth), for: .touchUpInside)
-        selectTodayButton.addTarget(self, action: #selector(selectToday), for: .touchUpInside)
+        selectWholeButton.addTarget(self, action: #selector(objcSelectWhole), for: .touchUpInside)
     }
     
     // Button action methods
@@ -165,8 +171,13 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
         endDate = nil
         if startDate != nil {
             let day = Calendar.current.date(byAdding: .day, value: 6, to: startDate!)!
-            selectDate(day)
-            calendar.setCurrentPage(day, animated: true)
+            if day > selectableDateRanges[0][1] {
+                selectDate(selectableDateRanges[0][1])
+                calendar.setCurrentPage(selectableDateRanges[0][1], animated: true)
+            }else{
+                selectDate(day)
+                calendar.setCurrentPage(day, animated: true)
+            }
         }
     }
     
@@ -174,8 +185,13 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
         endDate = nil
         if startDate != nil {
             let day = Calendar.current.date(byAdding: .day, value: 13, to: startDate!)!
-            selectDate(day)
-            calendar.setCurrentPage(day, animated: true)
+            if day > selectableDateRanges[0][1] {
+                selectDate(selectableDateRanges[0][1])
+                calendar.setCurrentPage(selectableDateRanges[0][1], animated: true)
+            }else{
+                selectDate(day)
+                calendar.setCurrentPage(day, animated: true)
+            }
         }
     }
     
@@ -184,21 +200,25 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
         if startDate != nil {
             let day = Calendar.current.date(byAdding: .month, value: 1, to: startDate!)!
             let day2 = Calendar.current.date(byAdding: .day, value: -1, to: day)!
-            selectDate(day2)
-            calendar.setCurrentPage(day2, animated: true)
+            if day2 > selectableDateRanges[0][1] {
+                selectDate(selectableDateRanges[0][1])
+                calendar.setCurrentPage(selectableDateRanges[0][1], animated: true)
+            }else{
+                selectDate(day2)
+                calendar.setCurrentPage(day2, animated: true)
+            }
         }
     }
     
-    @objc func selectToday() {
-        selectDate(getTodayDate())
-        calendar.setCurrentPage(Date(), animated: true)
+    @objc func objcSelectWhole() {
+        selectWhole()
     }
     
-    func getTodayDate() -> Date {
-        let calendar = Calendar.current
-        let currentDate = Date()
-        let components = calendar.dateComponents([.year, .month, .day], from: currentDate)
-        return calendar.date(from: components) ?? currentDate
+    func selectWhole(){
+        clearSelectedDates()
+        startDate = selectableDateRanges[0][0]
+        selectDate(selectableDateRanges[0][1])
+        calendar.setCurrentPage(startDate!, animated: true)
     }
     
     override func viewDidLoad() {
@@ -206,11 +226,12 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
         view.backgroundColor = .clear // Replace with .mpWhite if it's a custom color in your project
         setupHeaderStackView()
         setupCalendar()
+        subTitleLabel.text = "\(dateFormatter.string(from: startDate!)) - \(dateFormatter.string(from: endDate!))"
         completeBtn.addTarget(self, action: #selector(didTapCompleteButton), for: .touchUpInside)
         setupLayoutConstraints()
-        updateMonthLabelForDate(Date())
+        updateMonthLabelForDate(startDate!)
         setupDurationButtons()
-        generateUnselectableDateRanges()
+        selectWhole()
     }
     
     //요일 폰트 및 텍스트 반영
@@ -320,7 +341,7 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
         view.addSubview(headerStackView)
         view.addSubview(calendar)
         view.addSubview(durationStackView)
-        view.addSubview(selectTodayButton)
+        view.addSubview(selectWholeButton)
         // Assuming customModal is a container view that holds all your subviews
         
         customModal.backgroundColor = .mpWhite
@@ -339,7 +360,7 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
         completeBtn.translatesAutoresizingMaskIntoConstraints = false
         headerStackView.translatesAutoresizingMaskIntoConstraints = false
         calendar.translatesAutoresizingMaskIntoConstraints = false
-        selectTodayButton.translatesAutoresizingMaskIntoConstraints = false
+        selectWholeButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             grabber.topAnchor.constraint(equalTo: customModal.topAnchor, constant: 12),
@@ -394,12 +415,12 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
         ])
         
         
-        // Constraints for selectTodayButton
+        // Constraints for selectWholeButton
         NSLayoutConstraint.activate([
-            selectTodayButton.centerYAnchor.constraint(equalTo: completeBtn.centerYAnchor),
-            selectTodayButton.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 24),
-            selectTodayButton.widthAnchor.constraint(equalToConstant: 80),
-            selectTodayButton.heightAnchor.constraint(equalToConstant: 56)
+            selectWholeButton.centerYAnchor.constraint(equalTo: completeBtn.centerYAnchor),
+            selectWholeButton.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 24),
+            selectWholeButton.widthAnchor.constraint(equalToConstant: 90),
+            selectWholeButton.heightAnchor.constraint(equalToConstant: 56)
         ])
     }
     
@@ -470,52 +491,52 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
         }
         
         if startDate == nil || endDate != nil || date < startDate! {
-            // Start a new selection range
-            startDate = date
-            endDate = nil // Clear previous end date
-            if endDate == nil {
-                changeLabelWithAnimation(titleLabel, to: "종료일을 선택해주세요")
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateStyle = .medium
-                dateFormatter.timeStyle = .none
-                changeLabelWithAnimation(subTitleLabel, to: "\(dateFormatter.string(from: date)) - ")
-            }
-            subTitleLabel.textColor = .mpBlack
-            completeBtn.isEnabled = false
-            completeBtn.backgroundColor = .mpGray
-            
-        } else if let start = startDate, date > start {
-            // Set end date and ensure it does not conflict with unselectable ranges
-            if !isDateInRange(date, conflictingWith: unselectableDateRanges) {
-                if !isRangeInRange(startDate: startDate!, endDate: date, unselectableRanges: unselectableDateRanges){
-                    endDate = date
-                    if let start = startDate, let end = endDate {
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateStyle = .medium
-                        dateFormatter.timeStyle = .none
-                        changeLabelWithAnimation(titleLabel, to: "목표 기간")
-                        changeLabelWithAnimation(subTitleLabel, to: "\(dateFormatter.string(from: start)) - \(dateFormatter.string(from: end))")
-                        completeBtn.isEnabled = true
-                        completeBtn.backgroundColor = .mpMainColor
-                    }
-                    subTitleLabel.textColor = .mpBlack
-                }else{
-                    changeLabelWithAnimation(titleLabel, to: "시작일을 선택해주세요")
-                    changeLabelWithAnimation(subTitleLabel, to: "이미 존재하는 목표의 기간과 겹칩니다.")
-                    subTitleLabel.textColor = .mpRed
-                    clearSelectedDates()
-                    completeBtn.isEnabled = false
-                    completeBtn.backgroundColor = .mpGray
+            if isDateInRange(date, conflictingWith: selectableDateRanges) {
+                // Start a new selection range
+                startDate = date
+                endDate = nil // Clear previous end date
+                if endDate == nil {
+                    changeLabelWithAnimation(titleLabel, to: "종료일을 선택해주세요")
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateStyle = .medium
+                    dateFormatter.timeStyle = .none
+                    changeLabelWithAnimation(subTitleLabel, to: "\(dateFormatter.string(from: date)) - ")
                 }
-            } else {
-                //사실 이미 막아놓아서 이건 굳이 필요없긴 함.
-                changeLabelWithAnimation(titleLabel, to: "시작일을 선택해주세요")
-                changeLabelWithAnimation(subTitleLabel, to: "이미 존재하는 목표의 기간과 겹칩니다.")
+                subTitleLabel.textColor = .mpBlack
+                completeBtn.isEnabled = false
+                completeBtn.backgroundColor = .mpGray
+            }else{
+                //changeLabelWithAnimation(titleLabel, to: "시작일을 선택해주세요")
+                changeLabelWithAnimation(subTitleLabel, to: "목표 기간 밖입니다.")
                 subTitleLabel.textColor = .mpRed
                 clearSelectedDates()
                 completeBtn.isEnabled = false
                 completeBtn.backgroundColor = .mpGray
-                print("End date selection conflicts with unselectable dates.")
+                print("End date selected unselectable dates.")
+                return
+            }
+        } else if let start = startDate, date > start {
+            // Set end date and ensure it does not conflict with unselectable ranges
+            if isDateInRange(date, conflictingWith: selectableDateRanges) {
+                endDate = date
+                if let start = startDate, let end = endDate {
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateStyle = .medium
+                    dateFormatter.timeStyle = .none
+                    changeLabelWithAnimation(titleLabel, to: "선택 기간")
+                    changeLabelWithAnimation(subTitleLabel, to: "\(dateFormatter.string(from: start)) - \(dateFormatter.string(from: end))")
+                    completeBtn.isEnabled = true
+                    completeBtn.backgroundColor = .mpMainColor
+                }
+                subTitleLabel.textColor = .mpBlack
+            } else {
+                changeLabelWithAnimation(titleLabel, to: "시작일을 선택해주세요")
+                changeLabelWithAnimation(subTitleLabel, to: "목표 기간 밖입니다.")
+                subTitleLabel.textColor = .mpRed
+                clearSelectedDates()
+                completeBtn.isEnabled = false
+                completeBtn.backgroundColor = .mpGray
+                print("End date selected unselectable dates.")
                 return // Exit without setting end date
             }
         }
@@ -574,6 +595,16 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
         return false
     }
     
+    //기간 제한
+    func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
+        for range in selectableDateRanges {
+            if let start = range.first, let end = range.last, start <= date && date <= end {
+                return true
+            }
+        }
+        return false
+    }
+    
     
     //날짜 배경색
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
@@ -600,9 +631,6 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
     //날짜 글자 색
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
         
-//        //placeholder는 안보이도록 한다.
-//        self.calendar.appearance.titlePlaceholderColor = .clear
-        
         //현재달의 오늘 날짜를 특수 표시
         let currentMonth = Calendar.current.component(.month, from: calendar.currentPage)
         let dateMonth = Calendar.current.component(.month, from: date)
@@ -618,30 +646,30 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
         }
         
         
-        //제외 기간 처리
-        for range in unselectableDateRanges {
-            if let start = range.first, let end = range.last, start <= date && date <= end {
-                if Calendar.current.isDateInToday(date) {
-                    return .mpMainColor
-                }
-                if currentMonth == dateMonth{ // 해당 달이 아닌데도 떠서 취한 조치
-                    return .lightGray // Return grey color for unselectable date texts
-                }
-            }
+        //선택 불가능한 달만 회색으로 리턴
+        if !isDateInRange(date, conflictingWith: selectableDateRanges){
+            return .mpGray
         }
         
         
-        //period 날짜 보여주는 로직
         if let startDate = startDate, let endDate = endDate {
             if date == startDate || date == endDate {
                 return .mpWhite // Text color for start and end dates
-            } else if date > startDate && date < endDate {
-                return .mpBlack // Text color for dates between start and end
+            }else{
+                return .mpBlack
             }
+            
+//            else if date > startDate && date < endDate {
+//                return .mpBlack // Text color for dates between start and end
+//            }
         } else if let startDate = startDate {
             if date == startDate {
                 return .mpWhite // Text color for the start date
+            }else{
+                return .mpBlack
             }
+        } else {
+            return .mpBlack
         }
         
         return nil // Default text color for other dates
@@ -670,31 +698,6 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
         return regularFont
     }
     
-    
-    func setUnselectableDateRanges(_ ranges: [[Date]]) {
-        unselectableDateRanges = ranges
-        calendar.reloadData() // Reload calendar to refresh appearance
-    }
-    
-    func generateUnselectableDateRanges() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd"
-        
-        let range1Start = dateFormatter.date(from: "2024/02/13")!
-        let range1End = dateFormatter.date(from: "2024/02/15")!
-        
-        let range2Start = dateFormatter.date(from: "2024/02/18")!
-        let range2End = dateFormatter.date(from: "2024/02/25")!
-        
-        unselectableDateRanges = [
-            [range1Start, range1End],
-            [range2Start, range2End]
-        ]
-        
-        // After setting the ranges, tell the calendar to refresh
-        calendar.reloadData()
-    }
-    
     // 애니메이션으로 텍스트를 변경하는 함수
     func changeLabelWithAnimation(_ label: UILabel, to newText: String, duration: TimeInterval = 0.1) {
         UIView.transition(with: label, duration: duration, options: .transitionCrossDissolve, animations: {
@@ -705,131 +708,8 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
     
 }
 
-
-extension PeriodCalendarModal {
-    
-//    // 특정 날짜의 모서리 둥글기
-//    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, borderRadiusFor date: Date) -> CGFloat {
-//        if let start = startDate, let end = endDate {
-//
-//        }
-//        return 1.0 // 기본값은 둥근 모서리
-//    }
-
-}
-
-
-enum SelectedDateType {
-    case singleDate    // 날짜 하나만 선택된 경우 (원 모양 배경)
-    case firstDate    // 여러 날짜 선택 시 맨 처음 날짜
-    case sundayDate // 일요일 => 왼쪽만 둥금
-    case saturdayDate // 토요일 => 오른쪽만 둥금.
-    case lastDate   // 여러 날짜 선택시 맨 마지막 날짜. 오른쪽만 둥금.
-    case firstOfMonth // 달의 맨 처음 날짜. 왼쪽만 둥금.
-    case lastOfMonth // 달의 맨 마지막 날짜. 오른쪽만 둥금
-    case middleDate // 선택된 날 중에 위에 해당하지 않음. 모든 모서리가 둥글지 않음.
-    case notSelected // 선택되지 않은 날짜
-}
-
-
-
-protocol MonthSelectionDelegate: AnyObject {
-    func monthSelectionDidSelect(date: Date)
-}
-
-class MonthSelectionViewController: UIViewController {
-    
-    weak var delegate: MonthSelectionDelegate?
-    
-    private let customModal: UIView = {
-        let containerView = UIView()
-        containerView.backgroundColor = .mpWhite
-        containerView.layer.cornerRadius = 12
-        containerView.translatesAutoresizingMaskIntoConstraints = false // 활성화해야 auto layout이 작동합니다.
-        return containerView
-    }()
-    
-    private let titleLabel: MPLabel = {
-        let label = MPLabel()
-        label.text = "달력 이동 선택"
-        label.textColor = .mpBlack
-        label.font = .mpFont20B()
-        label.translatesAutoresizingMaskIntoConstraints = false // 활성화해야 auto layout이 작동합니다.
-        return label
-    }()
-    
-    private let datePicker: UIDatePicker = {
-        let picker = UIDatePicker()
-        picker.datePickerMode = .date
-        if #available(iOS 13.4, *) {
-            picker.preferredDatePickerStyle = .wheels
-        }
-        picker.translatesAutoresizingMaskIntoConstraints = false // 활성화해야 auto layout이 작동합니다.
-        return picker
-    }()
-
-    private let doneButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("선택 완료", for: .normal)
-        button.backgroundColor = .mpMainColor
-        button.setTitleColor(.mpWhite, for: .normal)
-        button.layer.cornerRadius = 5
-        button.translatesAutoresizingMaskIntoConstraints = false // 활성화해야 auto layout이 작동합니다.
-        return button
-    }()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .clear
-        
-        setupViews()
-        setupConstraints()
-    }
-    
-    private func setupViews() {
-        view.addSubview(customModal)
-        customModal.addSubview(titleLabel)
-        customModal.addSubview(datePicker)
-        customModal.addSubview(doneButton)
-        
-        doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
-    }
-
-    private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            customModal.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
-            customModal.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            customModal.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            customModal.heightAnchor.constraint(equalToConstant: 350),
-            
-            titleLabel.topAnchor.constraint(equalTo: customModal.topAnchor, constant: 30),
-            titleLabel.centerXAnchor.constraint(equalTo: customModal.centerXAnchor),
-            
-            datePicker.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            datePicker.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 10),
-            datePicker.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -10),
-            
-            doneButton.topAnchor.constraint(equalTo: datePicker.bottomAnchor, constant: 10),
-            doneButton.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 50),
-            doneButton.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -50),
-            doneButton.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -20)
-        ])
-    }
-
-    @objc private func doneButtonTapped() {
-        delegate?.monthSelectionDidSelect(date: datePicker.date)
-        navigationController?.popViewController(animated: false)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
-}
-
-
-// PeriodCalendarModal.swift (내부 코드 일부)
-extension PeriodCalendarModal: MonthSelectionDelegate {
+// ShowingPeriodSelectionModal.swift (내부 코드 일부)
+extension ShowingPeriodSelectionModal : MonthSelectionDelegate {
     
     @objc func monthButtonTapped() {
         let monthSelectionVC = MonthSelectionViewController()
@@ -850,15 +730,15 @@ extension PeriodCalendarModal: MonthSelectionDelegate {
 //    containerView = UIView()
 //    containerView!.backgroundColor = .white
 //    containerView!.layer.cornerRadius = 12
-//    
+//
 //    containerView!.layer.shadowColor = UIColor.mpBlack.cgColor
 //    containerView!.layer.shadowOpacity = 0.5
 //    containerView!.layer.shadowOffset = CGSize(width: 0, height: 2)
 //    containerView!.layer.shadowRadius = 8
-//    
+//
 //    containerView!.translatesAutoresizingMaskIntoConstraints = false
 //    view.addSubview(containerView!)
-//    
+//
 //    // Date Picker setup
 //    let datePicker = UIDatePicker()
 //    datePicker.datePickerMode = .date
@@ -866,7 +746,7 @@ extension PeriodCalendarModal: MonthSelectionDelegate {
 //        datePicker.preferredDatePickerStyle = .wheels
 //    }
 //    datePicker.translatesAutoresizingMaskIntoConstraints = false
-//    
+//
 //    // Done Button setup
 //    let doneButton = UIButton()
 //    doneButton.layer.cornerRadius = 5
@@ -875,27 +755,27 @@ extension PeriodCalendarModal: MonthSelectionDelegate {
 //    doneButton.setTitleColor(.mpWhite, for: .normal)
 //    doneButton.translatesAutoresizingMaskIntoConstraints = false
 //    doneButton.addTarget(self, action: #selector(dismissDatePicker), for: .touchUpInside)
-//    
+//
 //    containerView!.addSubview(datePicker)
 //    containerView!.addSubview(doneButton)
-//    
+//
 //    NSLayoutConstraint.activate([
 //        containerView!.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 //        containerView!.centerYAnchor.constraint(equalTo: view.centerYAnchor),
 //        containerView!.widthAnchor.constraint(equalToConstant: 300),
 //        containerView!.heightAnchor.constraint(equalToConstant: 250),
-//        
+//
 //        datePicker.topAnchor.constraint(equalTo: containerView!.topAnchor, constant: 20),
 //        datePicker.leadingAnchor.constraint(equalTo: containerView!.leadingAnchor, constant: 10),
 //        datePicker.trailingAnchor.constraint(equalTo: containerView!.trailingAnchor, constant: -10),
-//        
+//
 //        doneButton.topAnchor.constraint(equalTo: datePicker.bottomAnchor, constant: 20),
 //        doneButton.heightAnchor.constraint(equalToConstant: 44),
 //        doneButton.leadingAnchor.constraint(equalTo: containerView!.leadingAnchor, constant: 10),
 //        doneButton.trailingAnchor.constraint(equalTo: containerView!.trailingAnchor, constant: -10),
 //        doneButton.bottomAnchor.constraint(equalTo: containerView!.bottomAnchor, constant: -20)
 //    ])
-//    
+//
 //    // Only show month and year in the date picker
 //    if #available(iOS 13.4, *) {
 //        datePicker.locale = Locale(identifier: "en_GB")

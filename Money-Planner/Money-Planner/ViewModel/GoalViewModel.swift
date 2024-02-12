@@ -45,7 +45,7 @@ class GoalViewModel: ObservableObject {
     }
     
     enum GoalError: String, Error {
-        case goalNameExists = "goal name already exists"
+//        case goalNameExists = "goal name already exists"
         case unknownError = "Unknown error occurred"
     }
     
