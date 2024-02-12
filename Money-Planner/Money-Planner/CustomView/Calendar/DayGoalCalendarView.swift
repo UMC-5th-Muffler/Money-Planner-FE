@@ -6,14 +6,6 @@ import UIKit
 
 class DayGoalCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    var dailyList : [CalendarDaily?] = []{
-        didSet{
-            myCollectionView.reloadData()
-        }
-    }
-    
-    var goal : Goal?
-    
     // 0인덱스를 없애기 위해 처리
     var numOfDaysInMonth = [-1,31,28,31,30,31,30,31,31,30,31,30,31]
     
@@ -21,10 +13,6 @@ class DayGoalCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
     var currentMonth: Int = 0
     var currentYear: Int = 0
     
-    // 실제 오늘 날짜
-    var presentMonth = 0
-    var presentYear = 0
-    var todaysDate = 0
     var firstWeekDayOfMonth = 0   //(Sunday-Saturday 1-7)
     
     let weekdaysView: MainWeekDayView = {
@@ -50,7 +38,6 @@ class DayGoalCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
         super.init(frame: frame)
         currentMonth = Calendar.current.component(.month, from: Date())
         currentYear = Calendar.current.component(.year, from: Date())
-        todaysDate = Calendar.current.component(.day, from: Date())
         firstWeekDayOfMonth=self.getFirstWeekDay()
         
         //for leap years, make february month of 29 days
@@ -59,10 +46,6 @@ class DayGoalCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
         }
         //end
         
-        presentMonth=currentMonth
-        presentYear=currentYear
-        
-        dailyList = [CalendarDaily?](repeating: nil, count: getDateCount())
         initializeView()
     }
     
@@ -131,8 +114,7 @@ class DayGoalCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
             cell.isUserInteractionEnabled=true
             cell.lbl.textColor = UIColor.mpBlack
         }
-        
-//        let daily = dailyList[indexPath.item]
+    
             
         return cell
     }
