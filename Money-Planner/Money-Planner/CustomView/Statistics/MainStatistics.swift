@@ -82,6 +82,13 @@ class MainStatisticsView : UIView {
         return view
     }()
     
+    let noGoalView : MainNoGoalView = {
+        let view = MainNoGoalView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -93,37 +100,52 @@ class MainStatisticsView : UIView {
     }
     
     private func setupView() {
-        backgroundColor = UIColor.clear
         if(goal != nil){
-            useAmount.text = goal!.totalCost!.formattedWithSeparator()+"원"
-            totalAmount.text = "/ "+goal!.goalBudget!.formattedWithSeparator() + "원"
-            remainAmount.text = (goal!.goalBudget!-goal!.totalCost!).formattedWithSeparator() +  "원"
+            noGoalView.removeFromSuperview()
+            
+            backgroundColor = UIColor.clear
+            if(goal != nil){
+                useAmount.text = goal!.totalCost!.formattedWithSeparator()+"원"
+                totalAmount.text = "/ "+goal!.goalBudget!.formattedWithSeparator() + "원"
+                remainAmount.text = (goal!.goalBudget!-goal!.totalCost!).formattedWithSeparator() +  "원"
+            }
+            
+            addSubview(useAmountLabel)
+            addSubview(useAmount)
+            addSubview(totalAmount)
+            
+            stackView.addArrangedSubview(remainAmountLabel)
+            stackView.addArrangedSubview(remainAmount)
+            
+            addSubview(stackView)
+            
+            NSLayoutConstraint.activate([
+                useAmountLabel.topAnchor.constraint(equalTo: topAnchor, constant: 4),
+                useAmountLabel.leftAnchor.constraint(equalTo: leftAnchor),
+                useAmount.topAnchor.constraint(equalTo: useAmountLabel.bottomAnchor, constant: 4),
+                useAmount.leftAnchor.constraint(equalTo: leftAnchor),
+                totalAmount.topAnchor.constraint(equalTo: useAmount.bottomAnchor, constant: 0),
+                totalAmount.leftAnchor.constraint(equalTo: leftAnchor),
+                stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
+                stackView.leftAnchor.constraint(equalTo: leftAnchor),
+            ])
+        }else{
+            addSubview(noGoalView)
+            
+            NSLayoutConstraint.activate([
+                noGoalView.topAnchor.constraint(equalTo: topAnchor),
+                noGoalView.leadingAnchor.constraint(equalTo: leadingAnchor),
+                noGoalView.trailingAnchor.constraint(equalTo: trailingAnchor),
+                noGoalView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            ])
         }
-        
-        addSubview(useAmountLabel)
-        addSubview(useAmount)
-        addSubview(totalAmount)
-        
-        stackView.addArrangedSubview(remainAmountLabel)
-        stackView.addArrangedSubview(remainAmount)
-        
-        addSubview(stackView)
-        
-        NSLayoutConstraint.activate([
-            useAmountLabel.topAnchor.constraint(equalTo: topAnchor, constant: 4),
-            useAmountLabel.leftAnchor.constraint(equalTo: leftAnchor),
-            useAmount.topAnchor.constraint(equalTo: useAmountLabel.bottomAnchor, constant: 4),
-            useAmount.leftAnchor.constraint(equalTo: leftAnchor),
-            totalAmount.topAnchor.constraint(equalTo: useAmount.bottomAnchor, constant: 0),
-            totalAmount.leftAnchor.constraint(equalTo: leftAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
-            stackView.leftAnchor.constraint(equalTo: leftAnchor),
-        ])
     }
-    
+        
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        drawDonutChart()
+        if(goal != nil){
+            drawDonutChart()
+        }
     }
     
     private func drawDonutChart() {
