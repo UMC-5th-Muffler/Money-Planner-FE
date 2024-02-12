@@ -10,13 +10,13 @@ import UIKit
 
 class EditGoalViewController : UIViewController {
     
-    let backButton : UIBarButtonItem = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "btn_arrow_big"), for: .normal)
-        button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        
-        return UIBarButtonItem(customView: button)
-    }()
+//    let backButton : UIBarButtonItem = {
+//        let button = UIButton()
+//        button.setImage(UIImage(named: "btn_arrow_big"), for: .normal)
+//        button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+//
+//        return UIBarButtonItem(customView: button)
+//    }()
     
     let deleteButton : UIBarButtonItem = {
         let button = UIButton(type: .system)
@@ -117,16 +117,16 @@ extension EditGoalViewController : UIScrollViewDelegate, UITextFieldDelegate {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.layoutIfNeeded()
-        self.navigationItem.leftBarButtonItem = backButton
+        //self.navigationItem.leftBarButtonItem = backButton
         self.navigationItem.rightBarButtonItem = deleteButton
         
     }
     
-    @objc private func backButtonTapped() {
-        // 뒤로 가기 버튼 동작 구현
-        print("뒤로가기버튼 클릭")
-        navigationController?.popViewController(animated: true)
-    }
+//    @objc private func backButtonTapped() {
+//        // 뒤로 가기 버튼 동작 구현
+//        print("뒤로가기버튼 클릭")
+//        navigationController?.popViewController(animated: true)
+//    }
     
     @objc private func deleteButtonTapped() {
         print("삭제버튼 클릭")
