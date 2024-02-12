@@ -103,9 +103,6 @@ class DayGoalCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell=collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! dayGoalDateCVCell
         cell.backgroundColor=UIColor.clear
-        cell.dayGoalAmount.text = ""
-        cell.dayConsumeAmount.text = ""
-        cell.imageView.image = UIImage(named: "btn_date_off")
         cell.lbl.text = ""
         
         // 이번달 달력 시작 인덱스
@@ -135,81 +132,8 @@ class DayGoalCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
             cell.lbl.textColor = UIColor.mpBlack
         }
         
-        let daily = dailyList[indexPath.item]
-        
-        if(daily != nil){
-            if(self.goal != nil && daily!.date.toDate!.isInRange(startDate: self.goal!.startDate!.toDate!, endDate: self.goal!.endDate!.toDate!)){
-                // 목표가 있고 목표 안의 범위 일 경우
-                               
-                // 평가 이미지
-                if(daily!.dailyRate == "HIGH"){
-                    cell.imageView.image = UIImage(named: "btn_date_green")
-                }else if(daily!.dailyRate == "MEDIUM"){
-                    cell.imageView.image = UIImage(named: "btn_date_yellow")
-                }else if(daily!.dailyRate == "LOW"){
-                    cell.imageView.image = UIImage(named: "btn_date_red")
-                }else{
-                    cell.imageView.image = UIImage(named: "btn_date_on")
-                }
-                
-                if(daily!.dailyTotalCost != nil){
-                    cell.dayConsumeAmount.text = daily!.dailyTotalCost?.formattedWithSeparator()
-                }
-                
-                if(daily!.dailyBudget != nil){
-                    cell.dayGoalAmount.text = daily!.dailyBudget?.formattedWithSeparator()
-                }
-                
-                // 예산
-                if(daily!.dailyBudget != nil){
-                    cell.dayGoalAmount.text = daily!.dailyBudget?.formattedWithSeparator()
-                    
-                    if(daily!.dailyTotalCost != nil){
-                        // 예산과 소비액 둘다 있을 경우 색상 처리
-                        if(daily!.dailyBudget! >= daily!.dailyTotalCost!){
-                            cell.dayConsumeAmount.textColor = .mpMainColor
-                        }else{
-                            cell.dayConsumeAmount.textColor = .mpRed
-                        }
-                        
-                    }
-                }
-                
-                // 소비액
-                if(daily!.dailyTotalCost != nil){
-                    cell.dayConsumeAmount.text = daily!.dailyTotalCost?.formattedWithSeparator()
-                }
-                
-                
-            }else{
-                // 목표 밖의 범위 이지만 daily가 있는 경우
-                
-                // 평가 이미지
-                if(daily!.dailyRate == "HIGH"){
-                    cell.imageView.image = UIImage(named: "btn_date_green_off")
-                }else if(daily!.dailyRate == "MEDIUM"){
-                    cell.imageView.image = UIImage(named: "btn_date_yellow_off")
-                }else if(daily!.dailyRate == "LOW"){
-                    cell.imageView.image = UIImage(named: "btn_date_red_off")
-                }else{
-                    cell.imageView.image = UIImage(named: "btn_date_goal-yes_off")
-                    cell.lbl.textColor = .mpGray
-                }
-                
-                
-            }
+//        let daily = dailyList[indexPath.item]
             
-            if(daily!.dailyRate != nil){
-                cell.lbl.text = ""
-            }
-            
-        }else{
-            // 아예 정보가 아무것도 없는 경우
-            cell.imageView.image = UIImage(named: "btn_date_off")
-            cell.lbl.textColor = .mpGray
-        }
-        
-        
         return cell
     }
     
@@ -261,7 +185,7 @@ class DayGoalCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
         //end
         
         firstWeekDayOfMonth=getFirstWeekDay()
-        // 데이터 변경은 HomeViewController의 fetchChangeMonthData에서 함
+        myCollectionView.reloadData()
     }
     
     func setupViews() {
@@ -292,7 +216,7 @@ class dayGoalDateCVCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "00"
         label.textAlignment = .center
-        label.font=UIFont.mpFont16M()
+        label.font=UIFont.mpFont16B()
         label.textColor = UIColor.mpBlack
         label.translatesAutoresizingMaskIntoConstraints=false
         return label
@@ -308,24 +232,13 @@ class dayGoalDateCVCell: UICollectionViewCell {
     
     let dayGoalAmount : UILabel = {
         let label = UILabel()
-        label.text = ""
+        label.text = "21,400"
         label.textAlignment = .center
         label.font=UIFont.mpFont10R()
         label.textColor = UIColor.mpDarkGray
         label.translatesAutoresizingMaskIntoConstraints=false
         return label
     }()
-    
-    let dayConsumeAmount : UILabel = {
-        let label = UILabel()
-        label.text = ""
-        label.textAlignment = .center
-        label.font=UIFont.mpFont10R()
-        label.textColor = UIColor.mpMainColor
-        label.translatesAutoresizingMaskIntoConstraints=false
-        return label
-    }()
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -340,7 +253,6 @@ class dayGoalDateCVCell: UICollectionViewCell {
         addSubview(imageView)
         addSubview(lbl)
         addSubview(dayGoalAmount)
-        addSubview(dayConsumeAmount)
         
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor),
@@ -355,10 +267,6 @@ class dayGoalDateCVCell: UICollectionViewCell {
             dayGoalAmount.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
             dayGoalAmount.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
             dayGoalAmount.heightAnchor.constraint(equalToConstant: 10),
-            
-            dayConsumeAmount.topAnchor.constraint(equalTo: dayGoalAmount.bottomAnchor, constant: 2),
-            dayConsumeAmount.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
-            dayConsumeAmount.heightAnchor.constraint(equalToConstant: 10),
         ])
     }
     
