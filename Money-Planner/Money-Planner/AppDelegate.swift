@@ -12,6 +12,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffset(horizontal: -1000, vertical: -7), for: .default)
+        let backButtonImage = UIImage(named: "btn_arrow_big")?.withRenderingMode(.alwaysOriginal)
+        backButtonImage?.resizeImage(size: CGSize(width: 36, height: 36))
+        UINavigationBar.appearance().backIndicatorImage = backButtonImage
+        UINavigationBar.appearance().backIndicatorTransitionMaskImage = backButtonImage
+        
         return true
     }
 
