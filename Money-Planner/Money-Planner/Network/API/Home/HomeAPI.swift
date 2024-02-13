@@ -24,13 +24,30 @@ extension HomeAPI : BaseAPI {
             let parameters: [String: String] = ["yearMonth": yearMonth]
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .getExpenseList(let yearMonth, let size, let goalId, let order, let lastDate, let lastExpenseId, let categoryId):
-            let parameters: [String: Any] = ["yearMonth": yearMonth,
-                                                 "size": size,
-                                                 "goalId": goalId,
-                                                 "order": order,
-                                                 "lastDate": lastDate,
-                                                 "lastExpenseId": lastExpenseId,
-                                                 "categoryId": categoryId]
+            var parameters: [String: Any] = [:]
+
+            if let yearMonth = yearMonth {
+                parameters["yearMonth"] = yearMonth
+            }
+            if let size = size {
+                parameters["size"] = size
+            }
+            if let goalId = goalId {
+                parameters["goalId"] = goalId
+            }
+            if let order = order {
+                parameters["order"] = order
+            }
+            if let lastDate = lastDate {
+                parameters["lastDate"] = lastDate
+            }
+            if let lastExpenseId = lastExpenseId {
+                parameters["lastExpenseId"] = lastExpenseId
+            }
+            if let categoryId = categoryId {
+                parameters["categoryId"] = categoryId
+            }
+            
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
             
         }
