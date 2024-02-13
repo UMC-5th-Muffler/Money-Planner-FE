@@ -350,12 +350,11 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
             if let date = dateFormatter.date(from: dateString) {
                 dateFormatter.dateFormat = "yyyy년 MM월 dd일"
                 let convertedDateString = dateFormatter.string(from: date)
+                if todayDate != convertedDateString {
+                    calChooseButton.setTitle("선택", for: .normal)
+                }
                 calTextField.text = convertedDateString
-                // 오늘 날짜가 아니라면, 버튼 선택으로 변경
-                let calendar = Calendar.current
-                    if calendar.isDateInToday(date) {
-                        calChooseButton.setTitle("선택", for: .normal)
-                    }
+          
             } else {
                 print("날짜 변환 실패")
             }
@@ -644,7 +643,7 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
             
             
         ])
-        
+      
     }
     
     private func setupLayout(){

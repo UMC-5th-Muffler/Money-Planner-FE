@@ -45,7 +45,17 @@ class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UI
             Category(name: "직접 추가", imageName: "pencil"),
             
         ]
-
+    // 모달의 메인 컨테이너 뷰
+    private let customModal: UIStackView = {
+        let view = UIStackView()
+        view.axis = .vertical
+        view.spacing = 40
+        view.backgroundColor = .mpWhite
+        view.layer.cornerRadius = 25
+        view.layer.masksToBounds = true
+        return view
+    }()
+    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "카테고리를 선택해주세요"
@@ -53,21 +63,27 @@ class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UI
         label.font = UIFont.mpFont20B()
         return label
     }()
-    let customModal = UIView(frame: CGRect(x: 0, y: 0, width: 361, height: 664))
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        presentCustomModal()
+        setupBackground()
         setupBackground()
         setuptitleLabel()
         setupCategoryCellContainerView()
+        presentCustomModal()
+
     }
     func presentCustomModal() {
-        // Instantiate your custom modal view
-        customModal.backgroundColor = UIColor.mpWhite
         view.addSubview(customModal)
-        customModal.center = view.center
-        
+        customModal.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+                customModal.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+                customModal.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                customModal.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                customModal.heightAnchor.constraint(equalToConstant: 664)
+                
+            ])
     }
     private func setupBackground() {
         customModal.layer.cornerRadius = 25
@@ -96,40 +112,32 @@ class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UI
     }
 
     private func setupCategoryCellContainerView() {
-        
-        
         let categoryCollectionView: UICollectionView = {
             let layout = UICollectionViewFlowLayout()
-            let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
             layout.scrollDirection = .vertical
             let numberOfItemsPerRow: CGFloat = 3
-            let spacingBetweenItems: CGFloat = 10
-            let itemWidth = (customModal.frame.width - ((numberOfItemsPerRow - 1) * spacingBetweenItems) - 48) / numberOfItemsPerRow
-            print(customModal.frame.width)
-            print(itemWidth)
-            let itemSize = CGSize(width: Int(itemWidth), height: Int(itemWidth*0.84))
-            layout.itemSize = itemSize
-            layout.minimumLineSpacing = 10
+            let spacingBetweenItems: CGFloat = 8
+            let itemWidth = (UIScreen.main.bounds.width - ((numberOfItemsPerRow - 1) * spacingBetweenItems) - 95) / numberOfItemsPerRow
+            layout.itemSize = CGSize(width: itemWidth, height: itemWidth * 0.84)
+            layout.minimumLineSpacing = spacingBetweenItems
             
-            //collectionView.backgroundColor = UIColor.green
+            let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
             collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: "CategoryCell")
+            collectionView.backgroundColor = .clear
+            collectionView.dataSource = self
+            collectionView.delegate = self
+            collectionView.translatesAutoresizingMaskIntoConstraints = false
             return collectionView
         }()
         
-        //categoryCollectionView.backgroundColor = UIColor.systemPink
         customModal.addSubview(categoryCollectionView)
         
-        categoryCollectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             categoryCollectionView.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 24),
             categoryCollectionView.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -24),
             categoryCollectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
             categoryCollectionView.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -24)
         ])
-
-        categoryCollectionView.dataSource = self
-        categoryCollectionView.delegate = self
-        categoryCollectionView.isUserInteractionEnabled = true
     }
 
     
