@@ -1,8 +1,8 @@
 //
-//  ConsumeViewController.swift
+//  ConsumeDetailViewController.swift
 //  Money-Planner
 //
-//  Created by p_kxn_g on 1/16/24.
+//  Created by p_kxn_g on 2/13/24.
 //
 
 import Foundation
@@ -10,18 +10,20 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelectionDelegate,CalendarSelectionDelegate,RepeatModalViewDelegate,AddCategoryViewDelegate {
+// 소비 수정 및 삭제 컨트롤러
+class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, CategorySelectionDelegate,CalendarSelectionDelegate,RepeatModalViewDelegate,AddCategoryViewDelegate {
+    var expenseId: Int64 = 0
+    var initExpense : ResponseExpenseDto.ExpenseDto?
+
+
+
     let StackView = UIStackView()
 
     // api 연결
     let disposeBag = DisposeBag()
     let viewModel = MufflerViewModel()
-    var expenseRequest : ExpenseCreateRequest = ExpenseCreateRequest(expenseCost: 0, categoryId: 0, expenseTitle: "", expenseMemo:"", expenseDate: "", routineRequest: nil, isRoutine: false)
+    var expenseRequest : UpdateExpenseRequest = UpdateExpenseRequest(expenseId: 0, expenseCost: 0, categoryId: 0, expenseTitle: "", expenseMemo: "", expenseDate: "")
     var currentAmount : Int64 = 0
-    lazy var todayDateJson: String = {
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        return dateFormatter.string(from: currentDate)
-    }()
     var currnetCal : String = ""
     // 반복
     var routineRequest : ExpenseCreateRequest.RoutineRequest?
@@ -32,7 +34,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         cateogoryTextField.text = name
         cateogoryTextField.changeIcon(iconName: iconName)
         catAdd = true // 카테고리 선택된 것 반영
-        checkAndEnableCompleteButton()
+
         view.layoutIfNeeded()
     }
     func AddCategory() {
@@ -67,8 +69,8 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         dateFormatter.dateFormat = "yyyy년 MM월 dd일"
         return dateFormatter.string(from: currentDate)
     }()
-    private lazy var headerView = HeaderView(title: "소비내역 입력")
-    private var completeButton = MainBottomBtn(title: "완료")
+    private lazy var headerView = HeaderView(title: "소비내역 조회")
+    private var completeButton = MainBottomBtn(title: "확인")
     //소비금액 입력필드 추가
     
     private let amountTextField: UITextField = MainTextField(placeholder: "소비금액을 입력하세요", iconName: "icon_Wallet", keyboardType: .numberPad)
@@ -134,10 +136,9 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         catAdd = true // 카테고리 선택된 것 반영
         cateogoryTextField.text = category
         cateogoryTextField.changeIcon(iconName: iconName)
-        checkAndEnableCompleteButton()
+
     }
     let deleteButton: UIButton = {
-        
         let arrowImage = UIImage(systemName: "xmark")?.withTintColor(.mpWhite, renderingMode: .alwaysOriginal)
         let button = UIButton()
         button.setImage(arrowImage, for: .normal)
@@ -149,6 +150,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         
         return button
     }()
+    
     @objc
     private func deleteTitle() {
         print("제목의 내용을 삭제합니다")
@@ -271,8 +273,30 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     
     
     
-    
-    
+    // 이니셜라이저를 정의하여 expenseId를 전달 받을 수 있도록 합니다.
+    init(expenseId: Int64) {
+        self.expenseId = expenseId
+        super.init(nibName: nil, bundle: nil)
+        // 네트워크 요청을 통해 초기 데이터를 가져옵니다.
+        viewModel.getExpense(expenseId: expenseId)
+            .subscribe(onNext: { [weak self] expense in
+                // 네트워크 응답에 대한 처리
+                print("소비 내역 불러오기 성공!")
+                print(expense)
+                self?.initExpense = expense.result
+                // 데이터를 설정하고 UI를 업데이트합니다.
+                self?.setupData()
+            }, onError: { error in
+                // 에러 처리
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+    }
+   
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         setupUI()
     }
@@ -283,12 +307,12 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         view.backgroundColor = UIColor(named: "mpWhite")
         view.backgroundColor = .systemBackground
         
-        // 헤더
-        setupHeader()
+        
         // 완료 버튼 추가
         setupCompleteButton()
         setupLayout()
-
+        // 헤더
+        setupHeader()
         // 소비금액
         setupAmountTextField()
         // 카테고리
@@ -300,9 +324,9 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         // 날짜
         setupcalTextField()
         // 반복
-        setupRepeatButton()
+        //setupRepeatButton()
         setupAmountLabel()
-        
+        setupData()
         deleteButton.addTarget(self, action: #selector(deleteTitle), for: .touchUpInside)
         deleteButton2.addTarget(self, action: #selector(deleteTitle2), for: .touchUpInside)
 
@@ -310,52 +334,84 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
 
         
     }
-    
+    // 세팅 : 초기 데이터 설정 및 UI 업데이트
+    private func setupData() {
+        if let expense = initExpense {
+            currentAmount = expense.cost
+            amountTextField.text = formatAmount(String(expense.cost))
+            cateogoryTextField.text = expense.categoryName
+            titleTextField.text = expense.title
+            memoTextField.text = expense.memo
+            
+            let dateString = expense.date
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            
+            if let date = dateFormatter.date(from: dateString) {
+                dateFormatter.dateFormat = "yyyy년 MM월 dd일"
+                let convertedDateString = dateFormatter.string(from: date)
+                calTextField.text = convertedDateString
+                // 오늘 날짜가 아니라면, 버튼 선택으로 변경
+                let calendar = Calendar.current
+                    if calendar.isDateInToday(date) {
+                        calChooseButton.setTitle("선택", for: .normal)
+                    }
+            } else {
+                print("날짜 변환 실패")
+            }
+        } else {
+            amountTextField.text = ""
+            cateogoryTextField.text = ""
+            titleTextField.text = ""
+            memoTextField.text = ""
+            calTextField.text = ""
+        }
+       
+        
+    }
     
     // 세팅 : 헤더
     private func setupHeader(){
-//        view.addSubview(headerView)
-//        headerView.backgroundColor = .red
-//        
-//        headerView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            headerView.topAnchor.constraint(equalTo:    view.safeAreaLayoutGuide.topAnchor),
-//            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            headerView.heightAnchor.constraint(equalToConstant: 60)
-//        ])
+        //headerView.backgroundColor = .red
+        headerView.addRightButton() // 오
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addBackButtonTarget(target: self, action: #selector(previousScreen), for: .touchUpInside)  // 이전 화면으로 돌아가기
+        headerView.addRightButtonTarget(target: self, action: #selector(deleteExpense), for: .touchUpInside) // 소비 내역 삭제하기
         
-        // 네비게이션 아이템 타이틀 폰트 설정
-        if let navigationBar = navigationController?.navigationBar {
-            let navBarTitleFont = UIFont.mpFont18B()
-            let navBarTitleTextAttributes: [NSAttributedString.Key: Any] = [
-                .font: navBarTitleFont,
-                .foregroundColor: UIColor.black // 타이틀 색상 설정
-            ]
-            navigationBar.titleTextAttributes = navBarTitleTextAttributes
-        }
+        NSLayoutConstraint.activate([
+            headerView.leadingAnchor.constraint(equalTo: StackView.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: StackView.trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 60)
+        ])
         
-        let BackButton : UIBarButtonItem = {
-            let btn = UIBarButtonItem()
-            if let chevronImage = UIImage(systemName: "chevron.left")?.withRenderingMode(.alwaysOriginal) {
-                let darkGrayChevron = chevronImage.withTintColor(.mpGray)
-                btn.image  = darkGrayChevron
-                //btn.addTarget(target, action: action, for: controlEvents) // 뒤로 가기
-            }
-                return btn
-            }()
-            
-            navigationItem.leftBarButtonItem = BackButton
-            navigationItem.title = "소비내역 입력"
-            
-        }
+    }
     
     @objc private func previousScreen(){
+        dismiss(animated: true)
+    }
+    @objc private func deleteExpense(){
+        print("소비 내역 삭제하기")
+        // 네트워크 요청을 통해 초기 데이터를 가져옵니다.
+        viewModel.deleteExpense(expenseId: expenseId)
+            .subscribe(onNext: { repos in
+                // 네트워크 응답에 대한 처리
+                print("소비 내역 삭제하기 성공!")
+                print(repos)
+            }, onError: { error in
+                // 에러 처리
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
         dismiss(animated: true)
     }
    
     // 세팅 : 소비금액 추가
     private func setupAmountTextField() {
+        if let expense = initExpense {
+            amountTextField.text = String(expense.cost)
+        } else {
+            amountTextField.text = ""
+        }
         NSLayoutConstraint.activate([
             amountTextField.heightAnchor.constraint(equalToConstant: 64),
             amountTextField.leadingAnchor.constraint(equalTo: StackView.leadingAnchor),
@@ -452,7 +508,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         cateogoryTextField.translatesAutoresizingMaskIntoConstraints = false
         cateogoryTextField.isUserInteractionEnabled = false // 수정 불가능하도록 설정
         cateogoryTextField.textColor = UIColor.mpBlack
-        cateogoryTextField.text = "카테고리를 선택해주세요"
+        cateogoryTextField.text = initExpense?.categoryName
         cateogoryTextField.backgroundColor = .clear
         NSLayoutConstraint.activate([
             
@@ -471,6 +527,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     
     // 세팅 : 제목 텍스트 필트
     private func setuptitleTextField(){
+        titleTextField.text = initExpense?.title
         titleTextField.translatesAutoresizingMaskIntoConstraints = false
         titleTextField.delegate = self
         
@@ -504,6 +561,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     
     // 세팅 : 메모 텍스트 필트
     private func setupMemoTextField() {
+        memoTextField.text = initExpense?.memo
         memoTextField.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -574,7 +632,8 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         calTextField.translatesAutoresizingMaskIntoConstraints = false
         calTextField.isUserInteractionEnabled = false // 수정 불가능하도록 설정
         calTextField.textColor = UIColor.mpBlack
-        calTextField.text = todayDate
+        
+        
         
         NSLayoutConstraint.activate([
             
@@ -587,39 +646,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         ])
         
     }
-    // 세팅 : 반복 버튼 + 반복 선택 결과 표시
-    private func setupRepeatButton(){
-        
-        NSLayoutConstraint.activate([
-            checkButton.widthAnchor.constraint(equalToConstant:24),
-            //checkButton.heightAnchor.constraint(equalToConstant: 24),
-            
-        ])
-        containerview.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            
-            containerview.leadingAnchor.constraint(equalTo: StackView.leadingAnchor),
-            containerview.trailingAnchor.constraint(equalTo: StackView.trailingAnchor),
-            containerview.heightAnchor.constraint(equalToConstant: 30)
-            
-            
-        ])
-        // >> containerview.backgroundColor = .red
-        containerview.addArrangedSubview(checkButton)
-        containerview.addArrangedSubview(repeatLabel)
-        let blank = UIView()
-        containerview.addArrangedSubview(blank)
-        containerview.addArrangedSubview(resultbutton)
-        
-        checkButton.setChecked(false)
-        
-        checkButton.translatesAutoresizingMaskIntoConstraints = false
-        repeatLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        resultbutton.addTarget(self, action: #selector(showRepeatModalResult), for: .touchUpInside)
-
-        
-    }
+    
     private func setupLayout(){
         StackView.axis = .vertical
         StackView.distribution = .fill
@@ -630,18 +657,17 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         StackView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            StackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 35),
+            StackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             StackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             StackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
             StackView.bottomAnchor.constraint(equalTo: completeButton.topAnchor, constant: 10)
         ])
-        
+        StackView.addArrangedSubview(headerView)
         StackView.addArrangedSubview(amountTextField)
         StackView.addArrangedSubview(catContainerView)
         StackView.addArrangedSubview(titleTextField)
         StackView.addArrangedSubview(memoTextField)
         StackView.addArrangedSubview(calContainerView)
-        StackView.addArrangedSubview(containerview)
 
         let blank = UIView()
         StackView.addArrangedSubview(blank)
@@ -650,7 +676,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     }
     // 세팅 : 완료 버튼
     private func setupCompleteButton(){
-        completeButton.isEnabled = false
+        completeButton.isEnabled = true
         view.addSubview(completeButton)
         completeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -687,9 +713,9 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             // 입력된 금액이 있는 경우
             else{
                 // amountLabel
-                StackView.insertArrangedSubview(amountLabel, at: 1)
+                StackView.insertArrangedSubview(amountLabel, at: 2)
                 amountAdd = true // 입력된 것이 있는 것 확인
-                checkAndEnableCompleteButton()
+
                 // 유효한 숫자인 경우
                 amountLabel.textColor = UIColor.mpDarkGray
                 // 소비금액 텍스트필드에 에러 표시 취소 - 빨간색 스트로크
@@ -699,7 +725,12 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
                 if let removeAllSeprator = textField.text?.replacingOccurrences(of: formatter.groupingSeparator, with: "") {
                     let beforeForemattedString = removeAllSeprator + string
                     // api 연결을 위한 소비금액 저장
-                    currentAmount = Int64(beforeForemattedString)!
+                    if let amount = Int64(beforeForemattedString) {
+                        currentAmount = amount
+                    } else {
+                        // Handle the case where the conversion fails
+                        print("Failed to convert string to Int64")
+                    }
                     // 입력된 문자열이 숫자가 아닌 경우
                     if !beforeForemattedString.isEmpty && !beforeForemattedString.allSatisfy({ $0.isNumber }) {
                         
@@ -767,7 +798,6 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             
             if !newText.isEmpty {
                 titleAdd = true // 입력된 것이 있는 것 확인
-                checkAndEnableCompleteButton()
                 if titleDeleteContainer.arrangedSubviews.contains(deleteButton) == false {
                     print("추가 완료")
                            titleDeleteContainer.addArrangedSubview(deleteButton)
@@ -787,9 +817,9 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
                 view.addSubview(titleErrorLabel)
                 titleErrorLabel.translatesAutoresizingMaskIntoConstraints = false
                 // titleErrorLabel 레이아웃에 추가
-                // 제목 텍스트 필드의 인덱스 찾기
+                // 제목 텍스트 필드의 인덱스 찾기222
                 if let index = indexOfLabel(text : titleTextField) {
-                    StackView.insertArrangedSubview(titleErrorLabel, at: index+1)
+                    StackView.insertArrangedSubview(titleErrorLabel, at: 2)
                 }
                 
                 return false
@@ -865,7 +895,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     
     func GetResultofInterval(_ result: String, api : ExpenseCreateRequest.RoutineRequest?) {
         print("버튼에 데이터 반영합니다 \(result)")
-        let repeatResult = result 
+        let repeatResult = result
         resultbutton.setTitle("  \(repeatResult)  ", for: .normal)
         resultbutton.backgroundColor = .mpGypsumGray
         resultbutton.isEnabled = true
@@ -874,35 +904,32 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     }
     
     
-    private func checkAndEnableCompleteButton() {
-        let enableButton = amountAdd && catAdd && titleAdd
-        completeButton.isEnabled = enableButton
-        print("\(enableButton)")
-        print("\(amountAdd)\(catAdd)\(titleAdd)")
-        
-    }
-    
+
     
     @objc
     private func completeButtonTapped(){
-        print("소비등록을 완료하였습니다")
-        // 옵셔널 바인딩을 사용하여 메모 필드를 처리
-        if !checkButton.isChecked{
-            routineRequest = nil
+        print("수정이 완료되었습니다")
+        print(expenseId)
+        
+      
+        // api 연결
+        expenseRequest.expenseId = expenseId
+        expenseRequest.categoryId = 2
+        expenseRequest.expenseCost = currentAmount
+        if let text = titleTextField.text { expenseRequest.expenseTitle = text}
+        if let text = memoTextField.text { expenseRequest.expenseMemo = text}
+        if let text = calTextField.text {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy년 MM월 dd일"
+            if let date = dateFormatter.date(from: text) {
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+                let convertedDateString = dateFormatter.string(from: date)
+                expenseRequest.expenseDate = convertedDateString
+            } else {
+                print("날짜 변환 실패")
+            }
         }
-        if currnetCal == "" {
-            currnetCal = todayDateJson
-        }
-        expenseRequest = ExpenseCreateRequest(
-            expenseCost: currentAmount,
-            categoryId: 2, // 카테고리 조회 api 연결하면
-            expenseTitle: titleTextField.text ?? "제목 없음",
-            expenseMemo: memoTextField.text!,
-            expenseDate: currnetCal,
-            routineRequest: routineRequest,
-            isRoutine: checkButton.isChecked
-        )
-    
+
         print(expenseRequest)
         do {
                 let encoder = JSONEncoder()
@@ -914,9 +941,8 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             } catch {
                 print("Error encoding JSON: \(error)")
             }
-
         
-        viewModel.createExpense(expenseRequest: expenseRequest)
+        viewModel.updateExpense(expenseRequest: expenseRequest)
             .subscribe(
             onSuccess: { response in
                 print(response)
@@ -924,8 +950,5 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
                 print(error)
             }).disposed(by: disposeBag)
         
-        // 완료한 이후 알람 띄우기
-        
     }
 }
-

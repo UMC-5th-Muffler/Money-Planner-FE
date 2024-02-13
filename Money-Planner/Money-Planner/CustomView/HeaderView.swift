@@ -14,7 +14,12 @@ class HeaderView: UIView {
     
     private let backButton = UIButton()
     private let titleLabel = MPLabel()
-    
+    private let deleteButton : UIButton = {
+        let btn = UIButton()
+        btn.setTitle("삭제", for: .normal)
+        btn.setTitleColor(.mpRed, for: .normal)
+        return btn
+    }()
     init(title: String, frame: CGRect = .zero) {
         super.init(frame: frame)
         setupBackButton()
@@ -60,6 +65,24 @@ class HeaderView: UIView {
             titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
+    }
+    // MARK: - 오른쪽에 삭제 버튼 추가
+    
+    public func addRightButton () {
+        // 오른쪽에 삭제 버튼 추가
+        addSubview(deleteButton)
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            deleteButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            deleteButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+        ])
+        
+        
+    }
+    //나중에 action을 필요에 따라 설정한다.
+    public func addRightButtonTarget(target: Any?, action: Selector, for controlEvents: UIControl.Event) {
+        deleteButton.addTarget(target, action: action, for: controlEvents)
     }
     
 }
