@@ -25,6 +25,13 @@ class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    let arrow_small : UIImageView = {
+        let img = UIImageView()
+        img.translatesAutoresizingMaskIntoConstraints = false
+        img.image = UIImage(named: "btn_arrow_small")
+        return img
+    }()
+    
     let orderLabel: UILabel = {
         let label = UILabel()
         label.textColor = .mpBlack
@@ -67,6 +74,7 @@ class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
         backgroundColor = .mpWhite
         
         addSubview(orderLabel)
+        addSubview(arrow_small)
         addSubview(tableView)
 
         tableView.delegate = self
@@ -76,8 +84,10 @@ class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
         NSLayoutConstraint.activate([
             orderLabel.topAnchor.constraint(equalTo: topAnchor, constant : 32),
             orderLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            orderLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             orderLabel.heightAnchor.constraint(equalToConstant: 24),
+            
+            arrow_small.leadingAnchor.constraint(equalTo: orderLabel.trailingAnchor, constant: 4),
+            arrow_small.centerYAnchor.constraint(equalTo: orderLabel.centerYAnchor),
             
             tableView.topAnchor.constraint(equalTo: orderLabel.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -95,7 +105,7 @@ extension HomeConsumeView {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data[section].expenseDetailList.count
+        return data[section].expenseDetailList!.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -104,7 +114,7 @@ extension HomeConsumeView {
             fatalError("Unable to dequeue ConsumeRecordCell")
         }
         
-        let consumeRecord = data[indexPath.section].expenseDetailList[indexPath.row]
+        let consumeRecord = data[indexPath.section].expenseDetailList![indexPath.row]
         
         cell.configure(with: consumeRecord)
 
@@ -130,7 +140,7 @@ extension HomeConsumeView {
 
         // 섹션 헤더에 표시할 내용을 추가
         let titleLabel = UILabel()
-        titleLabel.text = data[section].date
+        titleLabel.text = data[section].date.formatMonthAndDate
         titleLabel.textColor = UIColor(hexCode: "9FAAB0")
         titleLabel.font = UIFont.mpFont14M()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -139,7 +149,7 @@ extension HomeConsumeView {
         // "Cost" 텍스트를 추가
         let costLabel = UILabel()
         
-        let result: String = data[section].dailyTotalCost.formattedWithSeparator()
+        let result: String = data[section].dailyTotalCost!.formattedWithSeparator()
         
         costLabel.text = "\(result)원"
         costLabel.textColor = UIColor.mpDarkGray
