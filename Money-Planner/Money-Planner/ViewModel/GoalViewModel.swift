@@ -14,6 +14,7 @@ class GoalViewModel: ObservableObject {
     
     static let shared = GoalViewModel()
     
+    var showingGoal : Goal?
     // Use BehaviorSubject or PublishSubject to publish goals
     let goalsSubject = BehaviorSubject<[Goal]>(value: [])
     var goalsObservable: Observable<[Goal]> {

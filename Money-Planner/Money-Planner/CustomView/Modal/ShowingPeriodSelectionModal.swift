@@ -113,7 +113,7 @@ class ShowingPeriodSelectionModal : UIViewController, FSCalendarDelegate, FSCale
     let selectWholeButton: UIButton = {
         let button = UIButton()
         let titleString = NSAttributedString(
-            string: "전체 기간 선택",
+            string: "목표 기간 전체 조회",
             attributes: [
                 .font: UIFont.mpFont14R(),
                 .foregroundColor: UIColor.mpBlack,
@@ -479,16 +479,16 @@ class ShowingPeriodSelectionModal : UIViewController, FSCalendarDelegate, FSCale
     
     private func selectDate(_ date: Date) {
         
-        if startDate != nil && endDate == nil && startDate == date {
-            changeLabelWithAnimation(titleLabel, to: "시작일을 선택해주세요")
-            changeLabelWithAnimation(subTitleLabel, to: "하루치 목표는 설정 불가능합니다.")
-            subTitleLabel.textColor = .mpRed
-            clearSelectedDates()
-            completeBtn.isEnabled = false
-            completeBtn.backgroundColor = .mpGray
-            calendar.reloadData()
-            return
-        }
+//        if startDate != nil && endDate == nil && startDate == date {
+//            changeLabelWithAnimation(titleLabel, to: "조회 시작일을 선택해주세요")
+//            changeLabelWithAnimation(subTitleLabel, to: "하루치 목표는 설정 불가능합니다.")
+//            subTitleLabel.textColor = .mpRed
+//            clearSelectedDates()
+//            completeBtn.isEnabled = false
+//            completeBtn.backgroundColor = .mpGray
+//            calendar.reloadData()
+//            return
+//        }
         
         if startDate == nil || endDate != nil || date < startDate! {
             if isDateInRange(date, conflictingWith: selectableDateRanges) {
@@ -496,7 +496,7 @@ class ShowingPeriodSelectionModal : UIViewController, FSCalendarDelegate, FSCale
                 startDate = date
                 endDate = nil // Clear previous end date
                 if endDate == nil {
-                    changeLabelWithAnimation(titleLabel, to: "종료일을 선택해주세요")
+                    changeLabelWithAnimation(titleLabel, to: "조회 종료일을 선택해주세요")
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateStyle = .medium
                     dateFormatter.timeStyle = .none
@@ -507,7 +507,7 @@ class ShowingPeriodSelectionModal : UIViewController, FSCalendarDelegate, FSCale
                 completeBtn.backgroundColor = .mpGray
             }else{
                 //changeLabelWithAnimation(titleLabel, to: "시작일을 선택해주세요")
-                changeLabelWithAnimation(subTitleLabel, to: "목표 기간 밖입니다.")
+                changeLabelWithAnimation(subTitleLabel, to: "조회 목표 기간 밖입니다.")
                 subTitleLabel.textColor = .mpRed
                 clearSelectedDates()
                 completeBtn.isEnabled = false
@@ -523,14 +523,14 @@ class ShowingPeriodSelectionModal : UIViewController, FSCalendarDelegate, FSCale
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateStyle = .medium
                     dateFormatter.timeStyle = .none
-                    changeLabelWithAnimation(titleLabel, to: "선택 기간")
+                    changeLabelWithAnimation(titleLabel, to: "선택 조회 기간")
                     changeLabelWithAnimation(subTitleLabel, to: "\(dateFormatter.string(from: start)) - \(dateFormatter.string(from: end))")
                     completeBtn.isEnabled = true
                     completeBtn.backgroundColor = .mpMainColor
                 }
                 subTitleLabel.textColor = .mpBlack
             } else {
-                changeLabelWithAnimation(titleLabel, to: "시작일을 선택해주세요")
+                changeLabelWithAnimation(titleLabel, to: "조회 시작일을 선택해주세요")
                 changeLabelWithAnimation(subTitleLabel, to: "목표 기간 밖입니다.")
                 subTitleLabel.textColor = .mpRed
                 clearSelectedDates()
