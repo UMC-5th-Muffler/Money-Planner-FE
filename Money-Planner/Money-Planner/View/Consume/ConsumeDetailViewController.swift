@@ -950,5 +950,7 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
                 print(error)
             }).disposed(by: disposeBag)
         
+        dismiss(animated: true)
+        
     }
 }

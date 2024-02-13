@@ -314,17 +314,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     
     // 세팅 : 헤더
     private func setupHeader(){
-//        view.addSubview(headerView)
-//        headerView.backgroundColor = .red
-//        
-//        headerView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            headerView.topAnchor.constraint(equalTo:    view.safeAreaLayoutGuide.topAnchor),
-//            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            headerView.heightAnchor.constraint(equalToConstant: 60)
-//        ])
-        
+
         // 네비게이션 아이템 타이틀 폰트 설정
         if let navigationBar = navigationController?.navigationBar {
             let navBarTitleFont = UIFont.mpFont18B()
