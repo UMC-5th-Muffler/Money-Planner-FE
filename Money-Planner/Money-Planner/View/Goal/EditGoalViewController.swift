@@ -10,9 +10,25 @@ import UIKit
 
 class EditGoalViewController : UIViewController {
     
-    let headerView = HeaderwithDeleteView(title:"소비목표 수정")
+//    let backButton : UIBarButtonItem = {
+//        let button = UIButton()
+//        button.setImage(UIImage(named: "btn_arrow_big"), for: .normal)
+//        button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+//
+//        return UIBarButtonItem(customView: button)
+//    }()
     
-    let contentScrollView: UIScrollView = {
+    let deleteButton : UIBarButtonItem = {
+        let button = UIButton(type: .system)
+        button.setTitle("삭제", for: .normal)
+        button.tintColor = UIColor.mpRed
+        button.titleLabel?.font = UIFont.mpFont18M()
+        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        
+        return UIBarButtonItem(customView: button)
+    }()
+    
+    let contentScrollView : UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.backgroundColor = .white
@@ -29,14 +45,15 @@ class EditGoalViewController : UIViewController {
         return view
     }()
     
-    let tempview : UIView = {
+    let backgroundView : UIView = {
         let view = UIView()
         view.layer.cornerRadius = 38
-        view.clipsToBounds = true
-        view.backgroundColor = UIColor(hexCode: "#C4C4C4")
+        view.backgroundColor = UIColor(hexCode: "#DFF2F1")
         
         return view
     }()
+    
+    let emojiTextfield = EmojiTextField()
     
     let goalNameLabel = SmallDescriptionView(text: "목표 이름", alignToCenter: false)
     let goalNameTextfield = MainTextField(placeholder: "", iconName: "icon_Paper")
@@ -54,15 +71,8 @@ class EditGoalViewController : UIViewController {
     let wonLabel = UILabel()
     
     let moreLabel = SmallDescriptionView(text: "자세히", alignToCenter: false)
-    
-    var verticalStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 40
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return stackView
-    }()
+    let editByCategory = TextImageButton()
+    let editByDate = TextImageButton()
     
     let nextBtn = MainBottomBtn(title: "다음")
     
@@ -70,23 +80,22 @@ class EditGoalViewController : UIViewController {
         view.backgroundColor = UIColor.mpWhite
         view.addSubview(contentScrollView)
         contentScrollView.addSubview(contentView)
-        contentScrollView.contentInset = UIEdgeInsets(top: headerView.frame.height, left: 0, bottom: 0, right: 0)
-        
-        setupHeader()
         
         NSLayoutConstraint.activate([
-            contentScrollView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 10),
+            contentScrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
             contentScrollView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             contentScrollView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            contentScrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            contentScrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -70),
             
             contentView.topAnchor.constraint(equalTo: contentScrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: contentScrollView.widthAnchor)
+            contentView.widthAnchor.constraint(equalTo: contentScrollView.widthAnchor),
+            contentView.heightAnchor.constraint(equalToConstant: 800)
         ])
         
+        setupNavigationBar()
         setupImageEdit()
         setupNameEdit()
         setupPeriodEdit()
@@ -95,32 +104,76 @@ class EditGoalViewController : UIViewController {
         setupNextButton()
         
         goalNameTextfield.delegate = self
+        
     }
     
 }
 
 extension EditGoalViewController : UIScrollViewDelegate, UITextFieldDelegate {
-    func setupHeader() {
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(headerView)
+    
+    func setupNavigationBar() {
+        self.navigationItem.title = "소비목표 수정"
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.mpBlack, NSAttributedString.Key.font: UIFont.mpFont18B()]
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.layoutIfNeeded()
+        //self.navigationItem.leftBarButtonItem = backButton
+        self.navigationItem.rightBarButtonItem = deleteButton
         
-        NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: -25),
-            headerView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-            headerView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-            headerView.heightAnchor.constraint(equalToConstant: 25)
-        ])
     }
     
+//    @objc private func backButtonTapped() {
+//        // 뒤로 가기 버튼 동작 구현
+//        print("뒤로가기버튼 클릭")
+//        navigationController?.popViewController(animated: true)
+//    }
+    
+    @objc private func deleteButtonTapped() {
+        print("삭제버튼 클릭")
+        presentCustomModal()
+    }
+    
+    func presentCustomModal() {
+        let customModalVC = goalDeleteModalView()
+        customModalVC.modalPresentationStyle = .overFullScreen
+        customModalVC.modalTransitionStyle = .crossDissolve
+        present(customModalVC, animated: true, completion: nil)
+        
+        customModalVC.cancelButton.addTarget(self, action: #selector(dismissCustomModal), for: .touchUpInside)
+    }
+    
+    @objc private func dismissCustomModal() {
+         dismiss(animated: true, completion: nil)
+     }
+    
     func setupImageEdit() {
-        tempview.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(tempview)
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        emojiTextfield.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(backgroundView)
+        contentView.addSubview(emojiTextfield)
+        
+        emojiTextfield.font = UIFont.systemFont(ofSize: 40)
         
         NSLayoutConstraint.activate([
-            tempview.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25),
-            tempview.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            tempview.heightAnchor.constraint(equalToConstant: 76),
-            tempview.widthAnchor.constraint(equalToConstant: 76)
+            backgroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25),
+            backgroundView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            backgroundView.heightAnchor.constraint(equalToConstant: 76),
+            backgroundView.widthAnchor.constraint(equalToConstant: 76),
+            
+            emojiTextfield.centerXAnchor.constraint(equalTo: backgroundView.centerXAnchor),
+            emojiTextfield.centerYAnchor.constraint(equalTo: backgroundView.centerYAnchor),
+            emojiTextfield.heightAnchor.constraint(equalToConstant: 56)
+        ])
+        
+        let addButtonImageView = UIImageView(image: UIImage(named: "btn_Add_icon"))
+        addButtonImageView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundView.addSubview(addButtonImageView)
+        
+        NSLayoutConstraint.activate([
+            addButtonImageView.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: 1),
+            addButtonImageView.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: -2),
+            addButtonImageView.widthAnchor.constraint(equalToConstant: 24),
+            addButtonImageView.heightAnchor.constraint(equalToConstant: 24)
         ])
     }
     
@@ -129,19 +182,21 @@ extension EditGoalViewController : UIScrollViewDelegate, UITextFieldDelegate {
         goalNameTextfield.translatesAutoresizingMaskIntoConstraints = false
         characterCountLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        //iconContainerView
         contentView.addSubview(goalNameLabel)
         contentView.addSubview(goalNameTextfield)
         contentView.addSubview(characterCountLabel)
         
-        // Character count label setup
-        characterCountLabel.text = "0/17"
+        characterCountLabel.text = "0/15"
         characterCountLabel.font = UIFont.mpFont14M()
         characterCountLabel.textColor = UIColor.mpDarkGray
         characterCountLabel.textAlignment = .right
         
+        let paddingContainer = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 0))
+        goalNameTextfield.rightView = paddingContainer
+        goalNameTextfield.rightViewMode = .always
+        
         NSLayoutConstraint.activate([
-            goalNameLabel.topAnchor.constraint(equalTo: tempview.bottomAnchor, constant: 26),
+            goalNameLabel.topAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: 26),
             goalNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 19),
             goalNameLabel.heightAnchor.constraint(equalToConstant: 18),
             
@@ -159,7 +214,7 @@ extension EditGoalViewController : UIScrollViewDelegate, UITextFieldDelegate {
     
     @objc func textFieldDidChange(_ textField: UITextField) {
         guard let text = textField.text else { return }
-        characterCountLabel.text = "\(text.count)/17"
+        characterCountLabel.text = "\(text.count)/15"
     }
     
     func setupPeriodEdit() {
@@ -248,58 +303,59 @@ extension EditGoalViewController : UIScrollViewDelegate, UITextFieldDelegate {
     }
     
     func setupMore() {
-        let chevronButton1 = UIButton()
-        chevronButton1.setImage(UIImage(systemName: "chevron.right"), for: .normal) // 이미지 변경 예정
-        chevronButton1.tintColor = .black
-        
-        let chevronButton2 = UIButton()
-        chevronButton2.setImage(UIImage(systemName: "chevron.right"), for: .normal) //이거 왜 화살표 이상한데 가있지....
-        chevronButton2.tintColor = .black
-        
-        let editByCategory = createListLabel(title: "카테고리별 목표 수정")
-        let editByDate = createListLabel(title: "날짜별 목표 수정")
-        
-        let firstStackView = UIStackView(arrangedSubviews: [editByCategory, chevronButton1])
-        firstStackView.axis = .horizontal
-        firstStackView.distribution = .fill
-        firstStackView.alignment = .center
-        firstStackView.spacing = 8
-        
-        let secondStackView = UIStackView(arrangedSubviews: [editByDate, chevronButton2])
-        secondStackView.axis = .horizontal
-        secondStackView.distribution = .fill
-        secondStackView.alignment = .center
-        secondStackView.spacing = 8
-        
-        verticalStackView.addArrangedSubview(firstStackView)
-        verticalStackView.addArrangedSubview(secondStackView)
-        
-        contentView.addSubview(moreLabel)
-        contentView.addSubview(verticalStackView)
-        
-        moreLabel.translatesAutoresizingMaskIntoConstraints = false
-        verticalStackView.translatesAutoresizingMaskIntoConstraints = false
+        let seperateView = UIView()
+        seperateView.backgroundColor = UIColor.mpGypsumGray
+        seperateView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(seperateView)
         
         NSLayoutConstraint.activate([
-            moreLabel.topAnchor.constraint(equalTo: goalBudgetTextfield.bottomAnchor, constant: 55),
-             moreLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 19),
-             moreLabel.heightAnchor.constraint(equalToConstant: 18),
-                     
-             verticalStackView.topAnchor.constraint(equalTo: moreLabel.bottomAnchor, constant: 25),
-             verticalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-             verticalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
+            seperateView.topAnchor.constraint(equalTo: goalBudgetTextfield.bottomAnchor, constant: 40),
+            seperateView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            seperateView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            seperateView.heightAnchor.constraint(equalToConstant: 10)
+        ])
+        
+        editByCategory.text = "카테고리별 목표 수정"
+        editByCategory.image = UIImage(named: "btn_arrow_small-black")
+        //editByCategory.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        
+        editByDate.text = "날짜별 목표 수정"
+        editByDate.image = UIImage(named: "btn_arrow_small-black")
+        //editByDate.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+    
+        contentView.addSubview(moreLabel)
+        contentView.addSubview(editByCategory)
+        contentView.addSubview(editByDate)
+        
+        moreLabel.translatesAutoresizingMaskIntoConstraints = false
+        editByCategory.translatesAutoresizingMaskIntoConstraints = false
+        editByDate.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            moreLabel.topAnchor.constraint(equalTo: seperateView.bottomAnchor, constant: 40),
+            moreLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 19),
+            moreLabel.heightAnchor.constraint(equalToConstant: 18),
+        
+            editByCategory.topAnchor.constraint(equalTo: moreLabel.bottomAnchor, constant: 20),
+            editByCategory.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            editByCategory.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            editByCategory.heightAnchor.constraint(equalToConstant: 30),
+            
+            editByDate.topAnchor.constraint(equalTo: editByCategory.bottomAnchor, constant: 30),
+            editByDate.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            editByDate.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            editByDate.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
     
     
     func setupNextButton(){
         nextBtn.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(nextBtn)
+        view.addSubview(nextBtn)
         
         NSLayoutConstraint.activate([
-            nextBtn.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            nextBtn.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: 50),
-            nextBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            nextBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nextBtn.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
             nextBtn.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             nextBtn.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             nextBtn.heightAnchor.constraint(equalToConstant: 55)
@@ -328,88 +384,22 @@ extension EditGoalViewController : UIScrollViewDelegate, UITextFieldDelegate {
             guard let stringRange = Range(range, in: currentText) else { return false }
             let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
             
-            return updatedText.count <= 17
+            return updatedText.count <= 15
         }
 
         return true
     }
 }
 
-class HeaderwithDeleteView: UIView {
-    
-    private let backButton = UIButton()
-    private let titleLabel = MPLabel()
-    private let deleteButton = UIButton(type: .system)
-    
-    init(title: String, frame: CGRect = .zero) {
-        super.init(frame: frame)
-        setupBackButton()
-        setupDeleteButton()
-        setupTitleLabel(with: title)
-        setupConstraints()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    //추후 색 변환 가능
-    private func setupBackButton() {
-        if let chevronImage = UIImage(systemName: "chevron.left")?.withRenderingMode(.alwaysOriginal) {
-            let darkGrayChevron = chevronImage.withTintColor(.mpGray)
-            backButton.setImage(darkGrayChevron, for: .normal)
-        }
-        addSubview(backButton)
-    }
-    
-    // 삭제 버튼 설정
-    private func setupDeleteButton() {
-        deleteButton.setTitle("삭제", for: .normal)
-        deleteButton.titleLabel?.font = UIFont.mpFont18M()
-        deleteButton.setTitleColor(UIColor.mpRed, for: .normal) // 버튼 텍스트의 색상 설정
-        addSubview(deleteButton)
-    }
-    
-    //나중에 action을 필요에 따라 설정한다.
-    public func addBackButtonTarget(target: Any?, action: Selector, for controlEvents: UIControl.Event) {
-        backButton.addTarget(target, action: action, for: controlEvents)
-    }
-    
-    //받은 제목에 맞춰서 title 수정
-    private func setupTitleLabel(with title: String) {
-        titleLabel.text = title
-        titleLabel.font = UIFont.mpFont18B()
-        titleLabel.textAlignment = .center
-        addSubview(titleLabel)
-    }
-    
-    //headerView 내부 contraint
-    private func setupConstraints() {
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        deleteButton.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            backButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            deleteButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-            deleteButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
-        ])
-    }
-    
-}
-
 class SmallDescriptionView: MPLabel {
-    // 초기화 메소드
+
     init(text: String, alignToCenter: Bool) {
         super.init(frame: .zero)
         self.text = text
         self.textAlignment = alignToCenter ? .center : .left
         self.textColor = UIColor.mpGray
         self.font = UIFont.mpFont14B()
-        self.numberOfLines = 0  // 여러 줄 표시 가능
+        self.numberOfLines = 0
     }
     
     required init?(coder: NSCoder) {
@@ -419,7 +409,7 @@ class SmallDescriptionView: MPLabel {
 
 class LockedTextField: UITextField {
     let systemIconImageView = UIImageView()
-    // 초기화 메소드
+
     init(placeholder: String, iconName: String, keyboardType: UIKeyboardType = .default,frame:CGRect = .zero) {
         super.init(frame: frame)
         setupTextField(placeholder: placeholder, iconName: iconName,keyboardType: keyboardType)
@@ -466,4 +456,83 @@ class LockedTextField: UITextField {
     }
     
     
+}
+
+class TextImageButton: UIButton {
+    let textLabel: MPLabel = {
+        let label = MPLabel()
+        label.textAlignment = .left
+        label.font = UIFont.mpFont20M()
+        label.textColor = UIColor.mpBlack
+        
+        return label
+    }()
+    
+    let arrowImage: UIImageView = {
+        let imageView = UIImageView()
+        
+        return imageView
+    }()
+    
+    var text: String? {
+        didSet {
+            textLabel.text = text
+        }
+    }
+    
+    var image: UIImage? {
+        didSet {
+            arrowImage.image = image
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupUI()
+    }
+    
+    private func setupUI() {
+        addSubview(textLabel)
+        addSubview(arrowImage)
+        
+        textLabel.translatesAutoresizingMaskIntoConstraints = false
+        arrowImage.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            textLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            textLabel.topAnchor.constraint(equalTo: topAnchor),
+            textLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            arrowImage.trailingAnchor.constraint(equalTo: trailingAnchor),
+            arrowImage.widthAnchor.constraint(equalToConstant: 24),
+            arrowImage.heightAnchor.constraint(equalToConstant: 24)
+        ])
+    }
+}
+
+class EmojiTextField: UITextField {
+    override var textInputContextIdentifier: String? { "" }
+    
+    override var textInputMode: UITextInputMode? {
+        for mode in UITextInputMode.activeInputModes {
+            if mode.primaryLanguage == "emoji" {
+                return mode
+            }
+        }
+        return nil
+    }
+    
+    override func deleteBackward() {
+        // Disable the delete key
+    }
+    
+    override func caretRect(for position: UITextPosition) -> CGRect {
+        // Hide the cursor
+        return .zero
+    }
 }
