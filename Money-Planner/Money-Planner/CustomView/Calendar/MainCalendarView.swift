@@ -219,10 +219,8 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("각각의 cell 클릭")
         let cell=collectionView.cellForItem(at: indexPath)
-        cell?.backgroundColor = UIColor.mpMainColor
-        let lbl = cell?.subviews[1] as! UILabel
-        lbl.textColor=UIColor.white
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
