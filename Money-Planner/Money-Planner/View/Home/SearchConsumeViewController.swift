@@ -11,6 +11,7 @@ import Foundation
 import UIKit
 
 class SearchConsumeViewController : UIViewController {
+    let searchBar = UISearchBar()
     
     let consumeView : HomeConsumeView = {
         let v = HomeConsumeView()
@@ -22,23 +23,25 @@ class SearchConsumeViewController : UIViewController {
     override func viewDidLoad(){
         super.viewDidLoad()
         view.translatesAutoresizingMaskIntoConstraints = false
-        setUpConsumeView()
+        view.backgroundColor = .mpWhite
+        self.navigationController?.navigationBar.tintColor = .mpBlack
+        self.navigationController?.navigationBar.topItem?.title = ""
+        
+        searchBar.delegate = self
+        searchBar.placeholder = "어떤 소비내역을 찾으세요?"
+        searchBar.searchTextField.font = .mpFont16M()
+        self.navigationItem.titleView = searchBar
+
+//        setUpConsumeView()
     }
     
 }
 
 
-extension SearchConsumeViewController{
+extension SearchConsumeViewController : UISearchBarDelegate{
     
     func setUpConsumeView(){
-        consumeView.data = [
-            DailyConsume(date: "1월 17일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
-            DailyConsume(date: "1월 16일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
-            DailyConsume(date: "1월 15일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
-            DailyConsume(date: "1월 14일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")])
-            
-        ]
-        
+
         view.addSubview(consumeView)
         
         NSLayoutConstraint.activate([
@@ -50,4 +53,12 @@ extension SearchConsumeViewController{
             
         ])
     }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+           guard let searchText = searchBar.text, !searchText.isEmpty else {
+               return // 검색어가 비어 있으면 무시
+           }
+            
+        
+       }
 }

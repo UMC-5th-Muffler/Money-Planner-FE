@@ -105,6 +105,8 @@
 		D217EBF12B7460CC00EB6BF3 /* CategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D217EBF02B7460CC00EB6BF3 /* CategoryRepository.swift */; };
 		D253EEB72B7B505B00A4FC1C /* HomeMoreModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */; };
 		D253EEB92B7B59FE00A4FC1C /* RepeatConsumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEB82B7B59FE00A4FC1C /* RepeatConsumeViewController.swift */; };
+		D253EEBD2B7B652300A4FC1C /* ExpenseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEBC2B7B652300A4FC1C /* ExpenseAPI.swift */; };
+		D253EEBF2B7B653A00A4FC1C /* ExpenseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEBE2B7B653A00A4FC1C /* ExpenseRepository.swift */; };
 		D29536F12B4C0DF000EEA81F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29536F02B4C0DF000EEA81F /* UserDefaults.swift */; };
 		D2D0B72B2B6A704B003B6B5E /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B72A2B6A704B003B6B5E /* BaseResponse.swift */; };
 		D2D0B72D2B6A7067003B6B5E /* BaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B72C2B6A7067003B6B5E /* BaseAPI.swift */; };
@@ -221,6 +223,8 @@
 		D217EBF02B7460CC00EB6BF3 /* CategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRepository.swift; sourceTree = "<group>"; };
 		D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMoreModalViewController.swift; sourceTree = "<group>"; };
 		D253EEB82B7B59FE00A4FC1C /* RepeatConsumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatConsumeViewController.swift; sourceTree = "<group>"; };
+		D253EEBC2B7B652300A4FC1C /* ExpenseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseAPI.swift; sourceTree = "<group>"; };
+		D253EEBE2B7B653A00A4FC1C /* ExpenseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseRepository.swift; sourceTree = "<group>"; };
 		D29536EF2B4C091400EEA81F /* Money-Planner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Money-Planner.entitlements"; sourceTree = "<group>"; };
 		D29536F02B4C0DF000EEA81F /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		D2D0B72A2B6A704B003B6B5E /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
@@ -602,6 +606,7 @@
 		D20D702A2B68BB81006D6762 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				D253EEBB2B7B651500A4FC1C /* Expense */,
 				D217EBED2B7460A700EB6BF3 /* Category */,
 				208C90A22B6C00F600C67960 /* Model */,
 				208C908D2B6AB76600C67960 /* Test-park */,
@@ -627,6 +632,15 @@
 				D217EBF02B7460CC00EB6BF3 /* CategoryRepository.swift */,
 			);
 			path = Category;
+			sourceTree = "<group>";
+		};
+		D253EEBB2B7B651500A4FC1C /* Expense */ = {
+			isa = PBXGroup;
+			children = (
+				D253EEBC2B7B652300A4FC1C /* ExpenseAPI.swift */,
+				D253EEBE2B7B653A00A4FC1C /* ExpenseRepository.swift */,
+			);
+			path = Expense;
 			sourceTree = "<group>";
 		};
 		D29536ED2B4C076F00EEA81F /* Common */ = {
@@ -769,6 +783,7 @@
 				206C58D82B626465008410C1 /* CategoryModalViewController.swift in Sources */,
 				D2D0B7362B6BA83E003B6B5E /* HomeRepository.swift in Sources */,
 				208C90A62B6D15BB00C67960 /* ProfileViewController.swift in Sources */,
+				D253EEBF2B7B653A00A4FC1C /* ExpenseRepository.swift in Sources */,
 				7A610AE72B491F1600D3096F /* HeaderView.swift in Sources */,
 				D20D700D2B611EE3006D6762 /* SearchConsumeViewController.swift in Sources */,
 				D20D6FFA2B5FB971006D6762 /* HomeConsumeView.swift in Sources */,
@@ -838,6 +853,7 @@
 				208C90C22B74E01700C67960 /* UnregisterPopupViewController.swift in Sources */,
 				D20D6FE92B5AF1E9006D6762 /* MainMonthView.swift in Sources */,
 				7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */,
+				D253EEBD2B7B652300A4FC1C /* ExpenseAPI.swift in Sources */,
 				D20D6FDA2B581A05006D6762 /* CustomTabBarController.swift in Sources */,
 				208C90AA2B6D559F00C67960 /* AskViewController.swift in Sources */,
 				7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */,
