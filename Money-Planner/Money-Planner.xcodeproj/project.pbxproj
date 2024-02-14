@@ -27,13 +27,15 @@
 		208C90AA2B6D559F00C67960 /* AskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90A92B6D559F00C67960 /* AskViewController.swift */; };
 		208C90AC2B6E3F8100C67960 /* UnregisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90AB2B6E3F8100C67960 /* UnregisterViewController.swift */; };
 		208C90B02B6E887A00C67960 /* ReasonModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90AF2B6E887A00C67960 /* ReasonModalViewController.swift */; };
-		208C90B22B6F589100C67960 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90B12B6F589100C67960 /* Expense.swift */; };
-		208C90B42B6F66A700C67960 /* ExpenseCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90B32B6F66A700C67960 /* ExpenseCreateRequest.swift */; };
-		208C90B62B6F738F00C67960 /* ExpenseCreateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90B52B6F738F00C67960 /* ExpenseCreateResponse.swift */; };
 		208C90BA2B6FE45B00C67960 /* UnregisterTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90B92B6FE45B00C67960 /* UnregisterTitleLabel.swift */; };
 		208C90BE2B710F4800C67960 /* TextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90BD2B710F4800C67960 /* TextFieldContainerView.swift */; };
 		208C90C02B72636C00C67960 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90BF2B72636C00C67960 /* UIHelper.swift */; };
 		208C90C22B74E01700C67960 /* UnregisterPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90C12B74E01700C67960 /* UnregisterPopupViewController.swift */; };
+		208C90C72B7BB06800C67960 /* ConsumeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90C62B7BB06800C67960 /* ConsumeDetailViewController.swift */; };
+		208C90CA2B7BBBB600C67960 /* ResponseExpenseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90C92B7BBBB600C67960 /* ResponseExpenseDto.swift */; };
+		208C90CD2B7BBC6700C67960 /* ExpenseCreateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90CC2B7BBC6700C67960 /* ExpenseCreateResponse.swift */; };
+		208C90CF2B7BBC8400C67960 /* ExpenseCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90CE2B7BBC8400C67960 /* ExpenseCreateRequest.swift */; };
+		208C90D12B7BD33300C67960 /* UpdateExpenseRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90D02B7BD33300C67960 /* UpdateExpenseRequest.swift */; };
 		20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */; };
 		20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */; };
 		20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD902B656034008F8AB9 /* OneDayButton.swift */; };
@@ -153,13 +155,15 @@
 		208C90A92B6D559F00C67960 /* AskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskViewController.swift; sourceTree = "<group>"; };
 		208C90AB2B6E3F8100C67960 /* UnregisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnregisterViewController.swift; sourceTree = "<group>"; };
 		208C90AF2B6E887A00C67960 /* ReasonModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonModalViewController.swift; sourceTree = "<group>"; };
-		208C90B12B6F589100C67960 /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
-		208C90B32B6F66A700C67960 /* ExpenseCreateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCreateRequest.swift; sourceTree = "<group>"; };
-		208C90B52B6F738F00C67960 /* ExpenseCreateResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCreateResponse.swift; sourceTree = "<group>"; };
 		208C90B92B6FE45B00C67960 /* UnregisterTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnregisterTitleLabel.swift; sourceTree = "<group>"; };
 		208C90BD2B710F4800C67960 /* TextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldContainerView.swift; sourceTree = "<group>"; };
 		208C90BF2B72636C00C67960 /* UIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		208C90C12B74E01700C67960 /* UnregisterPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnregisterPopupViewController.swift; sourceTree = "<group>"; };
+		208C90C62B7BB06800C67960 /* ConsumeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumeDetailViewController.swift; sourceTree = "<group>"; };
+		208C90C92B7BBBB600C67960 /* ResponseExpenseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ResponseExpenseDto.swift; path = "Money-Planner/ViewModel/Expense/ResponseExpenseDto.swift"; sourceTree = SOURCE_ROOT; };
+		208C90CC2B7BBC6700C67960 /* ExpenseCreateResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCreateResponse.swift; sourceTree = "<group>"; };
+		208C90CE2B7BBC8400C67960 /* ExpenseCreateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCreateRequest.swift; sourceTree = "<group>"; };
+		208C90D02B7BD33300C67960 /* UpdateExpenseRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateExpenseRequest.swift; sourceTree = "<group>"; };
 		20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatModalViewController.swift; sourceTree = "<group>"; };
 		20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDayView.swift; sourceTree = "<group>"; };
 		20AFDD902B656034008F8AB9 /* OneDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDayButton.swift; sourceTree = "<group>"; };
@@ -275,6 +279,7 @@
 			children = (
 				208C90BF2B72636C00C67960 /* UIHelper.swift */,
 				20118A102B56A86100B2569E /* ConsumeViewController.swift */,
+				208C90C62B7BB06800C67960 /* ConsumeDetailViewController.swift */,
 				208C90BD2B710F4800C67960 /* TextFieldContainerView.swift */,
 				5591601B2B64595E00063F06 /* EvaluationViewController.swift */,
 				552A42662B72200E007AEAAD /* DailyComsumeViewController.swift */,
@@ -312,16 +317,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		208C90BB2B6FE4A900C67960 /* Expense */ = {
-			isa = PBXGroup;
-			children = (
-				208C90B12B6F589100C67960 /* Expense.swift */,
-				208C90B32B6F66A700C67960 /* ExpenseCreateRequest.swift */,
-				208C90B52B6F738F00C67960 /* ExpenseCreateResponse.swift */,
-			);
-			path = Expense;
-			sourceTree = "<group>";
-		};
 		208C90BC2B6FE4CF00C67960 /* Member */ = {
 			isa = PBXGroup;
 			children = (
@@ -348,6 +343,24 @@
 				20AFDD942B65B882008F8AB9 /* ChooseDateView.swift */,
 			);
 			path = modal;
+			sourceTree = "<group>";
+		};
+		208C90C52B7BA6EB00C67960 /* ConsumeAPI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ConsumeAPI;
+			sourceTree = "<group>";
+		};
+		208C90CB2B7BBC5500C67960 /* Expense */ = {
+			isa = PBXGroup;
+			children = (
+				208C90C92B7BBBB600C67960 /* ResponseExpenseDto.swift */,
+				208C90CC2B7BBC6700C67960 /* ExpenseCreateResponse.swift */,
+				208C90CE2B7BBC8400C67960 /* ExpenseCreateRequest.swift */,
+				208C90D02B7BD33300C67960 /* UpdateExpenseRequest.swift */,
+			);
+			path = Expense;
 			sourceTree = "<group>";
 		};
 		7A4C67322B5A47BD008BCAC9 /* CustomView */ = {
@@ -491,6 +504,7 @@
 		7A610ACD2B480B1400D3096F /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				208C90CB2B7BBC5500C67960 /* Expense */,
 				D20D701F2B66FE8F006D6762 /* Home */,
 			);
 			path = ViewModel;
@@ -500,7 +514,6 @@
 			isa = PBXGroup;
 			children = (
 				208C90BC2B6FE4CF00C67960 /* Member */,
-				208C90BB2B6FE4A900C67960 /* Expense */,
 				7A610AE42B491ED600D3096F /* Dummy.swift */,
 				D20D6FF22B5D67B1006D6762 /* Category.swift */,
 				D20D6FFB2B5FDF00006D6762 /* DailyConsume.swift */,
@@ -623,6 +636,7 @@
 			isa = PBXGroup;
 			children = (
 				D253EEBB2B7B651500A4FC1C /* Expense */,
+				208C90C52B7BA6EB00C67960 /* ConsumeAPI */,
 				D217EBED2B7460A700EB6BF3 /* Category */,
 				208C90A22B6C00F600C67960 /* Model */,
 				208C908D2B6AB76600C67960 /* Test-park */,
@@ -797,9 +811,12 @@
 				7A610AF02B49414100D3096F /* RegisterProfileViewController.swift in Sources */,
 				7A4C67462B5A4B77008BCAC9 /* MainTextField.swift in Sources */,
 				D20D70142B612BB4006D6762 /* CategoryTableView.swift in Sources */,
+				208C90CA2B7BBBB600C67960 /* ResponseExpenseDto.swift in Sources */,
 				7A4C673F2B5A4AC9008BCAC9 /* CheckBtn.swift in Sources */,
 				D20D701A2B664996006D6762 /* UICollectionView.swift in Sources */,
+				208C90D12B7BD33300C67960 /* UpdateExpenseRequest.swift in Sources */,
 				D253EEB32B7A5E6D00A4FC1C /* DayGoalCalendarView.swift in Sources */,
+				208C90C72B7BB06800C67960 /* ConsumeDetailViewController.swift in Sources */,
 				552A431C2B7AB534007AEAAD /* UIImage.swift in Sources */,
 				206C58D82B626465008410C1 /* CategoryModalViewController.swift in Sources */,
 				D2D0B7362B6BA83E003B6B5E /* HomeRepository.swift in Sources */,
@@ -816,7 +833,6 @@
 				208C90B02B6E887A00C67960 /* ReasonModalViewController.swift in Sources */,
 				208C90BA2B6FE45B00C67960 /* UnregisterTitleLabel.swift in Sources */,
 				208C90C02B72636C00C67960 /* UIHelper.swift in Sources */,
-				208C90B22B6F589100C67960 /* Expense.swift in Sources */,
 				208C90A82B6D48B300C67960 /* User.swift in Sources */,
 				20AFDD952B65B882008F8AB9 /* ChooseDateView.swift in Sources */,
 				D217EBEC2B6F846400EB6BF3 /* Progress.swift in Sources */,
@@ -837,6 +853,7 @@
 				552A42672B72200E007AEAAD /* DailyComsumeViewController.swift in Sources */,
 				D20D6FF32B5D67B1006D6762 /* Category.swift in Sources */,
 				D2D0B7382B6BA845003B6B5E /* HomeAPI.swift in Sources */,
+				208C90CD2B7BBC6700C67960 /* ExpenseCreateResponse.swift in Sources */,
 				D20D6FEB2B5AF62E006D6762 /* MainWeekDayView.swift in Sources */,
 				D20D700F2B61241F006D6762 /* NotificationsViewController.swift in Sources */,
 				D20D6FFC2B5FDF00006D6762 /* DailyConsume.swift in Sources */,
@@ -845,7 +862,7 @@
 				7A610AE52B491ED600D3096F /* Dummy.swift in Sources */,
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
 				7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */,
-				208C90B42B6F66A700C67960 /* ExpenseCreateRequest.swift in Sources */,
+				208C90CF2B7BBC8400C67960 /* ExpenseCreateRequest.swift in Sources */,
 				20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */,
 				206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */,
 				D20D70042B5FF094006D6762 /* Numeric.swift in Sources */,
@@ -880,7 +897,6 @@
 				D20D6FDA2B581A05006D6762 /* CustomTabBarController.swift in Sources */,
 				208C90AA2B6D559F00C67960 /* AskViewController.swift in Sources */,
 				7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */,
-				208C90B62B6F738F00C67960 /* ExpenseCreateResponse.swift in Sources */,
 				5591601C2B64595E00063F06 /* EvaluationViewController.swift in Sources */,
 				552A43002B7AA03E007AEAAD /* goalDeleteModalView.swift in Sources */,
 				7A610AD62B49007100D3096F /* BattleViewController.swift in Sources */,

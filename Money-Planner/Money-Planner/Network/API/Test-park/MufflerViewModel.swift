@@ -57,29 +57,27 @@ class MufflerViewModel {
 //    }
 //
 //    // Expense Controller
-    // 소비등록
+    // 소비내역 등록
     func createExpense(expenseRequest: ExpenseCreateRequest) -> Single<ExpenseCreateResponse> {
         return provider.request(.createExpense(expenseRequest: expenseRequest))
                 .map(ExpenseCreateResponse.self)
     }
-//
-//    func updateExpense(expenseId: String, expenseRequest: ExpenseCreateRequest) -> Observable<MyRepo> {
-//        return provider.request(.updateExpense(expenseId: expenseId, expenseRequest: expenseRequest))
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//
-//    func getExpense(expenseId: String) -> Observable<MyRepo> {
-//        return provider.request(.getExpense(expenseId: expenseId))
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//
-//    func deleteExpense(expenseId: String) -> Observable<MyRepo> {
-//        return provider.request(.deleteExpense(expenseId: expenseId))
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
+    // 소비내역 수정
+    func updateExpense(expenseRequest: UpdateExpenseRequest) -> Single<ExpenseCreateResponse> {
+        return provider.request(.updateExpense(expenseRequest: expenseRequest))
+            .map(ExpenseCreateResponse.self)
+    }
+    // 소비내역 조회
+    func getExpense(expenseId: Int64) -> Observable<ResponseExpenseDto> {
+        return provider.request(.getExpense(expenseId: expenseId))
+            .map(ResponseExpenseDto.self)
+            .asObservable()
+    }
+    // 소비내역 삭제
+    func deleteExpense(expenseId: Int64) -> Observable<ConnectModel> {
+        return provider.request(.deleteExpense(expenseId: expenseId))
+            .map(ConnectModel.self).asObservable()
+    }
 //
 //    func getWeeklyExpense() -> Observable<MyRepo> {
 //        return provider.request(.getWeeklyExpense)

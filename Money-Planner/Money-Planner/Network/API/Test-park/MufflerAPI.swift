@@ -15,9 +15,9 @@ enum MufflerAPI {
 
     // Expense Controller
     case createExpense(expenseRequest: ExpenseCreateRequest)
-    case updateExpense(expenseId: String, expenseRequest: ExpenseCreateRequest)
-    case getExpense(expenseId: String)
-    case deleteExpense(expenseId: String)
+    case updateExpense(expenseRequest: UpdateExpenseRequest)
+    case getExpense(expenseId: Int64)
+    case deleteExpense(expenseId: Int64)
     case getWeeklyExpense
     case searchExpense
     case getMonthlyExpense
@@ -69,8 +69,8 @@ extension MufflerAPI: TargetType {
         // Expense Controller
         case .createExpense:
             return "/api/expense"
-        case .updateExpense(let expenseId, _):
-            return "/api/expense/\(expenseId)"
+        case .updateExpense:
+            return "/api/expense"
         case .getExpense(let expenseId):
             return "/api/expense/\(expenseId)"
         case .deleteExpense(let expenseId):
@@ -141,10 +141,10 @@ extension MufflerAPI: TargetType {
             return .requestPlain
         case .deleteGoal, .deleteExpense:
             return .requestPlain
-        case .updateExpense(_, let expenseRequest):
-            return .requestJSONEncodable(expenseRequest as! Encodable)
         case .createExpense(let expenseRequest):
                 return .requestJSONEncodable(expenseRequest)
+        case .updateExpense(let expenseRequest):
+            return .requestJSONEncodable(expenseRequest)
         }
         
     }
@@ -156,6 +156,6 @@ extension MufflerAPI: TargetType {
 
     // Define headers for the request
     var headers: [String: String]? {
-        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDc0MDA3NjN9.wsu2awnVWZoZkj5V_Wddd0NvoobzdoqhOMSliswq_jI"] // Replace with your actual access token
+        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDc4ODk1NzJ9.ECMCrOsH6ee6Q6bbkkjILlbGqYzp-Ni3aRhxgfIGSns"] // Replace with your actual access token
     }
 }
