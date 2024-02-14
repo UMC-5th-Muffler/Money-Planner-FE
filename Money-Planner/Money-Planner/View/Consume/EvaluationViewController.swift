@@ -10,12 +10,10 @@ import UIKit
 
 class EvaluationViewController : UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    let headerView = HeaderView(title:"")
-    
     let descriptionView = DescriptionView(text: "오늘의 소비를\n스스로 평가해주세요", alignToCenter: false)
     
-    let estimationLabel : UILabel = {
-        let label = UILabel()
+    let estimationLabel : MPLabel = {
+        let label = MPLabel()
         label.text = "종합적 평가"
         label.font = UIFont.mpFont16B()
         label.textColor = UIColor(named:"black")
@@ -74,7 +72,9 @@ class EvaluationViewController : UIViewController, UICollectionViewDelegate, UIC
     override func viewDidLoad(){
         view.backgroundColor = UIColor.mpWhite
         
-        setupHeader()
+        presentCustomModal()
+        
+        setupNavigationBar()
         setupDescription()
         setupTotalEstimation()
         setupDiary()
@@ -95,20 +95,32 @@ class EvaluationViewController : UIViewController, UICollectionViewDelegate, UIC
         self.view.endEditing(true) /// 화면을 누르면 키보드 내리기
     }
     
+    private func presentCustomModal() {
+        // CustomModal을 띄웁니다.
+        let customModalVC = evaluationModalView()
+        customModalVC.modalPresentationStyle = .overFullScreen
+        customModalVC.modalTransitionStyle = .crossDissolve
+        present(customModalVC, animated: true, completion: nil)
+        
+        // completeButton을 눌렀을 때 모달을 닫는 기능을 추가
+        customModalVC.completeButton.addTarget(self, action: #selector(dismissCustomModal), for: .touchUpInside)
+    }
+    
+    @objc private func dismissCustomModal() {
+         // 모달 닫기
+         dismiss(animated: true, completion: nil)
+     }
+    
 }
 
 extension EvaluationViewController : UITextViewDelegate {
-    func setupHeader() {
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(headerView)
-        
-        NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: -25),
-            
-            headerView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-            headerView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-            headerView.heightAnchor.constraint(equalToConstant: 25)
-        ])
+
+    func setupNavigationBar() {
+        self.navigationItem.title = "평가"
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.mpBlack, NSAttributedString.Key.font: UIFont.mpFont18B()]
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.layoutIfNeeded()
     }
     
     func setupDescription() {
@@ -116,7 +128,7 @@ extension EvaluationViewController : UITextViewDelegate {
         view.addSubview(descriptionView)
         
         NSLayoutConstraint.activate([
-            descriptionView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 36),
+            descriptionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 36),
             
             descriptionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             descriptionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
@@ -268,10 +280,15 @@ extension EvaluationViewController : UITextViewDelegate {
             numLabel.textColor = UIColor.red
             diaryTextView.layer.borderWidth = 1
             diaryTextView.layer.borderColor = UIColor.red.cgColor
+            confirmBtn.isEnabled = false
         }
         else {
             numLabel.textColor = UIColor.mpDarkGray
             diaryTextView.layer.borderWidth = 0
+            
+            if let selectedIndexPaths = myCollectionView.indexPathsForSelectedItems, selectedIndexPaths.count > 0 {
+                    confirmBtn.isEnabled = true
+            }
         }
         
         numLabel.text = "\(diaryTextView.text.count)/100"
@@ -299,7 +316,7 @@ extension EvaluationViewController : UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let tempText = (textView.text as NSString).replacingCharacters(in: range, with: text)
         let numberOfChars = tempText.count
-        return numberOfChars <= 100
+        return numberOfChars <= 101
     }
 }
 
