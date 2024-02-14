@@ -11,16 +11,18 @@ import UIKit
 class CategoryTableView : UIView{
     
     
-    private let table: UITableView = {
+    private let tableView: UITableView = {
         let table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
+        table.isEditing = true
+        table.allowsSelectionDuringEditing = true
         return table
     }()
     
     var categoryList : [Category] = [ Category(id: 0, name: "전체"), Category(id: 1, name: "식사"), Category(id: 2, name: "카페"), Category(id: 3, name: "교통"), Category(id: 4, name: "쇼핑")] {
         didSet{
             print("여기")
-            table.reloadData()
+            tableView.reloadData()
         }
     }
     
@@ -44,23 +46,19 @@ class CategoryTableView : UIView{
         print(categoryList.count)
         backgroundColor = .mpWhite
         
-        self.table.delegate = self
-        self.table.dataSource = self
-        self.table.register(CategoryTableCell.self, forCellReuseIdentifier: "CategoryTableCell")
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.register(CategoryTableCell.self, forCellReuseIdentifier: "CategoryTableCell")
         
-        self.addSubview(self.table)
+        self.addSubview(self.tableView)
+        
+        tableView.separatorInset.left = 0
 
         NSLayoutConstraint.activate([
-
-//            topAnchor.constraint(equalTo: topAnchor),
-//            leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-//            trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-//            bottomAnchor.constraint(equalTo:safeAreaLayoutGuide.bottomAnchor),
-
-//            tableView.topAnchor.constraint(equalTo: topAnchor),
-//            tableView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-//            tableView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-//            tableView.bottomAnchor.constraint(equalTo:bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo:bottomAnchor)
         ])
     }
 
@@ -77,18 +75,39 @@ extension CategoryTableView : UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTableCell", for: indexPath) as? CategoryTableCell else {
-            print("여기옴?")
             fatalError("Unable to dequeue CategoryTableCell")
         }
         
-        print("여기는 오지?")
         let category = categoryList[indexPath.row]
         
         cell.configure(with: category)
+        cell.selectionStyle = .none
         
         return cell
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+           return tableView.rowHeight
+       }
+    
+    // 왼쪽 버튼 없애기
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .none
+    }
+    
+    // editing = true 일 때 왼쪽 버튼이 나오기 위해 들어오는 indent 없애기
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let removed = categoryList.remove(at: sourceIndexPath.row)
+        categoryList.insert(removed, at: destinationIndexPath.row)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            print("Selected row at index: \(indexPath.row)")
+    }
 }
 
 class CategoryTableCell: UITableViewCell {
@@ -105,7 +124,7 @@ class CategoryTableCell: UITableViewCell {
     let iconView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.mpDarkGray
-        view.layer.cornerRadius = 22 // 동그라미의 반지름 설정
+        view.layer.cornerRadius = 16 // 동그라미의 반지름 설정
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -121,13 +140,13 @@ class CategoryTableCell: UITableViewCell {
     }
     
     private func setupUI() {
-        print(titleLabel.text)
         addSubview(iconView)
         addSubview(titleLabel)
         
         NSLayoutConstraint.activate([
             iconView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
             iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            iconView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
             
             iconView.heightAnchor.constraint(equalToConstant: 32),
             iconView.widthAnchor.constraint(equalToConstant: 32),
@@ -139,7 +158,6 @@ class CategoryTableCell: UITableViewCell {
     }
     
     func configure(with category: Category) {
-        print("여기는")
         titleLabel.text = category.name
         //         iconView.text = category.categoryIcon
     }

@@ -15,11 +15,7 @@ class CategoryEditViewController : UIViewController {
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
-    
-//    lazy var textView : UIView = {
-//        let v = UIView()
-//    }
-
+        
     var settingButton : UIBarButtonItem = {
         let button = UIButton(type: .system)
         button.setTitle("추가", for: .normal)
@@ -29,10 +25,27 @@ class CategoryEditViewController : UIViewController {
         return UIBarButtonItem(customView: button)
     }()
     
+    var canCategoryEditGrayView : UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.mpGypsumGray
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+        
+    }()
+    
+    private let canEditLabel: MPLabel = {
+        let label = MPLabel()
+        label.text = "카테고리 순서를 편집할 수 있습니다."
+        label.font = .mpFont14M()
+        label.textColor = UIColor.mpDarkGray
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     
     override func viewDidLoad(){
         super.viewDidLoad()
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .mpWhite
         
         self.navigationController?.navigationBar.tintColor = .mpBlack
@@ -40,32 +53,38 @@ class CategoryEditViewController : UIViewController {
         self.navigationItem.title = "카테고리 편집"
         self.navigationItem.rightBarButtonItems = [settingButton]
         
-
-    }
-    
-    override func loadView() {
-        super.loadView()
         setupUI()
     }
-        
+
 }
 
 extension CategoryEditViewController{
     
     func setupUI(){
-//        categoryTableView.categoryList = [
-//            Category(id: 0, name: "전체"), Category(id: 1, name: "식사"), Category(id: 2, name: "카페"), Category(id: 3, name: "교통"), Category(id: 4, name: "쇼핑")
-//        ]
         
-        categoryTableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(categoryTableView)
+        categoryTableView.categoryList = [
+            Category(id: 0, name: "전체"), Category(id: 1, name: "식사"), Category(id: 2, name: "카페"), Category(id: 3, name: "교통"), Category(id: 4, name: "쇼핑")
+        ]
+        
 
-//        NSLayoutConstraint.activate([
-//            categoryTableView.topAnchor.constraint(equalTo: self.view.topAnchor),
-//            categoryTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-//            categoryTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-//            categoryTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-//        ])
+        view.addSubview(categoryTableView)
+        view.addSubview(canCategoryEditGrayView)
+        view.addSubview(canEditLabel)
+        
+        NSLayoutConstraint.activate([
+            canCategoryEditGrayView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            canCategoryEditGrayView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            canCategoryEditGrayView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            canCategoryEditGrayView.heightAnchor.constraint(equalToConstant: 40),
+            
+            canEditLabel.centerXAnchor.constraint(equalTo: canCategoryEditGrayView.centerXAnchor),
+            canEditLabel.centerYAnchor.constraint(equalTo: canCategoryEditGrayView.centerYAnchor),
+            
+            categoryTableView.topAnchor.constraint(equalTo: self.canCategoryEditGrayView.bottomAnchor),
+            categoryTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            categoryTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            categoryTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        ])
     }
     
     @objc func addButtonTapped() {
