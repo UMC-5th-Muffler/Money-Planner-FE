@@ -10,18 +10,26 @@ import UIKit
 
 
 class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
-  
-    private let tableView: UITableView = {
-        let table = UITableView()
+    
+    let tableHeaderView : UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+
+    let tableView: UITableView = {
+        let table = UITableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
-        table.isScrollEnabled = false
+        table.isScrollEnabled = true
         table.separatorStyle = .none
+        table.backgroundColor = .clear
         return table
     }()
     
     var data: [DailyConsume] = [] {
         didSet {
             tableView.reloadData()
+            layoutIfNeeded()
         }
     }
     
@@ -40,15 +48,14 @@ class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
         label.text = "최신순"
         return label
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        tableView.isScrollEnabled = false
         setupUI()
     }
     
@@ -68,46 +75,49 @@ class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
         maskLayer.path = maskPath.cgPath
         layer.mask = maskLayer
     }
-
+    
     private func setupUI() {
+        tableHeaderView.addSubview(orderLabel)
+        tableHeaderView.addSubview(arrow_small)
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .mpWhite
         
-        addSubview(orderLabel)
-        addSubview(arrow_small)
+        tableView.tableHeaderView = tableHeaderView
+        
         addSubview(tableView)
-
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(ConsumeRecordCell.self, forCellReuseIdentifier: "ConsumeRecordCell")
-
+        
         NSLayoutConstraint.activate([
-            orderLabel.topAnchor.constraint(equalTo: topAnchor, constant : 32),
-            orderLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            orderLabel.topAnchor.constraint(equalTo: tableHeaderView.topAnchor, constant: 32),
+            orderLabel.leadingAnchor.constraint(equalTo: tableHeaderView.leadingAnchor, constant: 16),
             orderLabel.heightAnchor.constraint(equalToConstant: 24),
+            orderLabel.bottomAnchor.constraint(equalTo: tableHeaderView.bottomAnchor, constant: -32),
             
             arrow_small.leadingAnchor.constraint(equalTo: orderLabel.trailingAnchor, constant: 4),
             arrow_small.centerYAnchor.constraint(equalTo: orderLabel.centerYAnchor),
             
-            tableView.topAnchor.constraint(equalTo: orderLabel.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: topAnchor),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
 }
 
 extension HomeConsumeView {
     // MARK: - UITableViewDataSource
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return data.count
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data[section].expenseDetailList!.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ConsumeRecordCell", for: indexPath) as? ConsumeRecordCell else {
             
@@ -117,12 +127,12 @@ extension HomeConsumeView {
         let consumeRecord = data[indexPath.section].expenseDetailList![indexPath.row]
         
         cell.configure(with: consumeRecord)
-
+        
         return cell
     }
-
+    
     // MARK: - UITableViewDelegate
-
+    
     // 여기에 UITableViewDelegate 관련 메서드를 추가할 수 있습니다.
     // 예를 들면, 셀을 선택했을 때의 동작 등을 구현할 수 있습니다.
     
@@ -137,7 +147,7 @@ extension HomeConsumeView {
             v.heightAnchor.constraint(equalToConstant: 1)
             return v
         }()
-
+        
         // 섹션 헤더에 표시할 내용을 추가
         let titleLabel = UILabel()
         titleLabel.text = data[section].date.formatMonthAndDate
@@ -167,8 +177,8 @@ extension HomeConsumeView {
             costLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             
             
-//            separatorView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-//            separatorView.trailingAnchor.constraint(equalTo: costLabel.trailingAnchor)
+            //            separatorView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            //            separatorView.trailingAnchor.constraint(equalTo: costLabel.trailingAnchor)
         ])
         
         return headerView
@@ -178,26 +188,26 @@ extension HomeConsumeView {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // 선택한 셀에 대한 처리를 구현합니다.
         // 예를 들어, 선택한 셀의 데이터를 가져와 다른 뷰로 전달하거나, 다른 뷰로 이동하는 등의 작업을 수행할 수 있습니다.
-
+        
         let selectedRecord = data[indexPath.section].expenseDetailList![indexPath.row]
-
+        
         
         // expenseID
         let expenseId : Int64 = Int64(selectedRecord.expenseId)
-//        // 소비내역을 불러옵니다.
-//        let disposeBag = DisposeBag()
-//        let viewModel = MufflerViewModel()
-//        viewModel.getExpense(expenseId: expenseId)
-//            .subscribe(onNext: { repos in
-//                // 네트워크 응답에 대한 처리
-//                print("소비 내역 불러오기 성공!")
-//                print(repos)
-//            }, onError: { error in
-//                // 에러 처리
-//                print("Error: \(error)")
-//            })
-//            .disposed(by: disposeBag)
-//        
+        //        // 소비내역을 불러옵니다.
+        //        let disposeBag = DisposeBag()
+        //        let viewModel = MufflerViewModel()
+        //        viewModel.getExpense(expenseId: expenseId)
+        //            .subscribe(onNext: { repos in
+        //                // 네트워크 응답에 대한 처리
+        //                print("소비 내역 불러오기 성공!")
+        //                print(repos)
+        //            }, onError: { error in
+        //                // 에러 처리
+        //                print("Error: \(error)")
+        //            })
+        //            .disposed(by: disposeBag)
+        //
         // 선택한 셀의 데이터를 다른 뷰로 전달합니다.
         //detailViewController.selectedRecord = selectedRecord
         // 이동할 다른 뷰를 초기화합니다.
@@ -206,7 +216,6 @@ extension HomeConsumeView {
         self.window?.rootViewController?.present(detailViewController, animated: true, completion: nil)
         
     }
-    
 }
 
 
@@ -236,22 +245,22 @@ class ConsumeRecordCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupUI()
     }
-
+    
     private func setupUI() {
         addSubview(circleView)
         addSubview(costLabel)
         addSubview(titleLabel)
-
+        
         NSLayoutConstraint.activate([
             circleView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
             circleView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
@@ -270,7 +279,7 @@ class ConsumeRecordCell: UITableViewCell {
         ])
         
     }
-
+    
     func configure(with consumeRecord: ConsumeDetail) {
         titleLabel.text = consumeRecord.title
         costLabel.text = consumeRecord.cost.formattedWithSeparator() + "원"
