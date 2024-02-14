@@ -22,7 +22,30 @@ class SearchConsumeViewController : UIViewController {
     
     var hasNext : Bool = false
     var loading : Bool = false
-//    var noData : Bool = false
+    
+    let noDataLabel : MPLabel = {
+        let label = MPLabel()
+        label.text = "검색 결과가 없습니다."
+        label.font = .mpFont16M()
+        label.textColor = .mpDarkGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let otherKeywordLabel : MPLabel = {
+        let label = MPLabel()
+        label.text = "다른 키워드로 검색해주세요."
+        label.font = .mpFont16M()
+        label.textColor = .mpDarkGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    var noDataView : UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
     
     var consumeList : [DailyConsume] = []
     
@@ -36,7 +59,10 @@ class SearchConsumeViewController : UIViewController {
         searchBar.placeholder = "어떤 소비내역을 찾으세요?"
         searchBar.searchTextField.font = .mpFont16M()
         self.navigationItem.titleView = searchBar
-                
+        
+        consumeView.isHidden = true
+        noDataView.isHidden = true
+        setUpNoDataView()
         setUpConsumeView()
     }
 }
@@ -44,16 +70,24 @@ class SearchConsumeViewController : UIViewController {
 
 extension SearchConsumeViewController : UISearchBarDelegate{
     
-    func setUpConsumeView(){
+    func setUpNoDataView(){
+        view.addSubview(noDataView)
         
-        consumeView.data = [
-            DailyConsume(date: "2024-01-17", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
-            DailyConsume(date: "2024-01-16", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
-            DailyConsume(date: "2024-01-15", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
-            DailyConsume(date: "2024-01-14", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")])
+        noDataView.addSubview(noDataLabel)
+        noDataView.addSubview(otherKeywordLabel)
+        
+        NSLayoutConstraint.activate([
+            noDataView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            noDataView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             
-        ]
-        
+            noDataLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            noDataLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            otherKeywordLabel.topAnchor.constraint(equalTo: noDataLabel.bottomAnchor, constant: 10),
+            otherKeywordLabel.centerXAnchor.constraint(equalTo: noDataLabel.centerXAnchor)
+        ])
+    }
+    
+    func setUpConsumeView(){
         view.addSubview(consumeView)
         
         NSLayoutConstraint.activate([
@@ -68,20 +102,31 @@ extension SearchConsumeViewController : UISearchBarDelegate{
         guard let searchText = searchBar.text, !searchText.isEmpty else {
             return // 검색어가 비어 있으면 무시
         }
+        self.loading = true
         
         ExpenseRepository.shared.getExpenseList(text: searchText, order: nil, size: nil){
             (result) in
             switch result{
             case .success(let data):
-                
+                self.loading = false
                 self.hasNext = data!.hasNext
                 let consumeList = data?.dailyExpenseList ?? []
-//                self.consumeList.append(contentsOf: consumeList)
-//
-//                DispatchQueue.main.async {
-//                    self.consumeView.data = self.consumeList
-//                }
-//                self.loading = false
+                self.consumeList = consumeList
+                
+                if(self.consumeList.isEmpty){
+                    self.consumeView.isHidden = true
+                    self.noDataView.isHidden = false
+                    return
+                }
+                
+                
+                DispatchQueue.main.async {
+                    self.consumeView.data = self.consumeList
+                    if(self.consumeView.isHidden){
+                        self.noDataView.isHidden = true
+                        self.consumeView.isHidden = false
+                    }
+                }
                 
                 print("확인")
                 print(consumeList)

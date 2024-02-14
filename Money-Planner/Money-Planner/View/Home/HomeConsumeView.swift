@@ -159,9 +159,14 @@ extension HomeConsumeView {
         // "Cost" 텍스트를 추가
         let costLabel = UILabel()
         
-        let result: String = data[section].dailyTotalCost!.formattedWithSeparator()
-        
-        costLabel.text = "\(result)원"
+        if(data[section].dailyTotalCost != nil){
+            let result: String = data[section].dailyTotalCost!.formattedWithSeparator()
+            
+            costLabel.text = "\(result)원"
+        }else{
+            costLabel.text = ""
+        }
+
         costLabel.textColor = UIColor.mpDarkGray
         costLabel.font = UIFont.mpFont14M()
         costLabel.translatesAutoresizingMaskIntoConstraints = false
