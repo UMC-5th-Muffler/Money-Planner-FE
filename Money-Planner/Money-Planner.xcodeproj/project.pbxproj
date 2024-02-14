@@ -44,6 +44,8 @@
 		20EF782D2B68CEA700AA135E /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EF782C2B68CEA700AA135E /* AddCategoryViewController.swift */; };
 		20EF78312B68E3AD00AA135E /* MyPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EF78302B68E3AD00AA135E /* MyPageTableViewCell.swift */; };
 		551E8B742B7D10050008476B /* NotificationSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551E8B732B7D10050008476B /* NotificationSettingViewController.swift */; };
+		551E8B762B7D13490008476B /* zeroModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551E8B752B7D13490008476B /* zeroModalView.swift */; };
+		551E8B782B7D135E0008476B /* evaluationModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551E8B772B7D135E0008476B /* evaluationModalView.swift */; };
 		552A423E2B671B86007AEAAD /* EditGoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A423D2B671B86007AEAAD /* EditGoalViewController.swift */; };
 		552A42672B72200E007AEAAD /* DailyConsumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A42662B72200E007AEAAD /* DailyConsumeViewController.swift */; };
 		552A43002B7AA03E007AEAAD /* goalDeleteModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A42FF2B7AA03E007AEAAD /* goalDeleteModalView.swift */; };
@@ -173,6 +175,8 @@
 		20EF782C2B68CEA700AA135E /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
 		20EF78302B68E3AD00AA135E /* MyPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTableViewCell.swift; sourceTree = "<group>"; };
 		551E8B732B7D10050008476B /* NotificationSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingViewController.swift; sourceTree = "<group>"; };
+		551E8B752B7D13490008476B /* zeroModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = zeroModalView.swift; sourceTree = "<group>"; };
+		551E8B772B7D135E0008476B /* evaluationModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = evaluationModalView.swift; sourceTree = "<group>"; };
 		552A423D2B671B86007AEAAD /* EditGoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGoalViewController.swift; sourceTree = "<group>"; };
 		552A42662B72200E007AEAAD /* DailyConsumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyConsumeViewController.swift; sourceTree = "<group>"; };
 		552A42FF2B7AA03E007AEAAD /* goalDeleteModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = goalDeleteModalView.swift; sourceTree = "<group>"; };
@@ -299,6 +303,8 @@
 				D20D70222B67E1DD006D6762 /* GoalListModalViewController.swift */,
 				D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */,
 				552A42FF2B7AA03E007AEAAD /* goalDeleteModalView.swift */,
+				551E8B752B7D13490008476B /* zeroModalView.swift */,
+				551E8B772B7D135E0008476B /* evaluationModalView.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -848,6 +854,7 @@
 				208C90912B6AB7A200C67960 /* MufflerViewModel.swift in Sources */,
 				208C90BE2B710F4800C67960 /* TextFieldContainerView.swift in Sources */,
 				D2D0B72B2B6A704B003B6B5E /* BaseResponse.swift in Sources */,
+				551E8B782B7D135E0008476B /* evaluationModalView.swift in Sources */,
 				D20D70302B68BEB0006D6762 /* Encodable.swift in Sources */,
 				D2D0B72F2B6A70A1003B6B5E /* BaseRepository.swift in Sources */,
 				D253EEB72B7B505B00A4FC1C /* HomeMoreModalViewController.swift in Sources */,
@@ -866,6 +873,7 @@
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
 				7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */,
 				208C90CF2B7BBC8400C67960 /* ExpenseCreateRequest.swift in Sources */,
+				551E8B762B7D13490008476B /* zeroModalView.swift in Sources */,
 				20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */,
 				206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */,
 				D20D70042B5FF094006D6762 /* Numeric.swift in Sources */,
