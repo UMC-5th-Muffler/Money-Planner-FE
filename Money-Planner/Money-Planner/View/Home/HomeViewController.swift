@@ -536,9 +536,9 @@ extension HomeViewController{
     
     
     @objc func searchButtonTapped() {
-        //        let vc = SearchConsumeViewController()
-        //        vc.hidesBottomBarWhenPushed = true
-        //        self.navigationController?.pushViewController(vc, animated: true)
+                let vc = SearchConsumeViewController()
+                vc.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func bellButtonTapped() {
@@ -548,9 +548,9 @@ extension HomeViewController{
     }
     
     @objc func menuButtonTapped() {
-        //        let vc = CategoryEditViewController()
-        //        vc.hidesBottomBarWhenPushed = true
-        //        self.navigationController?.pushViewController(vc, animated: true)
+              let vc = HomeMoreModalViewController()
+              vc.delegate = self
+              present(vc, animated: true)
     }
     
     @objc func monthViewTapped(){
@@ -657,3 +657,18 @@ extension HomeViewController : GoalListModalViewDelegate{
     }
 }
 
+extension HomeViewController : HomeMoreModalDelegate{
+    func selectPage(index: Int) {
+        if(index == 0){
+            let vc = CategoryEditViewController()
+            vc.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
+        if(index == 1){
+            let vc = RepeatConsumeViewController()
+            vc.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
