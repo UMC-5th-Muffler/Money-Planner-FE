@@ -43,8 +43,9 @@
 		20AFDD952B65B882008F8AB9 /* ChooseDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD942B65B882008F8AB9 /* ChooseDateView.swift */; };
 		20EF782D2B68CEA700AA135E /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EF782C2B68CEA700AA135E /* AddCategoryViewController.swift */; };
 		20EF78312B68E3AD00AA135E /* MyPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EF78302B68E3AD00AA135E /* MyPageTableViewCell.swift */; };
+		551E8B742B7D10050008476B /* NotificationSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551E8B732B7D10050008476B /* NotificationSettingViewController.swift */; };
 		552A423E2B671B86007AEAAD /* EditGoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A423D2B671B86007AEAAD /* EditGoalViewController.swift */; };
-		552A42672B72200E007AEAAD /* DailyComsumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A42662B72200E007AEAAD /* DailyComsumeViewController.swift */; };
+		552A42672B72200E007AEAAD /* DailyConsumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A42662B72200E007AEAAD /* DailyConsumeViewController.swift */; };
 		552A43002B7AA03E007AEAAD /* goalDeleteModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A42FF2B7AA03E007AEAAD /* goalDeleteModalView.swift */; };
 		552A431C2B7AB534007AEAAD /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A431B2B7AB534007AEAAD /* UIImage.swift */; };
 		5591601C2B64595E00063F06 /* EvaluationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591601B2B64595E00063F06 /* EvaluationViewController.swift */; };
@@ -171,8 +172,9 @@
 		20AFDD942B65B882008F8AB9 /* ChooseDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDateView.swift; sourceTree = "<group>"; };
 		20EF782C2B68CEA700AA135E /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
 		20EF78302B68E3AD00AA135E /* MyPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTableViewCell.swift; sourceTree = "<group>"; };
+		551E8B732B7D10050008476B /* NotificationSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingViewController.swift; sourceTree = "<group>"; };
 		552A423D2B671B86007AEAAD /* EditGoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGoalViewController.swift; sourceTree = "<group>"; };
-		552A42662B72200E007AEAAD /* DailyComsumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyComsumeViewController.swift; sourceTree = "<group>"; };
+		552A42662B72200E007AEAAD /* DailyConsumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyConsumeViewController.swift; sourceTree = "<group>"; };
 		552A42FF2B7AA03E007AEAAD /* goalDeleteModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = goalDeleteModalView.swift; sourceTree = "<group>"; };
 		552A431B2B7AB534007AEAAD /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		5591601B2B64595E00063F06 /* EvaluationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationViewController.swift; sourceTree = "<group>"; };
@@ -282,7 +284,7 @@
 				208C90C62B7BB06800C67960 /* ConsumeDetailViewController.swift */,
 				208C90BD2B710F4800C67960 /* TextFieldContainerView.swift */,
 				5591601B2B64595E00063F06 /* EvaluationViewController.swift */,
-				552A42662B72200E007AEAAD /* DailyComsumeViewController.swift */,
+				552A42662B72200E007AEAAD /* DailyConsumeViewController.swift */,
 				208C90C42B75329100C67960 /* modal */,
 			);
 			path = Consume;
@@ -564,6 +566,7 @@
 				D20D6FF92B5FB971006D6762 /* HomeConsumeView.swift */,
 				D20D700C2B611EE3006D6762 /* SearchConsumeViewController.swift */,
 				D20D700E2B61241F006D6762 /* NotificationsViewController.swift */,
+				551E8B732B7D10050008476B /* NotificationSettingViewController.swift */,
 				D20D70102B612490006D6762 /* CategoryEditViewController.swift */,
 				D20D701D2B668800006D6762 /* Home.json */,
 				D253EEB82B7B59FE00A4FC1C /* RepeatConsumeViewController.swift */,
@@ -850,7 +853,7 @@
 				D253EEB72B7B505B00A4FC1C /* HomeMoreModalViewController.swift in Sources */,
 				7A610AEA2B493EC900D3096F /* MakeGoalViewController.swift in Sources */,
 				208C90932B6AB7DA00C67960 /* ConnectModel.swift in Sources */,
-				552A42672B72200E007AEAAD /* DailyComsumeViewController.swift in Sources */,
+				552A42672B72200E007AEAAD /* DailyConsumeViewController.swift in Sources */,
 				D20D6FF32B5D67B1006D6762 /* Category.swift in Sources */,
 				D2D0B7382B6BA845003B6B5E /* HomeAPI.swift in Sources */,
 				208C90CD2B7BBC6700C67960 /* ExpenseCreateResponse.swift in Sources */,
@@ -868,6 +871,7 @@
 				D20D70042B5FF094006D6762 /* Numeric.swift in Sources */,
 				7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */,
 				D20D70112B612490006D6762 /* CategoryEditViewController.swift in Sources */,
+				551E8B742B7D10050008476B /* NotificationSettingViewController.swift in Sources */,
 				7A610AD22B49004200D3096F /* MyPageViewController.swift in Sources */,
 				7A610AD22B49004200D3096F /* MyPageViewController.swift in Sources */,
 				D20D703A2B68C591006D6762 /* TestRepository.swift in Sources */,

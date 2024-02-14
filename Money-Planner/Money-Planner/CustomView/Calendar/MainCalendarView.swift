@@ -17,6 +17,8 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         }
     }
     
+    var navigationController: UINavigationController?
+    
     var goal : Goal?
     
     // 0인덱스를 없애기 위해 처리
@@ -220,7 +222,14 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("각각의 cell 클릭")
+        let daily = dailyList[indexPath.item]
         let cell=collectionView.cellForItem(at: indexPath)
+        
+        //각 셀을 누르면 해당 날짜의 소비내역 화면으로 이동
+        let vc = DailyConsumeViewController()
+        vc.hidesBottomBarWhenPushed = true
+        vc.dateText = daily!.date
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

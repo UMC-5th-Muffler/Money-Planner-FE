@@ -150,6 +150,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         calendarView.myCollectionView.collectionViewLayout.invalidateLayout()
+        calendarView.navigationController = self.navigationController
     }
     
     // MainMonthView의 delegate
@@ -542,9 +543,9 @@ extension HomeViewController{
     }
     
     @objc func bellButtonTapped() {
-        //        let vc = NotificationViewController()
-        //        vc.hidesBottomBarWhenPushed = true
-        //        self.navigationController?.pushViewController(vc, animated: true)
+                let vc = NotificationViewController()
+                vc.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func menuButtonTapped() {
