@@ -8,9 +8,9 @@
 import Foundation
 import UIKit
 
-class DailyComsumeViewController : UIViewController, UITableViewDelegate, UITableViewDataSource {
+class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var dateText = "2024년 1월 17일"
+    var dateText = ""
     var totalAmount = 100000
     var flag = 1 //0 : 소비등록x / 1 : 소비등록 1개이상 완료
     var zeroday = 0 //0 : 제로데이 / 1 : 제로데이아님
@@ -19,8 +19,6 @@ class DailyComsumeViewController : UIViewController, UITableViewDelegate, UITabl
     
     let historyList = Consumption.data
     let cellSpacingHeight: CGFloat = 1
-    
-    let headerView = HeaderView(title: "")
     
     let dateLabel = DescriptionView(text: "", alignToCenter: false)
     
@@ -71,7 +69,7 @@ class DailyComsumeViewController : UIViewController, UITableViewDelegate, UITabl
     override func viewDidLoad(){
         view.backgroundColor = UIColor.mpWhite
         
-        setupHeader()
+        setupNavigationBar()
         setupDateView()
         dateLabel.text = dateText
         
@@ -159,17 +157,15 @@ class DailyComsumeViewController : UIViewController, UITableViewDelegate, UITabl
 }
 
 
-extension DailyComsumeViewController {
-    func setupHeader() {
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(headerView)
+extension DailyConsumeViewController {
+    func setupNavigationBar() {
+        self.navigationItem.title = ""
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.mpBlack, NSAttributedString.Key.font: UIFont.mpFont18B()]
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.layoutIfNeeded()
+        //self.navigationItem.leftBarButtonItem = backButton
         
-        NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: -25),
-            headerView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-            headerView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-            headerView.heightAnchor.constraint(equalToConstant: 25)
-        ])
     }
     
     func setupDateView() {
@@ -177,7 +173,7 @@ extension DailyComsumeViewController {
         view.addSubview(dateLabel)
         
         NSLayoutConstraint.activate([
-            dateLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 24),
+            dateLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 24),
             dateLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             dateLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
             dateLabel.heightAnchor.constraint(equalToConstant: 36)
