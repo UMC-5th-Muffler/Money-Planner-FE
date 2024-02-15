@@ -57,6 +57,10 @@
 		7A0D331D2B7DFE0B007B2736 /* RxKakaoSDKFriend in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D331C2B7DFE0B007B2736 /* RxKakaoSDKFriend */; };
 		7A0D331F2B7DFE0B007B2736 /* RxKakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D331E2B7DFE0B007B2736 /* RxKakaoSDKShare */; };
 		7A0D33222B7DFE22007B2736 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D33212B7DFE22007B2736 /* FSCalendar */; };
+		7A0D332B2B7E00C0007B2736 /* PeriodCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33272B7E00C0007B2736 /* PeriodCalendarViewController.swift */; };
+		7A0D332C2B7E00C0007B2736 /* ShowingPeriodSelectionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33282B7E00C0007B2736 /* ShowingPeriodSelectionModal.swift */; };
+		7A0D332D2B7E00C0007B2736 /* FoundPreviousConsumeRecordModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33292B7E00C0007B2736 /* FoundPreviousConsumeRecordModal.swift */; };
+		7A0D332E2B7E00C0007B2736 /* WarnAboutUneditableModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D332A2B7E00C0007B2736 /* WarnAboutUneditableModal.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -188,6 +192,10 @@
 		552A42FF2B7AA03E007AEAAD /* goalDeleteModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = goalDeleteModalView.swift; sourceTree = "<group>"; };
 		552A431B2B7AB534007AEAAD /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		5591601B2B64595E00063F06 /* EvaluationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationViewController.swift; sourceTree = "<group>"; };
+		7A0D33272B7E00C0007B2736 /* PeriodCalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeriodCalendarViewController.swift; sourceTree = "<group>"; };
+		7A0D33282B7E00C0007B2736 /* ShowingPeriodSelectionModal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowingPeriodSelectionModal.swift; sourceTree = "<group>"; };
+		7A0D33292B7E00C0007B2736 /* FoundPreviousConsumeRecordModal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoundPreviousConsumeRecordModal.swift; sourceTree = "<group>"; };
+		7A0D332A2B7E00C0007B2736 /* WarnAboutUneditableModal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WarnAboutUneditableModal.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -309,6 +317,7 @@
 		206C58D02B617396008410C1 /* Modal */ = {
 			isa = PBXGroup;
 			children = (
+				7A0D33262B7E00C0007B2736 /* GoalModal */,
 				208C90C32B75325200C67960 /* category */,
 				206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */,
 				20EF782C2B68CEA700AA135E /* AddCategoryViewController.swift */,
@@ -397,6 +406,17 @@
 				D2D0B7392B6BAB02003B6B5E /* Goal.swift */,
 			);
 			path = Goal;
+			sourceTree = "<group>";
+		};
+		7A0D33262B7E00C0007B2736 /* GoalModal */ = {
+			isa = PBXGroup;
+			children = (
+				7A0D33272B7E00C0007B2736 /* PeriodCalendarViewController.swift */,
+				7A0D33282B7E00C0007B2736 /* ShowingPeriodSelectionModal.swift */,
+				7A0D33292B7E00C0007B2736 /* FoundPreviousConsumeRecordModal.swift */,
+				7A0D332A2B7E00C0007B2736 /* WarnAboutUneditableModal.swift */,
+			);
+			path = GoalModal;
 			sourceTree = "<group>";
 		};
 		7A4C67322B5A47BD008BCAC9 /* CustomView */ = {
@@ -891,6 +911,7 @@
 				208C90BE2B710F4800C67960 /* TextFieldContainerView.swift in Sources */,
 				D2D0B72B2B6A704B003B6B5E /* BaseResponse.swift in Sources */,
 				551E8B782B7D135E0008476B /* evaluationModalView.swift in Sources */,
+				7A0D332D2B7E00C0007B2736 /* FoundPreviousConsumeRecordModal.swift in Sources */,
 				D20D70302B68BEB0006D6762 /* Encodable.swift in Sources */,
 				D2D0B72F2B6A70A1003B6B5E /* BaseRepository.swift in Sources */,
 				D253EEB72B7B505B00A4FC1C /* HomeMoreModalViewController.swift in Sources */,
@@ -900,6 +921,7 @@
 				D20D6FF32B5D67B1006D6762 /* Category.swift in Sources */,
 				D2D0B7382B6BA845003B6B5E /* HomeAPI.swift in Sources */,
 				208C90CD2B7BBC6700C67960 /* ExpenseCreateResponse.swift in Sources */,
+				7A0D332E2B7E00C0007B2736 /* WarnAboutUneditableModal.swift in Sources */,
 				D20D6FEB2B5AF62E006D6762 /* MainWeekDayView.swift in Sources */,
 				D20D700F2B61241F006D6762 /* NotificationsViewController.swift in Sources */,
 				D20D6FFC2B5FDF00006D6762 /* DailyConsume.swift in Sources */,
@@ -939,6 +961,7 @@
 				D20D6FED2B5B9962006D6762 /* MainCalendarView.swift in Sources */,
 				208C90C22B74E01700C67960 /* UnregisterPopupViewController.swift in Sources */,
 				D253EEAF2B7A0CA500A4FC1C /* MainNoGoal.swift in Sources */,
+				7A0D332B2B7E00C0007B2736 /* PeriodCalendarViewController.swift in Sources */,
 				D20D6FE92B5AF1E9006D6762 /* MainMonthView.swift in Sources */,
 				7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */,
 				D253EEBD2B7B652300A4FC1C /* ExpenseAPI.swift in Sources */,
@@ -948,6 +971,7 @@
 				5591601C2B64595E00063F06 /* EvaluationViewController.swift in Sources */,
 				552A43002B7AA03E007AEAAD /* goalDeleteModalView.swift in Sources */,
 				7A610AD62B49007100D3096F /* BattleViewController.swift in Sources */,
+				7A0D332C2B7E00C0007B2736 /* ShowingPeriodSelectionModal.swift in Sources */,
 				D29536F12B4C0DF000EEA81F /* UserDefaults.swift in Sources */,
 				D20D703C2B68C599006D6762 /* TestAPI.swift in Sources */,
 				20AFDD932B659779008F8AB9 /* RepeatIntervalViewController.swift in Sources */,
