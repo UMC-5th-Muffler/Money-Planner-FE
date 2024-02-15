@@ -340,6 +340,7 @@
 		208C90BC2B6FE4CF00C67960 /* Member */ = {
 			isa = PBXGroup;
 			children = (
+				7A0D33252B7DFEF1007B2736 /* Goal */,
 				208C90922B6AB7DA00C67960 /* ConnectModel.swift */,
 			);
 			path = Member;
@@ -381,6 +382,21 @@
 				208C90D02B7BD33300C67960 /* UpdateExpenseRequest.swift */,
 			);
 			path = Expense;
+			sourceTree = "<group>";
+		};
+		7A0D33242B7DFECA007B2736 /* Goal */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Goal;
+			sourceTree = "<group>";
+		};
+		7A0D33252B7DFEF1007B2736 /* Goal */ = {
+			isa = PBXGroup;
+			children = (
+				D2D0B7392B6BAB02003B6B5E /* Goal.swift */,
+			);
+			path = Goal;
 			sourceTree = "<group>";
 		};
 		7A4C67322B5A47BD008BCAC9 /* CustomView */ = {
@@ -538,7 +554,6 @@
 				D20D6FF22B5D67B1006D6762 /* Category.swift */,
 				D20D6FFB2B5FDF00006D6762 /* DailyConsume.swift */,
 				D20D6FFD2B5FDF4C006D6762 /* ConsumeDetail.swift */,
-				D2D0B7392B6BAB02003B6B5E /* Goal.swift */,
 				D2D0B73C2B6BAB7A003B6B5E /* CalendarDaily.swift */,
 				D2D0B7402B6BACAB003B6B5E /* HomeNow.swift */,
 			);
@@ -656,6 +671,7 @@
 		D20D702A2B68BB81006D6762 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				7A0D33242B7DFECA007B2736 /* Goal */,
 				D253EEBB2B7B651500A4FC1C /* Expense */,
 				208C90C52B7BA6EB00C67960 /* ConsumeAPI */,
 				D217EBED2B7460A700EB6BF3 /* Category */,
