@@ -71,7 +71,7 @@ extension GoalDetailsViewController : PeriodSelectionDelegate {
 class GoalDetailsViewController : UIViewController {
     
     var goal : Goal
-    let viewModel = GoalReportViewModel.shared
+    let reportViewModel = GoalReportViewModel.shared
     let disposeBag = DisposeBag()
     
     private lazy var spendingView = SpendingView()
@@ -100,10 +100,10 @@ class GoalDetailsViewController : UIViewController {
         selectButton(spendingButton) // Default selected button
         
         // ViewModel에서 GoalReport 데이터 가져오기
-        viewModel.fetchGoalReport(for: goal.GoalID)
+        reportViewModel.fetchGoalReport(for: goal.GoalID)
         
         // ViewModel의 CategoryTotalCost 데이터를 관찰하고 UI 업데이트
-        viewModel.goalReportRelay.asObservable()
+        reportViewModel.goalReportRelay.asObservable()
             .compactMap { $0 }
             .subscribe(onNext: { [weak self] goalReportResult in
                 self?.updateCategory(with: goalReportResult)

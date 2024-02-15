@@ -1498,6 +1498,21 @@
                   endingLineNumber = "292"
                   offsetFromSymbolStart = "272">
                </Location>
+               <Location
+                  uuid = "8BEE7F2B-1B1D-4A7C-9EF9-123C66C0C084 - 9734505bc11056cc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in Money_Planner.GoalCategoryViewController.tableView(_: __C.UITableView, viewForHeaderInSection: Swift.Int) -&gt; Swift.Optional&lt;__C.UIView&gt;"
+                  moduleName = "Money-Planner"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yoocheolmin/Money-Planner-FE/Money-Planner/Money-Planner/View/Goal/GoalCategoryViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "290"
+                  endingLineNumber = "290"
+                  offsetFromSymbolStart = "272">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>

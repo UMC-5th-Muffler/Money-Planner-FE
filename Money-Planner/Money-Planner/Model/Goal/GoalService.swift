@@ -13,7 +13,8 @@ import RxSwift
 enum GoalService {
     case now
     case notNow
-    case goalReport(goalId: Int) // 새로 추가
+    case goalReport(goalId: Int)
+    case goalExpense(goalId: Int, startDate: String, endDate: String, size: Int, lastDate: String?, lastExpenseId: Int?)
 }
 
 extension GoalService: BaseAPI {
@@ -30,7 +31,10 @@ extension GoalService: BaseAPI {
         case .notNow:
             return "/api/goal/not-now"
         case .goalReport(let goalId):
-            return "/api/goal/report/\(goalId)" // 새로 추가
+            return "/api/goal/report/\(goalId)"
+        case .goalExpense(let goalId, _, _, _, _, _):
+            return "/api/expense/weekly?goalId=\(goalId)"
+        
         }
     }
     
@@ -40,6 +44,22 @@ extension GoalService: BaseAPI {
         switch self {
         case .goalReport:
             return .requestParameters(parameters: [:], encoding: URLEncoding.queryString)
+            
+        case .goalExpense(let goalId, let startDate, let endDate, let size, let lastDate, let lastExpenseId):
+            var parameters: [String: Any] = [
+                "goalId": goalId,
+                "startDate": startDate,
+                "endDate": endDate,
+                "size": size
+            ]
+            if let lastDate = lastDate {
+                parameters["lastDate"] = lastDate
+            }
+            if let lastExpenseId = lastExpenseId {
+                parameters["lastExpenseId"] = lastExpenseId
+            }
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+            
         default:
             return .requestPlain
         }

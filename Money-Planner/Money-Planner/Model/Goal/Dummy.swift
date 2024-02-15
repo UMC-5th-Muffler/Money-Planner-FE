@@ -15,6 +15,7 @@ let dateFormatter: DateFormatter = {
 
 let currentGoal: Goal = {
     let goal = Goal(
+        GoalID : 1,
         goalEmoji: "✈️",
         goalName: "일본여행 가기 전 돈모으기",
         goalAmount: 175000,
@@ -29,6 +30,7 @@ let currentGoal: Goal = {
 
 let pastGoal1: Goal = {
     let goal = Goal(
+        GoalID : 2,
         goalEmoji: "🤑",
         goalName: "거지 탈출",
         goalAmount: 200000,
@@ -43,6 +45,7 @@ let pastGoal1: Goal = {
 
 let pastGoal2: Goal = {
     let goal = Goal(
+        GoalID : 3,
         goalEmoji: "🌲",
         goalName: "크리스마스까지 아끼자",
         goalAmount: 200000,
@@ -57,6 +60,7 @@ let pastGoal2: Goal = {
 
 let pastGoal3: Goal = {
     let goal = Goal(
+        GoalID : 4,
         goalEmoji: "👍",
         goalName: "한달 30만원 도전!",
         goalAmount: 300000,
@@ -72,6 +76,7 @@ let pastGoal3: Goal = {
 
 let futureGoal: Goal = {
     let goal = Goal(
+        GoalID : 5,
         goalEmoji: "🏋️‍♀️",
         goalName: "새해 몸매 만들기",
         goalAmount: 200000, // 예시 금액

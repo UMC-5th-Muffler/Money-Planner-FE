@@ -47,10 +47,13 @@
 		7A0D32FA2B7BFEFF007B2736 /* LabelAndImageBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32F92B7BFEFF007B2736 /* LabelAndImageBtn.swift */; };
 		7A0D32FC2B7C03D7007B2736 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D32FB2B7C03D7007B2736 /* TestViewController.swift */; };
 		7A0D33012B7D39FC007B2736 /* GoalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33002B7D39FC007B2736 /* GoalService.swift */; };
-		7A0D33042B7D3B7E007B2736 /* goalReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33032B7D3B7E007B2736 /* goalReport.swift */; };
+		7A0D33042B7D3B7E007B2736 /* GoalReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33032B7D3B7E007B2736 /* GoalReport.swift */; };
 		7A0D33062B7D3F4B007B2736 /* now.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33052B7D3F4B007B2736 /* now.swift */; };
 		7A0D33082B7D3F53007B2736 /* not-now.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33072B7D3F53007B2736 /* not-now.swift */; };
 		7A0D330B2B7D4711007B2736 /* GoalReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D330A2B7D4711007B2736 /* GoalReportViewModel.swift */; };
+		7A0D330D2B7DF524007B2736 /* GoalSpendingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D330C2B7DF524007B2736 /* GoalSpendingViewModel.swift */; };
+		7A0D330F2B7DF550007B2736 /* GoalSpending.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D330E2B7DF550007B2736 /* GoalSpending.swift */; };
+		7A0D33112B7DF9DD007B2736 /* GoalCreationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33102B7DF9DD007B2736 /* GoalCreationManager.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -157,10 +160,13 @@
 		7A0D32F92B7BFEFF007B2736 /* LabelAndImageBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelAndImageBtn.swift; sourceTree = "<group>"; };
 		7A0D32FB2B7C03D7007B2736 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		7A0D33002B7D39FC007B2736 /* GoalService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalService.swift; sourceTree = "<group>"; };
-		7A0D33032B7D3B7E007B2736 /* goalReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = goalReport.swift; sourceTree = "<group>"; };
+		7A0D33032B7D3B7E007B2736 /* GoalReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalReport.swift; sourceTree = "<group>"; };
 		7A0D33052B7D3F4B007B2736 /* now.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = now.swift; sourceTree = "<group>"; };
 		7A0D33072B7D3F53007B2736 /* not-now.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "not-now.swift"; sourceTree = "<group>"; };
 		7A0D330A2B7D4711007B2736 /* GoalReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalReportViewModel.swift; sourceTree = "<group>"; };
+		7A0D330C2B7DF524007B2736 /* GoalSpendingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalSpendingViewModel.swift; sourceTree = "<group>"; };
+		7A0D330E2B7DF550007B2736 /* GoalSpending.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalSpending.swift; sourceTree = "<group>"; };
+		7A0D33102B7DF9DD007B2736 /* GoalCreationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalCreationManager.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -325,9 +331,10 @@
 		7A0D32FD2B7D2FB8007B2736 /* Goal */ = {
 			isa = PBXGroup;
 			children = (
-				7A0D33032B7D3B7E007B2736 /* goalReport.swift */,
 				7A0D33052B7D3F4B007B2736 /* now.swift */,
 				7A0D33072B7D3F53007B2736 /* not-now.swift */,
+				7A0D330E2B7DF550007B2736 /* GoalSpending.swift */,
+				7A0D33032B7D3B7E007B2736 /* GoalReport.swift */,
 				7A610AE42B491ED600D3096F /* Dummy.swift */,
 				7A57676D2B6398B0009A5972 /* Goal.swift */,
 				7A0D33002B7D39FC007B2736 /* GoalService.swift */,
@@ -347,6 +354,8 @@
 			children = (
 				7A57676A2B639817009A5972 /* GoalViewModel.swift */,
 				7A0D330A2B7D4711007B2736 /* GoalReportViewModel.swift */,
+				7A0D330C2B7DF524007B2736 /* GoalSpendingViewModel.swift */,
+				7A0D33102B7DF9DD007B2736 /* GoalCreationManager.swift */,
 			);
 			path = GoalViewModel;
 			sourceTree = "<group>";
@@ -754,6 +763,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A5767722B639A65009A5972 /* NetworkMangager.swift in Sources */,
+				7A0D330F2B7DF550007B2736 /* GoalSpending.swift in Sources */,
 				7A0D32BE2B68E9B9007B2736 /* GoalConnectionTestVC.swift in Sources */,
 				7A0D32E22B6FF81F007B2736 /* PeriodCalendarViewController.swift in Sources */,
 				7A610ABC2B47FA8E00D3096F /* LoginViewController.swift in Sources */,
@@ -774,7 +784,7 @@
 				7A0D330B2B7D4711007B2736 /* GoalReportViewModel.swift in Sources */,
 				7A57676B2B639817009A5972 /* GoalViewModel.swift in Sources */,
 				7A5767632B6396CF009A5972 /* GoalNameViewController.swift in Sources */,
-				7A0D33042B7D3B7E007B2736 /* goalReport.swift in Sources */,
+				7A0D33042B7D3B7E007B2736 /* GoalReport.swift in Sources */,
 				D20D6FE52B5AEECB006D6762 /* Date.swift in Sources */,
 				7A57677C2B682779009A5972 /* PeriodSelectionModalViewController.swift in Sources */,
 				552A423E2B671B86007AEAAD /* EditGoalViewController.swift in Sources */,
@@ -793,6 +803,7 @@
 				7A5767672B6396F1009A5972 /* GoalTotalAmountViewController.swift in Sources */,
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
 				7A5767762B64D64A009A5972 /* CategoryViewModel.swift in Sources */,
+				7A0D33112B7DF9DD007B2736 /* GoalCreationManager.swift in Sources */,
 				20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */,
 				206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */,
 				D20D70042B5FF094006D6762 /* Numeric.swift in Sources */,
@@ -814,6 +825,7 @@
 				20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */,
 				7A610AEE2B493F6D00D3096F /* RegisterUsageViewController.swift in Sources */,
 				7A0D32FC2B7C03D7007B2736 /* TestViewController.swift in Sources */,
+				7A0D330D2B7DF524007B2736 /* GoalSpendingViewModel.swift in Sources */,
 				D20D6FED2B5B9962006D6762 /* MainCalendarView.swift in Sources */,
 				7A57677A2B67CAD6009A5972 /* ViewController.swift in Sources */,
 				D20D6FE92B5AF1E9006D6762 /* MainMonthView.swift in Sources */,
