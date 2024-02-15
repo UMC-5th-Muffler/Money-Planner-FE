@@ -19,9 +19,8 @@ class CategoryTableView : UIView{
         return table
     }()
     
-    var categoryList : [Category] = [ Category(id: 0, name: "전체"), Category(id: 1, name: "식사"), Category(id: 2, name: "카페"), Category(id: 3, name: "교통"), Category(id: 4, name: "쇼핑")] {
+    var categoryList : [Category] = [] {
         didSet{
-            print("여기")
             tableView.reloadData()
         }
     }
@@ -39,9 +38,9 @@ class CategoryTableView : UIView{
     }
     
     override func layoutSubviews() {
-           super.layoutSubviews()
-           
-       }
+        super.layoutSubviews()
+        
+    }
     private func setupUI(){
         print(categoryList.count)
         backgroundColor = .mpWhite
@@ -53,7 +52,7 @@ class CategoryTableView : UIView{
         self.addSubview(self.tableView)
         
         tableView.separatorInset.left = 0
-
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: topAnchor),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -61,13 +60,13 @@ class CategoryTableView : UIView{
             tableView.bottomAnchor.constraint(equalTo:bottomAnchor)
         ])
     }
-
+    
 }
 
 extension CategoryTableView : UITableViewDelegate, UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
-         return 1
-     }
+        return 1
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categoryList.count
@@ -87,8 +86,8 @@ extension CategoryTableView : UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-           return tableView.rowHeight
-       }
+        return tableView.rowHeight
+    }
     
     // 왼쪽 버튼 없애기
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
@@ -103,14 +102,36 @@ extension CategoryTableView : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let removed = categoryList.remove(at: sourceIndexPath.row)
         categoryList.insert(removed, at: destinationIndexPath.row)
+        
+        updateCategoryPriorities()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            print("Selected row at index: \(indexPath.row)")
+        print("Selected row at index: \(indexPath.row)")
+    }
+    
+    func changeVisibility(forCellAt indexPath: IndexPath) {
+          categoryList[indexPath.row].isVisible!.toggle()
+          tableView.reloadRows(at: [indexPath], with: .automatic)
+      }
+    
+    
+    private func updateCategoryPriorities() {
+        for (index, _) in categoryList.enumerated() {
+            categoryList[index].priority = index + 1
+        }
     }
 }
 
 class CategoryTableCell: UITableViewCell {
+    
+    var eyeImageView : UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(systemName: "eye.fill")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isUserInteractionEnabled = true
+        return view
+    }()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -131,34 +152,67 @@ class CategoryTableCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        setUpGesture()
         setupUI()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        
+        setUpGesture()
         setupUI()
     }
     
     private func setupUI() {
-        addSubview(iconView)
-        addSubview(titleLabel)
+        contentView.addSubview(iconView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(eyeImageView)
         
         NSLayoutConstraint.activate([
-            iconView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-            iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            iconView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
+            iconView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            iconView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            iconView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
             
             iconView.heightAnchor.constraint(equalToConstant: 32),
             iconView.widthAnchor.constraint(equalToConstant: 32),
             
             
             titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 12),
-            titleLabel.centerYAnchor.constraint(equalTo: iconView.centerYAnchor)
+            titleLabel.centerYAnchor.constraint(equalTo: iconView.centerYAnchor),
+            
+            eyeImageView.centerYAnchor.constraint(equalTo: iconView.centerYAnchor),
+            eyeImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -14),
         ])
     }
     
     func configure(with category: Category) {
         titleLabel.text = category.name
-        //         iconView.text = category.categoryIcon
+        titleLabel.alpha = 1.0
+        
+        if category.isVisible! {
+            eyeImageView.image = UIImage(systemName: "eye.fill")
+            eyeImageView.tintColor = .mpGray
+        } else {
+            eyeImageView.image = UIImage(systemName: "eye.slash.fill")
+            eyeImageView.tintColor = .mpLightGray
+            
+            titleLabel.alpha = 0.4
+        }
+    }
+    
+    @objc func eyeImageViewTapped() {
+        guard let superview = superview as? UITableView, let indexPath = superview.indexPath(for: self) else {
+            return
+        }
+        
+        if let categoryTableView = superview.superview as? CategoryTableView {
+            categoryTableView.changeVisibility(forCellAt: indexPath)
+        }
+    }
+    
+    func setUpGesture(){
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(eyeImageViewTapped))
+        eyeImageView.addGestureRecognizer(tapGesture)
     }
 }
