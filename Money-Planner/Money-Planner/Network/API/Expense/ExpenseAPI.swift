@@ -6,6 +6,7 @@ import Moya
 enum ExpenseAPI  {
     case getSearchExpense(title : String, order : String?, size: Int?)
     case getDailyConsumeHistory(date: String, size: Int?, lastExpenseId: Int?)
+    case getRateInfo(date: String)
     
 }
 
@@ -39,13 +40,16 @@ extension ExpenseAPI : BaseAPI {
                 parameters["lastExpenseId"] = lastExpenseId
             }
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .getRateInfo(let date):
+            let parameters: [String: Any] = ["date": date]
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         }
     }
     
     public var method: Moya.Method {
         // 파라미터값을 통신요청 타입을 제작
         switch self {
-        case .getSearchExpense, .getDailyConsumeHistory:
+        case .getSearchExpense, .getDailyConsumeHistory, .getRateInfo:
             return .get
         }
     }
@@ -56,11 +60,13 @@ extension ExpenseAPI : BaseAPI {
             return "/api/expense/search"
         case .getDailyConsumeHistory:
             return "/api/expense/daily"
+        case .getRateInfo:
+            return "/api/rate"
         }
     }
     
     public var headers: [String: String]? {
-        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDgwNzQ1NTJ9.y1-7jbsain9TEDcLDN0A3daNvtK0xUwRqM1-ASvJARU"] // 억세스토큰
+        return ["Authorization": "Bearer "] // 억세스토큰
         // 실제 사용하는 헤더로 변경해야 합니다.
     }
 }

@@ -47,3 +47,18 @@ struct ExpenseDetailList: Codable {
         case title, cost, memo, categoryIcon
     }
 }
+
+// 소비평가
+// MARK: - Result
+struct RateInfo: Codable {
+    let rate, rateMemo: String?
+    let dailyPlanBudget, dailyTotalCost: Int?
+    let isZeroDay: Bool?
+}
+
+// MARK: - RateModel
+struct RateModel: Codable {
+    let rate, rateMemo: String?
+}
+
+

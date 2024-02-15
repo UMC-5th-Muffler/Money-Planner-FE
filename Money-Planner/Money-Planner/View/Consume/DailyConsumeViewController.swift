@@ -13,13 +13,14 @@ class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITabl
     
     var dailyInfo : DailyInfo = DailyInfo(date: "", isZeroDay: false, dailyTotalCost: 1234, rate: "MEDIUM", rateMemo: "soso", expenseDetailList: [], hasNext: false)
     var historyList : [ExpenseDetailList] = []
+    var rateInfo : RateInfo?
     
     var dateText = ""
     var totalAmount = 12345678
     var flag = 1 //0 : 소비등록x / 1 : 소비등록 1개이상 완료
     var zeroday = 0 //0 : 제로데이 / 1 : 제로데이아님
     var evaluation = false
-    var temptext = ""
+    //var temptext = ""
     
     let cellSpacingHeight: CGFloat = 1
     
@@ -72,6 +73,7 @@ class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITabl
     override func viewDidLoad(){
         view.backgroundColor = UIColor.mpWhite
         
+        fetchRateData()
         fetchConsumeHistoryData(lastExpenseId: nil)
         setupNavigationBar()
         setupDateView()
@@ -189,8 +191,7 @@ extension DailyConsumeViewController {
     }
     
     func setupEvaluation() {
-        let dailyTotal = dailyInfo
-        //추가예정
+        let rateContent = rateInfo
         
         evaluationView.backgroundColor = UIColor.mpGypsumGray
         evaluationView.layer.cornerRadius = 20
@@ -198,13 +199,26 @@ extension DailyConsumeViewController {
         let emojiView = UIImageView()
         let iconView = UIImageView()
         
-        if evaluation == true {
-            emojiView.image = UIImage(named: "btn_evaluation_red_on")
+        if let rate = rateContent?.rate, !rate.isEmpty {
+            switch rateContent?.rate {
+            case "HIGH":
+                emojiView.image = UIImage(named: "btn_evaluation_green_on")
+                stateLabel.text = "잘했어요"
+            case "MEDIUM":
+                emojiView.image = UIImage(named: "btn_evaluation_yellow_on")
+                stateLabel.text = "그럭저럭"
+            case "LOW":
+                emojiView.image = UIImage(named: "btn_evaluation_red_on")
+                stateLabel.text = "아쉬워요"
+            default:
+                 print("정보값 받아올 수 없음")
+            }
             iconView.image = UIImage(named: "btn_Edit")
-            stateLabel.text = "아쉬워요"
+            
             stateLabel.textColor = UIColor.mpCharcoal
         }
         else {
+
             emojiView.image = UIImage(named: "btn_evaluation_no")
             iconView.image = UIImage(named: "btn_arrow")
             stateLabel.text = "오늘 하루를 평가해보세요!"
@@ -223,14 +237,42 @@ extension DailyConsumeViewController {
         evaluationView.addSubview(iconView)
         evaluationView.addSubview(textLabel)
         
-        textLabel.text = temptext
+        textLabel.text = rateContent?.rateMemo
+        print(rateContent?.rate)
+        print(textLabel.text)
         textLabel.font = UIFont.mpFont14M()
         textLabel.textColor = UIColor.mpDarkGray
         textLabel.numberOfLines = 0
         textLabel.lineBreakMode = .byCharWrapping
         textLabel.adjustsFontSizeToFitWidth = false
         
-        if textLabel.text == "" { //메모 없으면
+        if let rateMemo = rateContent?.rateMemo, !rateMemo.isEmpty { //메모 없으면
+            NSLayoutConstraint.activate([
+                evaluationView.topAnchor.constraint(equalTo: consumeLabel.bottomAnchor, constant: 24),
+                evaluationView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+                evaluationView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+                evaluationView.bottomAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 16),
+                
+                emojiView.topAnchor.constraint(equalTo: evaluationView.topAnchor, constant: 16),
+                emojiView.leadingAnchor.constraint(equalTo: evaluationView.leadingAnchor, constant: 20),
+                emojiView.widthAnchor.constraint(equalToConstant: 30),
+                emojiView.heightAnchor.constraint(equalToConstant: 30),
+                
+                stateLabel.topAnchor.constraint(equalTo: evaluationView.topAnchor, constant: 21),
+                stateLabel.leadingAnchor.constraint(equalTo: emojiView.trailingAnchor, constant: 10),
+                
+                iconView.topAnchor.constraint(equalTo: evaluationView.topAnchor, constant: 19),
+                iconView.trailingAnchor.constraint(equalTo: evaluationView.trailingAnchor, constant: -20),
+                iconView.widthAnchor.constraint(equalToConstant: 24),
+                iconView.heightAnchor.constraint(equalToConstant: 24),
+                
+                textLabel.topAnchor.constraint(equalTo: emojiView.bottomAnchor, constant: 10),
+                textLabel.leadingAnchor.constraint(equalTo: evaluationView.leadingAnchor, constant: 20),
+                textLabel.trailingAnchor.constraint(equalTo: evaluationView.trailingAnchor, constant: -20)
+            ])
+        }
+        else {
+
             NSLayoutConstraint.activate([
                 evaluationView.topAnchor.constraint(equalTo: consumeLabel.bottomAnchor, constant: 24),
                 evaluationView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
@@ -251,31 +293,6 @@ extension DailyConsumeViewController {
                 iconView.heightAnchor.constraint(equalToConstant: 24)
             ])
         }
-        else {
-            NSLayoutConstraint.activate([
-                evaluationView.topAnchor.constraint(equalTo: consumeLabel.bottomAnchor, constant: 24),
-                evaluationView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-                evaluationView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-                evaluationView.bottomAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 16), //textLabel 있으면... 없으면 center처리
-                
-                emojiView.topAnchor.constraint(equalTo: evaluationView.topAnchor, constant: 16),
-                emojiView.leadingAnchor.constraint(equalTo: evaluationView.leadingAnchor, constant: 20),
-                emojiView.widthAnchor.constraint(equalToConstant: 30),
-                emojiView.heightAnchor.constraint(equalToConstant: 30),
-                
-                stateLabel.topAnchor.constraint(equalTo: evaluationView.topAnchor, constant: 21),
-                stateLabel.leadingAnchor.constraint(equalTo: emojiView.trailingAnchor, constant: 10),
-                
-                iconView.topAnchor.constraint(equalTo: evaluationView.topAnchor, constant: 19),
-                iconView.trailingAnchor.constraint(equalTo: evaluationView.trailingAnchor, constant: -20),
-                iconView.widthAnchor.constraint(equalToConstant: 24),
-                iconView.heightAnchor.constraint(equalToConstant: 24),
-                
-                textLabel.topAnchor.constraint(equalTo: emojiView.bottomAnchor, constant: 10),
-                textLabel.leadingAnchor.constraint(equalTo: evaluationView.leadingAnchor, constant: 20),
-                textLabel.trailingAnchor.constraint(equalTo: evaluationView.trailingAnchor, constant: -20)
-            ])
-        }
         
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(evaluationViewTapped))
@@ -283,10 +300,9 @@ extension DailyConsumeViewController {
     }
     
     @objc func evaluationViewTapped() {
-        // Navigate to EvaluationViewController
-        let evaluationVC = EvaluationViewController() // Instantiate your EvaluationViewController
-        // Push or present EvaluationViewController based on your navigation flow
-        navigationController?.pushViewController(evaluationVC, animated: true) // Assuming you're using navigation controller
+        let evaluationVC = EvaluationViewController()
+        evaluationVC.dateText = self.dateText
+        navigationController?.pushViewController(evaluationVC, animated: true)
     }
     
     func setupHistory() {
@@ -445,6 +461,24 @@ extension DailyConsumeViewController {
         }
     }
     
+    func fetchRateData() {
+        let date = dateText
+        ExpenseRepository.shared.getRateInformation(date: date) { result in
+            switch result {
+            case .success(let data):
+                print(data)
+                self.rateInfo = data
+                
+                DispatchQueue.main.async {
+                    self.reloadUI()
+                }
+            case .failure(let error):
+                // 에러가 발생했을 때 처리
+                print("Error: \(error)")
+            }
+        }
+    }
+    
     func reloadUI() {
         
         let consumption = historyList
@@ -462,8 +496,6 @@ extension DailyConsumeViewController {
         let formattedDateString = dateFormatter.string(from: date)
         
         dateLabel.text = formattedDateString
-        //totalAmount = dailyTotal.dailyTotalCost ?? 0
-        //totalAmount = consumption.reduce(0) { $0 + $1.cost }
         
         if dailyInfo.expenseDetailList!.isEmpty {
             if dailyInfo.isZeroDay == false {

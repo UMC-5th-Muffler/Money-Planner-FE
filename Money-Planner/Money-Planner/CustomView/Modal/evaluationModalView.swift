@@ -10,6 +10,9 @@ import UIKit
 
 class evaluationModalView : UIViewController {
     
+    var dateText = ""
+    var rateInfo : RateInfo?
+    
     //amount = 목표금액 - 쓴금액
     var amount = 3000 //임시값
     
@@ -59,21 +62,7 @@ class evaluationModalView : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        presentCustomModal()
-        setupBackground()
-        
-        //isZeroDay = 0
-        //0원 소비했어요 (쓴 금액 0일때)
-        //setupZeroView()
-        
-        if amount >= 0 { //목표 금액보다 ~원 아꼈어요 (amount값 양수일때)
-            setupSpareView()
-        }
-        else if amount < 0 { //목표 금액보다 ~원 더 썼어요 (amount값 음수일때)
-            setupWasteView()
-        }
-        
-        
+        fetchRateData()
 
         
     }
@@ -84,6 +73,43 @@ class evaluationModalView : UIViewController {
         customModal.center = view.center
         
     }
+    
+    func fetchRateData() {
+        let date = dateText
+        ExpenseRepository.shared.getRateInformation(date: date) { result in
+            switch result {
+            case .success(let data):
+                print(data)
+                self.rateInfo = data!
+                self.amount = (self.rateInfo?.dailyPlanBudget ?? 0) - (self.rateInfo?.dailyTotalCost ?? 0)
+                
+                DispatchQueue.main.async {
+                    self.presentCustomModal()
+                    self.setupBackground()
+                    print(self.amount)
+                    print(self.dateText)
+                    
+                    //isZeroDay = 0
+                    //0원 소비했어요 (쓴 금액 0일때)
+                    //setupZeroView()
+                    
+                    if self.amount >= 0 { //목표 금액보다 ~원 아꼈어요 (amount값 양수일때)
+                        self.setupSpareView()
+                    }
+                    else if self.amount < 0 { //목표 금액보다 ~원 더 썼어요 (amount값 음수일때)
+                        self.setupWasteView()
+                    }
+                }
+            case .failure(let error):
+                // 에러가 발생했을 때 처리
+                print("Error: \(error)")
+            }
+        }
+    }
+    
+//    func reloadUI() {
+//
+//    }
     
     private func setupBackground() {
         view.backgroundColor = UIColor.mpDim
