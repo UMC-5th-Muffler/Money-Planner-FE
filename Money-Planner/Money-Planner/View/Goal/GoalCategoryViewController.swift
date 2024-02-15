@@ -160,19 +160,18 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     
     //스택 생성
     private func setupStackView() {
-        // 레이블을 생성합니다.
         
         updateSumAmountDisplay()
         usedAmountLabel.font = UIFont.systemFont(ofSize: 14)
         leftAmountLabel.font = .mpFont14B()
         
-        // 가로 스택 뷰를 생성하고 레이블을 추가
+        //가로 스택 뷰를 생성하고 component 추가
         let horizontalStack = UIStackView(arrangedSubviews: [usedAmountLabel, leftAmountLabel])
         horizontalStack.axis = .horizontal
         horizontalStack.distribution = .equalSpacing
         horizontalStack.alignment = .center
         
-        // 수직 스택 뷰를 생성하고 progressBar와 수평 스택 뷰를 추가
+        //Vstack를 생성, progressBar와 hstack추가
         verticalStack = UIStackView(arrangedSubviews: [progressBar, horizontalStack])
         verticalStack.axis = .vertical
         verticalStack.spacing = 8
@@ -180,14 +179,13 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
         
         view.addSubview(verticalStack)
         
-        // 수직 스택 뷰에 대한 제약 조건을 설정합니다.
+        //Vstack auotolayout
         NSLayoutConstraint.activate([
             verticalStack.topAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: 20),
             verticalStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             verticalStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
         
-        // ProgressBar의 높이 제약 조건을 추가합니다.
         progressBar.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
     

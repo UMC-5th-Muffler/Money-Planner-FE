@@ -60,6 +60,7 @@ struct SomeDecodableType: Decodable {
 }
 
 struct Goal : Codable{// => 이것만 있으면 사실상 다 됐다고 보면 돼서... => 이거에서
+    var GoalID : Int
     var goalEmoji : String
     var goalName : String
     var goalAmount : Int64
@@ -94,3 +95,25 @@ struct CreateGoalRequest: Codable {
 }
 
 
+//// MARK: Result
+//struct Result: Codable {
+//    let zeroDayCount: Int
+//    let categoryTotalCosts: [CategoryTotalCost] 
+//    let categoryGoalReports: [CategoryGoalReport]
+//}
+//// MARK: CategoryGoalReport
+//struct CategoryGoalReport: Codable {
+//    let categoryName, categoryIcon: String
+//    let categoryBudget, totalCost, avgCost, maxCost: Int
+//    let expenseCount: Int
+//}
+//// MARK: CategoryTotalCost
+//struct CategoryTotalCost: Codable {
+//    let categoryName: String
+//    let totalCost: Int
+//}
+
+//Goal Home VC
+//현재 진행 목표
+
+//종료, 예정 목표
