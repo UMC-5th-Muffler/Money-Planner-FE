@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBarController.tabBar.tintColor = .mpMainColor
 
         let homeVC = UINavigationController(rootViewController: HomeViewController())
-        let goalVC = UINavigationController(rootViewController: GoalMainViewController())
+        let goalVC = UINavigationController(rootViewController: EditGoalViewController())
         let consumeVC = UINavigationController(rootViewController: ConsumeViewController())
         let battleVC = UINavigationController(rootViewController: BattleViewController())
         let settingVC = UINavigationController(rootViewController: MyPageViewController())
