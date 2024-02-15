@@ -181,26 +181,8 @@ extension HomeConsumeView {
 
         let selectedRecord = data[indexPath.section].expenseDetailList![indexPath.row]
 
-        
         // expenseID
         let expenseId : Int64 = Int64(selectedRecord.expenseId)
-//        // 소비내역을 불러옵니다.
-//        let disposeBag = DisposeBag()
-//        let viewModel = MufflerViewModel()
-//        viewModel.getExpense(expenseId: expenseId)
-//            .subscribe(onNext: { repos in
-//                // 네트워크 응답에 대한 처리
-//                print("소비 내역 불러오기 성공!")
-//                print(repos)
-//            }, onError: { error in
-//                // 에러 처리
-//                print("Error: \(error)")
-//            })
-//            .disposed(by: disposeBag)
-//        
-        // 선택한 셀의 데이터를 다른 뷰로 전달합니다.
-        //detailViewController.selectedRecord = selectedRecord
-        // 이동할 다른 뷰를 초기화합니다.
         let detailViewController = ConsumeDetailViewController(expenseId: expenseId)
         detailViewController.modalPresentationStyle = .fullScreen
         self.window?.rootViewController?.present(detailViewController, animated: true, completion: nil)

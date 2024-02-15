@@ -16,6 +16,7 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate {
     weak var delegate: AddCategoryViewDelegate?
     private lazy var headerView = HeaderView(title: "카테고리 추가")
     var currText : String = ""
+    
     let picContainer : UIView = {
         let view = UIView()
         //view.backgroundColor = .red
@@ -103,8 +104,12 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate {
             headerView.heightAnchor.constraint(equalToConstant: 60)
             
         ])
+        headerView.addBackButtonTarget(target: self, action: #selector(previousScreen), for: .touchUpInside)
         
         
+    }
+    @objc private func previousScreen(){
+        dismiss(animated: true)
     }
     private func setupPic(){
         // 컨테이너 추가
@@ -140,10 +145,7 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate {
         ])
         categoryTextField.isEnabled = true // 수정가능
         categoryTextField.tintColor = .mpMainColor
-        
-        //60
-        //16,16
-        // 높이 64
+
         
     }
     private func setupError(){

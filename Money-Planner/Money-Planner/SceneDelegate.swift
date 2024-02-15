@@ -35,7 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         settingVC.tabBarItem = UITabBarItem(title: "마이페이지", image: UIImage(named: "btn_mypage_on"), tag: 4)
 
         tabBarController.viewControllers = [homeVC, goalVC, consumeVC, battleVC, settingVC]
-        tabBarController.selectedIndex = 2 // 중앙에 버튼이 추가될 컨트롤러의 인덱스
+        tabBarController.selectedIndex = 0 // 홈을 먼저 띄우게 함.
 
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()

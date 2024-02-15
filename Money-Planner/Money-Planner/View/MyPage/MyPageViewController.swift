@@ -31,8 +31,8 @@ class MyPageViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         tempUserName = user.userNameString
-        // 뷰 컨트롤러의 타이틀 설정
-        title = "마이 페이지"
+        navigationController?.isNavigationBarHidden = true // 네비게이션 바 숨김
+
         // 커스텀 UITableViewCell 등록
         tableView.register(MyPageTableViewCell.self, forCellReuseIdentifier: "myPageCell")
 
