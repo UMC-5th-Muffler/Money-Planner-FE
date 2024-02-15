@@ -15,7 +15,7 @@ class CategoryEditViewController : UIViewController {
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
-        
+    
     var settingButton : UIBarButtonItem = {
         let button = UIButton(type: .system)
         button.setTitle("추가", for: .normal)
@@ -32,6 +32,8 @@ class CategoryEditViewController : UIViewController {
         return view
         
     }()
+        
+    var categoryList : [Category] = []
     
     private let canEditLabel: MPLabel = {
         let label = MPLabel()
@@ -53,20 +55,27 @@ class CategoryEditViewController : UIViewController {
         self.navigationItem.title = "카테고리 편집"
         self.navigationItem.rightBarButtonItems = [settingButton]
         
+        fetchCategoryList()
         setupUI()
     }
-
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        CategoryRepository.shared.updateCategoryFilter(categories: categoryTableView.categoryList){
+            _ in
+        }
+    }
+    
 }
 
 extension CategoryEditViewController{
     
     func setupUI(){
         
-        categoryTableView.categoryList = [
-            Category(id: 0, name: "전체"), Category(id: 1, name: "식사"), Category(id: 2, name: "카페"), Category(id: 3, name: "교통"), Category(id: 4, name: "쇼핑")
-        ]
+        categoryTableView.categoryList = categoryList
         
-
+        
         view.addSubview(categoryTableView)
         view.addSubview(canCategoryEditGrayView)
         view.addSubview(canEditLabel)
@@ -85,6 +94,24 @@ extension CategoryEditViewController{
             categoryTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             categoryTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
+    }
+    
+    func fetchCategoryList(){
+        CategoryRepository.shared.getCategoryAllList{
+            (result) in
+            switch result{
+            case .success(let data):
+                let categoryList = data
+                self.categoryList = categoryList!
+                self.categoryTableView.categoryList = self.categoryList
+                
+            case .failure(.failure(message: let message)):
+                print(message)
+            case .failure(.networkFail(let error)):
+                print(error)
+                print("networkFail in loginWithSocialAPI")
+            }
+        }
     }
     
     @objc func addButtonTapped() {
