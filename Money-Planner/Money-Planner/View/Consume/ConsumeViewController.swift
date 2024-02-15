@@ -910,6 +910,22 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             .subscribe(
             onSuccess: { response in
                 print(response)
+                if let expenseResponse = response.result {
+                    if let alarms = expenseResponse.alarms {
+                        for alarm in alarms {
+                            if let alarmTitle = alarm.alarmTitle, let budget = alarm.budget, let excessAmount = alarm.excessAmount {
+                                print(alarmTitle)
+                                print(budget)
+                                print(excessAmount)
+                                // 여기서 알람을 보여주는 작업을 수행합니다.
+                                // 예를 들어 UIAlertController를 사용하여 알람을 표시할 수 있습니다.
+                                let alertController = UIAlertController(title: alarmTitle, message: "Your budget: \(budget), Excess amount: \(excessAmount)", preferredStyle: .alert)
+                                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                                self.present(alertController, animated: true, completion: nil)
+                            }
+                        }
+                    }
+                }
             }, onFailure: {error in
                 print(error)
             }).disposed(by: disposeBag)
