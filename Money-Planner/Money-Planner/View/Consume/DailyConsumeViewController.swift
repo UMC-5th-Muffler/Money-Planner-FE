@@ -10,14 +10,17 @@ import UIKit
 
 class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    
+    var dailyInfo : DailyInfo = DailyInfo(date: "", isZeroDay: false, dailyTotalCost: 1234, rate: "MEDIUM", rateMemo: "soso", expenseDetailList: [], hasNext: false)
+    var historyList : [ExpenseDetailList] = []
+    
     var dateText = ""
-    var totalAmount = 100000
+    var totalAmount = 12345678
     var flag = 1 //0 : 소비등록x / 1 : 소비등록 1개이상 완료
     var zeroday = 0 //0 : 제로데이 / 1 : 제로데이아님
     var evaluation = false
     var temptext = ""
     
-    let historyList = Consumption.data
     let cellSpacingHeight: CGFloat = 1
     
     let dateLabel = DescriptionView(text: "", alignToCenter: false)
@@ -49,8 +52,8 @@ class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITabl
         return imageview
     }()
     
-    let guideLabel : MPLabel = {
-        let label = MPLabel()
+    let guideLabel : memoLabel = {
+        let label = memoLabel()
         label.text = "아직 소비내역을 입력하지 않았어요!\n오늘 소비내역이 있나요?"
         label.numberOfLines = 0
         label.font = UIFont.mpFont16M()
@@ -69,27 +72,10 @@ class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITabl
     override func viewDidLoad(){
         view.backgroundColor = UIColor.mpWhite
         
+        fetchConsumeHistoryData(lastExpenseId: nil)
         setupNavigationBar()
         setupDateView()
         dateLabel.text = dateText
-        
-        if flag == 0 && zeroday == 1 { //소비등록 안한 상태 && 제로데이아님
-            setupInitial()
-            setupAddBtn()
-        }
-        else if flag == 0 && zeroday == 0 { //소비등록 안한 상태 && 제로데이
-            setupZeroday()
-        }
-        else { //소비등록한 상태
-            setupTotalAmount()
-            setupEvaluation()
-            setupHistory()
-            setupAddBtn()
-            
-            historyTableView.delegate = self
-            historyTableView.dataSource = self
-            historyTableView.register(historyCell.self, forCellReuseIdentifier: historyCell.cellId)
-        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -108,24 +94,23 @@ class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITabl
         let cell = tableView.dequeueReusableCell(withIdentifier: historyCell.cellId, for: indexPath) as! historyCell
         
         let consumption = historyList[indexPath.section]
+        let dailyTotal = dailyInfo
         
         // 데이터 할당
-        cell.category.image = UIImage(named: consumption.category)
+        cell.category.image = UIImage(named: consumption.categoryIcon)
         cell.name.text = consumption.title
+
         
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
-        if let formattedPrice = numberFormatter.string(from: NSNumber(value: consumption.price)) {
+        if let formattedPrice = numberFormatter.string(from: NSNumber(value: consumption.cost)) {
             cell.priceAmount.text = "\(formattedPrice)원"
         } else {
-            cell.priceAmount.text = "\(consumption.price)원"
+            cell.priceAmount.text = "\(consumption.cost)원"
         }
         
         cell.memoText.text = consumption.memo
-        cell.configureSeparatorViewVisibility(isVisible: !consumption.memo.isEmpty)
-        
-//        let memoTextHeight = heightForView(text: consumption.memo, font: UIFont.mpFont14R(), width: tableView.bounds.width - 64)
-//        cell.memoTextHeight = memoTextHeight
+        cell.configureSeparatorViewVisibility(isVisible: dailyTotal.rateMemo?.isEmpty ?? true)
         
         cell.layoutIfNeeded()
         cell.selectionStyle = .none
@@ -135,12 +120,12 @@ class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let consumption = historyList[indexPath.section]
-        let memoTextHeight = heightForView(text: consumption.memo, font: UIFont.mpFont14R(), width: tableView.bounds.width - 64)
+        let memoTextHeight = heightForView(text: consumption.memo ?? "55", font: UIFont.mpFont14R(), width: tableView.bounds.width - 64)
         
-        if consumption.memo.isEmpty {
-            return 53 + 30
-        } else {
+        if let consumeMemo = consumption.memo, !consumeMemo.isEmpty {
             return 53 + 20 + memoTextHeight + 30
+        } else {
+            return 53 + 30
         }
     }
     
@@ -164,7 +149,6 @@ extension DailyConsumeViewController {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.layoutIfNeeded()
-        //self.navigationItem.leftBarButtonItem = backButton
         
     }
     
@@ -181,6 +165,9 @@ extension DailyConsumeViewController {
     }
     
     func setupTotalAmount() {
+        let consumption = historyList
+        totalAmount = consumption.reduce(0) { $0 + $1.cost }
+        
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         
@@ -202,6 +189,9 @@ extension DailyConsumeViewController {
     }
     
     func setupEvaluation() {
+        let dailyTotal = dailyInfo
+        //추가예정
+        
         evaluationView.backgroundColor = UIColor.mpGypsumGray
         evaluationView.layer.cornerRadius = 20
         
@@ -434,6 +424,70 @@ extension DailyConsumeViewController {
         
     }
     
+    func fetchConsumeHistoryData(lastExpenseId: Int?) {
+        
+        let date = dateText
+        
+        ExpenseRepository.shared.getDailyConsumeHistory(date: date, size: nil, lastExpenseId: lastExpenseId) { result in
+            switch result {
+            case .success(let data):
+                print(data)
+                self.dailyInfo = data!
+                self.historyList = data?.expenseDetailList ?? []
+                
+                DispatchQueue.main.async {
+                    self.reloadUI()
+                }
+            case .failure(let error):
+                // 에러가 발생했을 때 처리
+                print("Error: \(error)")
+            }
+        }
+    }
+    
+    func reloadUI() {
+        
+        let consumption = historyList
+        let dailyTotal = dailyInfo
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        guard let date = dateFormatter.date(from: dateText) else {
+            // 날짜를 읽어올 수 없는 경우 예외 처리
+            print("Invalid date format")
+            return
+        }
+        
+        dateFormatter.dateFormat = "yyyy년 M월 d일" // 변경할 날짜 형식 지정
+        let formattedDateString = dateFormatter.string(from: date)
+        
+        dateLabel.text = formattedDateString
+        //totalAmount = dailyTotal.dailyTotalCost ?? 0
+        //totalAmount = consumption.reduce(0) { $0 + $1.cost }
+        
+        if dailyInfo.expenseDetailList!.isEmpty {
+            if dailyInfo.isZeroDay == false {
+                // expenseDetailList가 비어있고 제로데이 아닌 경우 처리
+                setupInitial()
+                setupAddBtn()
+            }
+            else {
+                setupZeroday()
+            }
+        }
+        else {
+            // expenseDetailList가 비어있지 않은 경우 처리
+            setupTotalAmount()
+            setupEvaluation()
+            setupHistory()
+            setupAddBtn()
+            
+            historyTableView.delegate = self
+            historyTableView.dataSource = self
+            historyTableView.register(historyCell.self, forCellReuseIdentifier: historyCell.cellId)
+        }
+        
+    }
     
 }
 
@@ -466,8 +520,6 @@ class historyCell : UITableViewCell {
     let priceAmount = MPLabel()
     let memoText = memoLabel()
     let separatorView = UIView() //구분선
-    
-    //var memoTextHeight: CGFloat = 23
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -538,21 +590,4 @@ class historyCell : UITableViewCell {
     func configureSeparatorViewVisibility(isVisible: Bool) {
         separatorView.isHidden = !isVisible
     }
-}
-
-
-
-struct Consumption {
-    let title: String
-    let category: String
-    let price: Int
-    let memo: String
-}
-
-extension Consumption {
-    static var data = [
-        Consumption(title: "올리브영 세일", category: "icon_Edit", price: 25200, memo: "올영 빅세일 참지 못하고 또... 그래도 마스크팩 필요했는데 쟁여서 기쁘다"),
-        Consumption(title: "스타벅스 아메리카노", category: "icon_Paper", price: 4500, memo: ""),
-        Consumption(title: "스타벅스 녹차", category: "icon_Edit", price: 5100, memo: "룰렛돌리기 져서 내가 민정이 음료도 사줌")
-    ]
 }
