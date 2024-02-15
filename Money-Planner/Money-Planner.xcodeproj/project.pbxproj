@@ -51,6 +51,12 @@
 		552A43002B7AA03E007AEAAD /* goalDeleteModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A42FF2B7AA03E007AEAAD /* goalDeleteModalView.swift */; };
 		552A431C2B7AB534007AEAAD /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A431B2B7AB534007AEAAD /* UIImage.swift */; };
 		5591601C2B64595E00063F06 /* EvaluationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591601B2B64595E00063F06 /* EvaluationViewController.swift */; };
+		7A0D33172B7DFE0B007B2736 /* RxKakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D33162B7DFE0B007B2736 /* RxKakaoSDK */; };
+		7A0D33192B7DFE0B007B2736 /* RxKakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D33182B7DFE0B007B2736 /* RxKakaoSDKAuth */; };
+		7A0D331B2B7DFE0B007B2736 /* RxKakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D331A2B7DFE0B007B2736 /* RxKakaoSDKCommon */; };
+		7A0D331D2B7DFE0B007B2736 /* RxKakaoSDKFriend in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D331C2B7DFE0B007B2736 /* RxKakaoSDKFriend */; };
+		7A0D331F2B7DFE0B007B2736 /* RxKakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D331E2B7DFE0B007B2736 /* RxKakaoSDKShare */; };
+		7A0D33222B7DFE22007B2736 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D33212B7DFE22007B2736 /* FSCalendar */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -110,14 +116,14 @@
 		D217EBEC2B6F846400EB6BF3 /* Progress.swift in Sources */ = {isa = PBXBuildFile; fileRef = D217EBEB2B6F846400EB6BF3 /* Progress.swift */; };
 		D217EBEF2B7460BC00EB6BF3 /* CategoryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D217EBEE2B7460BC00EB6BF3 /* CategoryAPI.swift */; };
 		D217EBF12B7460CC00EB6BF3 /* CategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D217EBF02B7460CC00EB6BF3 /* CategoryRepository.swift */; };
-		D253EEB72B7B505B00A4FC1C /* HomeMoreModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */; };
-		D253EEB92B7B59FE00A4FC1C /* RepeatConsumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEB82B7B59FE00A4FC1C /* RepeatConsumeViewController.swift */; };
-		D253EEBD2B7B652300A4FC1C /* ExpenseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEBC2B7B652300A4FC1C /* ExpenseAPI.swift */; };
-		D253EEBF2B7B653A00A4FC1C /* ExpenseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEBE2B7B653A00A4FC1C /* ExpenseRepository.swift */; };
 		D253EEAD2B79FE8400A4FC1C /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEAC2B79FE8400A4FC1C /* UIScrollView.swift */; };
 		D253EEAF2B7A0CA500A4FC1C /* MainNoGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEAE2B7A0CA500A4FC1C /* MainNoGoal.swift */; };
 		D253EEB12B7A5E4700A4FC1C /* DayGoalMonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEB02B7A5E4700A4FC1C /* DayGoalMonthView.swift */; };
 		D253EEB32B7A5E6D00A4FC1C /* DayGoalCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEB22B7A5E6D00A4FC1C /* DayGoalCalendarView.swift */; };
+		D253EEB72B7B505B00A4FC1C /* HomeMoreModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */; };
+		D253EEB92B7B59FE00A4FC1C /* RepeatConsumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEB82B7B59FE00A4FC1C /* RepeatConsumeViewController.swift */; };
+		D253EEBD2B7B652300A4FC1C /* ExpenseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEBC2B7B652300A4FC1C /* ExpenseAPI.swift */; };
+		D253EEBF2B7B653A00A4FC1C /* ExpenseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEBE2B7B653A00A4FC1C /* ExpenseRepository.swift */; };
 		D29536F12B4C0DF000EEA81F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29536F02B4C0DF000EEA81F /* UserDefaults.swift */; };
 		D2D0B72B2B6A704B003B6B5E /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B72A2B6A704B003B6B5E /* BaseResponse.swift */; };
 		D2D0B72D2B6A7067003B6B5E /* BaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B72C2B6A7067003B6B5E /* BaseAPI.swift */; };
@@ -239,14 +245,14 @@
 		D217EBEB2B6F846400EB6BF3 /* Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progress.swift; sourceTree = "<group>"; };
 		D217EBEE2B7460BC00EB6BF3 /* CategoryAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryAPI.swift; sourceTree = "<group>"; };
 		D217EBF02B7460CC00EB6BF3 /* CategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRepository.swift; sourceTree = "<group>"; };
-		D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMoreModalViewController.swift; sourceTree = "<group>"; };
-		D253EEB82B7B59FE00A4FC1C /* RepeatConsumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatConsumeViewController.swift; sourceTree = "<group>"; };
-		D253EEBC2B7B652300A4FC1C /* ExpenseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseAPI.swift; sourceTree = "<group>"; };
-		D253EEBE2B7B653A00A4FC1C /* ExpenseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseRepository.swift; sourceTree = "<group>"; };
 		D253EEAC2B79FE8400A4FC1C /* UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
 		D253EEAE2B7A0CA500A4FC1C /* MainNoGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNoGoal.swift; sourceTree = "<group>"; };
 		D253EEB02B7A5E4700A4FC1C /* DayGoalMonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayGoalMonthView.swift; sourceTree = "<group>"; };
 		D253EEB22B7A5E6D00A4FC1C /* DayGoalCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayGoalCalendarView.swift; sourceTree = "<group>"; };
+		D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMoreModalViewController.swift; sourceTree = "<group>"; };
+		D253EEB82B7B59FE00A4FC1C /* RepeatConsumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatConsumeViewController.swift; sourceTree = "<group>"; };
+		D253EEBC2B7B652300A4FC1C /* ExpenseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseAPI.swift; sourceTree = "<group>"; };
+		D253EEBE2B7B653A00A4FC1C /* ExpenseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseRepository.swift; sourceTree = "<group>"; };
 		D29536EF2B4C091400EEA81F /* Money-Planner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Money-Planner.entitlements"; sourceTree = "<group>"; };
 		D29536F02B4C0DF000EEA81F /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		D2D0B72A2B6A704B003B6B5E /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
@@ -265,15 +271,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A0D331B2B7DFE0B007B2736 /* RxKakaoSDKCommon in Frameworks */,
 				208C909E2B6ABBC500C67960 /* RxRelay in Frameworks */,
+				7A0D331D2B7DFE0B007B2736 /* RxKakaoSDKFriend in Frameworks */,
 				208C909C2B6ABBC500C67960 /* RxCocoa-Dynamic in Frameworks */,
 				7A610ADE2B4900C800D3096F /* Moya in Frameworks */,
+				7A0D331F2B7DFE0B007B2736 /* RxKakaoSDKShare in Frameworks */,
 				7A610ADC2B4900C800D3096F /* CombineMoya in Frameworks */,
 				7A610AE22B4900C800D3096F /* RxMoya in Frameworks */,
 				208C909A2B6ABBC500C67960 /* RxCocoa in Frameworks */,
 				208C90982B6ABBC500C67960 /* RxBlocking-Dynamic in Frameworks */,
+				7A0D33192B7DFE0B007B2736 /* RxKakaoSDKAuth in Frameworks */,
 				7A610AE02B4900C800D3096F /* ReactiveMoya in Frameworks */,
 				208C90962B6ABBC500C67960 /* RxBlocking in Frameworks */,
+				7A0D33222B7DFE22007B2736 /* FSCalendar in Frameworks */,
+				7A0D33172B7DFE0B007B2736 /* RxKakaoSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -754,6 +766,12 @@
 				208C90992B6ABBC500C67960 /* RxCocoa */,
 				208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */,
 				208C909D2B6ABBC500C67960 /* RxRelay */,
+				7A0D33162B7DFE0B007B2736 /* RxKakaoSDK */,
+				7A0D33182B7DFE0B007B2736 /* RxKakaoSDKAuth */,
+				7A0D331A2B7DFE0B007B2736 /* RxKakaoSDKCommon */,
+				7A0D331C2B7DFE0B007B2736 /* RxKakaoSDKFriend */,
+				7A0D331E2B7DFE0B007B2736 /* RxKakaoSDKShare */,
+				7A0D33212B7DFE22007B2736 /* FSCalendar */,
 			);
 			productName = "Money-Planner";
 			productReference = 7A610AB42B47FA8E00D3096F /* Money-Planner.app */;
@@ -786,6 +804,8 @@
 			packageReferences = (
 				7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */,
 				208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				7A0D33152B7DFE0B007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
+				7A0D33202B7DFE22007B2736 /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			productRefGroup = 7A610AB52B47FA8E00D3096F /* Products */;
 			projectDirPath = "";
@@ -1151,6 +1171,22 @@
 				minimumVersion = 6.6.0;
 			};
 		};
+		7A0D33152B7DFE0B007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk-rx";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.20.0;
+			};
+		};
+		7A0D33202B7DFE22007B2736 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.4;
+			};
+		};
 		7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya";
@@ -1186,6 +1222,36 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxRelay;
+		};
+		7A0D33162B7DFE0B007B2736 /* RxKakaoSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D33152B7DFE0B007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDK;
+		};
+		7A0D33182B7DFE0B007B2736 /* RxKakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D33152B7DFE0B007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKAuth;
+		};
+		7A0D331A2B7DFE0B007B2736 /* RxKakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D33152B7DFE0B007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKCommon;
+		};
+		7A0D331C2B7DFE0B007B2736 /* RxKakaoSDKFriend */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D33152B7DFE0B007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKFriend;
+		};
+		7A0D331E2B7DFE0B007B2736 /* RxKakaoSDKShare */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D33152B7DFE0B007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKShare;
+		};
+		7A0D33212B7DFE22007B2736 /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D33202B7DFE22007B2736 /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
 		};
 		7A610ADB2B4900C800D3096F /* CombineMoya */ = {
 			isa = XCSwiftPackageProductDependency;
