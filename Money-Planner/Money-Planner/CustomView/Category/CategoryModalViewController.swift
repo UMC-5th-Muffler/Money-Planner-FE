@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  CategoryModalViewController.swift
 //  Money-Planner
 //
 //  Created by p_kxn_g on 1/25/24.
@@ -13,6 +13,7 @@ protocol CategorySelectionDelegate: AnyObject {
     func AddCategory()
 }
 
+// 카테고리 선택 뷰 
 class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
     var addCatName : String = ""
     var addCatIconName : String = ""

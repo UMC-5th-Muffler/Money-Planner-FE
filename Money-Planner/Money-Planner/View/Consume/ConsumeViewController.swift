@@ -125,6 +125,17 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     private func showCategoryModal() {
         print("클릭 : 카테고리 선택을 위해 카테고리 선택 모달로 이동합니다")
         //categoryChooseButton.backgroundColor = UIColor.green
+        // 카테고리 조회 하기
+        viewModel.getCategoryFilter()
+            .subscribe(onNext: { repos in
+                // 네트워크 응답에 대한 처리
+                print(repos)
+            }, onError: { error in
+                // 에러 처리
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
         let categoryModalVC = CategoryModalViewController()
         categoryModalVC.delegate = self
         present(categoryModalVC, animated: true)

@@ -24,7 +24,7 @@ enum MufflerAPI {
     case getDailyExpense
 
     // Category Controller
-    case createCategory
+    case getCategoryFilter
 
     // Daily Plan Controller
     case updateZeroDay
@@ -85,8 +85,8 @@ extension MufflerAPI: TargetType {
             return "/api/expense/daily"
 
         // Category Controller
-        case .createCategory:
-            return "/api/category"
+        case .getCategoryFilter:
+            return "api/category/filter"
 
         // Daily Plan Controller
         case .updateZeroDay:
@@ -116,11 +116,11 @@ extension MufflerAPI: TargetType {
         switch self {
         // Define HTTP methods for each API endpoint
         case .refreshToken, .loginKakao, .loginApple,
-             .createGoal, .createExpense, .createCategory, .updateRate, .updateZeroDay:
+             .createGoal, .createExpense, .updateRate, .updateZeroDay:
             return .post
         case .connect, .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
-             .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo:
+             .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo, .getCategoryFilter:
             return .get
         case .deleteGoal, .deleteExpense:
             return .delete
@@ -133,7 +133,7 @@ extension MufflerAPI: TargetType {
     var task: Task {
         switch self {
         case .refreshToken, .loginKakao, .loginApple, .connect,
-             .createGoal, .createCategory, .updateRate, .updateZeroDay:
+             .createGoal, .getCategoryFilter, .updateRate, .updateZeroDay:
             return .requestPlain
         case .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
@@ -156,6 +156,6 @@ extension MufflerAPI: TargetType {
 
     // Define headers for the request
     var headers: [String: String]? {
-        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDc5OTAxMjl9.P1o6nlVZnW55NTJw-TdA8F4TXCT1iK3yIhF7NAcvX60"] // Replace with your actual access token
+        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDgxNjI4Njd9.nclYvHIAtOXFFStBP22TsQ9vXr6EKEUscxIS-txETW8"] // Replace with your actual access token
     }
 }

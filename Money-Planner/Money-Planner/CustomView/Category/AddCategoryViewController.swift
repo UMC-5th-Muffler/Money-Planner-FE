@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+// 카테고리 직접 추가
 protocol AddCategoryViewDelegate : AnyObject{
     func AddCategoryCompleted (_ name : String, iconName:String)
     
@@ -90,7 +91,12 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate {
         setupError()
         
         categoryTextField.delegate = self // Make sure to set the delegate
+        picButton.addTarget(self, action: #selector(selectIcon), for: .touchUpInside)
 
+    }
+    @objc
+    private func selectIcon(){
+        
     }
     
     // 세팅 : 헤더

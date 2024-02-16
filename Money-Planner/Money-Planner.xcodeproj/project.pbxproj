@@ -36,6 +36,8 @@
 		208C90CD2B7BBC6700C67960 /* ExpenseCreateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90CC2B7BBC6700C67960 /* ExpenseCreateResponse.swift */; };
 		208C90CF2B7BBC8400C67960 /* ExpenseCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90CE2B7BBC8400C67960 /* ExpenseCreateRequest.swift */; };
 		208C90D12B7BD33300C67960 /* UpdateExpenseRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90D02B7BD33300C67960 /* UpdateExpenseRequest.swift */; };
+		208C90D32B7F751400C67960 /* ResponseGetCategoryListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90D22B7F751400C67960 /* ResponseGetCategoryListResponse.swift */; };
+		208C90D52B7F7B6100C67960 /* CategoryIconSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90D42B7F7B6100C67960 /* CategoryIconSelectionViewController.swift */; };
 		20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */; };
 		20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */; };
 		20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD902B656034008F8AB9 /* OneDayButton.swift */; };
@@ -110,14 +112,14 @@
 		D217EBEC2B6F846400EB6BF3 /* Progress.swift in Sources */ = {isa = PBXBuildFile; fileRef = D217EBEB2B6F846400EB6BF3 /* Progress.swift */; };
 		D217EBEF2B7460BC00EB6BF3 /* CategoryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D217EBEE2B7460BC00EB6BF3 /* CategoryAPI.swift */; };
 		D217EBF12B7460CC00EB6BF3 /* CategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D217EBF02B7460CC00EB6BF3 /* CategoryRepository.swift */; };
-		D253EEB72B7B505B00A4FC1C /* HomeMoreModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */; };
-		D253EEB92B7B59FE00A4FC1C /* RepeatConsumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEB82B7B59FE00A4FC1C /* RepeatConsumeViewController.swift */; };
-		D253EEBD2B7B652300A4FC1C /* ExpenseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEBC2B7B652300A4FC1C /* ExpenseAPI.swift */; };
-		D253EEBF2B7B653A00A4FC1C /* ExpenseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEBE2B7B653A00A4FC1C /* ExpenseRepository.swift */; };
 		D253EEAD2B79FE8400A4FC1C /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEAC2B79FE8400A4FC1C /* UIScrollView.swift */; };
 		D253EEAF2B7A0CA500A4FC1C /* MainNoGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEAE2B7A0CA500A4FC1C /* MainNoGoal.swift */; };
 		D253EEB12B7A5E4700A4FC1C /* DayGoalMonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEB02B7A5E4700A4FC1C /* DayGoalMonthView.swift */; };
 		D253EEB32B7A5E6D00A4FC1C /* DayGoalCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEB22B7A5E6D00A4FC1C /* DayGoalCalendarView.swift */; };
+		D253EEB72B7B505B00A4FC1C /* HomeMoreModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */; };
+		D253EEB92B7B59FE00A4FC1C /* RepeatConsumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEB82B7B59FE00A4FC1C /* RepeatConsumeViewController.swift */; };
+		D253EEBD2B7B652300A4FC1C /* ExpenseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEBC2B7B652300A4FC1C /* ExpenseAPI.swift */; };
+		D253EEBF2B7B653A00A4FC1C /* ExpenseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEBE2B7B653A00A4FC1C /* ExpenseRepository.swift */; };
 		D29536F12B4C0DF000EEA81F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29536F02B4C0DF000EEA81F /* UserDefaults.swift */; };
 		D2D0B72B2B6A704B003B6B5E /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B72A2B6A704B003B6B5E /* BaseResponse.swift */; };
 		D2D0B72D2B6A7067003B6B5E /* BaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B72C2B6A7067003B6B5E /* BaseAPI.swift */; };
@@ -167,6 +169,8 @@
 		208C90CC2B7BBC6700C67960 /* ExpenseCreateResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCreateResponse.swift; sourceTree = "<group>"; };
 		208C90CE2B7BBC8400C67960 /* ExpenseCreateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCreateRequest.swift; sourceTree = "<group>"; };
 		208C90D02B7BD33300C67960 /* UpdateExpenseRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateExpenseRequest.swift; sourceTree = "<group>"; };
+		208C90D22B7F751400C67960 /* ResponseGetCategoryListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseGetCategoryListResponse.swift; sourceTree = "<group>"; };
+		208C90D42B7F7B6100C67960 /* CategoryIconSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryIconSelectionViewController.swift; sourceTree = "<group>"; };
 		20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatModalViewController.swift; sourceTree = "<group>"; };
 		20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDayView.swift; sourceTree = "<group>"; };
 		20AFDD902B656034008F8AB9 /* OneDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDayButton.swift; sourceTree = "<group>"; };
@@ -239,14 +243,14 @@
 		D217EBEB2B6F846400EB6BF3 /* Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progress.swift; sourceTree = "<group>"; };
 		D217EBEE2B7460BC00EB6BF3 /* CategoryAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryAPI.swift; sourceTree = "<group>"; };
 		D217EBF02B7460CC00EB6BF3 /* CategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRepository.swift; sourceTree = "<group>"; };
-		D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMoreModalViewController.swift; sourceTree = "<group>"; };
-		D253EEB82B7B59FE00A4FC1C /* RepeatConsumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatConsumeViewController.swift; sourceTree = "<group>"; };
-		D253EEBC2B7B652300A4FC1C /* ExpenseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseAPI.swift; sourceTree = "<group>"; };
-		D253EEBE2B7B653A00A4FC1C /* ExpenseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseRepository.swift; sourceTree = "<group>"; };
 		D253EEAC2B79FE8400A4FC1C /* UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
 		D253EEAE2B7A0CA500A4FC1C /* MainNoGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNoGoal.swift; sourceTree = "<group>"; };
 		D253EEB02B7A5E4700A4FC1C /* DayGoalMonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayGoalMonthView.swift; sourceTree = "<group>"; };
 		D253EEB22B7A5E6D00A4FC1C /* DayGoalCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayGoalCalendarView.swift; sourceTree = "<group>"; };
+		D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMoreModalViewController.swift; sourceTree = "<group>"; };
+		D253EEB82B7B59FE00A4FC1C /* RepeatConsumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatConsumeViewController.swift; sourceTree = "<group>"; };
+		D253EEBC2B7B652300A4FC1C /* ExpenseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseAPI.swift; sourceTree = "<group>"; };
+		D253EEBE2B7B653A00A4FC1C /* ExpenseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseRepository.swift; sourceTree = "<group>"; };
 		D29536EF2B4C091400EEA81F /* Money-Planner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Money-Planner.entitlements"; sourceTree = "<group>"; };
 		D29536F02B4C0DF000EEA81F /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		D2D0B72A2B6A704B003B6B5E /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
@@ -297,9 +301,7 @@
 		206C58D02B617396008410C1 /* Modal */ = {
 			isa = PBXGroup;
 			children = (
-				208C90C32B75325200C67960 /* category */,
 				206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */,
-				20EF782C2B68CEA700AA135E /* AddCategoryViewController.swift */,
 				D20D70222B67E1DD006D6762 /* GoalListModalViewController.swift */,
 				D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */,
 				552A42FF2B7AA03E007AEAAD /* goalDeleteModalView.swift */,
@@ -331,15 +333,6 @@
 				208C90922B6AB7DA00C67960 /* ConnectModel.swift */,
 			);
 			path = Member;
-			sourceTree = "<group>";
-		};
-		208C90C32B75325200C67960 /* category */ = {
-			isa = PBXGroup;
-			children = (
-				206C58D72B626465008410C1 /* CategoryModalViewController.swift */,
-				206C58D32B623C43008410C1 /* CategoryCell.swift */,
-			);
-			path = category;
 			sourceTree = "<group>";
 		};
 		208C90C42B75329100C67960 /* modal */ = {
@@ -514,6 +507,7 @@
 			children = (
 				208C90CB2B7BBC5500C67960 /* Expense */,
 				D20D701F2B66FE8F006D6762 /* Home */,
+				208C90D22B7F751400C67960 /* ResponseGetCategoryListResponse.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -628,7 +622,11 @@
 		D20D70122B612BA5006D6762 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				20EF782C2B68CEA700AA135E /* AddCategoryViewController.swift */,
+				206C58D72B626465008410C1 /* CategoryModalViewController.swift */,
+				206C58D32B623C43008410C1 /* CategoryCell.swift */,
 				D20D70132B612BB4006D6762 /* CategoryTableView.swift */,
+				208C90D42B7F7B6100C67960 /* CategoryIconSelectionViewController.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -818,6 +816,7 @@
 				7A610ABC2B47FA8E00D3096F /* LoginViewController.swift in Sources */,
 				206C58D42B623C43008410C1 /* CategoryCell.swift in Sources */,
 				7A610AF02B49414100D3096F /* RegisterProfileViewController.swift in Sources */,
+				208C90D52B7F7B6100C67960 /* CategoryIconSelectionViewController.swift in Sources */,
 				7A4C67462B5A4B77008BCAC9 /* MainTextField.swift in Sources */,
 				D20D70142B612BB4006D6762 /* CategoryTableView.swift in Sources */,
 				208C90CA2B7BBBB600C67960 /* ResponseExpenseDto.swift in Sources */,
@@ -888,6 +887,7 @@
 				7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */,
 				20EF782D2B68CEA700AA135E /* AddCategoryViewController.swift in Sources */,
 				20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */,
+				208C90D32B7F751400C67960 /* ResponseGetCategoryListResponse.swift in Sources */,
 				D20D70232B67E1DD006D6762 /* GoalListModalViewController.swift in Sources */,
 				D2D0B73A2B6BAB02003B6B5E /* Goal.swift in Sources */,
 				D20D70212B66FEA0006D6762 /* HomeViewModel.swift in Sources */,
