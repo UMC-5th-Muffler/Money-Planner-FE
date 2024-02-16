@@ -110,6 +110,10 @@ class MainStatisticsView : UIView {
                 remainAmount.text = (goal!.goalBudget!-goal!.totalCost!).formattedWithSeparator() +  "원"
             }
             
+            if(goal != nil && goal!.goalBudget! < goal!.totalCost!){
+                remainAmount.textColor = .mpRed
+            }
+            
             addSubview(useAmountLabel)
             addSubview(useAmount)
             addSubview(totalAmount)
@@ -169,7 +173,12 @@ class MainStatisticsView : UIView {
         
         path.lineWidth = lineWidth
         path.lineCapStyle = .round
-        UIColor.mpMainColor.setStroke()
+        if(goal != nil && goal!.goalBudget! < goal!.totalCost!){
+            UIColor.mpRed.setStroke()
+        }else{
+            UIColor.mpMainColor.setStroke()
+        }
+
         path.stroke()
     }
 }

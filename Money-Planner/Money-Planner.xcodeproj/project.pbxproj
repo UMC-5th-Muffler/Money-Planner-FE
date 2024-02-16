@@ -54,6 +54,12 @@
 		552A43002B7AA03E007AEAAD /* goalDeleteModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A42FF2B7AA03E007AEAAD /* goalDeleteModalView.swift */; };
 		552A431C2B7AB534007AEAAD /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A431B2B7AB534007AEAAD /* UIImage.swift */; };
 		5591601C2B64595E00063F06 /* EvaluationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591601B2B64595E00063F06 /* EvaluationViewController.swift */; };
+		7A0D33172B7DFE0B007B2736 /* RxKakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D33162B7DFE0B007B2736 /* RxKakaoSDK */; };
+		7A0D33192B7DFE0B007B2736 /* RxKakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D33182B7DFE0B007B2736 /* RxKakaoSDKAuth */; };
+		7A0D331B2B7DFE0B007B2736 /* RxKakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D331A2B7DFE0B007B2736 /* RxKakaoSDKCommon */; };
+		7A0D331D2B7DFE0B007B2736 /* RxKakaoSDKFriend in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D331C2B7DFE0B007B2736 /* RxKakaoSDKFriend */; };
+		7A0D331F2B7DFE0B007B2736 /* RxKakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D331E2B7DFE0B007B2736 /* RxKakaoSDKShare */; };
+		7A0D33222B7DFE22007B2736 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D33212B7DFE22007B2736 /* FSCalendar */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -271,15 +277,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A0D331B2B7DFE0B007B2736 /* RxKakaoSDKCommon in Frameworks */,
 				208C909E2B6ABBC500C67960 /* RxRelay in Frameworks */,
+				7A0D331D2B7DFE0B007B2736 /* RxKakaoSDKFriend in Frameworks */,
 				208C909C2B6ABBC500C67960 /* RxCocoa-Dynamic in Frameworks */,
 				7A610ADE2B4900C800D3096F /* Moya in Frameworks */,
+				7A0D331F2B7DFE0B007B2736 /* RxKakaoSDKShare in Frameworks */,
 				7A610ADC2B4900C800D3096F /* CombineMoya in Frameworks */,
 				7A610AE22B4900C800D3096F /* RxMoya in Frameworks */,
 				208C909A2B6ABBC500C67960 /* RxCocoa in Frameworks */,
 				208C90982B6ABBC500C67960 /* RxBlocking-Dynamic in Frameworks */,
+				7A0D33192B7DFE0B007B2736 /* RxKakaoSDKAuth in Frameworks */,
 				7A610AE02B4900C800D3096F /* ReactiveMoya in Frameworks */,
 				208C90962B6ABBC500C67960 /* RxBlocking in Frameworks */,
+				7A0D33222B7DFE22007B2736 /* FSCalendar in Frameworks */,
+				7A0D33172B7DFE0B007B2736 /* RxKakaoSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -755,6 +767,12 @@
 				208C90992B6ABBC500C67960 /* RxCocoa */,
 				208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */,
 				208C909D2B6ABBC500C67960 /* RxRelay */,
+				7A0D33162B7DFE0B007B2736 /* RxKakaoSDK */,
+				7A0D33182B7DFE0B007B2736 /* RxKakaoSDKAuth */,
+				7A0D331A2B7DFE0B007B2736 /* RxKakaoSDKCommon */,
+				7A0D331C2B7DFE0B007B2736 /* RxKakaoSDKFriend */,
+				7A0D331E2B7DFE0B007B2736 /* RxKakaoSDKShare */,
+				7A0D33212B7DFE22007B2736 /* FSCalendar */,
 			);
 			productName = "Money-Planner";
 			productReference = 7A610AB42B47FA8E00D3096F /* Money-Planner.app */;
@@ -787,6 +805,8 @@
 			packageReferences = (
 				7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */,
 				208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				7A0D33152B7DFE0B007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
+				7A0D33202B7DFE22007B2736 /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			productRefGroup = 7A610AB52B47FA8E00D3096F /* Products */;
 			projectDirPath = "";
@@ -1155,6 +1175,22 @@
 				minimumVersion = 6.6.0;
 			};
 		};
+		7A0D33152B7DFE0B007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk-rx";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.20.0;
+			};
+		};
+		7A0D33202B7DFE22007B2736 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.4;
+			};
+		};
 		7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya";
@@ -1190,6 +1226,36 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxRelay;
+		};
+		7A0D33162B7DFE0B007B2736 /* RxKakaoSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D33152B7DFE0B007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDK;
+		};
+		7A0D33182B7DFE0B007B2736 /* RxKakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D33152B7DFE0B007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKAuth;
+		};
+		7A0D331A2B7DFE0B007B2736 /* RxKakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D33152B7DFE0B007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKCommon;
+		};
+		7A0D331C2B7DFE0B007B2736 /* RxKakaoSDKFriend */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D33152B7DFE0B007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKFriend;
+		};
+		7A0D331E2B7DFE0B007B2736 /* RxKakaoSDKShare */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D33152B7DFE0B007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKShare;
+		};
+		7A0D33212B7DFE22007B2736 /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0D33202B7DFE22007B2736 /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
 		};
 		7A610ADB2B4900C800D3096F /* CombineMoya */ = {
 			isa = XCSwiftPackageProductDependency;

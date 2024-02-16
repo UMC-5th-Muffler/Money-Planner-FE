@@ -13,22 +13,6 @@ import UIKit
 class SearchConsumeViewController : UIViewController {
     let searchBar = UISearchBar()
     
-    private let contentScrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = .mpWhite
-        scrollView.showsVerticalScrollIndicator = false
-        
-        return scrollView
-    }()
-    
-    private let contentView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .mpWhite
-        return view
-    }()
-    
     let consumeView : HomeConsumeView = {
         let v = HomeConsumeView()
         v.backgroundColor = .mpWhite
@@ -38,13 +22,35 @@ class SearchConsumeViewController : UIViewController {
     
     var hasNext : Bool = false
     var loading : Bool = false
-//    var noData : Bool = false
+    
+    let noDataLabel : MPLabel = {
+        let label = MPLabel()
+        label.text = "검색 결과가 없습니다."
+        label.font = .mpFont16M()
+        label.textColor = .mpDarkGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let otherKeywordLabel : MPLabel = {
+        let label = MPLabel()
+        label.text = "다른 키워드로 검색해주세요."
+        label.font = .mpFont16M()
+        label.textColor = .mpDarkGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    var noDataView : UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
     
     var consumeList : [DailyConsume] = []
     
     override func viewDidLoad(){
         super.viewDidLoad()
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .mpWhite
         self.navigationController?.navigationBar.tintColor = .mpBlack
         self.navigationController?.navigationBar.topItem?.title = ""
@@ -54,54 +60,41 @@ class SearchConsumeViewController : UIViewController {
         searchBar.searchTextField.font = .mpFont16M()
         self.navigationItem.titleView = searchBar
         
-        view.addSubview(contentScrollView)
-        contentScrollView.addSubview(contentView)
-                
-        // 스크롤 뷰 작업
-        NSLayoutConstraint.activate([
-            contentScrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            contentScrollView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            contentScrollView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            contentScrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-            
-            
-            contentView.topAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: contentScrollView.contentLayoutGuide.bottomAnchor),
-            
-            contentView.widthAnchor.constraint(equalTo: contentScrollView.widthAnchor),
-        ])
-        
-        let contentViewHeight = contentView.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor)
-        contentViewHeight.priority = .defaultLow
-        contentViewHeight.isActive = true
-        
-//        setUpConsumeView()
+        consumeView.isHidden = true
+        noDataView.isHidden = true
+        setUpNoDataView()
+        setUpConsumeView()
     }
-    
 }
 
 
 extension SearchConsumeViewController : UISearchBarDelegate{
     
-    func setUpConsumeView(){
+    func setUpNoDataView(){
+        view.addSubview(noDataView)
         
-        consumeView.data = [
-            DailyConsume(date: "1월 17일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
-            DailyConsume(date: "1월 16일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
-            DailyConsume(date: "1월 15일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
-            DailyConsume(date: "1월 14일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")])
+        noDataView.addSubview(noDataLabel)
+        noDataView.addSubview(otherKeywordLabel)
+        
+        NSLayoutConstraint.activate([
+            noDataView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            noDataView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             
-        ]
-        
+            noDataLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            noDataLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            otherKeywordLabel.topAnchor.constraint(equalTo: noDataLabel.bottomAnchor, constant: 10),
+            otherKeywordLabel.centerXAnchor.constraint(equalTo: noDataLabel.centerXAnchor)
+        ])
+    }
+    
+    func setUpConsumeView(){
         view.addSubview(consumeView)
         
         NSLayoutConstraint.activate([
-            consumeView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            consumeView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             consumeView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
             consumeView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-            consumeView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+            consumeView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
@@ -109,20 +102,31 @@ extension SearchConsumeViewController : UISearchBarDelegate{
         guard let searchText = searchBar.text, !searchText.isEmpty else {
             return // 검색어가 비어 있으면 무시
         }
+        self.loading = true
         
         ExpenseRepository.shared.getExpenseList(text: searchText, order: nil, size: nil){
             (result) in
             switch result{
             case .success(let data):
-                
+                self.loading = false
                 self.hasNext = data!.hasNext
                 let consumeList = data?.dailyExpenseList ?? []
-//                self.consumeList.append(contentsOf: consumeList)
-//
-//                DispatchQueue.main.async {
-//                    self.consumeView.data = self.consumeList
-//                }
-//                self.loading = false
+                self.consumeList = consumeList
+                
+                if(self.consumeList.isEmpty){
+                    self.consumeView.isHidden = true
+                    self.noDataView.isHidden = false
+                    return
+                }
+                
+                
+                DispatchQueue.main.async {
+                    self.consumeView.data = self.consumeList
+                    if(self.consumeView.isHidden){
+                        self.noDataView.isHidden = true
+                        self.consumeView.isHidden = false
+                    }
+                }
                 
                 print("확인")
                 print(consumeList)
