@@ -76,6 +76,12 @@
 		7A0D33962B7F4993007B2736 /* GoalReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33922B7F4993007B2736 /* GoalReportViewModel.swift */; };
 		7A0D33972B7F4993007B2736 /* GoalCreationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33932B7F4993007B2736 /* GoalCreationManager.swift */; };
 		7A0D33982B7F4993007B2736 /* GoalSpendingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33942B7F4993007B2736 /* GoalSpendingViewModel.swift */; };
+		7A0D33B42B7F4CC2007B2736 /* GoalReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33AE2B7F4CC2007B2736 /* GoalReport.swift */; };
+		7A0D33B52B7F4CC2007B2736 /* now.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33AF2B7F4CC2007B2736 /* now.swift */; };
+		7A0D33B62B7F4CC2007B2736 /* not-now.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33B02B7F4CC2007B2736 /* not-now.swift */; };
+		7A0D33B72B7F4CC2007B2736 /* GoalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33B12B7F4CC2007B2736 /* GoalService.swift */; };
+		7A0D33B82B7F4CC2007B2736 /* GoalSpending.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33B22B7F4CC2007B2736 /* GoalSpending.swift */; };
+		7A0D33B92B7F4CC2007B2736 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33B32B7F4CC2007B2736 /* Goal.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -149,7 +155,6 @@
 		D2D0B72F2B6A70A1003B6B5E /* BaseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B72E2B6A70A1003B6B5E /* BaseRepository.swift */; };
 		D2D0B7362B6BA83E003B6B5E /* HomeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B7352B6BA83E003B6B5E /* HomeRepository.swift */; };
 		D2D0B7382B6BA845003B6B5E /* HomeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B7372B6BA845003B6B5E /* HomeAPI.swift */; };
-		D2D0B73A2B6BAB02003B6B5E /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B7392B6BAB02003B6B5E /* Goal.swift */; };
 		D2D0B73D2B6BAB7A003B6B5E /* CalendarDaily.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B73C2B6BAB7A003B6B5E /* CalendarDaily.swift */; };
 		D2D0B7412B6BACAB003B6B5E /* HomeNow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B7402B6BACAB003B6B5E /* HomeNow.swift */; };
 /* End PBXBuildFile section */
@@ -226,6 +231,12 @@
 		7A0D33922B7F4993007B2736 /* GoalReportViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalReportViewModel.swift; sourceTree = "<group>"; };
 		7A0D33932B7F4993007B2736 /* GoalCreationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalCreationManager.swift; sourceTree = "<group>"; };
 		7A0D33942B7F4993007B2736 /* GoalSpendingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalSpendingViewModel.swift; sourceTree = "<group>"; };
+		7A0D33AE2B7F4CC2007B2736 /* GoalReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalReport.swift; sourceTree = "<group>"; };
+		7A0D33AF2B7F4CC2007B2736 /* now.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = now.swift; sourceTree = "<group>"; };
+		7A0D33B02B7F4CC2007B2736 /* not-now.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "not-now.swift"; sourceTree = "<group>"; };
+		7A0D33B12B7F4CC2007B2736 /* GoalService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalService.swift; sourceTree = "<group>"; };
+		7A0D33B22B7F4CC2007B2736 /* GoalSpending.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalSpending.swift; sourceTree = "<group>"; };
+		7A0D33B32B7F4CC2007B2736 /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -299,7 +310,6 @@
 		D2D0B7322B6A74CD003B6B5E /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D2D0B7352B6BA83E003B6B5E /* HomeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRepository.swift; sourceTree = "<group>"; };
 		D2D0B7372B6BA845003B6B5E /* HomeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAPI.swift; sourceTree = "<group>"; };
-		D2D0B7392B6BAB02003B6B5E /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		D2D0B73C2B6BAB7A003B6B5E /* CalendarDaily.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDaily.swift; sourceTree = "<group>"; };
 		D2D0B7402B6BACAB003B6B5E /* HomeNow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -379,7 +389,6 @@
 		208C90BC2B6FE4CF00C67960 /* Member */ = {
 			isa = PBXGroup;
 			children = (
-				7A0D33252B7DFEF1007B2736 /* Goal */,
 				208C90922B6AB7DA00C67960 /* ConnectModel.swift */,
 			);
 			path = Member;
@@ -426,14 +435,6 @@
 		7A0D33242B7DFECA007B2736 /* Goal */ = {
 			isa = PBXGroup;
 			children = (
-			);
-			path = Goal;
-			sourceTree = "<group>";
-		};
-		7A0D33252B7DFEF1007B2736 /* Goal */ = {
-			isa = PBXGroup;
-			children = (
-				D2D0B7392B6BAB02003B6B5E /* Goal.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -611,6 +612,12 @@
 		7A610ACE2B480B5B00D3096F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				7A0D33B32B7F4CC2007B2736 /* Goal.swift */,
+				7A0D33AE2B7F4CC2007B2736 /* GoalReport.swift */,
+				7A0D33B12B7F4CC2007B2736 /* GoalService.swift */,
+				7A0D33B22B7F4CC2007B2736 /* GoalSpending.swift */,
+				7A0D33B02B7F4CC2007B2736 /* not-now.swift */,
+				7A0D33AF2B7F4CC2007B2736 /* now.swift */,
 				208C90BC2B6FE4CF00C67960 /* Member */,
 				7A610AE42B491ED600D3096F /* Dummy.swift */,
 				D20D6FF22B5D67B1006D6762 /* Category.swift */,
@@ -932,6 +939,7 @@
 				7A4C67462B5A4B77008BCAC9 /* MainTextField.swift in Sources */,
 				D20D70142B612BB4006D6762 /* CategoryTableView.swift in Sources */,
 				208C90CA2B7BBBB600C67960 /* ResponseExpenseDto.swift in Sources */,
+				7A0D33B92B7F4CC2007B2736 /* Goal.swift in Sources */,
 				7A4C673F2B5A4AC9008BCAC9 /* CheckBtn.swift in Sources */,
 				D20D701A2B664996006D6762 /* UICollectionView.swift in Sources */,
 				208C90D12B7BD33300C67960 /* UpdateExpenseRequest.swift in Sources */,
@@ -941,6 +949,7 @@
 				7A0D33882B7F48AA007B2736 /* GoalDetailsViewController.swift in Sources */,
 				206C58D82B626465008410C1 /* CategoryModalViewController.swift in Sources */,
 				D2D0B7362B6BA83E003B6B5E /* HomeRepository.swift in Sources */,
+				7A0D33B62B7F4CC2007B2736 /* not-now.swift in Sources */,
 				208C90A62B6D15BB00C67960 /* ProfileViewController.swift in Sources */,
 				D253EEBF2B7B653A00A4FC1C /* ExpenseRepository.swift in Sources */,
 				7A610AE72B491F1600D3096F /* HeaderView.swift in Sources */,
@@ -960,12 +969,14 @@
 				7A0D33952B7F4993007B2736 /* GoalViewModel.swift in Sources */,
 				D217EBEC2B6F846400EB6BF3 /* Progress.swift in Sources */,
 				208C90AC2B6E3F8100C67960 /* UnregisterViewController.swift in Sources */,
+				7A0D33B42B7F4CC2007B2736 /* GoalReport.swift in Sources */,
 				7A0D338A2B7F48AA007B2736 /* GoalMainViewController.swift in Sources */,
 				7A4C67412B5A4AF1008BCAC9 /* MainBottomBtn.swift in Sources */,
 				D20D6FDE2B581B20006D6762 /* CALayer.swift in Sources */,
 				D253EEAD2B79FE8400A4FC1C /* UIScrollView.swift in Sources */,
 				D2D0B7412B6BACAB003B6B5E /* HomeNow.swift in Sources */,
 				7A4C67432B5A4B22008BCAC9 /* SmallButtonView.swift in Sources */,
+				7A0D33B82B7F4CC2007B2736 /* GoalSpending.swift in Sources */,
 				208C90912B6AB7A200C67960 /* MufflerViewModel.swift in Sources */,
 				208C90BE2B710F4800C67960 /* TextFieldContainerView.swift in Sources */,
 				D2D0B72B2B6A704B003B6B5E /* BaseResponse.swift in Sources */,
@@ -986,6 +997,7 @@
 				D20D700F2B61241F006D6762 /* NotificationsViewController.swift in Sources */,
 				D20D6FFC2B5FDF00006D6762 /* DailyConsume.swift in Sources */,
 				D20D6FFE2B5FDF4C006D6762 /* ConsumeDetail.swift in Sources */,
+				7A0D33B72B7F4CC2007B2736 /* GoalService.swift in Sources */,
 				7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */,
 				7A610AE52B491ED600D3096F /* Dummy.swift in Sources */,
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
@@ -995,6 +1007,7 @@
 				20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */,
 				206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */,
 				7A0D33962B7F4993007B2736 /* GoalReportViewModel.swift in Sources */,
+				7A0D33B52B7F4CC2007B2736 /* now.swift in Sources */,
 				D20D70042B5FF094006D6762 /* Numeric.swift in Sources */,
 				7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */,
 				D20D70112B612490006D6762 /* CategoryEditViewController.swift in Sources */,
@@ -1009,7 +1022,6 @@
 				20EF782D2B68CEA700AA135E /* AddCategoryViewController.swift in Sources */,
 				20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */,
 				D20D70232B67E1DD006D6762 /* GoalListModalViewController.swift in Sources */,
-				D2D0B73A2B6BAB02003B6B5E /* Goal.swift in Sources */,
 				7A0D33892B7F48AA007B2736 /* GoalNameViewController.swift in Sources */,
 				D20D70212B66FEA0006D6762 /* HomeViewModel.swift in Sources */,
 				208C90A42B6CD72000C67960 /* PopupViewController.swift in Sources */,
@@ -1187,7 +1199,6 @@
 		};
 		7A610AC92B47FA8F00D3096F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D2D0B7322B6A74CD003B6B5E /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1218,7 +1229,6 @@
 		};
 		7A610ACA2B47FA8F00D3096F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D2D0B7322B6A74CD003B6B5E /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

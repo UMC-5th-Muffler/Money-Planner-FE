@@ -66,7 +66,7 @@ class GoalNameViewController : UIViewController, UITextFieldDelegate {
     
     private var header = HeaderView(title: "")
     private var descriptionView = DescriptionView(text: "목표 이름을 설정해주세요", alignToCenter: false)
-    private var emojiTextField = EmojiTextField()
+    private var emojiTextField = GoalEmojiTextField()
     private var writeNameView = WriteNameView()
     private let warningLabel = MPLabel()
     private var btmbtn = MainBottomBtn(title: "다음")

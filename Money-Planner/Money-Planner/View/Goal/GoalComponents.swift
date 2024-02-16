@@ -591,7 +591,7 @@ extension Character {
 //    }
 //}
 
-class EmojiTextField: UITextField {
+class GoalEmojiTextField: UITextField {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -601,6 +601,16 @@ class EmojiTextField: UITextField {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupTextField()
+    }
+    
+    //추가
+    override var textInputMode: UITextInputMode? {
+        for mode in UITextInputMode.activeInputModes {
+            if mode.primaryLanguage == "emoji" {
+                return mode
+            }
+        }
+        return nil
     }
     
     private func setupTextField() {

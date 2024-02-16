@@ -19,7 +19,7 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .mpHomeBackground
+        view.backgroundColor = .mpGypsumGray
         setupHeaderView()
         setupGoalTable()
         
@@ -58,7 +58,7 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
     private func setupGoalTable() {
         
         view.addSubview(goalTable)
-        goalTable.backgroundColor = .mpHomeBackground
+        goalTable.backgroundColor = .mpLightGray
         goalTable.separatorStyle = .none
         goalTable.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
