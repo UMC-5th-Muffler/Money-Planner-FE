@@ -72,7 +72,7 @@ class MainStatisticsView : UIView {
     let stackView : UIStackView = {
         let view = UIStackView()
         view.axis = .horizontal
-        view.spacing = 2
+        view.spacing = 4
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layoutMargins = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
         view.isLayoutMarginsRelativeArrangement = true
@@ -134,7 +134,6 @@ class MainStatisticsView : UIView {
                 totalAmount.leftAnchor.constraint(equalTo: leftAnchor),
                 stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
                 stackView.leftAnchor.constraint(equalTo: leftAnchor),
-                remainAmount.leftAnchor.constraint(equalTo: remainAmountLabel.rightAnchor, constant: 4)
             ])
         }else{
             addSubview(noGoalView)
