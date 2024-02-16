@@ -16,7 +16,7 @@ import FSCalendar
 extension GoalDetailsViewController {
     
     @objc func showModal() {
-        let modal = ShowingPeriodSelectionModal(startDate: goal.goalStart, endDate: goal.goalEnd)
+        let modal = ShowingPeriodSelectionModal(startDate: goal.startDate?.toMPDate(), endDate: goal.endDate?.toMPDate())
         modal.modalPresentationStyle = .popover
         modal.delegate = self
         present(modal, animated: true)
@@ -70,14 +70,14 @@ extension GoalDetailsViewController : PeriodSelectionDelegate {
 
 class GoalDetailsViewController : UIViewController {
     
-    var goal : Goal
+    var goal : Goal_
     let reportViewModel = GoalReportViewModel.shared
     let disposeBag = DisposeBag()
     
     private lazy var spendingView = SpendingView()
     private lazy var reportView = ReportView()
     
-    init(goal: Goal) {
+    init(goal: Goal_) {
         //순서 미정의 된 변수, super init, 정의가 이제 된 변수를 바탕으로 한 개변
         self.goal = goal
         super.init(nibName: nil, bundle: nil)
@@ -100,7 +100,7 @@ class GoalDetailsViewController : UIViewController {
         selectButton(spendingButton) // Default selected button
         
         // ViewModel에서 GoalReport 데이터 가져오기
-        reportViewModel.fetchGoalReport(for: goal.GoalID)
+        reportViewModel.fetchGoalReport(for: goal.goalID)
         
         // ViewModel의 CategoryTotalCost 데이터를 관찰하고 UI 업데이트
         reportViewModel.goalReportRelay.asObservable()
@@ -307,7 +307,7 @@ class GoalDetailsViewController : UIViewController {
     
     func configureViews(){
         
-        header.setupTitleLabel(with: goal.goalEmoji + " " + goal.goalName)
+        header.setupTitleLabel(with: goal.icon + " " + goal.goalTitle)
         header.addBackButtonTarget(target: self, action: #selector(backButtonTapped), for: .touchUpInside)
         //layer1
         //dday
@@ -315,18 +315,18 @@ class GoalDetailsViewController : UIViewController {
         
         //spanDuration
         dateFormatter.dateFormat = "yyyy.MM.dd"
-        let startdatestr = dateFormatter.string(from: goal.goalStart)
+        let startdatestr = dateFormatter.string(from: goal.startDate)
         
         let enddatestr : String
-        if Calendar.current.dateComponents([.year], from: goal.goalStart) == Calendar.current.dateComponents([.year], from: goal.goalEnd) {
-            enddatestr = dateFormatter.string(from: goal.goalEnd)
+        if Calendar.current.dateComponents([.year], from: goal.startDate) == Calendar.current.dateComponents([.year], from: goal.endDate) {
+            enddatestr = dateFormatter.string(from: goal.endDate)
         }else{
             dateFormatter.dateFormat = "MM.dd"
-            enddatestr = dateFormatter.string(from: goal.goalEnd)
+            enddatestr = dateFormatter.string(from: goal.endDate)
         }
         
-        if goal.goalStart < Date() && Date() < goal.goalEnd {
-            let day = Calendar.current.dateComponents([.day], from: goal.goalStart, to: Date()).day
+        if goal.startDate < Date() && Date() < goal.endDate {
+            let day = Calendar.current.dateComponents([.day], from: goal.startDate, to: Date()).day
             spanNDuration.text = startdatestr + " - " + enddatestr + " | " + "\(day ?? 0)" + "일차"
         }else{
             spanNDuration.text = startdatestr + " - " + enddatestr
@@ -337,15 +337,15 @@ class GoalDetailsViewController : UIViewController {
         //layer2
         //label1 이미 구현됨.
         //label2
-        let usedAmountString = setComma(cash: goal.usedAmount)
-        let goalAmountString = " / \(setComma(cash: goal.goalAmount))원"
+        let totalCostString = setComma(cash: goal.totalCost)
+        let goalBudgetString = " / \(setComma(cash: goal.goalBudget))원"
         
-        let attributedString = NSMutableAttributedString(string: usedAmountString, attributes: [
+        let attributedString = NSMutableAttributedString(string: totalCostString, attributes: [
             .font: UIFont.mpFont26B(),
             .foregroundColor: UIColor.mpBlack
         ])
         
-        attributedString.append(NSAttributedString(string: goalAmountString, attributes: [
+        attributedString.append(NSAttributedString(string: goalBudgetString, attributes: [
             .font: UIFont.mpFont16M(),
             .foregroundColor: UIColor.mpGray
         ]))
@@ -367,7 +367,7 @@ class GoalDetailsViewController : UIViewController {
     
     func setupNavigationBar() {
         //        self.navigationController?.navigationBar.tintColor = .mpBlack
-        //        self.navigationItem.title = goal.goalEmoji + " " + goal.goalName
+        //        self.navigationItem.title = goal.icon + " " + goal.goalTitle
         //        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationController?.isNavigationBarHidden = true
     }
@@ -568,7 +568,7 @@ class SpendingView: UIView, UITableViewDelegate, UITableViewDataSource {
 
 class ReportView: UIView, UITableViewDataSource, UITableViewDelegate {
     
-    var goal: Goal?
+    var goal: Goal_?
     let tableView = UITableView()
     var CategoryTotalCosts: [CategoryTotalCost] = []
     var CategoryGoalReports: [CategoryGoalReport] = []
@@ -601,7 +601,7 @@ class ReportView: UIView, UITableViewDataSource, UITableViewDelegate {
         tableView.tableFooterView = UIView() // to remove unused cells
     }
     
-    func updateCategory(with reports: GoalReportResult, goal : Goal) {
+    func updateCategory(with reports: GoalReportResult, goal : Goal_) {
         self.CategoryTotalCosts = reports.categoryTotalCosts
         self.CategoryGoalReports = reports.categoryGoalReports
         self.goal = goal
@@ -800,7 +800,7 @@ class ReportSummaryCell : UITableViewCell {
         return attributedString
     }
     
-    func configureCell(goal : Goal){
+    func configureCell(goal : Goal_){
         
         self.contentView.backgroundColor = .mpWhite
         
@@ -812,26 +812,26 @@ class ReportSummaryCell : UITableViewCell {
         mostConsumedCatLabel.translatesAutoresizingMaskIntoConstraints = false
         zeroDayCountLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        if goal.goalStart <= Date() { //현재, 과거
+        if goal.endDate.toMPDate()! <= Date() { //현재, 과거 startDate >= Date
             
             var span : Int?
             
-            if goal.goalEnd < Date() { //과거
-                span = Calendar.current.dateComponents([.day], from: goal.goalStart, to: goal.goalEnd).day
+            if goal.endDate.toMPDate()! < Date() { //과거
+                span = Calendar.current.dateComponents([.day], from: goal.startDate, to: goal.endDate).day
             }else {
-                span = Calendar.current.dateComponents([.day], from: goal.goalStart, to: Date()).day
+                span = Calendar.current.dateComponents([.day], from: goal.startDate, to: Date()).day
             }
             
             //card
             //cardLabel
-            let (color, front, middle, end): (UIColor, String, String, String) = goal.usedAmount <= goal.goalAmount ?
-            (UIColor.mpMainColor, "목표 금액보다 ", "\(setComma(cash: goal.goalAmount - goal.usedAmount))", " 원을 아꼈어요\n아주 잘 하고 있어요!") :
-            (UIColor.mpRed, "목표 금액보다 ", "\(setComma(cash: goal.usedAmount - goal.goalAmount))", "원을 초과했어요\n조금만 더 아껴보아요!")
+            let (color, front, middle, end): (UIColor, String, String, String) = goal.totalCost <= goal.goalBudget ?
+            (UIColor.mpMainColor, "목표 금액보다 ", "\(setComma(cash: goal.goalBudget - goal.totalCost))", " 원을 아꼈어요\n아주 잘 하고 있어요!") :
+            (UIColor.mpRed, "목표 금액보다 ", "\(setComma(cash: goal.totalCost - goal.goalBudget))", "원을 초과했어요\n조금만 더 아껴보아요!")
             cardLabel.attributedText = makeLabelText(front: front, middle: middle, end: end, color: color)
             //cardImage 추후 수정
-            cardImage.image = goal.usedAmount <= goal.goalAmount ? UIImage(systemName: "pencil"): UIImage(systemName: "pencil")
+            cardImage.image = goal.totalCost <= goal.goalBudget ? UIImage(systemName: "pencil"): UIImage(systemName: "pencil")
             
-            averageLabel.attributedText = makeLabelText(front: "하루평균 ", middle: "\(setComma(cash: Int64(goal.usedAmount)/Int64(span!)))원", end: " 결제했어요", color: .mpMainColor)
+            averageLabel.attributedText = makeLabelText(front: "하루평균 ", middle: "\(setComma(cash: Int64(goal.totalCost)/Int64(span!)))원", end: " 결제했어요", color: .mpMainColor)
             
             mostConsumedCatLabel.attributedText = makeLabelText(front: "가장 많이 쓴 카테고리는 ", middle: "'임시조치'", end: "(이)에요", color: .mpMainColor) // todo : middle은 수정할것
             
@@ -1139,8 +1139,8 @@ class CategoryConsumeRatioGraph : UIView {
     func configure(with reportData: [CategoryTotalCost], goal : Goal) {
         
         //leftAmountLabel 수정
-        leftAmountLabel.text = goal.goalAmount >= goal.usedAmount ? setComma(cash: goal.goalAmount - goal.usedAmount) + "원" : setComma(cash: goal.usedAmount - goal.goalAmount) + "원 초과"
-        leftAmountLabel.textColor = goal.goalAmount >= goal.usedAmount ? .mpBlack : .mpRed
+        leftAmountLabel.text = goal.goalBudget >= goal.totalCost ? setComma(cash: goal.goalBudget - goal.totalCost) + "원" : setComma(cash: goal.totalCost - goal.goalBudget) + "원 초과"
+        leftAmountLabel.textColor = goal.goalBudget >= goal.totalCost ? .mpBlack : .mpRed
 
         //그래프 형성
         let totalCost = reportData.reduce(0) { $0 + $1.totalCost }
@@ -1269,7 +1269,7 @@ class CategoryReportCell: UITableViewCell {
     }()
     var verticalStack = UIStackView()
     var progressBar = GoalProgressBar(goalAmt: 300000, usedAmt: 0) // 임시 값으로 초기화
-    let usedAmountLabel = MPLabel() //progressBar 안에
+    let totalCostLabel = MPLabel() //progressBar 안에
     let leftAmountLabel = MPLabel() //progressBar 안에
     let averageLabel : MPLabel = {
         let label = MPLabel()
@@ -1334,7 +1334,7 @@ class CategoryReportCell: UITableViewCell {
         
         progressBar.changeUsedAmt(usedAmt: Int64(report.totalCost), goalAmt: Int64(report.categoryBudget))
         
-        let color : UIColor = goal.usedAmount < goal.goalAmount ? .mpMainColor : .mpRed
+        let color : UIColor = goal.totalCost < goal.goalBudget ? .mpMainColor : .mpRed
         averageLabel.attributedText = makeLabelText(front: "평균적으로", middle: formatNumber(Int64(report.avgCost))+"원", end: "결제했어요", color: color)
         mostConsumedLabel.attributedText = makeLabelText(front: "가장 많이 쓴 돈은 ", middle: formatNumber(Int64(report.maxCost))+"원", end: "이에요", color: color)
         
@@ -1344,10 +1344,10 @@ class CategoryReportCell: UITableViewCell {
     
     private func setupStackView() {
 
-        usedAmountLabel.font = UIFont.systemFont(ofSize: 14)
+        totalCostLabel.font = UIFont.systemFont(ofSize: 14)
         leftAmountLabel.font = .mpFont14B()
         
-        let horizontalStack = UIStackView(arrangedSubviews: [usedAmountLabel, leftAmountLabel])
+        let horizontalStack = UIStackView(arrangedSubviews: [totalCostLabel, leftAmountLabel])
         horizontalStack.axis = .horizontal
         horizontalStack.distribution = .equalSpacing
         horizontalStack.alignment = .center
@@ -1382,10 +1382,10 @@ class CategoryReportCell: UITableViewCell {
     
     //총금액 알려주는 구간 업데이트
     private func updateSumAmountDisplay(goal : Goal) {
-        let sumAmount = goal.usedAmount
+        let sumAmount = goal.totalCost
         let formattedSumAmount = formatNumber(sumAmount)
-        let goalAmount = goal.goalAmount
-        let formattedGoalAmount = formatNumber(goalAmount)
+        let goalBudget = goal.goalBudget
+        let formattedGoalAmount = formatNumber(goalBudget)
         
         let text = "\(formattedSumAmount)원 / \(formattedGoalAmount)원"
         
@@ -1400,12 +1400,12 @@ class CategoryReportCell: UITableViewCell {
             attributedString.addAttribute(.foregroundColor, value: UIColor.mpGray, range: fromSlashRange)
         }
         
-        usedAmountLabel.attributedText = attributedString
+        totalCostLabel.attributedText = attributedString
         
-        let leftAmount = goalAmount > sumAmount ? goalAmount - sumAmount : sumAmount - goalAmount
+        let leftAmount = goalBudget > sumAmount ? goalBudget - sumAmount : sumAmount - goalBudget
         let formattedLeftAmount = formatNumber(leftAmount)
-        leftAmountLabel.text = goalAmount > sumAmount ? "남은 금액 \(formattedLeftAmount)원" : "초과 금액 \(formattedLeftAmount)원"
-        leftAmountLabel.textColor = goalAmount >= sumAmount ? .mpBlack : .mpRed
+        leftAmountLabel.text = goalBudget > sumAmount ? "남은 금액 \(formattedLeftAmount)원" : "초과 금액 \(formattedLeftAmount)원"
+        leftAmountLabel.textColor = goalBudget >= sumAmount ? .mpBlack : .mpRed
         
     }
     

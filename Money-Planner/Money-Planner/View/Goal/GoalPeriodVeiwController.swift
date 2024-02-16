@@ -75,8 +75,8 @@ class GoalPeriodViewController : UIViewController, UINavigationControllerDelegat
     func goToGoalAmountVC(){
         print("목표 금액 등록 화면으로 이동")
         let goalTotalAmountVC = GoalTotalAmountViewController()
-        goalCreationManager.goalStart = periodBtn.startDate
-        goalCreationManager.goalEnd = periodBtn.endDate
+        goalCreationManager.startDate = periodBtn.startDate
+        goalCreationManager.endDate = periodBtn.endDate
         navigationController?.pushViewController(goalTotalAmountVC, animated: true)
     }
     
@@ -95,8 +95,8 @@ class GoalPeriodViewController : UIViewController, UINavigationControllerDelegat
     
     @objc private func backButtonTapped() {
         // 뒤로 가기 기능 구현
-        goalCreationManager.goalStart = nil
-        goalCreationManager.goalEnd = nil
+        goalCreationManager.startDate = nil
+        goalCreationManager.endDate = nil
         navigationController?.popViewController(animated: true)
     }
     

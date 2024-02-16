@@ -14,10 +14,10 @@ extension GoalTotalAmountViewController: MoneyAmountTextCellDelegate {
         // 쉼표를 제거하고 숫자로 변환
         if let text = newValue?.replacingOccurrences(of: ",", with: ""),
            let amount = Int64(text), amount > 0 {
-            goalCreationManager.goalAmount = amount
+            goalCreationManager.goalBudget = amount
             btmbtn.isEnabled = true
         } else {
-            goalCreationManager.goalAmount = nil
+            goalCreationManager.goalBudget = nil
             btmbtn.isEnabled = false
         }
     }
@@ -77,7 +77,7 @@ class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
            let cell = tableView.cellForRow(at: indexPath) as? MoneyAmountTextCell,
            let text = cell.textField.text,
            let amount = Int64(text) {
-            goalCreationManager.goalAmount = amount
+            goalCreationManager.goalBudget = amount
         }
     }
     

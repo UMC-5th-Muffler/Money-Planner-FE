@@ -1,5 +1,5 @@
 //
-//  GoalNameViewController.swift
+//  GoalTitleViewController.swift
 //  Money-Planner
 //
 //  Created by 유철민 on 1/12/24.
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-extension GoalNameViewController {
+extension GoalTitleViewController {
     
     // UITextFieldDelegate 메서드
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -45,7 +45,7 @@ extension GoalNameViewController {
             }else if updatedText.count == 0 {
                 warningLabel.isHidden = true // 경고 레이블 미표시
                 btmbtn.isEnabled = false
-            }else if goalViewModel.goalExistsWithName(goalName: updatedText) {
+            }else if goalViewModel.goalExistsWithName(goalTitle: updatedText) {
                 warningLabel.text = "이미 존재하는 이름의 목표가 있습니다."
                 warningLabel.isHidden = false // 경고 레이블 표시
                 btmbtn.isEnabled = false
@@ -62,11 +62,11 @@ extension GoalNameViewController {
     
 }
 
-class GoalNameViewController : UIViewController, UITextFieldDelegate {
+class GoalTitleViewController : UIViewController, UITextFieldDelegate {
     
     private var header = HeaderView(title: "")
     private var descriptionView = DescriptionView(text: "목표 이름을 설정해주세요", alignToCenter: false)
-    private var emojiTextField = GoalEmojiTextField()
+    private var emojiTextField = GoalTitleTextField()
     private var writeNameView = WriteNameView()
     private let warningLabel = MPLabel()
     private var btmbtn = MainBottomBtn(title: "다음")
@@ -106,8 +106,8 @@ class GoalNameViewController : UIViewController, UITextFieldDelegate {
     
     @objc func btmButtonTapped() {
         print("이름 입력 완료. 기간 화면으로.")
-        goalCreationManager.goalEmoji = emojiTextField.text
-        goalCreationManager.goalName = writeNameView.textField.text
+        goalCreationManager.icon = emojiTextField.text
+        goalCreationManager.goalTitle = writeNameView.textField.text
         let goalPeriodViewController = GoalPeriodViewController()
         navigationController?.pushViewController(goalPeriodViewController, animated: true)
     }

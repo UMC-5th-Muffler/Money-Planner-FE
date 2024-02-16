@@ -45,7 +45,7 @@ class WarnAboutUneditableModal : UIViewController {
         label.numberOfLines = 0
         return label
     }()
-    let goalAmountTitleLabel : UILabel = {
+    let goalBudgetTitleLabel : UILabel = {
         let label = UILabel()
         label.text = "목표 금액"
         label.font = .mpFont16B()
@@ -57,7 +57,7 @@ class WarnAboutUneditableModal : UIViewController {
         label.font = .mpFont16B()
         return label
     }()
-    let goalAmountLabel: UILabel = {
+    let goalBudgetLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.font = .mpFont16M()
@@ -67,7 +67,7 @@ class WarnAboutUneditableModal : UIViewController {
     let durationLabel: UILabel = {
         let label = UILabel()
         let calendar = Calendar.current
-        let components = calendar.dateComponents([.day], from: GoalCreationManager.shared.goalStart!, to: GoalCreationManager.shared.goalEnd!)
+        let components = calendar.dateComponents([.day], from: GoalCreationManager.shared.startDate!, to: GoalCreationManager.shared.endDate!)
         if let day = components.day {
             label.text = day % 7 == 0 ? "\(day / 7)주" : "\(day)일"
         }
@@ -79,7 +79,7 @@ class WarnAboutUneditableModal : UIViewController {
     let dateRangeLabel: UILabel = {
         let label = UILabel()
         dateFormatter.dateFormat = "yyyy년 MM월 dd일"
-        label.text = "\(dateFormatter.string(from: GoalCreationManager.shared.goalStart!))" + " - " + "\(dateFormatter.string(from: GoalCreationManager.shared.goalEnd!))"
+        label.text = "\(dateFormatter.string(from: GoalCreationManager.shared.startDate!))" + " - " + "\(dateFormatter.string(from: GoalCreationManager.shared.endDate!))"
         label.textAlignment = .center
         label.font = .mpFont14M()
         label.textColor = .mpDarkGray
@@ -118,7 +118,7 @@ class WarnAboutUneditableModal : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
-        goalAmountLabel.text = formatAmount(GoalCreationManager.shared.goalAmount!)
+        goalBudgetLabel.text = formatAmount(GoalCreationManager.shared.goalBudget!)
         cancelButton.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
         acceptButton.addTarget(self, action: #selector(acceptAction), for: .touchUpInside)
         setupLayout()
@@ -137,7 +137,7 @@ class WarnAboutUneditableModal : UIViewController {
         }
         
         // Create horizontal stack views for the grouped labels
-        let amountStackView = UIStackView(arrangedSubviews: [goalAmountTitleLabel, goalAmountLabel])
+        let amountStackView = UIStackView(arrangedSubviews: [goalBudgetTitleLabel, goalBudgetLabel])
         amountStackView.axis = .horizontal
         amountStackView.distribution = .equalSpacing
 //        amountStackView.translatesAutoresizingMaskIntoConstraints = false

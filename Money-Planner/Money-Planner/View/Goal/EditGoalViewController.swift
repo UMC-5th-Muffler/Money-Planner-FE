@@ -55,8 +55,8 @@ class EditGoalViewController : UIViewController {
     
     let emojiTextfield = EmojiTextField()
     
-    let goalNameLabel = SmallDescriptionView(text: "목표 이름", alignToCenter: false)
-    let goalNameTextfield = MainTextField(placeholder: "", iconName: "icon_Paper")
+    let goalTitleLabel = SmallDescriptionView(text: "목표 이름", alignToCenter: false)
+    let goalTitleTextfield = MainTextField(placeholder: "", iconName: "icon_Paper")
     let characterCountLabel = UILabel()
     
     let goalPeriodLabel = SmallDescriptionView(text: "목표 기간", alignToCenter: false)
@@ -103,7 +103,7 @@ class EditGoalViewController : UIViewController {
         setupMore()
         setupNextButton()
         
-        goalNameTextfield.delegate = self
+        goalTitleTextfield.delegate = self
         
     }
     
@@ -178,12 +178,12 @@ extension EditGoalViewController : UIScrollViewDelegate, UITextFieldDelegate {
     }
     
     func setupNameEdit() {
-        goalNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        goalNameTextfield.translatesAutoresizingMaskIntoConstraints = false
+        goalTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        goalTitleTextfield.translatesAutoresizingMaskIntoConstraints = false
         characterCountLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        contentView.addSubview(goalNameLabel)
-        contentView.addSubview(goalNameTextfield)
+        contentView.addSubview(goalTitleLabel)
+        contentView.addSubview(goalTitleTextfield)
         contentView.addSubview(characterCountLabel)
         
         characterCountLabel.text = "0/15"
@@ -192,24 +192,24 @@ extension EditGoalViewController : UIScrollViewDelegate, UITextFieldDelegate {
         characterCountLabel.textAlignment = .right
         
         let paddingContainer = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 0))
-        goalNameTextfield.rightView = paddingContainer
-        goalNameTextfield.rightViewMode = .always
+        goalTitleTextfield.rightView = paddingContainer
+        goalTitleTextfield.rightViewMode = .always
         
         NSLayoutConstraint.activate([
-            goalNameLabel.topAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: 26),
-            goalNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 19),
-            goalNameLabel.heightAnchor.constraint(equalToConstant: 18),
+            goalTitleLabel.topAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: 26),
+            goalTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 19),
+            goalTitleLabel.heightAnchor.constraint(equalToConstant: 18),
             
-            goalNameTextfield.topAnchor.constraint(equalTo: goalNameLabel.bottomAnchor, constant: 8),
-            goalNameTextfield.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 19),
-            goalNameTextfield.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -19),
-            goalNameTextfield.heightAnchor.constraint(equalToConstant: 64),
+            goalTitleTextfield.topAnchor.constraint(equalTo: goalTitleLabel.bottomAnchor, constant: 8),
+            goalTitleTextfield.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 19),
+            goalTitleTextfield.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -19),
+            goalTitleTextfield.heightAnchor.constraint(equalToConstant: 64),
             
-            characterCountLabel.centerYAnchor.constraint(equalTo: goalNameTextfield.centerYAnchor),
-            characterCountLabel.trailingAnchor.constraint(equalTo: goalNameTextfield.trailingAnchor, constant: -20)
+            characterCountLabel.centerYAnchor.constraint(equalTo: goalTitleTextfield.centerYAnchor),
+            characterCountLabel.trailingAnchor.constraint(equalTo: goalTitleTextfield.trailingAnchor, constant: -20)
         ])
         
-        goalNameTextfield.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        goalTitleTextfield.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
@@ -238,7 +238,7 @@ extension EditGoalViewController : UIScrollViewDelegate, UITextFieldDelegate {
         totalPeriodLabel.textAlignment = .right
         
         NSLayoutConstraint.activate([
-            goalPeriodLabel.topAnchor.constraint(equalTo: goalNameTextfield.bottomAnchor, constant: 26),
+            goalPeriodLabel.topAnchor.constraint(equalTo: goalTitleTextfield.bottomAnchor, constant: 26),
             goalPeriodLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 19),
             goalPeriodLabel.heightAnchor.constraint(equalToConstant: 18),
             
@@ -379,7 +379,7 @@ extension EditGoalViewController : UIScrollViewDelegate, UITextFieldDelegate {
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == goalNameTextfield {
+        if textField == goalTitleTextfield {
             let currentText = textField.text ?? ""
             guard let stringRange = Range(range, in: currentText) else { return false }
             let updatedText = currentText.replacingCharacters(in: stringRange, with: string)

@@ -29,4 +29,11 @@ extension String{
     var toDate: Date? {
         return String.dateFormatter.date(from: self)
     }
+    
+    func toMPDate(format: String = "yyyy-MM-dd") -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        return dateFormatter.date(from: self)
+    }
+    
 }

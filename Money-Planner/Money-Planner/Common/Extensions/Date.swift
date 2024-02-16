@@ -19,4 +19,10 @@ extension Date {
     func isInRange(startDate: Date, endDate: Date) -> Bool {
           return self >= startDate && self <= endDate
     }
+    
+    func toString(format: String = "yyyy-MM-dd") -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        return dateFormatter.string(from: self)
+    }
 }

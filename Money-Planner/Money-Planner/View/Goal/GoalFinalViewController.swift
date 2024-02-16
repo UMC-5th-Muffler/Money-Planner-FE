@@ -124,9 +124,9 @@ class GoalCard : UIView {
     var nameTitle = MPLabel()
     var periodTitle = MPLabel()
     var amountTitle = MPLabel()
-    var goalName = MPLabel()
+    var goalTitle = MPLabel()
     var goalPeriod = MPLabel()
-    var goalAmount = MPLabel()
+    var goalBudget = MPLabel()
     
     var goalCreationManager = GoalCreationManager.shared
     var goalViewModel = GoalViewModel.shared
@@ -169,10 +169,10 @@ class GoalCard : UIView {
         ])
         
         // Goal Name
-        goalName.translatesAutoresizingMaskIntoConstraints = false
+        goalTitle.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            goalName.centerYAnchor.constraint(equalTo: nameTitle.centerYAnchor),
-            goalName.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
+            goalTitle.centerYAnchor.constraint(equalTo: nameTitle.centerYAnchor),
+            goalTitle.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
         ])
         
         // Goal Period
@@ -183,10 +183,10 @@ class GoalCard : UIView {
         ])
         
         // Goal Amount
-        goalAmount.translatesAutoresizingMaskIntoConstraints = false
+        goalBudget.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            goalAmount.centerYAnchor.constraint(equalTo: amountTitle.centerYAnchor),
-            goalAmount.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
+            goalBudget.centerYAnchor.constraint(equalTo: amountTitle.centerYAnchor),
+            goalBudget.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
         ])
     }
     
@@ -196,9 +196,9 @@ class GoalCard : UIView {
         nameTitle.textColor = .mpDarkGray
         nameTitle.font = .mpFont16M()
         
-        goalName.text = goalCreationManager.goalEmoji! + " " + goalCreationManager.goalName!
-        goalName.textColor = .mpBlack
-        goalName.font = .mpFont16M()
+        goalTitle.text = goalCreationManager.icon! + " " + goalCreationManager.goalTitle!
+        goalTitle.textColor = .mpBlack
+        goalTitle.font = .mpFont16M()
         
         periodTitle.text = "목표 기간"
         periodTitle.textColor = .mpDarkGray
@@ -212,16 +212,16 @@ class GoalCard : UIView {
         amountTitle.textColor = .mpDarkGray
         amountTitle.font = .mpFont16M()
         
-        goalAmount.text = formatNumber(goalCreationManager.goalAmount!) + "원"
-        goalAmount.textColor = .mpBlack
-        goalAmount.font = .mpFont16M()
+        goalBudget.text = formatNumber(goalCreationManager.goalBudget!) + "원"
+        goalBudget.textColor = .mpBlack
+        goalBudget.font = .mpFont16M()
         
         addSubview(nameTitle)
-        addSubview(goalName)
+        addSubview(goalTitle)
         addSubview(periodTitle)
         addSubview(goalPeriod)
         addSubview(amountTitle)
-        addSubview(goalAmount)
+        addSubview(goalBudget)
         
     }
     
@@ -231,8 +231,8 @@ class GoalCard : UIView {
         formatter.dateFormat = "M월 d일"
         formatter.locale = Locale(identifier: "ko_KR")
         
-        let startDate = goalCreationManager.goalStart!
-        let endDate = goalCreationManager.goalEnd!
+        let startDate = goalCreationManager.startDate!
+        let endDate = goalCreationManager.endDate!
 
         var tmpStr : String
         let startDateString = formatter.string(from: startDate)

@@ -55,7 +55,7 @@ extension GoalCategoryViewController: MoneyAmountTextCellDelegate {
         
         //moneyAmountTextCell 경고문 변경
         if let cell = tableView.cellForRow(at: indexPath) as? MoneyAmountTextCell {
-            if let ga = goalCreationManager.goalAmount {
+            if let ga = goalCreationManager.goalBudget {
                 if ga < newValueNumeric {
                     categoryGoalOver = true
                     categoryGoalSumOver = true
@@ -73,7 +73,7 @@ extension GoalCategoryViewController: MoneyAmountTextCellDelegate {
         }
         
         //progressBar 업데이트
-        progressBar.changeUsedAmt(usedAmt: sumAmount, goalAmt: goalCreationManager.goalAmount!)
+        progressBar.changeUsedAmt(usedAmt: sumAmount, goalAmt: goalCreationManager.goalBudget!)
         
         //btmBtn 활성화 결정
         checkAllSectionsAndEnableButton()
@@ -90,7 +90,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     var header = HeaderView(title: "")
     var descriptionView = DescriptionView(text: "카테고리별 목표 금액을\n입력해주세요", alignToCenter: false)
     var progressBar = GoalProgressBar(goalAmt: 300000, usedAmt: 0) // 임시 값으로 초기화
-    let usedAmountLabel = MPLabel() //progressBar 안에
+    let totalCostLabel = MPLabel() //progressBar 안에
     let leftAmountLabel = MPLabel() //progressBar 안에
     var verticalStack = UIStackView()
     var tableView : UITableView!
@@ -132,7 +132,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     
     // 여기서부터 setup 메서드들을 정의합니다.
     @objc func btmButtonTapped() {
-        // Create and present GoalNameViewController
+        // Create and present GoalTitleViewController
         print("일별 설정으로 넘어감")
         let goalDailyVC = GoalDailyViewController()
         navigationController?.pushViewController(goalDailyVC, animated: true)
@@ -171,11 +171,11 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     private func setupStackView() {
         
         updateSumAmountDisplay()
-        usedAmountLabel.font = UIFont.systemFont(ofSize: 14)
+        totalCostLabel.font = UIFont.systemFont(ofSize: 14)
         leftAmountLabel.font = .mpFont14B()
         
         //가로 스택 뷰를 생성하고 component 추가
-        let horizontalStack = UIStackView(arrangedSubviews: [usedAmountLabel, leftAmountLabel])
+        let horizontalStack = UIStackView(arrangedSubviews: [totalCostLabel, leftAmountLabel])
         horizontalStack.axis = .horizontal
         horizontalStack.distribution = .equalSpacing
         horizontalStack.alignment = .center
@@ -312,7 +312,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
             }
             
             updateSumAmountDisplay()
-            progressBar.changeUsedAmt(usedAmt: sumAmount, goalAmt: goalCreationManager.goalAmount!)
+            progressBar.changeUsedAmt(usedAmt: sumAmount, goalAmt: goalCreationManager.goalBudget!)
             
             //btmBtn 활성화 체크
             checkAllSectionsAndEnableButton()
@@ -408,8 +408,8 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     //총금액 알려주는 구간 업데이트
     private func updateSumAmountDisplay() {
         let formattedSumAmount = formatNumber(sumAmount)
-        let goalAmount = goalCreationManager.goalAmount ?? 0
-        let formattedGoalAmount = formatNumber(goalAmount)
+        let goalBudget = goalCreationManager.goalBudget ?? 0
+        let formattedGoalAmount = formatNumber(goalBudget)
         
         let text = "\(formattedSumAmount)원 / \(formattedGoalAmount)원"
         
@@ -424,14 +424,14 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
             attributedString.addAttribute(.foregroundColor, value: UIColor.mpGray, range: fromSlashRange)
         }
         
-        usedAmountLabel.attributedText = attributedString
+        totalCostLabel.attributedText = attributedString
         
-        let leftAmount = goalAmount > sumAmount ? goalAmount - sumAmount : sumAmount - goalAmount
+        let leftAmount = goalBudget > sumAmount ? goalBudget - sumAmount : sumAmount - goalBudget
         let formattedLeftAmount = formatNumber(leftAmount)
-        leftAmountLabel.text = goalAmount > sumAmount ? "남은 금액 \(formattedLeftAmount)원" : "초과 금액 \(formattedLeftAmount)원"
-        leftAmountLabel.textColor = goalAmount >= sumAmount ? .mpBlack : .mpRed
+        leftAmountLabel.text = goalBudget > sumAmount ? "남은 금액 \(formattedLeftAmount)원" : "초과 금액 \(formattedLeftAmount)원"
+        leftAmountLabel.textColor = goalBudget >= sumAmount ? .mpBlack : .mpRed
         
-        btmBtn.isEnabled = !(sumAmount > goalAmount) // 사실 모든 카테고리가 다 선택되었는지 점검하는 기능도 추가해야함.
+        btmBtn.isEnabled = !(sumAmount > goalBudget) // 사실 모든 카테고리가 다 선택되었는지 점검하는 기능도 추가해야함.
     }
 
     //컴마 넣기
@@ -492,7 +492,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
         }
         
         //목표금액 언더인가 체크
-        if sumAmount > goalCreationManager.goalAmount! {
+        if sumAmount > goalCreationManager.goalBudget! {
             allConditionsMet = false
         }
 
@@ -501,8 +501,8 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     }
     
 //    func updateCellsForGoalAmountChange() {
-//        // goalAmount가 goalCreationManager.goalAmount보다 작거나 같은지 확인
-//        let isGoalAmountExceeded = sumAmount > goalCreationManager.goalAmount!
+//        // goalBudget가 goalCreationManager.goalBudget보다 작거나 같은지 확인
+//        let isGoalAmountExceeded = sumAmount > goalCreationManager.goalBudget!
 //
 //        for section in 0..<categoryCount - 1 {  // 마지막 "추가" 섹션은 제외
 //            if let amountCell = tableView.cellForRow(at: IndexPath(row: 1, section: section)) as? MoneyAmountTextCell {

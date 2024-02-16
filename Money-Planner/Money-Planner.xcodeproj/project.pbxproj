@@ -64,7 +64,7 @@
 		7A0D33862B7F48AA007B2736 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D337B2B7F48AA007B2736 /* TestViewController.swift */; };
 		7A0D33872B7F48AA007B2736 /* GoalPeriodVeiwController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D337C2B7F48AA007B2736 /* GoalPeriodVeiwController.swift */; };
 		7A0D33882B7F48AA007B2736 /* GoalDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D337D2B7F48AA007B2736 /* GoalDetailsViewController.swift */; };
-		7A0D33892B7F48AA007B2736 /* GoalNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D337E2B7F48AA007B2736 /* GoalNameViewController.swift */; };
+		7A0D33892B7F48AA007B2736 /* GoalTitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D337E2B7F48AA007B2736 /* GoalTitleViewController.swift */; };
 		7A0D338A2B7F48AA007B2736 /* GoalMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D337F2B7F48AA007B2736 /* GoalMainViewController.swift */; };
 		7A0D338B2B7F48AA007B2736 /* GoalComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33802B7F48AA007B2736 /* GoalComponents.swift */; };
 		7A0D338C2B7F48AA007B2736 /* GoalTotalAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33812B7F48AA007B2736 /* GoalTotalAmountViewController.swift */; };
@@ -76,14 +76,13 @@
 		7A0D33962B7F4993007B2736 /* GoalReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33922B7F4993007B2736 /* GoalReportViewModel.swift */; };
 		7A0D33972B7F4993007B2736 /* GoalCreationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33932B7F4993007B2736 /* GoalCreationManager.swift */; };
 		7A0D33982B7F4993007B2736 /* GoalSpendingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33942B7F4993007B2736 /* GoalSpendingViewModel.swift */; };
-		7A0D33B42B7F4CC2007B2736 /* GoalReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33AE2B7F4CC2007B2736 /* GoalReport.swift */; };
-		7A0D33B52B7F4CC2007B2736 /* now.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33AF2B7F4CC2007B2736 /* now.swift */; };
-		7A0D33B62B7F4CC2007B2736 /* not-now.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33B02B7F4CC2007B2736 /* not-now.swift */; };
-		7A0D33B72B7F4CC2007B2736 /* GoalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33B12B7F4CC2007B2736 /* GoalService.swift */; };
-		7A0D33B82B7F4CC2007B2736 /* GoalSpending.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33B22B7F4CC2007B2736 /* GoalSpending.swift */; };
+		7A0D33B52B7F4CC2007B2736 /* GoalMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33AF2B7F4CC2007B2736 /* GoalMain.swift */; };
 		7A0D33B92B7F4CC2007B2736 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33B32B7F4CC2007B2736 /* Goal.swift */; };
 		7A0D33BD2B7F506A007B2736 /* LabelAndImageBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33BC2B7F506A007B2736 /* LabelAndImageBtn.swift */; };
 		7A0D33BF2B7F5079007B2736 /* DdayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33BE2B7F5079007B2736 /* DdayLabel.swift */; };
+		7A0D33C42B7F8864007B2736 /* GoalDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33C32B7F8864007B2736 /* GoalDetail.swift */; };
+		7A0D33C92B7F951D007B2736 /* GoalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33C72B7F951D007B2736 /* GoalRepository.swift */; };
+		7A0D33CA2B7F951D007B2736 /* GoalAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33C82B7F951D007B2736 /* GoalAPI.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -221,7 +220,7 @@
 		7A0D337B2B7F48AA007B2736 /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		7A0D337C2B7F48AA007B2736 /* GoalPeriodVeiwController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalPeriodVeiwController.swift; sourceTree = "<group>"; };
 		7A0D337D2B7F48AA007B2736 /* GoalDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalDetailsViewController.swift; sourceTree = "<group>"; };
-		7A0D337E2B7F48AA007B2736 /* GoalNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalNameViewController.swift; sourceTree = "<group>"; };
+		7A0D337E2B7F48AA007B2736 /* GoalTitleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalTitleViewController.swift; sourceTree = "<group>"; };
 		7A0D337F2B7F48AA007B2736 /* GoalMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalMainViewController.swift; sourceTree = "<group>"; };
 		7A0D33802B7F48AA007B2736 /* GoalComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalComponents.swift; sourceTree = "<group>"; };
 		7A0D33812B7F48AA007B2736 /* GoalTotalAmountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalTotalAmountViewController.swift; sourceTree = "<group>"; };
@@ -233,15 +232,14 @@
 		7A0D33922B7F4993007B2736 /* GoalReportViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalReportViewModel.swift; sourceTree = "<group>"; };
 		7A0D33932B7F4993007B2736 /* GoalCreationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalCreationManager.swift; sourceTree = "<group>"; };
 		7A0D33942B7F4993007B2736 /* GoalSpendingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalSpendingViewModel.swift; sourceTree = "<group>"; };
-		7A0D33AE2B7F4CC2007B2736 /* GoalReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalReport.swift; sourceTree = "<group>"; };
-		7A0D33AF2B7F4CC2007B2736 /* now.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = now.swift; sourceTree = "<group>"; };
-		7A0D33B02B7F4CC2007B2736 /* not-now.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "not-now.swift"; sourceTree = "<group>"; };
-		7A0D33B12B7F4CC2007B2736 /* GoalService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalService.swift; sourceTree = "<group>"; };
-		7A0D33B22B7F4CC2007B2736 /* GoalSpending.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalSpending.swift; sourceTree = "<group>"; };
+		7A0D33AF2B7F4CC2007B2736 /* GoalMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalMain.swift; sourceTree = "<group>"; };
 		7A0D33B32B7F4CC2007B2736 /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		7A0D33BC2B7F506A007B2736 /* LabelAndImageBtn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelAndImageBtn.swift; sourceTree = "<group>"; };
 		7A0D33BE2B7F5079007B2736 /* DdayLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DdayLabel.swift; sourceTree = "<group>"; };
 		7A0D33C22B7F53A3007B2736 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		7A0D33C32B7F8864007B2736 /* GoalDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalDetail.swift; sourceTree = "<group>"; };
+		7A0D33C72B7F951D007B2736 /* GoalRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalRepository.swift; sourceTree = "<group>"; };
+		7A0D33C82B7F951D007B2736 /* GoalAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalAPI.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -439,6 +437,8 @@
 		7A0D33242B7DFECA007B2736 /* Goal */ = {
 			isa = PBXGroup;
 			children = (
+				7A0D33C82B7F951D007B2736 /* GoalAPI.swift */,
+				7A0D33C72B7F951D007B2736 /* GoalRepository.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -461,6 +461,16 @@
 				7A0D33922B7F4993007B2736 /* GoalReportViewModel.swift */,
 				7A0D33942B7F4993007B2736 /* GoalSpendingViewModel.swift */,
 				7A0D33912B7F4993007B2736 /* GoalViewModel.swift */,
+			);
+			path = Goal;
+			sourceTree = "<group>";
+		};
+		7A0D33C62B7F9112007B2736 /* Goal */ = {
+			isa = PBXGroup;
+			children = (
+				7A0D33B32B7F4CC2007B2736 /* Goal.swift */,
+				7A0D33AF2B7F4CC2007B2736 /* GoalMain.swift */,
+				7A0D33C32B7F8864007B2736 /* GoalDetail.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -618,12 +628,7 @@
 		7A610ACE2B480B5B00D3096F /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				7A0D33B32B7F4CC2007B2736 /* Goal.swift */,
-				7A0D33AE2B7F4CC2007B2736 /* GoalReport.swift */,
-				7A0D33B12B7F4CC2007B2736 /* GoalService.swift */,
-				7A0D33B22B7F4CC2007B2736 /* GoalSpending.swift */,
-				7A0D33B02B7F4CC2007B2736 /* not-now.swift */,
-				7A0D33AF2B7F4CC2007B2736 /* now.swift */,
+				7A0D33C62B7F9112007B2736 /* Goal */,
 				208C90BC2B6FE4CF00C67960 /* Member */,
 				7A610AE42B491ED600D3096F /* Dummy.swift */,
 				D20D6FF22B5D67B1006D6762 /* Category.swift */,
@@ -703,7 +708,7 @@
 				7A0D337D2B7F48AA007B2736 /* GoalDetailsViewController.swift */,
 				7A0D33842B7F48AA007B2736 /* GoalFinalViewController.swift */,
 				7A0D337F2B7F48AA007B2736 /* GoalMainViewController.swift */,
-				7A0D337E2B7F48AA007B2736 /* GoalNameViewController.swift */,
+				7A0D337E2B7F48AA007B2736 /* GoalTitleViewController.swift */,
 				7A0D337C2B7F48AA007B2736 /* GoalPeriodVeiwController.swift */,
 				7A0D33812B7F48AA007B2736 /* GoalTotalAmountViewController.swift */,
 				7A0D337B2B7F48AA007B2736 /* TestViewController.swift */,
@@ -946,6 +951,7 @@
 				D20D70142B612BB4006D6762 /* CategoryTableView.swift in Sources */,
 				208C90CA2B7BBBB600C67960 /* ResponseExpenseDto.swift in Sources */,
 				7A0D33B92B7F4CC2007B2736 /* Goal.swift in Sources */,
+				7A0D33CA2B7F951D007B2736 /* GoalAPI.swift in Sources */,
 				7A4C673F2B5A4AC9008BCAC9 /* CheckBtn.swift in Sources */,
 				D20D701A2B664996006D6762 /* UICollectionView.swift in Sources */,
 				208C90D12B7BD33300C67960 /* UpdateExpenseRequest.swift in Sources */,
@@ -955,7 +961,6 @@
 				7A0D33882B7F48AA007B2736 /* GoalDetailsViewController.swift in Sources */,
 				206C58D82B626465008410C1 /* CategoryModalViewController.swift in Sources */,
 				D2D0B7362B6BA83E003B6B5E /* HomeRepository.swift in Sources */,
-				7A0D33B62B7F4CC2007B2736 /* not-now.swift in Sources */,
 				208C90A62B6D15BB00C67960 /* ProfileViewController.swift in Sources */,
 				D253EEBF2B7B653A00A4FC1C /* ExpenseRepository.swift in Sources */,
 				7A610AE72B491F1600D3096F /* HeaderView.swift in Sources */,
@@ -976,14 +981,12 @@
 				7A0D33952B7F4993007B2736 /* GoalViewModel.swift in Sources */,
 				D217EBEC2B6F846400EB6BF3 /* Progress.swift in Sources */,
 				208C90AC2B6E3F8100C67960 /* UnregisterViewController.swift in Sources */,
-				7A0D33B42B7F4CC2007B2736 /* GoalReport.swift in Sources */,
 				7A0D338A2B7F48AA007B2736 /* GoalMainViewController.swift in Sources */,
 				7A4C67412B5A4AF1008BCAC9 /* MainBottomBtn.swift in Sources */,
 				D20D6FDE2B581B20006D6762 /* CALayer.swift in Sources */,
 				D253EEAD2B79FE8400A4FC1C /* UIScrollView.swift in Sources */,
 				D2D0B7412B6BACAB003B6B5E /* HomeNow.swift in Sources */,
 				7A4C67432B5A4B22008BCAC9 /* SmallButtonView.swift in Sources */,
-				7A0D33B82B7F4CC2007B2736 /* GoalSpending.swift in Sources */,
 				208C90912B6AB7A200C67960 /* MufflerViewModel.swift in Sources */,
 				208C90BE2B710F4800C67960 /* TextFieldContainerView.swift in Sources */,
 				D2D0B72B2B6A704B003B6B5E /* BaseResponse.swift in Sources */,
@@ -994,6 +997,7 @@
 				D253EEB72B7B505B00A4FC1C /* HomeMoreModalViewController.swift in Sources */,
 				7A610AEA2B493EC900D3096F /* MakeGoalViewController.swift in Sources */,
 				208C90932B6AB7DA00C67960 /* ConnectModel.swift in Sources */,
+				7A0D33C42B7F8864007B2736 /* GoalDetail.swift in Sources */,
 				552A42672B72200E007AEAAD /* DailyConsumeViewController.swift in Sources */,
 				D20D6FF32B5D67B1006D6762 /* Category.swift in Sources */,
 				D2D0B7382B6BA845003B6B5E /* HomeAPI.swift in Sources */,
@@ -1004,7 +1008,6 @@
 				D20D700F2B61241F006D6762 /* NotificationsViewController.swift in Sources */,
 				D20D6FFC2B5FDF00006D6762 /* DailyConsume.swift in Sources */,
 				D20D6FFE2B5FDF4C006D6762 /* ConsumeDetail.swift in Sources */,
-				7A0D33B72B7F4CC2007B2736 /* GoalService.swift in Sources */,
 				7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */,
 				7A610AE52B491ED600D3096F /* Dummy.swift in Sources */,
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
@@ -1014,13 +1017,14 @@
 				20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */,
 				206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */,
 				7A0D33962B7F4993007B2736 /* GoalReportViewModel.swift in Sources */,
-				7A0D33B52B7F4CC2007B2736 /* now.swift in Sources */,
+				7A0D33B52B7F4CC2007B2736 /* GoalMain.swift in Sources */,
 				D20D70042B5FF094006D6762 /* Numeric.swift in Sources */,
 				7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */,
 				D20D70112B612490006D6762 /* CategoryEditViewController.swift in Sources */,
 				551E8B742B7D10050008476B /* NotificationSettingViewController.swift in Sources */,
 				7A0D338C2B7F48AA007B2736 /* GoalTotalAmountViewController.swift in Sources */,
 				7A610AD22B49004200D3096F /* MyPageViewController.swift in Sources */,
+				7A0D33C92B7F951D007B2736 /* GoalRepository.swift in Sources */,
 				7A610AD22B49004200D3096F /* MyPageViewController.swift in Sources */,
 				D20D703A2B68C591006D6762 /* TestRepository.swift in Sources */,
 				D20D70022B5FF088006D6762 /* Formatter.swift in Sources */,
@@ -1029,7 +1033,7 @@
 				20EF782D2B68CEA700AA135E /* AddCategoryViewController.swift in Sources */,
 				20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */,
 				D20D70232B67E1DD006D6762 /* GoalListModalViewController.swift in Sources */,
-				7A0D33892B7F48AA007B2736 /* GoalNameViewController.swift in Sources */,
+				7A0D33892B7F48AA007B2736 /* GoalTitleViewController.swift in Sources */,
 				D20D70212B66FEA0006D6762 /* HomeViewModel.swift in Sources */,
 				208C90A42B6CD72000C67960 /* PopupViewController.swift in Sources */,
 				D20D6FF52B5E5B91006D6762 /* ToggleButton.swift in Sources */,

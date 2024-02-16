@@ -34,11 +34,11 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     @objc func addNewGoalButtonTapped() {
-        // Create and present GoalNameViewController
+        // Create and present GoalTitleViewController
         print("aaaa")
-        let goalNameViewController = GoalNameViewController()
-//        self.present(GoalNameViewController(), animated: true)
-        navigationController?.pushViewController(goalNameViewController, animated: true)
+        let goalTitleViewController = GoalTitleViewController()
+//        self.present(GoalTitleViewController(), animated: true)
+        navigationController?.pushViewController(goalTitleViewController, animated: true)
         
         //탭바가 안보이도록
         self.tabBarController?.tabBar.isHidden = true

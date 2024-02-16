@@ -169,13 +169,13 @@ class GoalPresentationCell: UITableViewCell {
     let dday = MPLabel()
     var progressBar : GoalProgressBar
     let progressPercentage = MPLabel()
-    let usedAmount = MPLabel()
+    let totalCost = MPLabel()
     
     var btnTapped : (() -> Void)?
     
     init(goal: Goal, reuseIdentifier: String?) {
         self.goal = goal // goal을 초기화
-        self.progressBar = GoalProgressBar(goalAmt: goal.goalAmount, usedAmt: goal.usedAmount)
+        self.progressBar = GoalProgressBar(goalAmt: goal.goalBudget!, usedAmt: goal.totalCost!)
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear
         setupCellLayout()
@@ -219,7 +219,7 @@ class GoalPresentationCell: UITableViewCell {
         
         let horizontalStackView1 = UIStackView(arrangedSubviews: [title, dday])
         let horizontalStackView2 = UIStackView(arrangedSubviews: [progressBar])
-        let horizontalStackView3 = UIStackView(arrangedSubviews: [progressPercentage, usedAmount])
+        let horizontalStackView3 = UIStackView(arrangedSubviews: [progressPercentage, totalCost])
         let verticalStackView = UIStackView(arrangedSubviews: [horizontalStackView1, horizontalStackView2, horizontalStackView3])
         
         verticalStackView.axis = .vertical
@@ -247,7 +247,7 @@ class GoalPresentationCell: UITableViewCell {
         btn.layer.cornerRadius = 10
         
         //title
-        title.text = goal.goalEmoji + "  " + goal.goalName
+        title.text = goal.icon! + "  " + goal.goalTitle!
         title.font = .mpFont16M()
         title.textColor = .mpBlack
         
@@ -255,11 +255,11 @@ class GoalPresentationCell: UITableViewCell {
         dday.font = .mpFont12M()
         
         let currentDate = Date()
-        let isPastGoal = currentDate > goal.goalEnd
-        let isFutureGoal = currentDate < goal.goalStart
+        let isPastGoal = currentDate > (goal.endDate?.toMPDate())!
+        let isFutureGoal = currentDate < (goal.startDate?.toMPDate())!
         
         // 목표가 현재 진행 중인 경우, 오늘 날짜로부터 목표 종료일까지 남은 일수 계산
-        let daysLeft = isPastGoal ? 0 : Calendar.current.dateComponents([.day], from: currentDate, to: goal.goalEnd).day ?? 0
+        let daysLeft = isPastGoal ? 0 : Calendar.current.dateComponents([.day], from: currentDate, to: (goal.endDate?.toMPDate())!).day ?? 0
         
         // 기본적으로 진행 중 상태를 가정하고 색상과 텍스트 설정
         var ddayText = "D-\(daysLeft)"
@@ -298,19 +298,19 @@ class GoalPresentationCell: UITableViewCell {
         dday.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         //progressPercentage
-        let progressPercentageValue = Double(goal.usedAmount) / Double(goal.goalAmount) * 100.0
+        let progressPercentageValue = Double(goal.totalCost!) / Double(goal.goalBudget!) * 100.0
         progressPercentage.text = String(format: "%.0f%%", progressPercentageValue)
         progressPercentage.textColor = progressPercentageValue > 100 ? .mpRed : .mpMainColor
         progressPercentage.font = .mpFont14M()
         
         
-        let usedAmountText = setComma(cash: goal.usedAmount) + " 원 / " + setComma(cash: goal.goalAmount) + " 원 사용"
-        let goalAmountTextCnt = "/ \(goal.goalAmount) 원 사용".count
-        let attributedText = NSMutableAttributedString(string: usedAmountText)
-        attributedText.addAttribute(.foregroundColor, value: UIColor.mpDarkGray, range: NSRange(location: 0, length: usedAmountText.count))
-        attributedText.addAttribute(.foregroundColor, value: UIColor.mpGray, range: NSRange(location: usedAmountText.count - goalAmountTextCnt , length: goalAmountTextCnt))
-        usedAmount.attributedText = attributedText
-        usedAmount.font = .mpFont14M()
+        let totalCostText = setComma(cash: goal.totalCost!) + " 원 / " + setComma(cash: goal.goalBudget!) + " 원 사용"
+        let goalBudgetTextCnt = "/ \(goal.goalBudget ?? 0) 원 사용".count
+        let attributedText = NSMutableAttributedString(string: totalCostText)
+        attributedText.addAttribute(.foregroundColor, value: UIColor.mpDarkGray, range: NSRange(location: 0, length: totalCostText.count))
+        attributedText.addAttribute(.foregroundColor, value: UIColor.mpGray, range: NSRange(location: totalCostText.count - goalBudgetTextCnt , length: goalBudgetTextCnt))
+        totalCost.attributedText = attributedText
+        totalCost.font = .mpFont14M()
     }
 }
 
@@ -523,7 +523,7 @@ class GoalProgressBar: UIView {
  if let _ = string.first?.isEmoji {
  textField.text = string
  textField.resignFirstResponder()
- // Notify GoalNameViewController to update emoji and hide scrim (implement delegate or closure)
+ // Notify GoalTitleViewController to update emoji and hide scrim (implement delegate or closure)
  }
  return false
  }
@@ -591,7 +591,7 @@ extension Character {
 //    }
 //}
 
-class GoalEmojiTextField: UITextField {
+class GoalTitleTextField: UITextField {
     
     override init(frame: CGRect) {
         super.init(frame: frame)

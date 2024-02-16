@@ -8,54 +8,56 @@
 import Foundation
 
 // GoalCreationManager
+
 class GoalCreationManager {
     
     static let shared = GoalCreationManager()
     let goalViewModel = GoalViewModel.shared
 
     var goalID: Int?
-    var goalEmoji: String?
-    var goalName: String?
-    var goalAmount: Int64?
-    var goalStart: Date?
-    var goalEnd: Date?
-    
-    
-    var categories : [Category] = []
- 
+    var icon: String?
+    var goalTitle: String?
+    var goalDetail: String? // Added detail property
+    var goalBudget: Int64?
+    var startDate: String?
+    var endDate: String?
+    var categoryGoals: [CategoryGoal] = [] // Assuming this matches your CategoryGoal structure
+    var dailyBudgets: [Int64] = [] // Added dailyBudgets property
+
     private init() {} // Private initializer to ensure singleton usage
 
-    func createGoalRequest() -> CreateGoalRequest? {
-        guard let goalEmoji = goalEmoji,
-              let goalName = goalName,
-              let goalAmount = goalAmount,
-              let goalStart = goalStart,
-              let goalEnd = goalEnd else {
+    func createGoalRequest() -> PostGoalRequest? {
+        guard let icon = icon,
+              let goalTitle = goalTitle,
+              let goalDetail = goalDetail, // Ensure goalDetail is not nil
+              let goalBudget = goalBudget,
+              let startDate = startDate,
+              let endDate = endDate else {
             return nil
         }
 
-        return CreateGoalRequest(goalEmoji: goalEmoji, goalName: goalName, goalAmount: goalAmount, goalStart: goalStart, goalEnd: goalEnd)
+        return PostGoalRequest(icon: icon,
+                               title: goalTitle,
+                               detail: goalDetail,
+                               startDate: startDate,
+                               endDate: endDate,
+                               totalBudget: goalBudget,
+                               categoryGoals: categoryGoals,
+                               dailyBudgets: dailyBudgets)
     }
-    
+
     func addGoal() {
-        var currentGoals = try! goalViewModel.goalsSubject.value()
-        var goal = Goal(GoalID: goalID!, goalEmoji: goalEmoji!, goalName: goalName!, goalAmount: goalAmount!, usedAmount: Int64(0), goalStart: goalStart!, goalEnd: goalEnd!, dailyGoal: [], isEdited: [])
-        currentGoals.append(goal)
-        goalViewModel.goals = currentGoals // This will trigger the update
+        
     }
-//    func createCategoryRequest() -> CreateCategoryRequest {
-//
-//    }
-//
-//    func postMultipleCreateCategoryRequest(){
-//
-//    }
 
     func clear() {
-        goalEmoji = nil
-        goalName = nil
-        goalAmount = nil
-        goalStart = nil
-        goalEnd = nil
+        icon = nil
+        goalTitle = nil
+        goalDetail = nil // Clear the detail
+        goalBudget = nil
+        startDate = nil
+        endDate = nil
+        categoryGoals = [] // Clear categoryGoals
+        dailyBudgets = [] // Clear dailyBudgets
     }
 }
