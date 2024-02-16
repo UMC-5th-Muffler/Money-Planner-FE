@@ -14,4 +14,5 @@ struct UpdateExpenseRequest: Encodable {
     var expenseTitle: String
     var expenseMemo: String
     var expenseDate: String
+   
 }
