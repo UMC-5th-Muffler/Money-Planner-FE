@@ -7,7 +7,7 @@ enum ExpenseAPI  {
     case getSearchExpense(title : String, order : String?, size: Int?)
     case getDailyConsumeHistory(date: String, size: Int?, lastExpenseId: Int?)
     case getRateInfo(date: String)
-    
+    case rateDaily(date: String, rate: String, rateMemo: String?)
 }
 
 extension ExpenseAPI : BaseAPI {
@@ -19,7 +19,6 @@ extension ExpenseAPI : BaseAPI {
             var parameters: [String: Any] = [:]
             
             parameters["title"] = title
-        
             
             if let order = order {
                 parameters["order"] = order
@@ -40,9 +39,17 @@ extension ExpenseAPI : BaseAPI {
                 parameters["lastExpenseId"] = lastExpenseId
             }
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+            
         case .getRateInfo(let date):
             let parameters: [String: Any] = ["date": date]
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+            
+        case .rateDaily(_, let rate, let rateMemo):
+            var parameters: [String: Any] = ["rate": rate]
+            if let rateMemo = rateMemo {
+                parameters["rateMemo"] = rateMemo
+            }
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         }
     }
     
@@ -51,6 +58,8 @@ extension ExpenseAPI : BaseAPI {
         switch self {
         case .getSearchExpense, .getDailyConsumeHistory, .getRateInfo:
             return .get
+        case .rateDaily:
+            return .patch
         }
     }
     
@@ -62,6 +71,8 @@ extension ExpenseAPI : BaseAPI {
             return "/api/expense/daily"
         case .getRateInfo:
             return "/api/rate"
+        case .rateDaily(let date, _, _):
+            return "/api/rate/\(date)"
         }
     }
     
