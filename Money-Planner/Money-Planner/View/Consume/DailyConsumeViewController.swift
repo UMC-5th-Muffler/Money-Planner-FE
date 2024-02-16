@@ -112,7 +112,7 @@ class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITabl
         }
         
         cell.memoText.text = consumption.memo
-        cell.configureSeparatorViewVisibility(isVisible: dailyTotal.rateMemo?.isEmpty ?? true)
+        cell.configureSeparatorViewVisibility(isVisible: !(consumption.memo?.isEmpty ?? true))
         
         cell.layoutIfNeeded()
         cell.selectionStyle = .none
@@ -311,6 +311,7 @@ extension DailyConsumeViewController {
         historyTableView.separatorStyle = .none
         historyTableView.rowHeight = UITableView.automaticDimension
         historyTableView.estimatedRowHeight = 100
+        historyTableView.showsVerticalScrollIndicator = false
         
         view.addSubview(historyTableView)
         
@@ -318,7 +319,7 @@ extension DailyConsumeViewController {
             historyTableView.topAnchor.constraint(equalTo: evaluationView.bottomAnchor, constant: 40),
             historyTableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             historyTableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            historyTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            historyTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80)
         ])
     }
     

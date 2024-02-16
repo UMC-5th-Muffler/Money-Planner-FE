@@ -162,9 +162,12 @@ extension EvaluationViewController : UITextViewDelegate {
     }
     
     func setupDiary() {
-        let rateContent = rateInfo
-        
-        diaryTextView.text = rateContent?.rateMemo
+        diaryTextView.text = placeholder // 기본적으로 placeholder 표시
+
+        if let rateMemo = rateInfo?.rateMemo, !rateMemo.isEmpty {
+            diaryTextView.text = rateMemo // rateMemo가 비어 있지 않으면 내용을 표시
+        }
+        numLabel.text = "\(diaryTextView.text.count)/100"
         
         diaryLabel.translatesAutoresizingMaskIntoConstraints = false
         diaryTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -203,6 +206,31 @@ extension EvaluationViewController : UITextViewDelegate {
             confirmBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             confirmBtn.heightAnchor.constraint(equalToConstant: 55)
         ])
+        
+        confirmBtn.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc func confirmButtonTapped() {
+        rateConsume()
+        navigationController?.popViewController(animated: true)
+    }
+    
+    private func getSelectedRate() -> String? {
+        guard let selectedIndexPath = myCollectionView.indexPathsForSelectedItems?.first else {
+            // 선택된 셀이 없는 경우에 대한 처리
+            return nil
+        }
+        
+        switch selectedIndexPath.item {
+        case 0:
+            return "LOW"
+        case 1:
+            return "MEDIUM"
+        case 2:
+            return "HIGH"
+        default:
+            return nil
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -295,9 +323,7 @@ extension EvaluationViewController : UITextViewDelegate {
             numLabel.textColor = UIColor.mpDarkGray
             diaryTextView.layer.borderWidth = 0
             
-            if let selectedIndexPaths = myCollectionView.indexPathsForSelectedItems, selectedIndexPaths.count > 0 {
-                    confirmBtn.isEnabled = true
-            }
+            confirmBtn.isEnabled = !diaryTextView.text.isEmpty && getSelectedRate() != nil
         }
         
         numLabel.text = "\(diaryTextView.text.count)/100"
@@ -340,6 +366,9 @@ extension EvaluationViewController : UITextViewDelegate {
                     if let rateMemo = self.rateInfo?.rateMemo, !rateMemo.isEmpty {
                         self.diaryTextView.text = rateMemo
                         self.diaryTextView.textColor = UIColor.mpCharcoal
+                    } else {
+                        self.diaryTextView.text = self.placeholder
+                        self.diaryTextView.textColor = UIColor.mpGray
                     }
                     
                     self.reloadUI()
@@ -378,6 +407,25 @@ extension EvaluationViewController : UITextViewDelegate {
         let indexPath = IndexPath(item: selectedIndex, section: 0)
         myCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .top)
         collectionView(myCollectionView, didSelectItemAt: indexPath)
+    }
+    
+    func rateConsume() {
+        guard let rate = getSelectedRate() else {
+            print("No rate selected")
+            return
+        }
+        
+        let rateMemo = diaryTextView.text.isEmpty ? nil : diaryTextView.text
+        
+        // API 호출을 통해 변경사항을 업데이트합니다.
+        ExpenseRepository.shared.rateDailyConsume(date: dateText, rate: rate, rateMemo: rateMemo) { result in
+            switch result {
+            case .success(let updatedRateInfo):
+                print("Rate daily info updated successfully: \(updatedRateInfo)")
+            case .failure(let error):
+                print("Failed to update rate daily info: \(error)")
+            }
+        }
     }
 
 }
