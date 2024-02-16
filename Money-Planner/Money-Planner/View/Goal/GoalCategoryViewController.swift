@@ -9,6 +9,11 @@ import Foundation
 import UIKit
 
 extension GoalCategoryViewController: CategorySelectionDelegate{
+    
+    func AddCategory() {
+        <#code#>
+    }
+    
     func didSelectCategory(_ category: String, iconName: String) {
         // 선택된 인덱스 패스에 해당하는 카테고리를 업데이트
         if let cell = tableView.cellForRow(at: selectedIndexPath!) as? GoalCategoryTableViewCell {
@@ -36,7 +41,7 @@ extension GoalCategoryViewController: MoneyAmountTextCellDelegate {
         // Assuming categoryGoalMaker array has elements for each category with corresponding section
         if categoryGoalMaker.count > indexPath.section {
             // Update the category's budget with the new value
-            categoryGoalMaker[indexPath.section].categoryBudget = newValueNumeric
+            categoryGoalMaker[indexPath.section].categoryBudget = Int(newValueNumeric)
         }
         
         // Update sumAmount

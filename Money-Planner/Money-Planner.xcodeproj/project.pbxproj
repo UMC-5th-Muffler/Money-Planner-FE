@@ -82,6 +82,9 @@
 		7A0D33B72B7F4CC2007B2736 /* GoalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33B12B7F4CC2007B2736 /* GoalService.swift */; };
 		7A0D33B82B7F4CC2007B2736 /* GoalSpending.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33B22B7F4CC2007B2736 /* GoalSpending.swift */; };
 		7A0D33B92B7F4CC2007B2736 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33B32B7F4CC2007B2736 /* Goal.swift */; };
+		7A0D33BB2B7F4FC4007B2736 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7A0D33BA2B7F4FC4007B2736 /* Config.xcconfig */; };
+		7A0D33BD2B7F506A007B2736 /* LabelAndImageBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33BC2B7F506A007B2736 /* LabelAndImageBtn.swift */; };
+		7A0D33BF2B7F5079007B2736 /* DdayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33BE2B7F5079007B2736 /* DdayLabel.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -237,6 +240,9 @@
 		7A0D33B12B7F4CC2007B2736 /* GoalService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalService.swift; sourceTree = "<group>"; };
 		7A0D33B22B7F4CC2007B2736 /* GoalSpending.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalSpending.swift; sourceTree = "<group>"; };
 		7A0D33B32B7F4CC2007B2736 /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
+		7A0D33BA2B7F4FC4007B2736 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		7A0D33BC2B7F506A007B2736 /* LabelAndImageBtn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelAndImageBtn.swift; sourceTree = "<group>"; };
+		7A0D33BE2B7F5079007B2736 /* DdayLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DdayLabel.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -482,6 +488,7 @@
 		7A4C67332B5A47F4008BCAC9 /* Button */ = {
 			isa = PBXGroup;
 			children = (
+				7A0D33BC2B7F506A007B2736 /* LabelAndImageBtn.swift */,
 				20AFDD902B656034008F8AB9 /* OneDayButton.swift */,
 				7A4C673E2B5A4AC9008BCAC9 /* CheckBtn.swift */,
 				7A4C67402B5A4AF1008BCAC9 /* MainBottomBtn.swift */,
@@ -495,6 +502,7 @@
 		7A4C67342B5A47F9008BCAC9 /* Label */ = {
 			isa = PBXGroup;
 			children = (
+				7A0D33BE2B7F5079007B2736 /* DdayLabel.swift */,
 				7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */,
 				7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */,
 				7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */,
@@ -569,6 +577,7 @@
 				7A610AC02B47FA8F00D3096F /* Assets.xcassets */,
 				7A610AC22B47FA8F00D3096F /* LaunchScreen.storyboard */,
 				7A610AC52B47FA8F00D3096F /* Info.plist */,
+				7A0D33BA2B7F4FC4007B2736 /* Config.xcconfig */,
 				D2D0B7322B6A74CD003B6B5E /* Config.xcconfig */,
 			);
 			path = "Money-Planner";
@@ -918,6 +927,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A610AC42B47FA8F00D3096F /* LaunchScreen.storyboard in Resources */,
+				7A0D33BB2B7F4FC4007B2736 /* Config.xcconfig in Resources */,
 				7A610AC12B47FA8F00D3096F /* Assets.xcassets in Resources */,
 				D20D701E2B668800006D6762 /* Home.json in Resources */,
 				7A0D338D2B7F48AA007B2736 /* consumeDummy.json in Resources */,
@@ -963,6 +973,7 @@
 				552A423E2B671B86007AEAAD /* EditGoalViewController.swift in Sources */,
 				208C90B02B6E887A00C67960 /* ReasonModalViewController.swift in Sources */,
 				208C90BA2B6FE45B00C67960 /* UnregisterTitleLabel.swift in Sources */,
+				7A0D33BF2B7F5079007B2736 /* DdayLabel.swift in Sources */,
 				208C90C02B72636C00C67960 /* UIHelper.swift in Sources */,
 				208C90A82B6D48B300C67960 /* User.swift in Sources */,
 				20AFDD952B65B882008F8AB9 /* ChooseDateView.swift in Sources */,
@@ -1058,6 +1069,7 @@
 				7A0D338F2B7F48AA007B2736 /* GoalFinalViewController.swift in Sources */,
 				D20D6FDC2B581A5A006D6762 /* UITabBar.swift in Sources */,
 				D20D6FF82B5E974D006D6762 /* MainStatistics.swift in Sources */,
+				7A0D33BD2B7F506A007B2736 /* LabelAndImageBtn.swift in Sources */,
 				7A0D338E2B7F48AA007B2736 /* GoalCategoryViewController.swift in Sources */,
 				7A0D33982B7F4993007B2736 /* GoalSpendingViewModel.swift in Sources */,
 				7A0D33972B7F4993007B2736 /* GoalCreationManager.swift in Sources */,
