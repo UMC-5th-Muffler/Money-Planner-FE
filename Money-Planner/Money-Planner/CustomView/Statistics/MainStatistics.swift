@@ -112,6 +112,8 @@ class MainStatisticsView : UIView {
             
             if(goal != nil && goal!.goalBudget! < goal!.totalCost!){
                 remainAmount.textColor = .mpRed
+            }else{
+                remainAmount.textColor = .mpMainColor
             }
             
             addSubview(useAmountLabel)
@@ -132,6 +134,7 @@ class MainStatisticsView : UIView {
                 totalAmount.leftAnchor.constraint(equalTo: leftAnchor),
                 stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
                 stackView.leftAnchor.constraint(equalTo: leftAnchor),
+                remainAmount.leftAnchor.constraint(equalTo: remainAmountLabel.rightAnchor, constant: 4)
             ])
         }else{
             addSubview(noGoalView)
