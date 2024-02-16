@@ -29,10 +29,17 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
     var routineRequest : ExpenseCreateRequest.RoutineRequest?
     //
 
-    func AddCategoryCompleted(_ name: String, iconName: String) {
+    func AddCategoryCompleted(_ name: String, iconName: Int) {
         print("카테고리 추가 반영 완료\(name)\(iconName)")
+        let temp : String
+        if iconName != 10 {
+            temp = "add-0\(iconName)"
+        }
+        else{
+            temp = "add-\(iconName)"
+        }
         cateogoryTextField.text = name
-        cateogoryTextField.changeIcon(iconName: iconName)
+        cateogoryTextField.changeIcon(iconName: temp)
         catAdd = true // 카테고리 선택된 것 반영
 
         view.layoutIfNeeded()
@@ -125,9 +132,23 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
     
     @objc
     private func showCategoryModal() {
+        var categories : [CategoryDTO] = []
+
         print("클릭 : 카테고리 선택을 위해 카테고리 선택 모달로 이동합니다")
         //categoryChooseButton.backgroundColor = UIColor.green
-        let categoryModalVC = CategoryModalViewController()
+        // 카테고리 조회 하기
+        viewModel.getCategoryFilter()
+            .subscribe(onNext: { repos in
+                // 네트워크 응답에 대한 처리
+                print(repos.result.categories)
+                categories = repos.result.categories
+            }, onError: { error in
+                // 에러 처리
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
+        let categoryModalVC = CategoryModalViewController(categories: categories)
         categoryModalVC.delegate = self
         present(categoryModalVC, animated: true)
     }

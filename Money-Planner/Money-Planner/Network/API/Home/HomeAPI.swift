@@ -76,6 +76,8 @@ extension HomeAPI : BaseAPI {
     }
     
     public var headers: [String: String]? {
+
         return ["Authorization": "Bearer "]
+
     }
 }

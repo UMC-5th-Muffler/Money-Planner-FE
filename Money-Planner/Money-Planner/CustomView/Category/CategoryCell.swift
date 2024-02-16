@@ -63,10 +63,10 @@ class CategoryCell: UICollectionViewCell {
         categoryLabel.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    func configure(with category: CategoryModalViewController.Category) {
+    func configure(with category: CategoryDTO) {
         categoryLabel.text = category.name
         // Uncomment the following line if you want to set an image
-        categoryImageView.image = UIImage(systemName: category.imageName)
+        categoryImageView.image = UIImage(named: category.icon)?.resizeImage(size: CGSize(width: 32, height: 32))
     }
 }
 

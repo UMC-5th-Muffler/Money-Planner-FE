@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 
 class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelectionDelegate,CalendarSelectionDelegate,RepeatModalViewDelegate,AddCategoryViewDelegate {
+
     let StackView = UIStackView()
 
     // api 연결
@@ -27,10 +28,19 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     var routineRequest : ExpenseCreateRequest.RoutineRequest?
     //
 
-    func AddCategoryCompleted(_ name: String, iconName: String) {
+    func AddCategoryCompleted(_ name: String, iconName: Int) {
         print("카테고리 추가 반영 완료\(name)\(iconName)")
         cateogoryTextField.text = name
-        cateogoryTextField.changeIcon(iconName: iconName)
+        let temp : String
+        let iconNamePlus = iconName + 1
+        if iconName != 10 {
+            temp = "add-0\(iconNamePlus)"
+        }
+        else{
+            temp = "add-\(iconNamePlus)"
+        }
+        
+        cateogoryTextField.changeIcon(iconName: temp)
         catAdd = true // 카테고리 선택된 것 반영
         checkAndEnableCompleteButton()
         view.layoutIfNeeded()
@@ -124,10 +134,21 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     @objc
     private func showCategoryModal() {
         print("클릭 : 카테고리 선택을 위해 카테고리 선택 모달로 이동합니다")
-        //categoryChooseButton.backgroundColor = UIColor.green
-        let categoryModalVC = CategoryModalViewController()
-        categoryModalVC.delegate = self
-        present(categoryModalVC, animated: true)
+        
+        // 카테고리 조회 하기
+        viewModel.getCategoryFilter()
+            .subscribe(onNext: { [weak self] repos in
+                guard let self = self else { return }
+                // 네트워크 응답에 대한 처리
+                let categories = repos.result.categories
+                let categoryModalVC = CategoryModalViewController(categories: categories)
+                categoryModalVC.delegate = self
+                self.present(categoryModalVC, animated: true)
+            }, onError: { error in
+                // 에러 처리
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
     }
     
     func didSelectCategory(_ category: String, iconName : String) {

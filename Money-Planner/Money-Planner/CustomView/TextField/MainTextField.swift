@@ -21,7 +21,7 @@ class MainTextField: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
     func changeIcon (iconName : String){
-        systemIconImageView.image = UIImage(systemName: iconName) // 나중에 이미지 들어오면 named로 바꿀 것
+        systemIconImageView.image = UIImage(named: iconName)?.resizeImage(size: CGSize(width: 28, height: 28))
         
     }
     
