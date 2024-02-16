@@ -11,14 +11,17 @@ import UIKit
 extension GoalCategoryViewController: CategorySelectionDelegate{
     
     func AddCategory() {
-        <#code#>
+        let addCategoryVC = AddCategoryViewController()
+        addCategoryVC.modalPresentationStyle = .fullScreen
+//        addCategoryVC.delegate = self => 이걸... 어케..
+        present(addCategoryVC, animated: true)
     }
     
     func didSelectCategory(_ category: String, iconName: String) {
         // 선택된 인덱스 패스에 해당하는 카테고리를 업데이트
         if let cell = tableView.cellForRow(at: selectedIndexPath!) as? GoalCategoryTableViewCell {
             cell.configureCell(text: category, iconName: iconName)
-            print(selectedIndexPath)
+            print(selectedIndexPath as Any)
         }
         
         //btmBtn 활성화 결정
@@ -41,7 +44,7 @@ extension GoalCategoryViewController: MoneyAmountTextCellDelegate {
         // Assuming categoryGoalMaker array has elements for each category with corresponding section
         if categoryGoalMaker.count > indexPath.section {
             // Update the category's budget with the new value
-            categoryGoalMaker[indexPath.section].categoryBudget = Int(newValueNumeric)
+            categoryGoalMaker[indexPath.section].categoryBudget = newValueNumeric
         }
         
         // Update sumAmount
@@ -77,7 +80,8 @@ extension GoalCategoryViewController: MoneyAmountTextCellDelegate {
     }
 }
 
-class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
+    
     
     ///카테고리 셀을 만들기 위함.
     weak var delegate: CategorySelectionDelegate?
@@ -98,7 +102,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     var sumAmount : Int64 = 0
     
     //카테고리별 목표
-    var categoryGoalMaker : [Category] = [] //같은 카테고리 목표는 모달에서 막아야함.
+    var categoryGoalMaker : [GoalCategory] = [] //같은 카테고리 목표는 모달에서 막아야함.
     /// categoryGoalMaker를 인자로 넘겨주고,
     /// 여기에 겹치는 id를 가진 버튼만 전부 disable 시킬 수 있게 만들어야함.
     
@@ -338,7 +342,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
                 self.categoryCount += 1
                 // 마지막 섹션 바로 앞에 새로운 GoalCategoryTableViewCell 섹션 추가
                 self.tableView.insertSections([self.categoryCount - 2], with: .automatic)
-                let newCategory = Category(id: nil, name: nil, categoryBudget: 0) // TODO : id는 나중에
+                let newCategory = GoalCategory(id: nil, name: nil, categoryBudget: 0) // TODO : id는 나중에
                 self.categoryGoalMaker.append(newCategory)
                 
                 //btmBtn 체크
@@ -446,7 +450,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     
     func resetCategorySection(_ section: Int) {
         // 데이터 모델 초기화
-        let resetCategory = Category(id: nil, name: nil, categoryBudget: 0)
+        let resetCategory = GoalCategory(id: nil, name: nil, categoryBudget: 0)
         categoryGoalMaker[section] = resetCategory
         
         // 섹션 리로드 전에 셀 내용 초기화

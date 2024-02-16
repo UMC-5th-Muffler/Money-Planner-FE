@@ -82,7 +82,6 @@
 		7A0D33B72B7F4CC2007B2736 /* GoalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33B12B7F4CC2007B2736 /* GoalService.swift */; };
 		7A0D33B82B7F4CC2007B2736 /* GoalSpending.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33B22B7F4CC2007B2736 /* GoalSpending.swift */; };
 		7A0D33B92B7F4CC2007B2736 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33B32B7F4CC2007B2736 /* Goal.swift */; };
-		7A0D33BB2B7F4FC4007B2736 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7A0D33BA2B7F4FC4007B2736 /* Config.xcconfig */; };
 		7A0D33BD2B7F506A007B2736 /* LabelAndImageBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33BC2B7F506A007B2736 /* LabelAndImageBtn.swift */; };
 		7A0D33BF2B7F5079007B2736 /* DdayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33BE2B7F5079007B2736 /* DdayLabel.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
@@ -240,9 +239,9 @@
 		7A0D33B12B7F4CC2007B2736 /* GoalService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalService.swift; sourceTree = "<group>"; };
 		7A0D33B22B7F4CC2007B2736 /* GoalSpending.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalSpending.swift; sourceTree = "<group>"; };
 		7A0D33B32B7F4CC2007B2736 /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
-		7A0D33BA2B7F4FC4007B2736 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		7A0D33BC2B7F506A007B2736 /* LabelAndImageBtn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelAndImageBtn.swift; sourceTree = "<group>"; };
 		7A0D33BE2B7F5079007B2736 /* DdayLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DdayLabel.swift; sourceTree = "<group>"; };
+		7A0D33C22B7F53A3007B2736 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -313,7 +312,6 @@
 		D2D0B72A2B6A704B003B6B5E /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
 		D2D0B72C2B6A7067003B6B5E /* BaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAPI.swift; sourceTree = "<group>"; };
 		D2D0B72E2B6A70A1003B6B5E /* BaseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRepository.swift; sourceTree = "<group>"; };
-		D2D0B7322B6A74CD003B6B5E /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D2D0B7352B6BA83E003B6B5E /* HomeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRepository.swift; sourceTree = "<group>"; };
 		D2D0B7372B6BA845003B6B5E /* HomeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAPI.swift; sourceTree = "<group>"; };
 		D2D0B73C2B6BAB7A003B6B5E /* CalendarDaily.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDaily.swift; sourceTree = "<group>"; };
@@ -577,8 +575,7 @@
 				7A610AC02B47FA8F00D3096F /* Assets.xcassets */,
 				7A610AC22B47FA8F00D3096F /* LaunchScreen.storyboard */,
 				7A610AC52B47FA8F00D3096F /* Info.plist */,
-				7A0D33BA2B7F4FC4007B2736 /* Config.xcconfig */,
-				D2D0B7322B6A74CD003B6B5E /* Config.xcconfig */,
+				7A0D33C22B7F53A3007B2736 /* Config.xcconfig */,
 			);
 			path = "Money-Planner";
 			sourceTree = "<group>";
@@ -927,7 +924,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A610AC42B47FA8F00D3096F /* LaunchScreen.storyboard in Resources */,
-				7A0D33BB2B7F4FC4007B2736 /* Config.xcconfig in Resources */,
 				7A610AC12B47FA8F00D3096F /* Assets.xcassets in Resources */,
 				D20D701E2B668800006D6762 /* Home.json in Resources */,
 				7A0D338D2B7F48AA007B2736 /* consumeDummy.json in Resources */,
