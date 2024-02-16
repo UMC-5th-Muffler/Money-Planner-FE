@@ -1,5 +1,3 @@
-
-
 import Foundation
 import Moya
 
@@ -8,6 +6,7 @@ enum ExpenseAPI  {
     case getDailyConsumeHistory(date: String, size: Int?, lastExpenseId: Int?)
     case getRateInfo(date: String)
     case rateDaily(date: String, rate: String, rateMemo: String?)
+    case isZeroDay(dailyPlanDate: String)
 }
 
 extension ExpenseAPI : BaseAPI {
@@ -50,6 +49,10 @@ extension ExpenseAPI : BaseAPI {
                 parameters["rateMemo"] = rateMemo
             }
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+            
+        case .isZeroDay(let dailyPlanDate):
+            let parameters: [String: Any] = ["dailyPlanDate": dailyPlanDate]
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         }
     }
     
@@ -58,7 +61,7 @@ extension ExpenseAPI : BaseAPI {
         switch self {
         case .getSearchExpense, .getDailyConsumeHistory, .getRateInfo:
             return .get
-        case .rateDaily:
+        case .rateDaily, .isZeroDay:
             return .patch
         }
     }
@@ -73,6 +76,8 @@ extension ExpenseAPI : BaseAPI {
             return "/api/rate"
         case .rateDaily(let date, _, _):
             return "/api/rate/\(date)"
+        case .isZeroDay(_):
+            return "/api/dailyPlan/zeroDay"
         }
     }
     
