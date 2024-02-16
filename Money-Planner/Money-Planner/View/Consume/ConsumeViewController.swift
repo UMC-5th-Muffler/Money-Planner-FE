@@ -301,6 +301,11 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     private func setupUI() {
         // 배경색상 추가
         super.viewDidLoad()
+        // 네비게이션 바 숨기기
+        self.tabBarController?.tabBar.isHidden = true
+         // 소비등록 화면이 전체 화면으로 표시되도록 설정
+         self.modalPresentationStyle = .fullScreen
+        
         view.backgroundColor = UIColor(named: "mpWhite")
         view.backgroundColor = .systemBackground
         
@@ -346,25 +351,22 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             navigationBar.titleTextAttributes = navBarTitleTextAttributes
         }
         
-        let BackButton : UIBarButtonItem = {
-            let btn = UIBarButtonItem()
-            if let chevronImage = UIImage(systemName: "chevron.left")?.withRenderingMode(.alwaysOriginal) {
-                let darkGrayChevron = chevronImage.withTintColor(.mpGray)
-                btn.image  = darkGrayChevron
-                //btn.addTarget(target, action: action, for: controlEvents) // 뒤로 가기
-            }
-                return btn
-            }()
-            
-            navigationItem.leftBarButtonItem = BackButton
-            navigationItem.title = "소비내역 입력"
-            
-        }
-    
-    @objc private func previousScreen(){
-        dismiss(animated: true)
+        // 뒤로 가기 버튼 생성
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backAction))
+        backButton.tintColor = .mpGray
+        
+        navigationItem.leftBarButtonItem = backButton
+        navigationItem.title = "소비내역 입력"
     }
-   
+
+    // 뒤로 가기 버튼 액션 메서드
+    @objc private func backAction() {
+        print("이전 화면으로 이동")
+        // 이전 화면으로 이동
+       dismiss(animated: true)
+    }
+
+
     // 세팅 : 소비금액 추가
     private func setupAmountTextField() {
         NSLayoutConstraint.activate([
@@ -952,7 +954,16 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             }).disposed(by: disposeBag)
         
         // 완료한 이후 알람 띄우기
-        
+        dismiss(animated: true) {
+            // 네비게이션 바 숨기기 취소
+            self.tabBarController?.tabBar.isHidden = false
+            // 탭 바 컨트롤러로 전환하기
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let sceneDelegate = windowScene.delegate as? SceneDelegate,
+                   let tabBarVC = sceneDelegate.window?.rootViewController as? UITabBarController {
+                    tabBarVC.selectedIndex = 0 // 홈 뷰가 첫 번째 탭이라고 가정
+                }
+        }
     }
 }
 
