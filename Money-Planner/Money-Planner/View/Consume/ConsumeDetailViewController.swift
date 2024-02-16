@@ -115,7 +115,7 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
         v.alignment = .leading
         return v
     }()
-    private let cateogoryTextField = MainTextField(placeholder: "카테고리를 입력해주세요", iconName: "icon_category", keyboardType: .default)
+    let cateogoryTextField = MainTextField(placeholder: "카테고리를 입력해주세요", iconName: "icon_category" , keyboardType: .default)
     
     // 카테고리 선택 버튼 추가
     lazy var categoryChooseButton: UIButton = {
@@ -135,22 +135,20 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
         var categories : [CategoryDTO] = []
 
         print("클릭 : 카테고리 선택을 위해 카테고리 선택 모달로 이동합니다")
-        //categoryChooseButton.backgroundColor = UIColor.green
         // 카테고리 조회 하기
         viewModel.getCategoryFilter()
-            .subscribe(onNext: { repos in
+            .subscribe(onNext: { [weak self] repos in
+                guard let self = self else { return }
                 // 네트워크 응답에 대한 처리
-                print(repos.result.categories)
-                categories = repos.result.categories
+                let categories = repos.result.categories
+                let categoryModalVC = CategoryModalViewController(categories: categories)
+                categoryModalVC.delegate = self
+                self.present(categoryModalVC, animated: true)
             }, onError: { error in
                 // 에러 처리
                 print("Error: \(error)")
             })
             .disposed(by: disposeBag)
-        
-        let categoryModalVC = CategoryModalViewController(categories: categories)
-        categoryModalVC.delegate = self
-        present(categoryModalVC, animated: true)
     }
     
     func didSelectCategory(_ category: String, iconName : String) {
@@ -305,6 +303,10 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
                 print("소비 내역 불러오기 성공!")
                 print(expense)
                 self?.initExpense = expense.result
+                if let iconName = self?.initExpense?.categoryIcon {
+                    self?.cateogoryTextField.changeIcon(iconName:iconName)
+
+                }
                 // 데이터를 설정하고 UI를 업데이트합니다.
                 self?.setupData()
             }, onError: { error in
