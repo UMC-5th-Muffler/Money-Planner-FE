@@ -96,7 +96,9 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate {
     }
     @objc
     private func selectIcon(){
-        
+        let iconSelectionVC = CategoryIconSelectionViewController()
+        //iconSelectionVC.delegate = self
+        present(iconSelectionVC, animated: true)
     }
     
     // 세팅 : 헤더

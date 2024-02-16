@@ -25,17 +25,19 @@ class CategoryIconSelectionViewController : UIViewController,UICollectionViewDel
         let name: String
         let imageName: String // Use this to set the image in the future if needed
     }
-    let Icons = ["Property 1=icon_category_add-01",
-                 "Property 1=icon_category_add-02",
-                 "Property 1=icon_category_add-03",
-                 "Property 1=icon_category_add-04",
-                 "Property 1=icon_category_add-05",
-                 "Property 1=icon_category_add-06",
-                 "Property 1=icon_category_add-07",
-                 "Property 1=icon_category_add-08",
-                 "Property 1=icon_category_add-09",
-                 "Property 1=icon_category_add-10",
-    ]
+   
+    let icons: [UIImage?] = [UIImage(named: "add-01"),
+                             UIImage(named: "add-02"),
+                             UIImage(named: "add-03"),
+                             UIImage(named: "add-04"),
+                             UIImage(named: "add-05"),
+                             UIImage(named: "add-06"),
+                             UIImage(named: "add-07"),
+                             UIImage(named: "add-08"),
+                             UIImage(named: "add-09"),
+                             UIImage(named: "add-10"),]
+
+    
     // 모달의 메인 컨테이너 뷰
     private let customModal: UIStackView = {
         let view = UIStackView()
@@ -53,6 +55,26 @@ class CategoryIconSelectionViewController : UIViewController,UICollectionViewDel
         label.textAlignment = .center
         label.font = UIFont.mpFont20B()
         return label
+    }()
+    // 컬렉션뷰
+    lazy var categoryCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = 16
+        layout.minimumLineSpacing = 16
+        
+//        let numberOfItemsPerRow: CGFloat = 5
+//        let spacingBetweenItems: CGFloat = 2
+//        let itemWidth = (UIScreen.main.bounds.width - ((numberOfItemsPerRow - 1) * spacingBetweenItems) - 95) / numberOfItemsPerRow
+//        layout.itemSize = CGSize(width: itemWidth, height: itemWidth)
+//        layout.minimumLineSpacing = spacingBetweenItems
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.register(CategoryIconCell.self, forCellWithReuseIdentifier: "CategoryIconCell")
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        return collectionView
     }()
     
     override func viewDidLoad() {
@@ -72,7 +94,7 @@ class CategoryIconSelectionViewController : UIViewController,UICollectionViewDel
                 customModal.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
                 customModal.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
                 customModal.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                customModal.heightAnchor.constraint(equalToConstant: 664)
+                customModal.heightAnchor.constraint(equalToConstant: 368)
                 
             ])
     }
@@ -103,24 +125,6 @@ class CategoryIconSelectionViewController : UIViewController,UICollectionViewDel
     }
 
     private func setupCategoryCellContainerView() {
-        let categoryCollectionView: UICollectionView = {
-            let layout = UICollectionViewFlowLayout()
-            layout.scrollDirection = .vertical
-            let numberOfItemsPerRow: CGFloat = 3
-            let spacingBetweenItems: CGFloat = 8
-            let itemWidth = (UIScreen.main.bounds.width - ((numberOfItemsPerRow - 1) * spacingBetweenItems) - 95) / numberOfItemsPerRow
-            layout.itemSize = CGSize(width: itemWidth, height: itemWidth * 0.84)
-            layout.minimumLineSpacing = spacingBetweenItems
-            
-            let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-            collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: "CategoryCell")
-            collectionView.backgroundColor = .clear
-            collectionView.dataSource = self
-            collectionView.delegate = self
-            collectionView.translatesAutoresizingMaskIntoConstraints = false
-            return collectionView
-        }()
-        
         customModal.addSubview(categoryCollectionView)
         
         NSLayoutConstraint.activate([
@@ -136,42 +140,35 @@ class CategoryIconSelectionViewController : UIViewController,UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // Return the number of items in your collection view
-        return categories.count
+        return icons.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryIconCell", for: indexPath) as? CategoryIconCell else {
             return UICollectionViewCell()
         }
 
         // Configure your cell with data
-        cell.configure(with: categories[indexPath.item])
+        cell.configure(with: icons[indexPath.item])
 
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedCategory = categories[indexPath.item].name
-        let selectedIcon = categories[indexPath.item].imageName
-        print("Selected Category: \(selectedCategory)")
-        dismiss(animated: true, completion: nil )
-        if selectedCategory == "직접 추가"{
-            // 직접 추가인 경우 카테고리 추가 화면으로 이동
-            print("직접 추가를 선택했습니다")
-            delegate?.AddCategory() // 카테고리 추가 화면으로 이동
-        }
-        else{
-            delegate?.didSelectCategory(selectedCategory, iconName: selectedIcon)
-
-        }
-        
+        let selectedIcon = icons[indexPath.item]?.cgImage
+        print("Selected Category: \(String(describing: selectedIcon))")
         
         
         // You can perform additional actions or notify your view controller about the selected category he
     }
+    // MARK: UICollectionViewDelegateFlowLayout
+       
+       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+           let padding: CGFloat = 10
+           let collectionViewSize = collectionView.frame.size.width - padding
+           return CGSize(width: collectionViewSize/2, height: collectionViewSize/2)
+       }
     
     
 }
-
-
 
