@@ -7,6 +7,8 @@
 
 import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
 
 protocol CategorySelectionDelegate: AnyObject {
     func didSelectCategory(_ category: String, iconName : String)
@@ -17,35 +19,15 @@ protocol CategorySelectionDelegate: AnyObject {
 class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
     var addCatName : String = ""
     var addCatIconName : String = ""
-
+    let disposeBag = DisposeBag()
+    let viewModel = MufflerViewModel()
  
     
     weak var delegate: CategorySelectionDelegate?
-    struct Category {
-        let name: String
-        let imageName: String // Use this to set the image in the future if needed
-    }
-    let categories = [
-            Category(name: "식사", imageName: "pencil"),
-            Category(name: "카페/간식", imageName: "pencil"),
-            Category(name: "술/유흥", imageName: "pencil"),
-            Category(name: "생활", imageName: "pencil"),
-            Category(name: "패션/쇼핑", imageName: "pencil"),
-            Category(name: "뷰티/미용", imageName: "pencil"),
-            Category(name: "교통", imageName: "pencil"),
-            Category(name: "의료/건강", imageName: "pencil"),
-            Category(name: "주거/통신", imageName: "pencil"),
-            Category(name: "금융", imageName: "pencil"),
-            Category(name: "문화/여가", imageName: "pencil"),
-            Category(name: "여행/숙박", imageName: "pencil"),
-            Category(name: "교육/학습", imageName: "pencil"),
-            Category(name: "경조/선물", imageName: "pencil"),
-            Category(name: "반려동물", imageName: "pencil"),
-            Category(name: "저축/투자", imageName: "pencil"),
-            Category(name: "기타", imageName: "pencil"),
-            Category(name: "직접 추가", imageName: "pencil"),
+    
+    
+    var categories : [CategoryDTO]
             
-        ]
     // 모달의 메인 컨테이너 뷰
     private let customModal: UIStackView = {
         let view = UIStackView()
@@ -65,6 +47,16 @@ class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UI
         return label
     }()
     
+    
+    init(categories : [CategoryDTO]){
+        self.categories = categories
+        self.categories.append(CategoryDTO(categoryId: 0, name: "직접 추가", icon: "add-btn"))
+        super.init(nibName: nil, bundle: nil)
+    }
+   
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
@@ -77,12 +69,21 @@ class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UI
     func presentCustomModal() {
         view.addSubview(customModal)
         customModal.translatesAutoresizingMaskIntoConstraints = false
-
+        
+        // 카테고리 셀의 높이를 계산
+        let cellHeight: CGFloat = 84 // 셀의 높이 예시
+        let numberOfItems = CGFloat(categories.count)/3
+        let totalCellHeight = numberOfItems * cellHeight
+        var modalHeight = totalCellHeight + 48 + 48 + 44
+        // 카테고리가 너무 많으면 모달의 높이는 최대 664로 조정함.
+        if modalHeight >= 664 {
+                modalHeight = 664
+        }
         NSLayoutConstraint.activate([
                 customModal.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
                 customModal.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
                 customModal.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                customModal.heightAnchor.constraint(equalToConstant: 664)
+                customModal.heightAnchor.constraint(equalToConstant: modalHeight)
                 
             ])
     }
@@ -162,7 +163,7 @@ class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UI
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedCategory = categories[indexPath.item].name
-        let selectedIcon = categories[indexPath.item].imageName
+        let selectedIcon = categories[indexPath.item].icon
         print("Selected Category: \(selectedCategory)")
         dismiss(animated: true, completion: nil )
         if selectedCategory == "직접 추가"{

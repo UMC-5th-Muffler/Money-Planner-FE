@@ -10,10 +10,31 @@ import UIKit
 
 // 카테고리 직접 추가
 protocol AddCategoryViewDelegate : AnyObject{
-    func AddCategoryCompleted (_ name : String, iconName:String)
+    func AddCategoryCompleted (_ name : String, iconName: Int)
     
 }
-class AddCategoryViewController: UIViewController,UITextFieldDelegate {
+class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryIconSelectionDelegate {
+    func didSelectCategoryIcon(_ icon: Int?) {
+        print("아이콘 설정 완료")
+        selectedIcon = icon
+        if let icon = icon{
+            picButton.setImage(icons[icon], for: .normal)
+            
+        }
+    }
+    var selectedIcon : Int? = 3
+    let icons: [UIImage?] = [
+        UIImage(named: "add-01"),
+        UIImage(named: "add-02"),
+        UIImage(named: "add-03"),
+        UIImage(named: "add-04"),
+        UIImage(named: "add-05"),
+        UIImage(named: "add-06"),
+        UIImage(named: "add-07"),
+        UIImage(named: "add-08"),
+        UIImage(named: "add-09"),
+        UIImage(named: "add-10"),
+    ]
     weak var delegate: AddCategoryViewDelegate?
     private lazy var headerView = HeaderView(title: "카테고리 추가")
     var currText : String = ""
@@ -28,9 +49,10 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate {
         button.layer.cornerRadius = 45
         button.layer.masksToBounds = true
         button.backgroundColor = .red
-        let buttonImg = UIImage(systemName: "pencil")
+        let buttonImg = UIImage(named: "add-04")
         button.setImage(buttonImg, for: .normal)
-        button.backgroundColor = .red
+        button.backgroundColor = .mpGypsumGray
+ 
         return button
         
         
@@ -89,7 +111,6 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate {
         setupPic()
         setupTextField()
         setupError()
-        
         categoryTextField.delegate = self // Make sure to set the delegate
         picButton.addTarget(self, action: #selector(selectIcon), for: .touchUpInside)
 
@@ -97,7 +118,7 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate {
     @objc
     private func selectIcon(){
         let iconSelectionVC = CategoryIconSelectionViewController()
-        //iconSelectionVC.delegate = self
+        iconSelectionVC.delegate = self
         present(iconSelectionVC, animated: true)
     }
     
@@ -180,7 +201,7 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate {
             completeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             completeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             completeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            completeButton.heightAnchor.constraint(equalToConstant: 50)
+            completeButton.heightAnchor.constraint(equalToConstant: 56)
         ])
         completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
 
@@ -220,7 +241,7 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate {
     private func completeButtonTapped(){
         print("카테고리 추가가 완료되었습니다.")
         // 카테고리 추가 완료
-        delegate?.AddCategoryCompleted(currText, iconName: "pencil")
+        delegate?.AddCategoryCompleted(currText, iconName: selectedIcon!)
         dismiss(animated: true, completion: nil)
     }
 }

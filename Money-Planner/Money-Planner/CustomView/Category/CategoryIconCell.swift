@@ -11,8 +11,8 @@ import UIKit
 class CategoryIconCell: UICollectionViewCell {
     
     // Circular button
-    let circularButton: UIButton = {
-        let button = UIButton(type: .custom)
+    let circularButton: UIImageView = {
+        let button = UIImageView()
         button.backgroundColor = .clear
         button.layer.cornerRadius = 25
         button.layer.borderWidth = 2
@@ -62,19 +62,18 @@ class CategoryIconCell: UICollectionViewCell {
     // Configure cell with icon image
     func configure(with iconImage: UIImage?) {
         iconImageView.image = iconImage
+        iconImageView.accessibilityIdentifier = iconImage?.accessibilityIdentifier // 저장
     }
     
-    // Update cell selection state
-    override var isSelected: Bool {
-        didSet {
-            // Apply blur effect if cell is not selected
-            if isSelected {
-                circularButton.layer.borderWidth = 4
-                circularButton.layer.borderColor = UIColor.systemBlue.cgColor
-            } else {
-                circularButton.layer.borderWidth = 2
-                circularButton.layer.borderColor = UIColor.white.cgColor
-            }
-        }
-    }
+//    // Update cell selection state
+//    override var isSelected: Bool {
+//        didSet {
+//            // Apply blur effect if cell is not selected
+//            if isSelected {
+//                iconImageView.alpha = 1.0 // Remove blur effect
+//            } else {
+//                iconImageView.alpha = 0.5 // Apply blur effect
+//            }
+//        }
+//    }
 }
