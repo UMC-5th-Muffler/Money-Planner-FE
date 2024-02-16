@@ -10,8 +10,8 @@ import UIKit
 
 class zeroModalView : UIViewController {
     
-    //제로데이인지
-    var isZeroDay = true
+    var rateInfo : RateInfo?
+    var dateText = ""
     
     let customModal = UIView(frame: CGRect(x: 0, y: 0, width: 322, height: 400))
     
@@ -61,30 +61,9 @@ class zeroModalView : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        fetchRateData()
         presentCustomModal()
         setupBackground()
-        
-        if isZeroDay == true {
-            setupZeroView()
-        }
-        else {
-            setupCancelZeroView()
-            
-            controlButtons.addCancelAction(target: self, action: #selector(cancelButtonTapped))
-            controlButtons.addCompleteAction(target: self, action: #selector(confirmButtonTapped))
-        }
-        
-
-    }
-    
-    @objc func cancelButtonTapped() {
-        print("취소 버튼이 탭되었습니다.")
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @objc func confirmButtonTapped() {
-        print("해제 버튼이 탭되었습니다.")
-        // 해제 버튼 액션 처리
     }
     
     func presentCustomModal() {
@@ -111,7 +90,7 @@ class zeroModalView : UIViewController {
         titleLabel.attributedText = titleAttributedText
         titleLabel.textAlignment = .center
        
-        let contentAttributedText = NSAttributedString(string: "아주 잘 하고 있어요!\n스스로를 칭찬해주세요", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        let contentAttributedText = NSAttributedString(string: "잘 하고 있어요! 앞으로도 이렇게\n알뜰한 소비를 응원할게요", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
         contentLabel.attributedText = contentAttributedText
         contentLabel.textAlignment = .center
         
@@ -193,5 +172,28 @@ class zeroModalView : UIViewController {
             controlButtons.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -15),
             controlButtons.heightAnchor.constraint(equalToConstant: 58)
         ])
+    }
+    
+    func fetchRateData() {
+        let date = dateText
+        ExpenseRepository.shared.getRateInformation(date: date) { result in
+            switch result {
+            case .success(let data):
+                print(data)
+                self.rateInfo = data!
+                
+                DispatchQueue.main.async {
+                    if self.rateInfo?.isZeroDay == true { //제로데이일때 해제하시겠습니까? 모달
+                        self.setupCancelZeroView()
+                    }
+                    else {//제로데이 아닐때 제로데이 설정 완료 모달
+                        self.setupZeroView()
+                    }
+                }
+            case .failure(let error):
+                // 에러가 발생했을 때 처리
+                print("Error: \(error)")
+            }
+        }
     }
 }

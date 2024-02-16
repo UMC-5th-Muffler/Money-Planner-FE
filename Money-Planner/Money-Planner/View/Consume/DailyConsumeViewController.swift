@@ -17,10 +17,6 @@ class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITabl
     
     var dateText = ""
     var totalAmount = 12345678
-    var flag = 1 //0 : 소비등록x / 1 : 소비등록 1개이상 완료
-    var zeroday = 0 //0 : 제로데이 / 1 : 제로데이아님
-    var evaluation = false
-    //var temptext = ""
     
     let cellSpacingHeight: CGFloat = 1
     
@@ -73,11 +69,17 @@ class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITabl
     override func viewDidLoad(){
         view.backgroundColor = UIColor.mpWhite
         
-        fetchRateData()
-        fetchConsumeHistoryData(lastExpenseId: nil)
+//        fetchRateData()
+//        fetchConsumeHistoryData(lastExpenseId: nil)
         setupNavigationBar()
         setupDateView()
         dateLabel.text = dateText
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchRateData()
+        fetchConsumeHistoryData(lastExpenseId: nil)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -353,6 +355,53 @@ extension DailyConsumeViewController {
             zeroOnBtn.heightAnchor.constraint(equalToConstant: 50),
             zeroOnBtn.widthAnchor.constraint(equalToConstant: 203)
         ])
+        
+        zeroOnBtn.addTarget(self, action: #selector(zeroOnButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc func zeroOnButtonTapped() {
+        print("제로데이 설정 버튼 클릭")
+        checkZeroDay()
+        presentCustomModal()
+    }
+    
+    private func presentCustomModal() {
+        let rateContent = rateInfo
+
+        let customModalVC = zeroModalView()
+        customModalVC.dateText = dateText
+        customModalVC.modalPresentationStyle = .overFullScreen
+        customModalVC.modalTransitionStyle = .crossDissolve
+        present(customModalVC, animated: true, completion: nil)
+        
+        customModalVC.confirmButton.addTarget(self, action: #selector(dismissCustomModal), for: .touchUpInside)
+        customModalVC.controlButtons.cancelButton.addTarget(self, action: #selector(dismissCustomModal), for: .touchUpInside)
+        customModalVC.controlButtons.completeButton.addTarget(self, action: #selector(cancelZero), for: .touchUpInside)
+    }
+    
+    @objc private func dismissCustomModal() {
+         // 모달 닫기
+        print("모달닫기")
+         dismiss(animated: true, completion: nil)
+     }
+    
+    @objc private func cancelZero() {
+        print("제로데이 해제하기")
+        checkZeroDay()
+        dismiss(animated: true, completion: nil)
+     }
+    
+
+    
+    func checkZeroDay() {
+        ExpenseRepository.shared.isZeroDay(dailyPlanDate: dateText) { result in
+            switch result {
+            case .success(let updatedInfo):
+                print("zero updated successfully: \(updatedInfo)")
+            case .failure(let error):
+                print("Failed to update zero info: \(error)")
+            }
+        }
     }
     
     func setupZeroday() {
@@ -391,7 +440,14 @@ extension DailyConsumeViewController {
             zeroOffBtn.heightAnchor.constraint(equalToConstant: 50),
             zeroOffBtn.widthAnchor.constraint(equalToConstant: 203)
         ])
+        
+        zeroOffBtn.addTarget(self, action: #selector(zeroOffButtonTapped), for: .touchUpInside)
     }
+    
+    @objc private func zeroOffButtonTapped() {
+        print("해제 버튼 클릭")
+        presentCustomModal()
+     }
     
     func setupAddBtn() {
         let image = UIImage(named: "btn_add-new")
@@ -481,9 +537,9 @@ extension DailyConsumeViewController {
     }
     
     func reloadUI() {
-        
         let consumption = historyList
         let dailyTotal = dailyInfo
+        let rateContent = rateInfo
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -499,13 +555,16 @@ extension DailyConsumeViewController {
         dateLabel.text = formattedDateString
         
         if dailyInfo.expenseDetailList!.isEmpty {
-            if dailyInfo.isZeroDay == false {
+            if rateContent?.isZeroDay == false || rateContent?.isZeroDay == nil {
                 // expenseDetailList가 비어있고 제로데이 아닌 경우 처리
                 setupInitial()
                 setupAddBtn()
             }
             else {
                 setupZeroday()
+                setupAddBtn()
+                addConsumeBtn.setTitle("하루평가 하러가기", for: .normal)
+                addConsumeBtn.addTarget(self, action: #selector(evaluationViewTapped), for: .touchUpInside)
             }
         }
         else {

@@ -24,7 +24,7 @@ struct DailyExpenseList : Codable {
 }
 
 // 일일소비내역 조회
-// MARK: - ConsumeHistory
+// MARK: - DailyInfo
 struct DailyInfo: Codable {
     let date: String?
     let isZeroDay: Bool?
@@ -49,7 +49,7 @@ struct ExpenseDetailList: Codable {
 }
 
 // 소비평가
-// MARK: - Result
+// MARK: - RateInfo
 struct RateInfo: Codable {
     let rate, rateMemo: String?
     let dailyPlanBudget, dailyTotalCost: Int?
@@ -61,4 +61,8 @@ struct RateModel: Codable {
     let rate, rateMemo: String?
 }
 
-
+//제로데이
+// MARK: - ZeroModel
+struct ZeroModel: Codable {
+    let dailyPlanDate: String
+}
