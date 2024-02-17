@@ -34,20 +34,12 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     var routineRequest : ExpenseCreateRequest.RoutineRequest?
     //
 
-    func AddCategoryCompleted(_ name: String, iconName: Int) {
+    func AddCategoryCompleted(_ name: String, iconName: String) {
         print("카테고리 추가 반영 완료\(name)\(iconName)")
-        cateogoryTextField.text = name
-        let temp : String
-        let iconNamePlus = iconName + 1
-        if iconName != 10 {
-            temp = "add-0\(iconNamePlus)"
-        }
-        else{
-            temp = "add-\(iconNamePlus)"
-        }
         
-        cateogoryTextField.changeIcon(iconName: temp)
+        cateogoryTextField.changeIcon(iconName: iconName)
         catAdd = true // 카테고리 선택된 것 반영
+        cateogoryTextField.text = name
         checkAndEnableCompleteButton()
         view.layoutIfNeeded()
     }

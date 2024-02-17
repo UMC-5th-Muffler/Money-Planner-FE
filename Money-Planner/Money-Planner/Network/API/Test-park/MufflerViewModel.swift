@@ -104,9 +104,22 @@ class MufflerViewModel {
 //    }
 //
     // Category Controller
+    // 소비등록 > 카테고리 선택 뷰에서 활용
+    func getCategory() -> Observable<GetCategoryResponse> {
+        return provider.request(.getCategory)
+            .map(GetCategoryResponse.self)
+            .asObservable()
+    }
+    // 모든 카테고리 조회
     func getCategoryFilter() -> Observable<ResponseGetCategoryListResponse> {
-        return provider.request(.getCategoryFilter)
+        return provider.request(.getCategory)
             .map(ResponseGetCategoryListResponse.self)
+            .asObservable()
+    }
+    // 카테고리 추가
+    func createCategory(request : CreateCategoryRequest) -> Observable<CreateCategoryResponse> {
+        return provider.request(.createCategory(request: request))
+            .map(CreateCategoryResponse.self)
             .asObservable()
     }
 //
