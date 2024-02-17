@@ -41,6 +41,7 @@
 		208C90D52B7F7B6100C67960 /* CategoryIconSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90D42B7F7B6100C67960 /* CategoryIconSelectionViewController.swift */; };
 		208C90D72B7F7FBB00C67960 /* CategoryIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90D62B7F7FBB00C67960 /* CategoryIconCell.swift */; };
 		208F5E7B2B80BA0B00107735 /* ExpensePopupModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208F5E7A2B80BA0B00107735 /* ExpensePopupModalView.swift */; };
+		208F5E7E2B80C81E00107735 /* ZeroDayRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208F5E7D2B80C81E00107735 /* ZeroDayRequest.swift */; };
 		20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */; };
 		20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */; };
 		20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD902B656034008F8AB9 /* OneDayButton.swift */; };
@@ -183,6 +184,7 @@
 		208C90D42B7F7B6100C67960 /* CategoryIconSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryIconSelectionViewController.swift; sourceTree = "<group>"; };
 		208C90D62B7F7FBB00C67960 /* CategoryIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryIconCell.swift; sourceTree = "<group>"; };
 		208F5E7A2B80BA0B00107735 /* ExpensePopupModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensePopupModalView.swift; sourceTree = "<group>"; };
+		208F5E7D2B80C81E00107735 /* ZeroDayRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeroDayRequest.swift; sourceTree = "<group>"; };
 		20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatModalViewController.swift; sourceTree = "<group>"; };
 		20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDayView.swift; sourceTree = "<group>"; };
 		20AFDD902B656034008F8AB9 /* OneDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDayButton.swift; sourceTree = "<group>"; };
@@ -305,10 +307,10 @@
 		20118A0E2B56A83400B2569E /* Consume */ = {
 			isa = PBXGroup;
 			children = (
-				208C90BF2B72636C00C67960 /* UIHelper.swift */,
 				20118A102B56A86100B2569E /* ConsumeViewController.swift */,
 				208C90C62B7BB06800C67960 /* ConsumeDetailViewController.swift */,
-				208C90BD2B710F4800C67960 /* TextFieldContainerView.swift */,
+				208F5E7F2B8102A400107735 /* Calendar */,
+				208C90BF2B72636C00C67960 /* UIHelper.swift */,
 				5591601B2B64595E00063F06 /* EvaluationViewController.swift */,
 				552A42662B72200E007AEAAD /* DailyConsumeViewController.swift */,
 				208C90C42B75329100C67960 /* modal */,
@@ -320,13 +322,9 @@
 		206C58D02B617396008410C1 /* Modal */ = {
 			isa = PBXGroup;
 			children = (
-				206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */,
-				D20D70222B67E1DD006D6762 /* GoalListModalViewController.swift */,
-				D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */,
-				552A42FF2B7AA03E007AEAAD /* goalDeleteModalView.swift */,
-				551E8B752B7D13490008476B /* zeroModalView.swift */,
-				551E8B772B7D135E0008476B /* evaluationModalView.swift */,
-				208F5E7A2B80BA0B00107735 /* ExpensePopupModalView.swift */,
+				208F5E832B8103A500107735 /* Home */,
+				208F5E822B81038300107735 /* Goal */,
+				7A610AD02B48FEE000D3096F /* Notification */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -380,6 +378,48 @@
 				208C90CC2B7BBC6700C67960 /* ExpenseCreateResponse.swift */,
 				208C90CE2B7BBC8400C67960 /* ExpenseCreateRequest.swift */,
 				208C90D02B7BD33300C67960 /* UpdateExpenseRequest.swift */,
+			);
+			path = Expense;
+			sourceTree = "<group>";
+		};
+		208F5E7C2B80C7EF00107735 /* DailyPlan */ = {
+			isa = PBXGroup;
+			children = (
+				208F5E7D2B80C81E00107735 /* ZeroDayRequest.swift */,
+			);
+			path = DailyPlan;
+			sourceTree = "<group>";
+		};
+		208F5E7F2B8102A400107735 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		208F5E822B81038300107735 /* Goal */ = {
+			isa = PBXGroup;
+			children = (
+				552A42FF2B7AA03E007AEAAD /* goalDeleteModalView.swift */,
+				D20D70222B67E1DD006D6762 /* GoalListModalViewController.swift */,
+			);
+			path = Goal;
+			sourceTree = "<group>";
+		};
+		208F5E832B8103A500107735 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		208F5E842B81040300107735 /* Expense */ = {
+			isa = PBXGroup;
+			children = (
+				208C90BD2B710F4800C67960 /* TextFieldContainerView.swift */,
+				7A4C67452B5A4B77008BCAC9 /* MainTextField.swift */,
 			);
 			path = Expense;
 			sourceTree = "<group>";
@@ -454,7 +494,7 @@
 		7A4C67442B5A4B66008BCAC9 /* TextField */ = {
 			isa = PBXGroup;
 			children = (
-				7A4C67452B5A4B77008BCAC9 /* MainTextField.swift */,
+				208F5E842B81040300107735 /* Expense */,
 			);
 			path = TextField;
 			sourceTree = "<group>";
@@ -479,12 +519,11 @@
 		7A610AB62B47FA8E00D3096F /* Money-Planner */ = {
 			isa = PBXGroup;
 			children = (
-				7A4C67322B5A47BD008BCAC9 /* CustomView */,
 				D29536EF2B4C091400EEA81F /* Money-Planner.entitlements */,
-				D29536ED2B4C076F00EEA81F /* Common */,
 				7A610AB72B47FA8E00D3096F /* AppDelegate.swift */,
 				7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */,
-				7A610AD02B48FEE000D3096F /* Notification */,
+				7A4C67322B5A47BD008BCAC9 /* CustomView */,
+				D29536ED2B4C076F00EEA81F /* Common */,
 				7A610ACE2B480B5B00D3096F /* Model */,
 				7A610ACD2B480B1400D3096F /* ViewModel */,
 				7A610ACC2B480B0E00D3096F /* View */,
@@ -525,6 +564,7 @@
 		7A610ACD2B480B1400D3096F /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				208F5E7C2B80C7EF00107735 /* DailyPlan */,
 				208C90CB2B7BBC5500C67960 /* Expense */,
 				D20D701F2B66FE8F006D6762 /* Home */,
 				208C90D22B7F751400C67960 /* ResponseGetCategoryListResponse.swift */,
@@ -550,8 +590,12 @@
 		7A610AD02B48FEE000D3096F /* Notification */ = {
 			isa = PBXGroup;
 			children = (
+				551E8B752B7D13490008476B /* zeroModalView.swift */,
+				551E8B772B7D135E0008476B /* evaluationModalView.swift */,
+				208F5E7A2B80BA0B00107735 /* ExpensePopupModalView.swift */,
 			);
-			path = Notification;
+			name = Notification;
+			path = ../../Notification;
 			sourceTree = "<group>";
 		};
 		7A610AD32B49004500D3096F /* MyPage */ = {
@@ -858,6 +902,7 @@
 				552A431C2B7AB534007AEAAD /* UIImage.swift in Sources */,
 				206C58D82B626465008410C1 /* CategoryModalViewController.swift in Sources */,
 				D2D0B7362B6BA83E003B6B5E /* HomeRepository.swift in Sources */,
+				208F5E7E2B80C81E00107735 /* ZeroDayRequest.swift in Sources */,
 				208C90A62B6D15BB00C67960 /* ProfileViewController.swift in Sources */,
 				D253EEBF2B7B653A00A4FC1C /* ExpenseRepository.swift in Sources */,
 				7A610AE72B491F1600D3096F /* HeaderView.swift in Sources */,
