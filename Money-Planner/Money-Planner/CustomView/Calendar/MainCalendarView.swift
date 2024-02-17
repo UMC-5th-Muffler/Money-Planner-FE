@@ -151,10 +151,22 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                 // 평가 이미지
                 if(daily!.dailyRate == "HIGH"){
                     cell.imageView.image = UIImage(named: "btn_date_green")
+                    
+                    if let zeroday = daily!.isZeroDay, zeroday{
+                        cell.imageView.image = UIImage(named: "btn_date_zero_green")
+                    }
                 }else if(daily!.dailyRate == "MEDIUM"){
                     cell.imageView.image = UIImage(named: "btn_date_yellow")
+                    
+                    if let zeroday = daily!.isZeroDay, zeroday{
+                        cell.imageView.image = UIImage(named: "btn_date_zero_yellow")
+                    }
                 }else if(daily!.dailyRate == "LOW"){
                     cell.imageView.image = UIImage(named: "btn_date_red")
+                    
+                    if let zeroday = daily!.isZeroDay, zeroday{
+                        cell.imageView.image = UIImage(named: "btn_date_zero_red")
+                    }
                 }else{
                     cell.imageView.image = UIImage(named: "btn_date_on")
                 }
