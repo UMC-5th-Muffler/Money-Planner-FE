@@ -45,11 +45,11 @@ extension GoalTitleViewController {
             }else if updatedText.count == 0 {
                 warningLabel.isHidden = true // 경고 레이블 미표시
                 btmbtn.isEnabled = false
-            }else if goalViewModel.goalExistsWithName(goalTitle: updatedText) {
-                warningLabel.text = "이미 존재하는 이름의 목표가 있습니다."
-                warningLabel.isHidden = false // 경고 레이블 표시
-                btmbtn.isEnabled = false
-            }
+            } //else if goalViewModel.goalExistsWithName(goalTitle: updatedText) {
+//                warningLabel.text = "이미 존재하는 이름의 목표가 있습니다."
+//                warningLabel.isHidden = false // 경고 레이블 표시
+//                btmbtn.isEnabled = false
+//            }
             else {
                 warningLabel.isHidden = true // 경고 레이블 숨김
                 btmbtn.isEnabled = true
@@ -72,7 +72,7 @@ class GoalTitleViewController : UIViewController, UITextFieldDelegate {
     private var btmbtn = MainBottomBtn(title: "다음")
     private var scrim = UIView()
     
-    private let goalViewModel = GoalViewModel.shared //지금까지 만든 목표 확인용
+//    private let goalViewModel = GoalViewModel.shared //지금까지 만든 목표 확인용 (이름 겹쳐도 상관 없다. 기간만 다르면 된다.)
     private let goalCreationManager = GoalCreationManager.shared //목표 생성용
     
     

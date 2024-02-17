@@ -1120,6 +1120,7 @@ class GoalCreateCategoryBtnCell: UITableViewCell {
 
 class GoalCategoryTableViewCell: UITableViewCell {
     
+    var categoryId : Int?
     var isModified = false // 추후에 새로운 카테고리 목표를 저장하는 목적
     var iconImageView : UIImageView = {
         let i = UIImageView(image: UIImage(named: "icon_category"))
@@ -1209,7 +1210,9 @@ class GoalCategoryTableViewCell: UITableViewCell {
         ])
     }
     
-    func configureCell(text : String, iconName : String){
+    
+    func configureCell(categoryId : Int?, text : String, iconName : String){
+        self.categoryId = categoryId
         iconImageView.image = UIImage(named: iconName)
         textField.text = text
     }

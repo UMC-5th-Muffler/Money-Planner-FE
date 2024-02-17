@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import RxSwift
 import FSCalendar
 
 //기간 선택 프로토콜 정의
@@ -24,6 +25,8 @@ extension PeriodCalendarModal: FSCalendarDelegateAppearance {
 class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
     
     weak var delegate: PeriodSelectionDelegate?
+    private let goalPeriodViewModel = GoalPeriodViewModel.shared //지금까지 만든 목표 확인용
+    private let disposeBag = DisposeBag()
     
     // 구성요소
     let customModal = UIView()
@@ -87,7 +90,7 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
     let monthButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysTemplate)
-        let scaledImage = image?.scaled(toHeight: 15) // Set your desired height
+        let scaledImage = image?.resizeImage(size: CGSize(width: 15, height: 15)) // Set your desired height
         button.setImage(scaledImage, for: .normal)
         button.semanticContentAttribute = .forceRightToLeft // To make the image appear on the right
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
@@ -210,7 +213,13 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
         setupLayoutConstraints()
         updateMonthLabelForDate(Date())
         setupDurationButtons()
-        generateUnselectableDateRanges()
+        
+        goalPeriodViewModel.previousGoalTerms
+            .asObservable()
+            .subscribe(onNext: { [weak self] terms in
+                self?.updateUnselectableDateRanges(with: terms)
+            })
+            .disposed(by: disposeBag)
     }
     
     //요일 폰트 및 텍스트 반영
@@ -254,14 +263,14 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
     func setupHeaderStackView() {
         
         let image = UIImage(systemName: "chevron.left")?.withRenderingMode(.alwaysTemplate)
-        let scaledImage = image?.scaled(toHeight: 40)
+        let scaledImage = image?.resizeImage(size: CGSize(width: 40, height: 40))
         previousButton.setImage(image, for: .normal)
         previousButton.tintColor = UIColor(hexCode: "6C6C6C")
         previousButton.addTarget(self, action: #selector(goToPreviousMonth), for: .touchUpInside)
         previousButton.translatesAutoresizingMaskIntoConstraints = false
         
         let image2 = UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysTemplate)
-        let scaledImage2 = image2?.scaled(toHeight: 40)
+        let scaledImage2 = image2?.resizeImage(size: CGSize(width: 40, height: 40))
         nextButton.setImage(image2, for: .normal)
         nextButton.tintColor = UIColor(hexCode: "6C6C6C")
         nextButton.addTarget(self, action: #selector(goToNextMonth), for: .touchUpInside)
@@ -676,24 +685,36 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
         calendar.reloadData() // Reload calendar to refresh appearance
     }
     
-    func generateUnselectableDateRanges() {
+    func updateUnselectableDateRanges(with terms: [Term]) {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd"
+        dateFormatter.dateFormat = "yyyy-MM-dd"
         
-        let range1Start = dateFormatter.date(from: "2024/02/13")!
-        let range1End = dateFormatter.date(from: "2024/02/15")!
-        
-        let range2Start = dateFormatter.date(from: "2024/02/18")!
-        let range2End = dateFormatter.date(from: "2024/02/25")!
-        
-        unselectableDateRanges = [
-            [range1Start, range1End],
-            [range2Start, range2End]
-        ]
-        
-        // After setting the ranges, tell the calendar to refresh
-        calendar.reloadData()
+        let ranges = terms.map { term -> [Date] in
+            let startDate = dateFormatter.date(from: term.startDate)!
+            let endDate = dateFormatter.date(from: term.endDate)!
+            return [startDate, endDate]
+        }
+        setUnselectableDateRanges(ranges)
     }
+    
+//    func generateUnselectableDateRanges() {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyy/MM/dd"
+//        
+//        let range1Start = dateFormatter.date(from: "2024/02/13")!
+//        let range1End = dateFormatter.date(from: "2024/02/15")!
+//        
+//        let range2Start = dateFormatter.date(from: "2024/02/18")!
+//        let range2End = dateFormatter.date(from: "2024/02/25")!
+//        
+//        unselectableDateRanges = [
+//            [range1Start, range1End],
+//            [range2Start, range2End]
+//        ]
+//        
+//        // After setting the ranges, tell the calendar to refresh
+//        calendar.reloadData()
+//    }
     
     // 애니메이션으로 텍스트를 변경하는 함수
     func changeLabelWithAnimation(_ label: UILabel, to newText: String, duration: TimeInterval = 0.1) {

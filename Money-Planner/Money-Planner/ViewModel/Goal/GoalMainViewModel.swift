@@ -8,8 +8,9 @@
 import Foundation
 import RxSwift
 import RxMoya
+import RxCocoa
 import Moya
-import RxRelay
+
 
 class GoalMainViewModel {
     
@@ -31,23 +32,24 @@ class GoalMainViewModel {
 
     private init() {}
 
+    // Initial fetch without endDate
+    func fetchInitialGoals() {
+        resetData()
+        fetchNowGoal()
+        fetchNotNowGoals()
+    }
+    
     func fetchNowGoal() {
         goalRepository.getNowGoal().subscribe { [weak self] event in
             switch event {
             case .success(let response):
-                self?.nowGoals.accept(response.result) // Cannot convert value of type 'Goal_' to expected argument type '[Goal_]'
+                self?.nowGoals.accept(response.result)
             case .failure(let error):
                 print("Error fetching current goals: \(error.localizedDescription)")
             }
         }.disposed(by: disposeBag)
     }
     
-    // Initial fetch without endDate
-    func fetchInitialNotNowGoals() {
-        fetchNotNowGoals()
-    }
-    
-    // Fetch not-now goals, considering pagination
     func fetchNotNowGoals() {
         //hasNext가 true일때만 받을 수 있도록 처리
         guard hasNext.value else { return }

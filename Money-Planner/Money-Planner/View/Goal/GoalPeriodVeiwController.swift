@@ -30,7 +30,6 @@ class GoalPeriodViewController : UIViewController, UINavigationControllerDelegat
     private lazy var periodBtn = PeriodButton()
     private lazy var btmbtn : MainBottomBtn = MainBottomBtn(title: "다음")
     
-    private let goalViewModel = GoalViewModel.shared //지금까지 만든 목표 확인용
     private let goalCreationManager = GoalCreationManager.shared //목표 생성용
     
     override func viewDidLoad() {
@@ -75,8 +74,8 @@ class GoalPeriodViewController : UIViewController, UINavigationControllerDelegat
     func goToGoalAmountVC(){
         print("목표 금액 등록 화면으로 이동")
         let goalTotalAmountVC = GoalTotalAmountViewController()
-        goalCreationManager.startDate = periodBtn.startDate
-        goalCreationManager.endDate = periodBtn.endDate
+        goalCreationManager.startDate = periodBtn.startDate.toString(format: "yyyy-MM-dd")
+        goalCreationManager.endDate = periodBtn.endDate.toString(format: "yyyy-MM-dd")
         navigationController?.pushViewController(goalTotalAmountVC, animated: true)
     }
     

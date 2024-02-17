@@ -89,6 +89,8 @@
 		7A0D33CA2B7F951D007B2736 /* GoalAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33C82B7F951D007B2736 /* GoalAPI.swift */; };
 		7A0D33CE2B7FBC5A007B2736 /* GoalMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33CD2B7FBC5A007B2736 /* GoalMainViewModel.swift */; };
 		7A0D33D02B7FE0D3007B2736 /* GoalDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33CF2B7FE0D3007B2736 /* GoalDetailViewModel.swift */; };
+		7A0D33D22B809DD6007B2736 /* GoalPeriodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33D12B809DD6007B2736 /* GoalPeriodViewModel.swift */; };
+		7A0D33D42B80BE00007B2736 /* GoalCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33D32B80BE00007B2736 /* GoalCategoryViewModel.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -251,6 +253,8 @@
 		7A0D33C82B7F951D007B2736 /* GoalAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalAPI.swift; sourceTree = "<group>"; };
 		7A0D33CD2B7FBC5A007B2736 /* GoalMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalMainViewModel.swift; sourceTree = "<group>"; };
 		7A0D33CF2B7FE0D3007B2736 /* GoalDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalDetailViewModel.swift; sourceTree = "<group>"; };
+		7A0D33D12B809DD6007B2736 /* GoalPeriodViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalPeriodViewModel.swift; sourceTree = "<group>"; };
+		7A0D33D32B80BE00007B2736 /* GoalCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalCategoryViewModel.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -371,7 +375,6 @@
 			isa = PBXGroup;
 			children = (
 				7A0D33262B7E00C0007B2736 /* GoalModal */,
-				208C90C32B75325200C67960 /* category */,
 				206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */,
 				D20D70222B67E1DD006D6762 /* GoalListModalViewController.swift */,
 				D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */,
@@ -464,6 +467,8 @@
 				7A0D33912B7F4993007B2736 /* GoalViewModel.swift */,
 				7A0D33CD2B7FBC5A007B2736 /* GoalMainViewModel.swift */,
 				7A0D33CF2B7FE0D3007B2736 /* GoalDetailViewModel.swift */,
+				7A0D33D12B809DD6007B2736 /* GoalPeriodViewModel.swift */,
+				7A0D33D32B80BE00007B2736 /* GoalCategoryViewModel.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -955,6 +960,7 @@
 				206C58D42B623C43008410C1 /* CategoryCell.swift in Sources */,
 				7A0D33872B7F48AA007B2736 /* GoalPeriodVeiwController.swift in Sources */,
 				7A610AF02B49414100D3096F /* RegisterProfileViewController.swift in Sources */,
+				7A0D33D42B80BE00007B2736 /* GoalCategoryViewModel.swift in Sources */,
 				208C90D52B7F7B6100C67960 /* CategoryIconSelectionViewController.swift in Sources */,
 				7A4C67462B5A4B77008BCAC9 /* MainTextField.swift in Sources */,
 				D20D70142B612BB4006D6762 /* CategoryTableView.swift in Sources */,
@@ -1010,6 +1016,7 @@
 				D253EEB72B7B505B00A4FC1C /* HomeMoreModalViewController.swift in Sources */,
 				208C90932B6AB7DA00C67960 /* ConnectModel.swift in Sources */,
 				7A0D33C42B7F8864007B2736 /* GoalDetail.swift in Sources */,
+				7A0D33D22B809DD6007B2736 /* GoalPeriodViewModel.swift in Sources */,
 				552A42672B72200E007AEAAD /* DailyConsumeViewController.swift in Sources */,
 				D20D6FF32B5D67B1006D6762 /* Category.swift in Sources */,
 				D2D0B7382B6BA845003B6B5E /* HomeAPI.swift in Sources */,

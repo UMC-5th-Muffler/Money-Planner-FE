@@ -106,7 +106,7 @@ class GoalFinalViewController : UIViewController{
     
     @objc func completeBtnTapped(){
         //post하기 => 이건 별도로 구현하기
-        goalCreationManager.addGoal()
+        goalCreationManager.postGoal()
         
         //manager 비우기
         goalCreationManager.clear()
@@ -129,7 +129,6 @@ class GoalCard : UIView {
     var goalBudget = MPLabel()
     
     var goalCreationManager = GoalCreationManager.shared
-    var goalViewModel = GoalViewModel.shared
     
     override init(frame: CGRect){
         super.init(frame: frame)// 이게 무슨 의미인가 추후 공부
@@ -235,12 +234,10 @@ class GoalCard : UIView {
         let endDate = goalCreationManager.endDate!
 
         var tmpStr : String
-        let startDateString = formatter.string(from: startDate)
-        let endDateString = formatter.string(from: endDate)
-        tmpStr = "\(startDateString) - \(endDateString) "
+        tmpStr = startDate + " - " + endDate
         
         let calendar = Calendar.current
-        let components = calendar.dateComponents([.day], from: startDate, to: endDate)
+        let components = calendar.dateComponents([.day], from: startDate.toMPDate() ?? Date(), to: endDate.toMPDate() ?? Date())
         if let day = components.day {
             tmpStr += day%7==0 ? "(\(day/7)주)" : "(\(day)일)"
         }
