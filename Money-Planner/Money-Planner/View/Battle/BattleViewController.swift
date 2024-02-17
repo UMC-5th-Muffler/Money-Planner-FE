@@ -20,18 +20,37 @@ class BattleViewController: UIViewController {
         label.textColor = .mpBlack
         return label
     }()
-    let contentLabel : UnregisterTitleLabel = {
-        let label = UnregisterTitleLabel()
-        label.font = .mpFont14R()
+    let imgView : UIImageView = {
+        let v = UIImageView()
+        let image = UIImage(named:"goal-create" )
+        v.image = image
+        return v
+    }()
+    let contentLabel1 : MPLabel = {
+        let label = MPLabel()
+        label.font = .mpFont14M()
         label.textColor = .mpDarkGray
-        label.lineSpacing = 2
-        label.text = "배틀 기능은 아직 준비 중...\n조금만 기다려주세요!"
+        label.numberOfLines = 2
+        label.textAlignment = .center
+        label.text = "배틀 기능은 아직 준비 중..."
+        return label
+    }()
+    let contentLabel2 : MPLabel = {
+        let label = MPLabel()
+        label.font = .mpFont14M()
+        label.textColor = .mpDarkGray
+        label.numberOfLines = 2
+        label.textAlignment = .center
+        label.text = "조금만 기다려주세요!"
         return label
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .mpWhite
+        // 네비게이션 바 숨기기
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+
         setupTitle()
         setupContents()
         
@@ -91,7 +110,7 @@ class BattleViewController: UIViewController {
         view.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
@@ -99,15 +118,45 @@ class BattleViewController: UIViewController {
     }
     private func setupContents(){
         let container = UIView()
-        container.addSubview(contentLabel)
-        contentLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+        view.addSubview(container)
+
         NSLayoutConstraint.activate([
-            contentLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor),
-            contentLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            contentLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor)
+            container.widthAnchor.constraint(equalToConstant: 210),
+            container.heightAnchor.constraint(equalToConstant: 224),
+            container.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            container.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        
         ])
+        container.addSubview(imgView)
+        container.addSubview(contentLabel1)
+        container.addSubview(contentLabel2)
+
+
+
+        NSLayoutConstraint.activate([
+            imgView.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            imgView.topAnchor.constraint(equalTo: container.topAnchor),
+            imgView.widthAnchor.constraint(equalToConstant: 174),
+            imgView.heightAnchor.constraint(equalToConstant: 174),
+            
+            contentLabel1.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            contentLabel1.topAnchor.constraint(equalTo: imgView.bottomAnchor),
+            contentLabel1.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            contentLabel1.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            
+            contentLabel2.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            contentLabel2.topAnchor.constraint(equalTo: contentLabel1.bottomAnchor),
+            contentLabel2.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            contentLabel2.trailingAnchor.constraint(equalTo: container.trailingAnchor)
+        ])
+        
+        container.translatesAutoresizingMaskIntoConstraints = false
+        imgView.translatesAutoresizingMaskIntoConstraints = false
+        contentLabel1.translatesAutoresizingMaskIntoConstraints = false
+        contentLabel2.translatesAutoresizingMaskIntoConstraints = false
+
     }
+
     @objc private func alert() {
         let alertVCC = ExpensePopupModalView()
         // 완료한 이후 알람 띄우기
