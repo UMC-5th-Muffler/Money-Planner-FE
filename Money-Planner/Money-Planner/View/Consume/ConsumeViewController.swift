@@ -10,7 +10,12 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelectionDelegate,CalendarSelectionDelegate,RepeatModalViewDelegate,AddCategoryViewDelegate {
+class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelectionDelegate,CalendarSelectionDelegate,RepeatModalViewDelegate,AddCategoryViewDelegate, PopupViewDelegate {
+    
+    func popupChecked() {
+        dismiss()
+    }
+    
 
     let StackView = UIStackView()
 
@@ -314,7 +319,6 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         // 완료 버튼 추가
         setupCompleteButton()
         setupLayout()
-
         // 소비금액
         setupAmountTextField()
         // 카테고리
@@ -337,33 +341,26 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         
     }
     
-    
     // 세팅 : 헤더
     private func setupHeader(){
-
-        // 네비게이션 아이템 타이틀 폰트 설정
-        if let navigationBar = navigationController?.navigationBar {
-            let navBarTitleFont = UIFont.mpFont18B()
-            let navBarTitleTextAttributes: [NSAttributedString.Key: Any] = [
-                .font: navBarTitleFont,
-                .foregroundColor: UIColor.black // 타이틀 색상 설정
-            ]
-            navigationBar.titleTextAttributes = navBarTitleTextAttributes
-        }
+        StackView.addArrangedSubview(headerView)
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addBackButtonTarget(target: self, action: #selector(backAction), for: .touchUpInside)  // 이전 화면으로 돌아가기
         
-        // 뒤로 가기 버튼 생성
-        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backAction))
-        backButton.tintColor = .mpGray
+        NSLayoutConstraint.activate([
+            headerView.leadingAnchor.constraint(equalTo: StackView.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: StackView.trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 60)
+        ])
         
-        navigationItem.leftBarButtonItem = backButton
-        navigationItem.title = "소비내역 입력"
     }
+
 
     // 뒤로 가기 버튼 액션 메서드
     @objc private func backAction() {
         print("이전 화면으로 이동")
         // 이전 화면으로 이동
-       dismiss(animated: true)
+        self.dismiss(animated: true, completion: nil)
     }
 
 
@@ -643,7 +640,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         StackView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            StackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 35),
+            StackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             StackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             StackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
             StackView.bottomAnchor.constraint(equalTo: completeButton.topAnchor, constant: 10)
@@ -935,26 +932,44 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
                 print(response)
                 if let expenseResponse = response.result {
                     if let alarms = expenseResponse.alarms {
+                        print(alarms)
                         for alarm in alarms {
                             if let alarmTitle = alarm.alarmTitle, let budget = alarm.budget, let excessAmount = alarm.excessAmount {
                                 print(alarmTitle)
                                 print(budget)
                                 print(excessAmount)
                                 // 여기서 알람을 보여주는 작업을 수행합니다.
-                                // 예를 들어 UIAlertController를 사용하여 알람을 표시할 수 있습니다.
-                                let alertController = UIAlertController(title: alarmTitle, message: "Your budget: \(budget), Excess amount: \(excessAmount)", preferredStyle: .alert)
-                                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                                self.present(alertController, animated: true, completion: nil)
+                                let alert = ExpensePopupModalView()
+                                if alarmTitle == "하루"{
+                                    alert.changeTitle(title: "하루 목표금액을 초과했어요")
+                                    alert.changeContents(content: "목표한 소비 금액 \(budget)원보다 \(excessAmount)원 더 썼어요!")
+                                    
+                                }else if alarmTitle == "카테고리"{
+                                    let category = String(self.cateogoryTextField.text ?? "카테고리 없음")
+                                    alert.changeTitle(title: "\(category) 목표금액을 초과했어요")
+                                    alert.changeContents(content: "목표한 \(category) 금액 \(budget)원보다 \(excessAmount)원 더 썼어요!")
+
+                                } else if alarmTitle == "전체"{
+                                    alert.changeTitle(title: "전체 목표금액을 초과했어요")
+                                    alert.changeContents(content: "목표한 금액 \(budget)원보다 \(excessAmount)원 더 썼어요!")
+
+                                }
+                                self.present(alert, animated: true, completion: nil)
                             }
                         }
+                     
                     }
                 }
             }, onFailure: {error in
                 print(error)
             }).disposed(by: disposeBag)
         
-        // 완료한 이후 알람 띄우기
-        dismiss(animated: true) {
+        dismiss()
+    }
+    private func dismiss (){
+        // 알람이 없는 경우
+        self.dismiss(animated: true) {
+            print("Log")
             // 네비게이션 바 숨기기 취소
             self.tabBarController?.tabBar.isHidden = false
             // 탭 바 컨트롤러로 전환하기
