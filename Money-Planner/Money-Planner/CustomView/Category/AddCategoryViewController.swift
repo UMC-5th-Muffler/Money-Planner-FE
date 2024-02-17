@@ -7,6 +7,8 @@
 
 import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
 
 // 카테고리 직접 추가
 protocol AddCategoryViewDelegate : AnyObject{
@@ -22,6 +24,9 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
             
         }
     }
+    var categories : [String]!
+    let disposeBag = DisposeBag()
+    let viewModel = MufflerViewModel()
     var selectedIcon : Int? = 3
     let icons: [UIImage?] = [
         UIImage(named: "add-01"),
@@ -103,6 +108,19 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
         view.backgroundColor = UIColor(named: "mpWhite")
         view.backgroundColor = .systemBackground
         
+        // 현재 카테고리 리스트 가져오기
+        // 네트워크 요청을 통해 초기 데이터를 가져옵니다.
+        viewModel.getCategory()
+            .subscribe(onNext: { response in
+                // 네트워크 응답에 대한 처리
+                print("log : 카테고리 조회 성공!")
+                print(response)
+                self.categories = response.result.categories.map { $0.name }
+                }, onError: { error in
+                // 에러 처리
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
         // 헤더
         setupHeader()
         
@@ -211,32 +229,42 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let text = textField.text else { return false }
-        currText = text
+
         let newText = (text as NSString).replacingCharacters(in: range, with: string)
-        // 이미 동일한 카테고리가 있는 경우 return False
-        if newText.count != 0 {
-            completeButton.isEnabled = true
-        }
+        
+        // 텍스트 길이가 6자를 초과하는 경우를 먼저 검사
         if newText.count > 6 {
-            
-            // Your existing code to handle the error (e.g., update UI elements)
             textField.layer.borderColor = UIColor.mpRed.cgColor
-            textField.layer.borderWidth = 1.0  // Set an appropriate border width
+            textField.layer.borderWidth = 1.0
             errorLabel.text = "최대 6글자로 입력해주세요"
             errorLabel.textColor = UIColor.mpRed
-            return false
+            return false // 여기서 false를 반환하여 입력을 방지
+        }
+
+        currText = newText
+        print(currText)
+
+        // 카테고리 이름 중복 검사
+        if categories.contains(currText) {
+            print("notice : 이미 있는 카테고리 이름입니다.")
+            textField.layer.borderColor = UIColor.mpRed.cgColor
+            textField.layer.borderWidth = 1.0
+            errorLabel.text = "이미 동일한 카테고리가 존재합니다."
+            errorLabel.textColor = UIColor.mpRed
         } else {
-            
-            // Your existing code to handle the case when character count is within limits
             textField.layer.borderColor = UIColor.clear.cgColor
             textField.layer.borderWidth = 0.0
             errorLabel.text = "최대 6글자"
-            errorLabel.textColor = UIColor.mpRed
             errorLabel.textColor = .mpDarkGray
-
-            return true
         }
+
+        // newText가 비어 있지 않고, 선택된 아이콘이 있는 경우 완료 버튼을 활성화
+        completeButton.isEnabled = !newText.isEmpty && selectedIcon != nil
+
+        return true // 입력을 허용
     }
+
+   
     @objc
     private func completeButtonTapped(){
         print("카테고리 추가가 완료되었습니다.")

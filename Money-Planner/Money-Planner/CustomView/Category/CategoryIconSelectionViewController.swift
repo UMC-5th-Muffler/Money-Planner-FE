@@ -155,7 +155,13 @@ class CategoryIconSelectionViewController: UIViewController, UICollectionViewDel
         }
 
         cell.configure(with: icons[indexPath.item])
-
+        
+        // 선택된 셀과 그렇지 않은 셀의 알파값 조정
+       if let selectedIndexPath = selectedIndexPath, indexPath == selectedIndexPath {
+           cell.iconImageView.alpha = 1.0 // 선택된 셀
+       } else {
+           cell.iconImageView.alpha = selectedIndexPath == nil ? 1.0 : 0.3 // 선택되지 않은 셀 또는 선택된 셀이 없는 경우
+       }
         return cell
     }
 
@@ -164,20 +170,19 @@ class CategoryIconSelectionViewController: UIViewController, UICollectionViewDel
         if selectedIndexPath != indexPath {
             selectedIndexPath = indexPath
             print(indexPath.item+1)
-            collectionView.reloadData()
+           
         }
         else{
             // 다시 클릭하면 선택 취소
             selectedIndexPath = nil
         }
-        
+        collectionView.reloadData()
         updateCloseButtonState()
     }
     
     // 완료 버튼 활성화 함수
     func updateCloseButtonState() {
-        print(selectedIndexPath)
-           if let selectedIndexPath = selectedIndexPath {
+        if selectedIndexPath != nil {
                print("활성화")
                closeButton.isEnabled = true
                closeButton.backgroundColor = .mpMainColor

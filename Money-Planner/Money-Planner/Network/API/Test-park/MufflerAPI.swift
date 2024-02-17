@@ -25,7 +25,7 @@ enum MufflerAPI {
 
     // Category Controller
     case getCategoryFilter
-
+    case getCategory
     // Daily Plan Controller
     case updateZeroDay
 
@@ -85,6 +85,8 @@ extension MufflerAPI: TargetType {
             return "/api/expense/daily"
 
         // Category Controller
+        case .getCategory:
+            return "api/category/"
         case .getCategoryFilter:
             return "api/category/filter"
 
@@ -120,7 +122,7 @@ extension MufflerAPI: TargetType {
             return .post
         case .connect, .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
-             .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo, .getCategoryFilter:
+             .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo, .getCategoryFilter,.getCategory:
             return .get
         case .deleteGoal, .deleteExpense:
             return .delete
@@ -133,7 +135,7 @@ extension MufflerAPI: TargetType {
     var task: Task {
         switch self {
         case .refreshToken, .loginKakao, .loginApple, .connect,
-             .createGoal, .getCategoryFilter, .updateRate, .updateZeroDay:
+                .createGoal, .getCategoryFilter,.getCategory, .updateRate, .updateZeroDay:
             return .requestPlain
         case .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,

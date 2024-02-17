@@ -42,6 +42,7 @@
 		208C90D72B7F7FBB00C67960 /* CategoryIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90D62B7F7FBB00C67960 /* CategoryIconCell.swift */; };
 		208F5E7B2B80BA0B00107735 /* ExpensePopupModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208F5E7A2B80BA0B00107735 /* ExpensePopupModalView.swift */; };
 		208F5E7E2B80C81E00107735 /* ZeroDayRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208F5E7D2B80C81E00107735 /* ZeroDayRequest.swift */; };
+		208F5E872B8125B300107735 /* GetCategoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208F5E862B8125B300107735 /* GetCategoryResponse.swift */; };
 		20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */; };
 		20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */; };
 		20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD902B656034008F8AB9 /* OneDayButton.swift */; };
@@ -185,6 +186,7 @@
 		208C90D62B7F7FBB00C67960 /* CategoryIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryIconCell.swift; sourceTree = "<group>"; };
 		208F5E7A2B80BA0B00107735 /* ExpensePopupModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensePopupModalView.swift; sourceTree = "<group>"; };
 		208F5E7D2B80C81E00107735 /* ZeroDayRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeroDayRequest.swift; sourceTree = "<group>"; };
+		208F5E862B8125B300107735 /* GetCategoryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCategoryResponse.swift; sourceTree = "<group>"; };
 		20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatModalViewController.swift; sourceTree = "<group>"; };
 		20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDayView.swift; sourceTree = "<group>"; };
 		20AFDD902B656034008F8AB9 /* OneDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDayButton.swift; sourceTree = "<group>"; };
@@ -424,6 +426,15 @@
 			path = Expense;
 			sourceTree = "<group>";
 		};
+		208F5E852B81259100107735 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				208C90D22B7F751400C67960 /* ResponseGetCategoryListResponse.swift */,
+				208F5E862B8125B300107735 /* GetCategoryResponse.swift */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
 		7A4C67322B5A47BD008BCAC9 /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
@@ -564,10 +575,10 @@
 		7A610ACD2B480B1400D3096F /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				208F5E852B81259100107735 /* Category */,
 				208F5E7C2B80C7EF00107735 /* DailyPlan */,
 				208C90CB2B7BBC5500C67960 /* Expense */,
 				D20D701F2B66FE8F006D6762 /* Home */,
-				208C90D22B7F751400C67960 /* ResponseGetCategoryListResponse.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -974,6 +985,7 @@
 				20EF78312B68E3AD00AA135E /* MyPageTableViewCell.swift in Sources */,
 				D217EBF12B7460CC00EB6BF3 /* CategoryRepository.swift in Sources */,
 				20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */,
+				208F5E872B8125B300107735 /* GetCategoryResponse.swift in Sources */,
 				208C908F2B6AB78900C67960 /* MufflerAPI.swift in Sources */,
 				D217EBEF2B7460BC00EB6BF3 /* CategoryAPI.swift in Sources */,
 				7A610AEE2B493F6D00D3096F /* RegisterUsageViewController.swift in Sources */,
