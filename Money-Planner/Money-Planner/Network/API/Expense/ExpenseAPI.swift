@@ -82,7 +82,7 @@ extension ExpenseAPI : BaseAPI {
     }
     
     public var headers: [String: String]? {
-        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDgyNDc1NTR9.wOH46BMT5FnNkXWts9dRuRECdtvU8px_4m86yeVnru0"] // 억세스토큰
+        return ["Authorization": "Bearer "] // 억세스토큰
         // 실제 사용하는 헤더로 변경해야 합니다.
     }
 }
