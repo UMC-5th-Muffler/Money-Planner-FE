@@ -14,55 +14,24 @@ import Moya
 class GoalReportViewModel {
     
     static let shared = GoalReportViewModel()
-    private let provider = MoyaProvider<GoalService>()
+    private let goalRepository = GoalRepository.shared
+    private let disposeBag = DisposeBag()
     
-    // 결과를 저장할 BehaviorRelay 객체 생성
     var goalReportRelay = BehaviorRelay<GoalReportResult?>(value: nil)
     
-    private let disposeBag = DisposeBag()
-    
-    private init() {} // Singleton pattern
+    private init() {}
     
     func fetchGoalReport(for goalId: Int) {
-        provider.rx.request(.goalReport(goalId: goalId))
-            .filterSuccessfulStatusCodes()
-            .map(GoalReportResponse.self)
-            .subscribe { [weak self] event in
-                switch event {
-                case .success(let response):
-                    // 받아온 데이터를 BehaviorRelay에 저장
+        goalRepository.getGoalReport(goalId: goalId)
+            .subscribe(onSuccess: { [weak self] response in
+                if response.isSuccess {
                     self?.goalReportRelay.accept(response.result)
-                case .failure(let error):
-                    print("Error fetching goal report: \(error.localizedDescription)")
-                    // 실패 시, nil을 저장하거나 기존 값을 유지할 수 있습니다.
-                    // self?.goalReportRelay.accept(nil)
+                } else {
+                    print("API call succeeded but returned with message: \(response.message)")
                 }
-            }.disposed(by: disposeBag)
-    }
-}
-
-import UIKit
-
-class YourViewController: UIViewController {
-    
-    private let viewModel = GoalReportViewModel.shared
-    private let disposeBag = DisposeBag()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        bindViewModel()
-        viewModel.fetchGoalReport(for: 1) // 예시 goalId 값은 1입니다.
-    }
-    
-    private func bindViewModel() {
-        viewModel.goalReportRelay
-            .subscribe(onNext: { [weak self] goalReportResult in
-                guard let result = goalReportResult else {
-                    print("No data received or an error occurred.")
-                    return
-                }
-                // 데이터 사용, 예: UI 업데이트
-                print("Zero Day Count: \(result.zeroDayCount)")
+            }, onFailure: { error in
+                print("Error fetching goal report: \(error.localizedDescription)")
             }).disposed(by: disposeBag)
     }
+    
 }

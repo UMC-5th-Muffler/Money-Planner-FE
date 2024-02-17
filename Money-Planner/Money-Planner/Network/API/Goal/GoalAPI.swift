@@ -15,7 +15,7 @@ enum GoalAPI {
     case deleteGoal(goalId: Int)
     case getGoalDetail(goalId: Int)
     case now
-    case notNow
+    case notNow(endDate: String?)
     case goalReport(goalId: Int)
     case goalExpense(goalId: Int, startDate: String, endDate: String, size: Int, lastDate: String?, lastExpenseId: Int?)
     case getPreviousGoals
@@ -67,7 +67,12 @@ extension GoalAPI : BaseAPI {
             return .requestJSONEncodable(request)
         case .goalReport:
             return .requestParameters(parameters: [:], encoding: URLEncoding.queryString)
-            
+        case .notNow(let endDate):
+            var parameters: [String: Any] = [:]
+            if let endDate = endDate {
+                parameters["endDate"] = endDate
+            }
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .goalExpense(let goalId, let startDate, let endDate, let size, let lastDate, let lastExpenseId):
             var parameters: [String: Any] = [
                 "goalId": goalId,

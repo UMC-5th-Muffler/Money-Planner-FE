@@ -83,6 +83,8 @@
 		7A0D33C42B7F8864007B2736 /* GoalDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33C32B7F8864007B2736 /* GoalDetail.swift */; };
 		7A0D33C92B7F951D007B2736 /* GoalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33C72B7F951D007B2736 /* GoalRepository.swift */; };
 		7A0D33CA2B7F951D007B2736 /* GoalAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33C82B7F951D007B2736 /* GoalAPI.swift */; };
+		7A0D33CE2B7FBC5A007B2736 /* GoalMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33CD2B7FBC5A007B2736 /* GoalMainViewModel.swift */; };
+		7A0D33D02B7FE0D3007B2736 /* GoalDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33CF2B7FE0D3007B2736 /* GoalDetailViewModel.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -104,7 +106,6 @@
 		7A610AE22B4900C800D3096F /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 7A610AE12B4900C800D3096F /* RxMoya */; };
 		7A610AE52B491ED600D3096F /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AE42B491ED600D3096F /* Dummy.swift */; };
 		7A610AE72B491F1600D3096F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AE62B491F1600D3096F /* HeaderView.swift */; };
-		7A610AEA2B493EC900D3096F /* MakeGoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AE92B493EC900D3096F /* MakeGoalViewController.swift */; };
 		7A610AEE2B493F6D00D3096F /* RegisterUsageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AED2B493F6D00D3096F /* RegisterUsageViewController.swift */; };
 		7A610AF02B49414100D3096F /* RegisterProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AEF2B49414100D3096F /* RegisterProfileViewController.swift */; };
 		7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF12B49421F00D3096F /* KakaoLoginViewController.swift */; };
@@ -240,6 +241,8 @@
 		7A0D33C32B7F8864007B2736 /* GoalDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalDetail.swift; sourceTree = "<group>"; };
 		7A0D33C72B7F951D007B2736 /* GoalRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalRepository.swift; sourceTree = "<group>"; };
 		7A0D33C82B7F951D007B2736 /* GoalAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalAPI.swift; sourceTree = "<group>"; };
+		7A0D33CD2B7FBC5A007B2736 /* GoalMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalMainViewModel.swift; sourceTree = "<group>"; };
+		7A0D33CF2B7FE0D3007B2736 /* GoalDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalDetailViewModel.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -259,7 +262,6 @@
 		7A610AD82B49009300D3096F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		7A610AE42B491ED600D3096F /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		7A610AE62B491F1600D3096F /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
-		7A610AE92B493EC900D3096F /* MakeGoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeGoalViewController.swift; sourceTree = "<group>"; };
 		7A610AED2B493F6D00D3096F /* RegisterUsageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUsageViewController.swift; sourceTree = "<group>"; };
 		7A610AEF2B49414100D3096F /* RegisterProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterProfileViewController.swift; sourceTree = "<group>"; };
 		7A610AF12B49421F00D3096F /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
@@ -461,6 +463,8 @@
 				7A0D33922B7F4993007B2736 /* GoalReportViewModel.swift */,
 				7A0D33942B7F4993007B2736 /* GoalSpendingViewModel.swift */,
 				7A0D33912B7F4993007B2736 /* GoalViewModel.swift */,
+				7A0D33CD2B7FBC5A007B2736 /* GoalMainViewModel.swift */,
+				7A0D33CF2B7FE0D3007B2736 /* GoalDetailViewModel.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -475,17 +479,31 @@
 			path = Goal;
 			sourceTree = "<group>";
 		};
+		7A0D33CB2B7F9BA6007B2736 /* TableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				7A0D33CC2B7F9BB2007B2736 /* Goal */,
+			);
+			path = TableViewCell;
+			sourceTree = "<group>";
+		};
+		7A0D33CC2B7F9BB2007B2736 /* Goal */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Goal;
+			sourceTree = "<group>";
+		};
 		7A4C67322B5A47BD008BCAC9 /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
+				7A0D33CB2B7F9BA6007B2736 /* TableViewCell */,
 				206C58D02B617396008410C1 /* Modal */,
 				D20D70122B612BA5006D6762 /* Category */,
 				D20D6FF62B5E9734006D6762 /* Statistics */,
 				D20D6FDF2B5AEC76006D6762 /* TabBar */,
 				7A610AE62B491F1600D3096F /* HeaderView.swift */,
 				7A4C67442B5A4B66008BCAC9 /* TextField */,
-				7A4C67372B5A4A24008BCAC9 /* ImageView */,
-				7A4C67362B5A4A1B008BCAC9 /* TableViewCell */,
 				7A4C67352B5A490E008BCAC9 /* Calendar */,
 				7A4C67342B5A47F9008BCAC9 /* Label */,
 				7A4C67332B5A47F4008BCAC9 /* Button */,
@@ -528,20 +546,6 @@
 				D253EEB22B7A5E6D00A4FC1C /* DayGoalCalendarView.swift */,
 			);
 			path = Calendar;
-			sourceTree = "<group>";
-		};
-		7A4C67362B5A4A1B008BCAC9 /* TableViewCell */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = TableViewCell;
-			sourceTree = "<group>";
-		};
-		7A4C67372B5A4A24008BCAC9 /* ImageView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ImageView;
 			sourceTree = "<group>";
 		};
 		7A4C67442B5A4B66008BCAC9 /* TextField */ = {
@@ -702,17 +706,16 @@
 			isa = PBXGroup;
 			children = (
 				7A0D33822B7F48AA007B2736 /* consumeDummy.json */,
-				7A0D33832B7F48AA007B2736 /* GoalCategoryViewController.swift */,
 				7A0D33802B7F48AA007B2736 /* GoalComponents.swift */,
-				7A0D33852B7F48AA007B2736 /* GoalDailyViewController.swift */,
 				7A0D337D2B7F48AA007B2736 /* GoalDetailsViewController.swift */,
-				7A0D33842B7F48AA007B2736 /* GoalFinalViewController.swift */,
 				7A0D337F2B7F48AA007B2736 /* GoalMainViewController.swift */,
 				7A0D337E2B7F48AA007B2736 /* GoalTitleViewController.swift */,
 				7A0D337C2B7F48AA007B2736 /* GoalPeriodVeiwController.swift */,
 				7A0D33812B7F48AA007B2736 /* GoalTotalAmountViewController.swift */,
+				7A0D33832B7F48AA007B2736 /* GoalCategoryViewController.swift */,
+				7A0D33852B7F48AA007B2736 /* GoalDailyViewController.swift */,
+				7A0D33842B7F48AA007B2736 /* GoalFinalViewController.swift */,
 				7A0D337B2B7F48AA007B2736 /* TestViewController.swift */,
-				7A610AE92B493EC900D3096F /* MakeGoalViewController.swift */,
 				552A423D2B671B86007AEAAD /* EditGoalViewController.swift */,
 			);
 			path = Goal;
@@ -956,6 +959,7 @@
 				D20D701A2B664996006D6762 /* UICollectionView.swift in Sources */,
 				208C90D12B7BD33300C67960 /* UpdateExpenseRequest.swift in Sources */,
 				D253EEB32B7A5E6D00A4FC1C /* DayGoalCalendarView.swift in Sources */,
+				7A0D33D02B7FE0D3007B2736 /* GoalDetailViewModel.swift in Sources */,
 				208C90C72B7BB06800C67960 /* ConsumeDetailViewController.swift in Sources */,
 				552A431C2B7AB534007AEAAD /* UIImage.swift in Sources */,
 				7A0D33882B7F48AA007B2736 /* GoalDetailsViewController.swift in Sources */,
@@ -991,11 +995,11 @@
 				208C90BE2B710F4800C67960 /* TextFieldContainerView.swift in Sources */,
 				D2D0B72B2B6A704B003B6B5E /* BaseResponse.swift in Sources */,
 				551E8B782B7D135E0008476B /* evaluationModalView.swift in Sources */,
+				7A0D33CE2B7FBC5A007B2736 /* GoalMainViewModel.swift in Sources */,
 				7A0D332D2B7E00C0007B2736 /* FoundPreviousConsumeRecordModal.swift in Sources */,
 				D20D70302B68BEB0006D6762 /* Encodable.swift in Sources */,
 				D2D0B72F2B6A70A1003B6B5E /* BaseRepository.swift in Sources */,
 				D253EEB72B7B505B00A4FC1C /* HomeMoreModalViewController.swift in Sources */,
-				7A610AEA2B493EC900D3096F /* MakeGoalViewController.swift in Sources */,
 				208C90932B6AB7DA00C67960 /* ConnectModel.swift in Sources */,
 				7A0D33C42B7F8864007B2736 /* GoalDetail.swift in Sources */,
 				552A42672B72200E007AEAAD /* DailyConsumeViewController.swift in Sources */,

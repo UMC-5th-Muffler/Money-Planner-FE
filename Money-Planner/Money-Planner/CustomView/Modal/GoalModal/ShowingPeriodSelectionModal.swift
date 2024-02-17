@@ -93,12 +93,12 @@ class ShowingPeriodSelectionModal : UIViewController, FSCalendarDelegate, FSCale
     let monthButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysTemplate)
-        let scaledImage = image?.scaled(toHeight: 15) // Set your desired height
+        let scaledImage = image?.resizeImage(size: CGSize(width: 15, height: 15)) // Set your desired height
         button.setImage(scaledImage, for: .normal)
         button.semanticContentAttribute = .forceRightToLeft // To make the image appear on the right
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         button.tintColor = UIColor(hexCode: "6C6C6C")
-        button.addTarget(self, action: #selector(monthButtonTapped), for: .touchUpInside)
+        button.addTarget(ShowingPeriodSelectionModal.self, action: #selector(monthButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -275,14 +275,14 @@ class ShowingPeriodSelectionModal : UIViewController, FSCalendarDelegate, FSCale
     func setupHeaderStackView() {
         
         let image = UIImage(systemName: "chevron.left")?.withRenderingMode(.alwaysTemplate)
-        let scaledImage = image?.scaled(toHeight: 40)
+        let scaledImage = image?.resizeImage(size: CGSize(width: 40, height: 40))
         previousButton.setImage(image, for: .normal)
         previousButton.tintColor = UIColor(hexCode: "6C6C6C")
         previousButton.addTarget(self, action: #selector(goToPreviousMonth), for: .touchUpInside)
         previousButton.translatesAutoresizingMaskIntoConstraints = false
         
         let image2 = UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysTemplate)
-        let scaledImage2 = image2?.scaled(toHeight: 40)
+        let scaledImage2 = image2?.resizeImage(size: CGSize(width: 40, height: 40))
         nextButton.setImage(image2, for: .normal)
         nextButton.tintColor = UIColor(hexCode: "6C6C6C")
         nextButton.addTarget(self, action: #selector(goToNextMonth), for: .touchUpInside)

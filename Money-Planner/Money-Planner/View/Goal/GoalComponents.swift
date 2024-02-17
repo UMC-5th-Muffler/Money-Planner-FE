@@ -162,24 +162,21 @@ class GoalEmptyCell: UITableViewCell {
 //목표가 있을때 셀
 class GoalPresentationCell: UITableViewCell {
     
-    let goal : Goal
+    var goal : Goal_?
     let containerView = UIView()
     let btn = UIButton()
     let title = MPLabel()
     let dday = MPLabel()
-    var progressBar : GoalProgressBar
+    var progressBar = GoalProgressBar(goalAmt: 1, usedAmt: 0)
     let progressPercentage = MPLabel()
     let totalCost = MPLabel()
     
     var btnTapped : (() -> Void)?
     
-    init(goal: Goal, reuseIdentifier: String?) {
-        self.goal = goal // goal을 초기화
-        self.progressBar = GoalProgressBar(goalAmt: goal.goalBudget!, usedAmt: goal.totalCost!)
-        super.init(style: .default, reuseIdentifier: reuseIdentifier)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear
         setupCellLayout()
-        configureCell(with: goal) // 바로 cell을 설정
         btn.addTarget(self, action: #selector(onBtnTapped), for: .touchUpInside)
     }
     
@@ -241,49 +238,55 @@ class GoalPresentationCell: UITableViewCell {
         ])
     }
     
-    func configureCell(with goal: Goal) {
+    func configureCell(with goal: Goal_, isNow : Bool) {
+        
+        self.goal = goal
+        self.progressBar = GoalProgressBar(goalAmt: goal.totalBudget, usedAmt: goal.totalCost ?? 0)
         
         btn.backgroundColor = .mpWhite
         btn.layer.cornerRadius = 10
         
-        //title
-        title.text = goal.icon! + "  " + goal.goalTitle!
+        // Title
+        title.text = goal.icon + "  " + goal.goalTitle
         title.font = .mpFont16M()
         title.textColor = .mpBlack
         
-        //d-day
+        // D-day
         dday.font = .mpFont12M()
         
-        let currentDate = Date()
-        let isPastGoal = currentDate > (goal.endDate?.toMPDate())!
-        let isFutureGoal = currentDate < (goal.startDate?.toMPDate())!
+        //00시 00분으로 맞춰야 됨.
+        let calendar = Calendar.current
+        let currentDateComponents = calendar.dateComponents([.year, .month, .day], from: Date())
         
-        // 목표가 현재 진행 중인 경우, 오늘 날짜로부터 목표 종료일까지 남은 일수 계산
-        let daysLeft = isPastGoal ? 0 : Calendar.current.dateComponents([.day], from: currentDate, to: (goal.endDate?.toMPDate())!).day ?? 0
+        let currentDate = calendar.date(from: currentDateComponents) ?? Date()
         
-        // 기본적으로 진행 중 상태를 가정하고 색상과 텍스트 설정
-        var ddayText = "D-\(daysLeft)"
-        var ddayBackgroundColor = UIColor.mpCalendarHighLight
-        var ddayTextColor = UIColor.mpMainColor
+        let goalEndDate = goal.endDate.toMPDate() ?? currentDate // Fallback to current date if conversion fails
+        let daysLeft = Calendar.current.dateComponents([.day], from: currentDate, to: goalEndDate).day ?? 0
         
-        if isPastGoal {
-            // 목표가 이미 종료된 경우
-            ddayText = "종료"
-            ddayBackgroundColor = UIColor.mpLightGray
-            ddayTextColor = UIColor.mpDarkGray
-        } else if isFutureGoal {
-            // 목표가 아직 시작되지 않은 경우
-            ddayText = "시작 전"
-            ddayBackgroundColor = UIColor.mpLightGray
-            ddayTextColor = UIColor.mpDarkGray
-        } else {
-            // 목표가 현재 진행 중인 경우, 남은 일수에 따라 텍스트 업데이트
+        // Initialize D-day text and color variables
+        var ddayText: String
+        var ddayBackgroundColor: UIColor
+        var ddayTextColor: UIColor
+        
+        if isNow {
             if daysLeft == 0 {
-                // 목표 종료일이 오늘인 경우
                 ddayText = "D-Day"
+                ddayBackgroundColor = UIColor.mpCalendarHighLight
+                ddayTextColor = UIColor.mpMainColor
             } else {
-                // 그 외에는 남은 일수 표시
                 ddayText = "D-\(daysLeft)"
+                ddayBackgroundColor = UIColor.mpCalendarHighLight
+                ddayTextColor = UIColor.mpMainColor
+            }
+        } else {
+            if currentDate > goalEndDate {
+                ddayText = "종료"
+                ddayBackgroundColor = UIColor.mpLightGray
+                ddayTextColor = UIColor.mpDarkGray
+            } else {
+                ddayText = "시작 전"
+                ddayBackgroundColor = UIColor.mpLightGray
+                ddayTextColor = UIColor.mpDarkGray
             }
         }
         
@@ -298,17 +301,17 @@ class GoalPresentationCell: UITableViewCell {
         dday.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         //progressPercentage
-        let progressPercentageValue = Double(goal.totalCost!) / Double(goal.goalBudget!) * 100.0
+        let progressPercentageValue = Double(goal.totalCost!) / Double(goal.totalBudget) * 100.0
         progressPercentage.text = String(format: "%.0f%%", progressPercentageValue)
         progressPercentage.textColor = progressPercentageValue > 100 ? .mpRed : .mpMainColor
         progressPercentage.font = .mpFont14M()
         
         
-        let totalCostText = setComma(cash: goal.totalCost!) + " 원 / " + setComma(cash: goal.goalBudget!) + " 원 사용"
-        let goalBudgetTextCnt = "/ \(goal.goalBudget ?? 0) 원 사용".count
+        let totalCostText = setComma(cash: goal.totalCost!) + " 원 / " + setComma(cash: goal.totalBudget) + " 원 사용"
+        let totalBudgetTextCnt = "/ \(goal.totalBudget) 원 사용".count
         let attributedText = NSMutableAttributedString(string: totalCostText)
         attributedText.addAttribute(.foregroundColor, value: UIColor.mpDarkGray, range: NSRange(location: 0, length: totalCostText.count))
-        attributedText.addAttribute(.foregroundColor, value: UIColor.mpGray, range: NSRange(location: totalCostText.count - goalBudgetTextCnt , length: goalBudgetTextCnt))
+        attributedText.addAttribute(.foregroundColor, value: UIColor.mpGray, range: NSRange(location: totalCostText.count - totalBudgetTextCnt , length: totalBudgetTextCnt))
         totalCost.attributedText = attributedText
         totalCost.font = .mpFont14M()
     }

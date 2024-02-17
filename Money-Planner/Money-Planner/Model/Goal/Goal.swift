@@ -74,7 +74,7 @@ struct CategoryGoal: Encodable {
 struct PostGoalResponse: Decodable {
     let isSuccess: Bool
     let message: String
-    let result: [String: String] // Replace SomeDecodableType with the actual type you expect
+    let result: [String: String] 
 }
  
 //struct Goal : Codable{// 

@@ -70,14 +70,17 @@ extension GoalDetailsViewController : PeriodSelectionDelegate {
 
 class GoalDetailsViewController : UIViewController {
     
-    var goal : Goal_
+    private var goalDetail : GoalDetail
+    private let viewModel = GoalDetailViewModel.shared
+    let consumeViewModel = GoalConsumeViewModel.shared
     let reportViewModel = GoalReportViewModel.shared
-    let disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
+    
     
     private lazy var spendingView = SpendingView()
     private lazy var reportView = ReportView()
     
-    init(goal: Goal_) {
+    init(goalID: Int) {
         //순서 미정의 된 변수, super init, 정의가 이제 된 변수를 바탕으로 한 개변
         self.goal = goal
         super.init(nibName: nil, bundle: nil)

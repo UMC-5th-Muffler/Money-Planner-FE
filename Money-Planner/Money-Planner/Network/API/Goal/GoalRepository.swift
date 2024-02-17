@@ -24,8 +24,8 @@ final class GoalRepository {
     }
     
     // 과거 및 미래의 목표들을 가져오는 메서드
-    func getNotNowGoals() -> Single<NotNowResponse> {
-        return provider.rx.request(.notNow)
+    func getNotNowGoals(endDate: String? = nil) -> Single<NotNowResponse> {
+        return provider.rx.request(.notNow(endDate: endDate))
             .filterSuccessfulStatusCodes()
             .map(NotNowResponse.self)
     }

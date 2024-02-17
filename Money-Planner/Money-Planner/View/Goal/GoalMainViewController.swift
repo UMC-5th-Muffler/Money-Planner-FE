@@ -10,34 +10,59 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+extension GoalMainViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let boundsHeight = scrollView.bounds.size.height
+
+        // Check if the user has scrolled to the bottom of the table view
+        if offsetY > (contentHeight - boundsHeight) {
+            // Attempt to fetch more not-now goals
+            viewModel.fetchNotNowGoals()
+        }
+        onNotNowGoalsUpdated()
+        self.goalTable.reloadData()
+    }
+}
+
+
 class GoalMainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
 
     private let disposeBag = DisposeBag()
     private let headerView = GoalMainHeaderView()
     private let goalTable = UITableView()
-    private let goalViewModel = GoalViewModel.shared
+    private let viewModel = GoalMainViewModel.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .mpGypsumGray
+        setupSubscriptions()
+        viewModel.resetData()
+        viewModel.fetchNowGoal()
+        viewModel.fetchNotNowGoals()
         setupHeaderView()
         setupGoalTable()
-        
-        goalViewModel.goalsObservable
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
-                self?.goalTable.reloadData()
-            })
-            .disposed(by: disposeBag)
-        
+        goalTable.delegate = self
         headerView.addNewGoalBtn.addTarget(self, action: #selector(addNewGoalButtonTapped), for: .touchUpInside)
+    }
+    
+    private func setupSubscriptions() {
+        viewModel.nowGoals.asObservable().subscribe(onNext: { [weak self] _ in
+            self?.goalTable.reloadData()
+        }).disposed(by: disposeBag)
+        
+        viewModel.notNowGoals.asObservable()
+            .skip(1) // 초기값을 스킵하고 실제 업데이트 될 때만 반응하도록 설정
+            .subscribe(onNext: { [weak self] _ in
+                self?.onNotNowGoalsUpdated() // 여기서 UI 업데이트 로직 호출
+            }).disposed(by: disposeBag)
     }
     
     @objc func addNewGoalButtonTapped() {
         // Create and present GoalTitleViewController
         print("aaaa")
         let goalTitleViewController = GoalTitleViewController()
-//        self.present(GoalTitleViewController(), animated: true)
         navigationController?.pushViewController(goalTitleViewController, animated: true)
         
         //탭바가 안보이도록
@@ -80,7 +105,7 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
         goalTable.sectionHeaderHeight = UITableView.automaticDimension
         
     }
-
+    
     // UITableViewDataSource 메서드
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2 // 두 개의 섹션
@@ -88,68 +113,64 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // UITableViewDataSource 메서드
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // 현재 섹션이 0번째 섹션이고 목표가 없으면 비었다는 것을 알려줄 셀이 들어가므로 1을 반환하고, 그렇지 않으면 현재 목표의 개수를 반환
-        if section == 0 {
-            return goalViewModel.currentGoals.isEmpty ? 1 : goalViewModel.currentGoals.count
-        } else {
-            // 이전 섹션이고 목표가 없으면 비었다는 것을 알려줄 셀이 들어가므로 1을 반환
-            return goalViewModel.pastGoals.isEmpty && goalViewModel.futureGoals.isEmpty ? 1 : goalViewModel.pastGoals.count + goalViewModel.futureGoals.count
+        switch section {
+        case 0:
+            return 1
+        case 1:
+            return max(viewModel.notNowGoals.value.count, 1)
+        default:
+            return 0
         }
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // 첫 번째 섹션인 경우
         if indexPath.section == 0 {
-            if goalViewModel.currentGoals.isEmpty {
-                // 현재 목표가 없으면 GoalEmptyCell을 반환
+            // Now Goals section
+            if let nowGoal = viewModel.nowGoals.value {
+                // If there is a current goal, configure and return a GoalPresentationCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "GoalPresentationCell", for: indexPath) as! GoalPresentationCell
+                cell.configureCell(with: nowGoal, isNow: true)
+//                cell.btnTapped = { [weak self] in
+//                    // Navigate to GoalDetailsViewController with the selected goal's details
+//                    let goalDetailsVC = GoalDetailsViewController(goalID: nowGoal.goalID)
+//                    self?.navigationController?.pushViewController(goalDetailsVC, animated: true)
+//                    self?.tabBarController?.tabBar.isHidden = true
+//                }
+                return cell
+            } else {
+                // If there are no current goals, configure and return a GoalEmptyCell
                 let cell = tableView.dequeueReusableCell(withIdentifier: "GoalEmptyCell", for: indexPath) as! GoalEmptyCell
                 cell.configure(with: "현재 진행 중인 목표가 없습니다.\n+ 버튼을 눌러 새 목표를 생성해보세요!")
                 return cell
-            } else {
-                // 현재 목표가 있으면 GoalPresentationCell을 반환
-                let goal = goalViewModel.currentGoals[indexPath.row]
-                let cell = GoalPresentationCell(goal: goal, reuseIdentifier: "GoalPresentationCell")
-                
-                cell.btnTapped = { [weak self] in
-                    guard let self = self else { return }
-                    
-                    //해당 cell의 goal에 대한 정보를 api로 요청
-                    print("detailVC로")
-                    //해당 객체를 인자로 받고, 이동
-                    let goalDetailsVC = GoalDetailsViewController(goal: cell.goal)
-                    self.navigationController?.pushViewController(goalDetailsVC, animated: true)
-                    self.tabBarController?.tabBar.isHidden = true
-                }
-                
-                return cell
             }
-        } else {
-            // 두 번째 섹션인 경우
-            if goalViewModel.pastGoals.isEmpty {
-                // 이전 목표가 없으면 GoalEmptyCell을 반환
+        } else if indexPath.section == 1 {
+            // Not Now Goals section
+            let notNowGoals = viewModel.notNowGoals.value
+            if notNowGoals.isEmpty {
+                // If there are no past or future goals, configure and return a GoalEmptyCell
                 let cell = tableView.dequeueReusableCell(withIdentifier: "GoalEmptyCell", for: indexPath) as! GoalEmptyCell
                 cell.configure(with: "아직 지난/예정된 목표가 없습니다.")
                 return cell
             } else {
-                // 이전 목표가 있으면 GoalPresentationCell을 반환
-                let goal = goalViewModel.notCurrentGoals[indexPath.row] //좀 더 깔끔한 로직이 없을까?
-                let cell = GoalPresentationCell(goal: goal, reuseIdentifier: "GoalPresentationCell")
-                cell.btnTapped = { [weak self] in
-                    guard let self = self else { return }
-                    
-                    //해당 cell의 goal에 대한 정보를 api로 요청
-                    print("detailVC로")
-                    //해당 객체를 인자로 받고, 이동
-                    let goalDetailsVC = GoalDetailsViewController(goal: cell.goal)
-                    navigationController?.pushViewController(goalDetailsVC, animated: true)
-                    self.tabBarController?.tabBar.isHidden = true
-                }
+                // If there are past or future goals, configure and return a GoalPresentationCell
+                let goal = notNowGoals[indexPath.row]
+                let cell = tableView.dequeueReusableCell(withIdentifier: "GoalPresentationCell", for: indexPath) as! GoalPresentationCell
+                cell.configureCell(with: goal, isNow: false)
+//                cell.btnTapped = { [weak self] in
+//                    // Navigate to GoalDetailsViewController with the selected goal's details
+//                    let goalDetailsVC = GoalDetailsViewController(goalID: goal.goalID)
+//                    self?.navigationController?.pushViewController(goalDetailsVC, animated: true)
+//                    self?.tabBarController?.tabBar.isHidden = true
+//                }
                 return cell
             }
+        } else {
+            // Fallback for any other section
+            return UITableViewCell()
         }
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return "진행 중인 목표"
@@ -185,32 +206,43 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // UITableViewDelegate 메서드
+    // UITableViewDelegate 메서드
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true) // 선택된 셀의 하이라이트 제거
-
-        let goal: Goal
+        
         if indexPath.section == 0 {
-            if goalViewModel.currentGoals.isEmpty {
-                // 현재 진행 중인 목표가 없는 경우
-                return // 또는 적절한 액션 수행
-            } else {
-                // 현재 진행 중인 목표가 있는 경우
-                goal = goalViewModel.currentGoals[indexPath.row]
+            // 현재 진행 중인 목표 선택 처리
+            if let goal = viewModel.nowGoals.value {
+                let goalDetailsVC = GoalDetailsViewController(goalID: goal.goalID)
+                navigationController?.pushViewController(goalDetailsVC, animated: true)
+                self.tabBarController?.tabBar.isHidden = true
             }
-        } else {
-            if goalViewModel.pastGoals.isEmpty && goalViewModel.futureGoals.isEmpty {
-                // 이전 목표가 없는 경우
-                return // 또는 적절한 액션 수행
-            } else {
-                // 이전 목표가 있는 경우
-                goal = goalViewModel.notCurrentGoals[indexPath.row] // 적절한 배열 인덱스 접근 방식으로 수정 필요
+        } else if indexPath.section == 1 {
+            // 과거 혹은 미래 목표 선택 처리
+            let notNowGoals = viewModel.notNowGoals.value
+            if indexPath.row < notNowGoals.count {
+                let selectedGoal = notNowGoals[indexPath.row]
+                let goalDetailsVC = GoalDetailsViewController(goalID: selectedGoal.goalID)
+                navigationController?.pushViewController(goalDetailsVC, animated: true)
+                self.tabBarController?.tabBar.isHidden = true
             }
         }
+    }
 
-        // GoalDetailsViewController로 화면 전환
-        let goalDetailsVC = GoalDetailsViewController(goal: goal)
-        navigationController?.pushViewController(goalDetailsVC, animated: true)
-        self.tabBarController?.tabBar.isHidden = true
+    
+    func onNotNowGoalsUpdated() {
+        let currentCount = goalTable.numberOfRows(inSection: 1) // 현재 not-now 섹션의 셀 개수
+        let newCount = viewModel.addedNotNowGoals.value.count // 새로운 데이터의 개수
+
+        // 새로 추가될 셀들의 인덱스 경로를 계산
+        let indexPaths = (currentCount..<newCount).map { IndexPath(row: $0, section: 1) }
+        
+        // 테이블 뷰 업데이트 시작
+//        goalTable.beginUpdates()
+        // 새로운 셀들을 삽입
+        goalTable.insertRows(at: indexPaths, with: .automatic) // .automatic은 애니메이션 효과
+        // 테이블 뷰 업데이트 종료
+//        goalTable.endUpdates()
     }
 
 

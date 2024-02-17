@@ -12,7 +12,6 @@ import Foundation
 class GoalCreationManager {
     
     static let shared = GoalCreationManager()
-    let goalViewModel = GoalViewModel.shared
 
     var goalID: Int?
     var icon: String?
