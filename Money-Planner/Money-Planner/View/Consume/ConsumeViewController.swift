@@ -24,6 +24,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     let viewModel = MufflerViewModel()
     var expenseRequest : ExpenseCreateRequest = ExpenseCreateRequest(expenseCost: 0, categoryId: 0, expenseTitle: "", expenseMemo:"", expenseDate: "", routineRequest: nil, isRoutine: false)
     var currentAmount : Int64 = 0
+    var currentCategoryId : Int64 = 0
     lazy var todayDateJson: String = {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         return dateFormatter.string(from: currentDate)
@@ -157,8 +158,9 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             .disposed(by: disposeBag)
     }
     
-    func didSelectCategory(_ category: String, iconName : String) {
+    func didSelectCategory(id:Int64, category: String, iconName : String){
         catAdd = true // 카테고리 선택된 것 반영
+        currentCategoryId = id
         cateogoryTextField.text = category
         cateogoryTextField.changeIcon(iconName: iconName)
         checkAndEnableCompleteButton()
@@ -698,7 +700,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             // 입력된 금액이 있는 경우
             else{
                 // amountLabel
-                StackView.insertArrangedSubview(amountLabel, at: 1)
+                StackView.insertArrangedSubview(amountLabel, at: 2)
                 amountAdd = true // 입력된 것이 있는 것 확인
                 checkAndEnableCompleteButton()
                 // 유효한 숫자인 경우
@@ -906,7 +908,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         }
         expenseRequest = ExpenseCreateRequest(
             expenseCost: currentAmount,
-            categoryId: 2, // 카테고리 조회 api 연결하면
+            categoryId: currentCategoryId,
             expenseTitle: titleTextField.text ?? "제목 없음",
             expenseMemo: memoTextField.text!,
             expenseDate: currnetCal,

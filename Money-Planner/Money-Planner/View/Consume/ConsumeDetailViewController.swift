@@ -12,9 +12,16 @@ import RxCocoa
 
 // 소비 수정 및 삭제 컨트롤러
 class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, CategorySelectionDelegate,CalendarSelectionDelegate,RepeatModalViewDelegate,AddCategoryViewDelegate {
+    func didSelectCategory(id: Int64, category: String, iconName: String) {
+        catAdd = true // 카테고리 선택된 것 반영
+        cateogoryTextField.text = category
+        cateogoryTextField.changeIcon(iconName: iconName)
+        currentCategoryId = id
+    }
+    
     var expenseId: Int64 = 0
     var initExpense : ResponseExpenseDto.ExpenseDto?
-
+    var currentCategoryId : Int64 = 0
 
 
     let StackView = UIStackView()
@@ -149,12 +156,7 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
             .disposed(by: disposeBag)
     }
     
-    func didSelectCategory(_ category: String, iconName : String) {
-        catAdd = true // 카테고리 선택된 것 반영
-        cateogoryTextField.text = category
-        cateogoryTextField.changeIcon(iconName: iconName)
-
-    }
+ 
     let deleteButton: UIButton = {
         let arrowImage = UIImage(systemName: "xmark")?.withTintColor(.mpWhite, renderingMode: .alwaysOriginal)
         let button = UIButton()
@@ -363,7 +365,7 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
             cateogoryTextField.text = expense.categoryName
             titleTextField.text = expense.title
             memoTextField.text = expense.memo
-            
+            currentCategoryId = expense.categoryId
             let dateString = expense.date
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -935,7 +937,7 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
     
         // api 연결
         expenseRequest.expenseId = expenseId
-        expenseRequest.categoryId = 2
+        expenseRequest.categoryId = currentCategoryId
         expenseRequest.expenseCost = currentAmount
         if let text = titleTextField.text { expenseRequest.expenseTitle = text}
         if let text = memoTextField.text { expenseRequest.expenseMemo = text}
