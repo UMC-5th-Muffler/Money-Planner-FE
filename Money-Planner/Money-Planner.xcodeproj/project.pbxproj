@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20118A112B56A86100B2569E /* ConsumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20118A102B56A86100B2569E /* ConsumeViewController.swift */; };
+		202754242B7FBF860084A757 /* ExpenseTapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202754232B7FBF860084A757 /* ExpenseTapController.swift */; };
 		206C58D42B623C43008410C1 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206C58D32B623C43008410C1 /* CategoryCell.swift */; };
 		206C58D82B626465008410C1 /* CategoryModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206C58D72B626465008410C1 /* CategoryModalViewController.swift */; };
 		206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */; };
@@ -36,6 +37,9 @@
 		208C90CD2B7BBC6700C67960 /* ExpenseCreateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90CC2B7BBC6700C67960 /* ExpenseCreateResponse.swift */; };
 		208C90CF2B7BBC8400C67960 /* ExpenseCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90CE2B7BBC8400C67960 /* ExpenseCreateRequest.swift */; };
 		208C90D12B7BD33300C67960 /* UpdateExpenseRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90D02B7BD33300C67960 /* UpdateExpenseRequest.swift */; };
+		208C90D32B7F751400C67960 /* ResponseGetCategoryListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90D22B7F751400C67960 /* ResponseGetCategoryListResponse.swift */; };
+		208C90D52B7F7B6100C67960 /* CategoryIconSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90D42B7F7B6100C67960 /* CategoryIconSelectionViewController.swift */; };
+		208C90D72B7F7FBB00C67960 /* CategoryIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90D62B7F7FBB00C67960 /* CategoryIconCell.swift */; };
 		20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */; };
 		20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */; };
 		20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD902B656034008F8AB9 /* OneDayButton.swift */; };
@@ -178,6 +182,7 @@
 
 /* Begin PBXFileReference section */
 		20118A102B56A86100B2569E /* ConsumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumeViewController.swift; sourceTree = "<group>"; };
+		202754232B7FBF860084A757 /* ExpenseTapController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseTapController.swift; sourceTree = "<group>"; };
 		206C58D32B623C43008410C1 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		206C58D72B626465008410C1 /* CategoryModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModalViewController.swift; sourceTree = "<group>"; };
 		206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendartModalViewController.swift; sourceTree = "<group>"; };
@@ -199,6 +204,9 @@
 		208C90CC2B7BBC6700C67960 /* ExpenseCreateResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCreateResponse.swift; sourceTree = "<group>"; };
 		208C90CE2B7BBC8400C67960 /* ExpenseCreateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseCreateRequest.swift; sourceTree = "<group>"; };
 		208C90D02B7BD33300C67960 /* UpdateExpenseRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateExpenseRequest.swift; sourceTree = "<group>"; };
+		208C90D22B7F751400C67960 /* ResponseGetCategoryListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseGetCategoryListResponse.swift; sourceTree = "<group>"; };
+		208C90D42B7F7B6100C67960 /* CategoryIconSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryIconSelectionViewController.swift; sourceTree = "<group>"; };
+		208C90D62B7F7FBB00C67960 /* CategoryIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryIconCell.swift; sourceTree = "<group>"; };
 		20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatModalViewController.swift; sourceTree = "<group>"; };
 		20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDayView.swift; sourceTree = "<group>"; };
 		20AFDD902B656034008F8AB9 /* OneDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDayButton.swift; sourceTree = "<group>"; };
@@ -354,6 +362,7 @@
 				5591601B2B64595E00063F06 /* EvaluationViewController.swift */,
 				552A42662B72200E007AEAAD /* DailyConsumeViewController.swift */,
 				208C90C42B75329100C67960 /* modal */,
+				202754232B7FBF860084A757 /* ExpenseTapController.swift */,
 			);
 			path = Consume;
 			sourceTree = "<group>";
@@ -364,7 +373,6 @@
 				7A0D33262B7E00C0007B2736 /* GoalModal */,
 				208C90C32B75325200C67960 /* category */,
 				206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */,
-				20EF782C2B68CEA700AA135E /* AddCategoryViewController.swift */,
 				D20D70222B67E1DD006D6762 /* GoalListModalViewController.swift */,
 				D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */,
 				552A42FF2B7AA03E007AEAAD /* goalDeleteModalView.swift */,
@@ -396,15 +404,6 @@
 				208C90922B6AB7DA00C67960 /* ConnectModel.swift */,
 			);
 			path = Member;
-			sourceTree = "<group>";
-		};
-		208C90C32B75325200C67960 /* category */ = {
-			isa = PBXGroup;
-			children = (
-				206C58D72B626465008410C1 /* CategoryModalViewController.swift */,
-				206C58D32B623C43008410C1 /* CategoryCell.swift */,
-			);
-			path = category;
 			sourceTree = "<group>";
 		};
 		208C90C42B75329100C67960 /* modal */ = {
@@ -625,6 +624,7 @@
 				7A0D33992B7F4999007B2736 /* Goal */,
 				208C90CB2B7BBC5500C67960 /* Expense */,
 				D20D701F2B66FE8F006D6762 /* Home */,
+				208C90D22B7F751400C67960 /* ResponseGetCategoryListResponse.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -750,6 +750,11 @@
 			isa = PBXGroup;
 			children = (
 				D20D70132B612BB4006D6762 /* CategoryTableView.swift */,
+				206C58D72B626465008410C1 /* CategoryModalViewController.swift */,
+				206C58D32B623C43008410C1 /* CategoryCell.swift */,
+				20EF782C2B68CEA700AA135E /* AddCategoryViewController.swift */,
+				208C90D42B7F7B6100C67960 /* CategoryIconSelectionViewController.swift */,
+				208C90D62B7F7FBB00C67960 /* CategoryIconCell.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -950,6 +955,7 @@
 				206C58D42B623C43008410C1 /* CategoryCell.swift in Sources */,
 				7A0D33872B7F48AA007B2736 /* GoalPeriodVeiwController.swift in Sources */,
 				7A610AF02B49414100D3096F /* RegisterProfileViewController.swift in Sources */,
+				208C90D52B7F7B6100C67960 /* CategoryIconSelectionViewController.swift in Sources */,
 				7A4C67462B5A4B77008BCAC9 /* MainTextField.swift in Sources */,
 				D20D70142B612BB4006D6762 /* CategoryTableView.swift in Sources */,
 				208C90CA2B7BBBB600C67960 /* ResponseExpenseDto.swift in Sources */,
@@ -989,9 +995,11 @@
 				7A4C67412B5A4AF1008BCAC9 /* MainBottomBtn.swift in Sources */,
 				D20D6FDE2B581B20006D6762 /* CALayer.swift in Sources */,
 				D253EEAD2B79FE8400A4FC1C /* UIScrollView.swift in Sources */,
+				208C90D72B7F7FBB00C67960 /* CategoryIconCell.swift in Sources */,
 				D2D0B7412B6BACAB003B6B5E /* HomeNow.swift in Sources */,
 				7A4C67432B5A4B22008BCAC9 /* SmallButtonView.swift in Sources */,
 				208C90912B6AB7A200C67960 /* MufflerViewModel.swift in Sources */,
+				202754242B7FBF860084A757 /* ExpenseTapController.swift in Sources */,
 				208C90BE2B710F4800C67960 /* TextFieldContainerView.swift in Sources */,
 				D2D0B72B2B6A704B003B6B5E /* BaseResponse.swift in Sources */,
 				551E8B782B7D135E0008476B /* evaluationModalView.swift in Sources */,
@@ -1036,6 +1044,7 @@
 				7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */,
 				20EF782D2B68CEA700AA135E /* AddCategoryViewController.swift in Sources */,
 				20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */,
+				208C90D32B7F751400C67960 /* ResponseGetCategoryListResponse.swift in Sources */,
 				D20D70232B67E1DD006D6762 /* GoalListModalViewController.swift in Sources */,
 				7A0D33892B7F48AA007B2736 /* GoalTitleViewController.swift in Sources */,
 				D20D70212B66FEA0006D6762 /* HomeViewModel.swift in Sources */,

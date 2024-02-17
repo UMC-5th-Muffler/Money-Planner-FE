@@ -10,6 +10,9 @@ import UIKit
 
 class evaluationModalView : UIViewController {
     
+    var dateText = ""
+    var rateInfo : RateInfo?
+    
     //amount = 목표금액 - 쓴금액
     var amount = 3000 //임시값
     
@@ -59,21 +62,7 @@ class evaluationModalView : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        presentCustomModal()
-        setupBackground()
-        
-        //isZeroDay = 0
-        //0원 소비했어요 (쓴 금액 0일때)
-        //setupZeroView()
-        
-        if amount >= 0 { //목표 금액보다 ~원 아꼈어요 (amount값 양수일때)
-            setupSpareView()
-        }
-        else if amount < 0 { //목표 금액보다 ~원 더 썼어요 (amount값 음수일때)
-            setupWasteView()
-        }
-        
-        
+        fetchRateData()
 
         
     }
@@ -83,6 +72,44 @@ class evaluationModalView : UIViewController {
         view.addSubview(customModal)
         customModal.center = view.center
         
+    }
+    
+    func fetchRateData() {
+        let date = dateText
+        ExpenseRepository.shared.getRateInformation(date: date) { result in
+            switch result {
+            case .success(let data):
+                print(data)
+                self.rateInfo = data!
+                self.amount = (self.rateInfo?.dailyPlanBudget ?? 0) - (self.rateInfo?.dailyTotalCost ?? 0)
+                
+                DispatchQueue.main.async {
+                    self.presentCustomModal()
+                    self.setupBackground()
+                    print(self.amount)
+                    print(self.dateText)
+                    
+                    if self.rateInfo?.isZeroDay == true {
+                        self.setupZeroView()
+                    }
+                    else {
+                        if self.amount > 0 { //목표 금액보다 ~원 아꼈어요 (amount값 양수일때)
+                            self.setupSpareView()
+                        }
+                        else if self.amount < 0 { //목표 금액보다 ~원 더 썼어요 (amount값 음수일때)
+                            self.setupWasteView()
+                        }
+                        else if self.amount == 0 { //목표 금액 = 소비금액
+                            self.setupGoodView()
+                        }
+                    }
+
+                }
+            case .failure(let error):
+                // 에러가 발생했을 때 처리
+                print("Error: \(error)")
+            }
+        }
     }
     
     private func setupBackground() {
@@ -154,6 +181,100 @@ class evaluationModalView : UIViewController {
         titleLabel.textAlignment = .center
        
         let contentAttributedText = NSAttributedString(string: "내일부터 다시 알뜰하게!\n알뜰한 소비를 응원해요", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        contentLabel.attributedText = contentAttributedText
+        contentLabel.textAlignment = .center
+        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: customModal.topAnchor, constant: 35),
+            titleLabel.centerXAnchor.constraint(equalTo: customModal.centerXAnchor),
+            
+            contentLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 15),
+            contentLabel.centerXAnchor.constraint(equalTo: customModal.centerXAnchor)
+            
+        ])
+        
+        ImageView.translatesAutoresizingMaskIntoConstraints = false
+        completeButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        customModal.addSubview(ImageView)
+        customModal.addSubview(completeButton)
+        
+        NSLayoutConstraint.activate([
+            ImageView.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 87),
+            ImageView.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -87),
+            ImageView.bottomAnchor.constraint(equalTo: completeButton.topAnchor, constant: -50),
+            ImageView.heightAnchor.constraint(equalToConstant: 87),
+            
+            completeButton.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -15),
+            completeButton.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 15),
+            completeButton.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -15),
+            completeButton.heightAnchor.constraint(equalToConstant: 58)
+        ])
+    }
+    
+    private func setupGoodView() {
+        customModal.addSubview(titleLabel)
+        customModal.addSubview(contentLabel)
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 5
+        
+        let titleText = "오늘 목표 금액만큼\n소비했어요"
+        let titleAttributedText = NSAttributedString(string: titleText, attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        titleLabel.attributedText = titleAttributedText
+        titleLabel.textAlignment = .center
+       
+        let contentAttributedText = NSAttributedString(string: "아주 잘 하고 있어요!\n이대로 알뜰함을 유지해요", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        contentLabel.attributedText = contentAttributedText
+        contentLabel.textAlignment = .center
+        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: customModal.topAnchor, constant: 35),
+            titleLabel.centerXAnchor.constraint(equalTo: customModal.centerXAnchor),
+            
+            contentLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 15),
+            contentLabel.centerXAnchor.constraint(equalTo: customModal.centerXAnchor)
+            
+        ])
+        
+        ImageView.translatesAutoresizingMaskIntoConstraints = false
+        completeButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        customModal.addSubview(ImageView)
+        customModal.addSubview(completeButton)
+        
+        NSLayoutConstraint.activate([
+            ImageView.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 87),
+            ImageView.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -87),
+            ImageView.bottomAnchor.constraint(equalTo: completeButton.topAnchor, constant: -50),
+            ImageView.heightAnchor.constraint(equalToConstant: 87),
+            
+            completeButton.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -15),
+            completeButton.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 15),
+            completeButton.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -15),
+            completeButton.heightAnchor.constraint(equalToConstant: 58)
+        ])
+    }
+    
+    private func setupZeroView() {
+        customModal.addSubview(titleLabel)
+        customModal.addSubview(contentLabel)
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 5
+        
+        let titleText = "오늘 0원 소비했어요"
+        let titleAttributedText = NSAttributedString(string: titleText, attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        titleLabel.attributedText = titleAttributedText
+        titleLabel.textAlignment = .center
+       
+        let contentAttributedText = NSAttributedString(string: "아주 잘 하고 있어요!\n스스로를 칭찬해주세요", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
         contentLabel.attributedText = contentAttributedText
         contentLabel.textAlignment = .center
         
