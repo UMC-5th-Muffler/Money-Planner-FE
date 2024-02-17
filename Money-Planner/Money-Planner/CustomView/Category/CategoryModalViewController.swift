@@ -71,10 +71,13 @@ class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UI
         customModal.translatesAutoresizingMaskIntoConstraints = false
         
         // 카테고리 셀의 높이를 계산
-        let cellHeight: CGFloat = 84 // 셀의 높이 예시
+        let numberOfItemsPerRow: CGFloat = 3
+        let spacingBetweenItems: CGFloat = 8
+        let itemWidth = (UIScreen.main.bounds.width - ((numberOfItemsPerRow - 1) * spacingBetweenItems) - 95) / numberOfItemsPerRow
+        let cellHeight: CGFloat = itemWidth * 0.84 // 셀의 높이 예시
         let numberOfItems = CGFloat(categories.count)/3
         let totalCellHeight = numberOfItems * cellHeight
-        var modalHeight = totalCellHeight + 48 + 48 + 44
+        var modalHeight = totalCellHeight + 48 + 48 + 44+8*numberOfItems
         // 카테고리가 너무 많으면 모달의 높이는 최대 664로 조정함.
         if modalHeight >= 664 {
                 modalHeight = 664
