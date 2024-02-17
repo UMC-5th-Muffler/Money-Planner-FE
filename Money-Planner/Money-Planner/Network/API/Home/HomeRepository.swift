@@ -93,7 +93,7 @@ final class HomeRepository : BaseRepository<HomeAPI> {
     }
     
     
-    func getCalendarListWithGoal(goalId : Int, yearMonth : String, completion: @escaping (Result<HomeNow?, BaseError>) -> Void){
+    func getCalendarListWithGoal(goalId : Int, yearMonth : String?, completion: @escaping (Result<HomeNow?, BaseError>) -> Void){
         provider.request(.getCalendarListWithGoal(goalId: goalId, yearMonth: yearMonth)) {
             result in
             switch result {

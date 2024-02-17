@@ -122,7 +122,12 @@ class MufflerViewModel {
 //            .map(MyRepo.self)
 //            .asObservable()
 //    }
-//
+    // daily plan controller
+//    // 제로데이 확인
+//    func checkZeroDay(expenseRequest: ZeroDayRequest) -> Single<ConnectModel> {
+//        return provider.request((expenseRequest: expenseRequest))
+//            .map(ConnectModel.self)
+//    }
 //    // Home Controller
 //    func getNow() -> Observable<MyRepo> {
 //        return provider.request(.getNow)

@@ -224,8 +224,6 @@ extension HomeViewController{
                 (result) in
                 switch result{
                 case .success(let data):
-                    // 아예 골이 없는 경우
-                    
                     let goal : Goal? = data?.goalInfo
                     
                     if(goal != nil){
@@ -303,6 +301,45 @@ extension HomeViewController{
                 print("networkFail in loginWithSocialAPI")
             }
         }
+    }
+    
+    func fetchChangeGoalData(goalId : Int){
+        self.loading = true
+        
+        HomeRepository.shared.getCalendarListWithGoal(goalId: goalId, yearMonth: nil){
+            (result) in
+            switch result{
+            case .success(let data):
+                // 아예 골이 없는 경우
+                let goal : Goal? = data?.goalInfo
+                
+                if(goal != nil){
+                    self.nowGoal = goal
+                    print(goal)
+                    self.monthView.updateYearAndMonth(to: self.nowGoal!.startDate!.toDate!)
+                    
+                    self.calendarView.changeMonth(monthIndex: self.monthView.currentMonth, year: self.monthView.currentYear)
+                }
+                
+                if(data?.dailyList != nil){
+                    self.dailyList = data!.dailyList!
+                }
+                
+                DispatchQueue.main.async {
+                    self.reloadUI()
+                }
+                
+                self.loading = false
+            case .failure(.failure(message: let message)):
+                print(message)
+                self.loading = false
+            case .failure(.networkFail(let error)):
+                print(error)
+                print("networkFail in loginWithSocialAPI")
+                self.loading = false
+            }
+        }
+        
     }
     
     func fetchConsumeData(order : String?, lastDate: String?, lastExpenseId: Int?, categoryId: Int?){
@@ -556,6 +593,7 @@ extension HomeViewController{
     
     @objc func monthViewTapped(){
         let goalListModalVC = GoalListModalViewController()
+        goalListModalVC.selectedGoal = nowGoal
         goalListModalVC.delegate = self
         present(goalListModalVC, animated: true)
     }
@@ -653,8 +691,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 }
 
 extension HomeViewController : GoalListModalViewDelegate{
-    func changeGoal(category: Category) {
-        print("hi")
+    func changeGoal(goalId: Int) {
+        fetchChangeGoalData(goalId: goalId)
     }
 }
 

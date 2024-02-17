@@ -96,10 +96,15 @@ class MainMonthView: UIView {
         delegate?.didChangeMonth(monthIndex: currentMonth, year: currentYear)
     }
     
-    //    func updateYearAndMonth (to date: Date) {
-    //        let year = date.year
-    //        let month = date.month
-    //        yearAndMonth = "\(year).\(month)"
-    //    }
+    func updateYearAndMonth (to date: Date) {
+        let calendar = Calendar.current
+
+        let year = calendar.component(.year, from: date) // 년도 추출
+        let month = calendar.component(.month, from: date) // 월 추출
+        self.currentYear = year
+        self.currentMonth = month
+        
+        monthLabel.text="\(currentYear)년 \(currentMonth)월"
+    }
     
 }
