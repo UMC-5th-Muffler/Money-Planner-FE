@@ -132,8 +132,6 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
     
     @objc
     private func showCategoryModal() {
-        var categories : [CategoryDTO] = []
-
         print("클릭 : 카테고리 선택을 위해 카테고리 선택 모달로 이동합니다")
         // 카테고리 조회 하기
         viewModel.getCategoryFilter()
