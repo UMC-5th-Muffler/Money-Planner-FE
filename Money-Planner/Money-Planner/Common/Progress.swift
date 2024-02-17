@@ -8,6 +8,5 @@
 import Foundation
 
 func getProgress(numerator : Int, denominator : Int) -> CGFloat{
-    let progress = (Double(numerator)/Double(denominator)) > 1.0 ? 1 : CGFloat(Double(numerator)/Double(denominator))
-    return progress
+    return CGFloat(Double(numerator)/Double(denominator))
 }

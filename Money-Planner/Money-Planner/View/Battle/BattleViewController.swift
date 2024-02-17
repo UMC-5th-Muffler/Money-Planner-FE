@@ -30,7 +30,7 @@ class BattleViewController: UIViewController {
         searchButton.backgroundColor = .mpGypsumGray
         searchButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(searchButton)
-        searchButton.addTarget(self, action: #selector(alert), for: .touchUpInside)
+        
         let apiResultLabel = UILabel()
         apiResultLabel.text = "API 결과 나옴"
         apiResultLabel.numberOfLines = 0  // Set to 0 for multiple lines
@@ -74,29 +74,4 @@ class BattleViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
-    @objc private func alert() {
-        let alertVCC = ExpensePopupModalView()
-        // 완료한 이후 알람 띄우기
-        let alarmTitle = "하루"
-        let budget = 500
-        let excessAmount = 500
-        // 여기서 알람을 보여주는 작업을 수행합니다.
-        
-        if alarmTitle == "하루" {
-            alertVCC.changeTitle(title: "하루 목표금액을 초과했어요")
-            alertVCC.changeContents(content: "목표한 소비 금액 \(budget)원보다\n \(excessAmount)원 더 썼어요!")
-        } else if alarmTitle == "카테고리" {
-            let category = "식비"
-            alertVCC.changeTitle(title: "\(category) 목표금액을 초과했어요")
-            alertVCC.changeContents(content: "목표한 \(category) 금액 \(budget)원보다 \(excessAmount)원 더 썼어요!")
-        } else if alarmTitle == "전체" {
-            alertVCC.changeTitle(title: "전체 목표금액을 초과했어요")
-            alertVCC.changeContents(content: "목표한 금액 \(budget)원보다 \(excessAmount)원 더 썼어요!")
-        }
-        
-        // 모달을 화면에 표시
-        present(alertVCC, animated: true, completion: nil)
-    }
-
 }
-

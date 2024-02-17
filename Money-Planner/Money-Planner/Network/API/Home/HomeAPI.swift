@@ -8,7 +8,7 @@ enum HomeAPI  {
     // 목표 없을때 달력 넘길 떄
     case getCalendarListWithDate(yearMonth : String)
     // 목표 있을때 달력 넘길 떄
-    case getCalendarListWithGoal(goalId : Int, yearMonth : String?)
+    case getCalendarListWithGoal(goalId : Int, yearMonth : String)
     // 소비탭
     case getExpenseList( yearMonth : String?, size : Int?, goalId : Int?, order : String?, lastDate : String?, lastExpenseId : Int?, categoryId : Int?)
     
@@ -69,11 +69,7 @@ extension HomeAPI : BaseAPI {
         case .getCalendarListWithDate:
             return "/api/home/basic"
         case .getCalendarListWithGoal(let goalId, let yearMonth):
-            if(yearMonth == nil){
-                return "/api/home/goal/\(goalId)"
-            }else{
-                return "/api/home/goal/\(goalId)/\(yearMonth!)"
-            }
+            return "/api/home/goal/\(goalId)/\(yearMonth)"
         case .getExpenseList:
             return "/api/expense/monthly"
         }
@@ -81,7 +77,7 @@ extension HomeAPI : BaseAPI {
     
     public var headers: [String: String]? {
 
-        return ["Authorization": "Bearer  eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDgyNDc1NTR9.wOH46BMT5FnNkXWts9dRuRECdtvU8px_4m86yeVnru0"]
+        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDgxNjI4Njd9.nclYvHIAtOXFFStBP22TsQ9vXr6EKEUscxIS-txETW8"]
 
     }
 }

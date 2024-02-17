@@ -72,7 +72,7 @@ class MainStatisticsView : UIView {
     let stackView : UIStackView = {
         let view = UIStackView()
         view.axis = .horizontal
-        view.spacing = 4
+        view.spacing = 2
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layoutMargins = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
         view.isLayoutMarginsRelativeArrangement = true
@@ -112,8 +112,6 @@ class MainStatisticsView : UIView {
             
             if(goal != nil && goal!.goalBudget! < goal!.totalCost!){
                 remainAmount.textColor = .mpRed
-            }else{
-                remainAmount.textColor = .mpMainColor
             }
             
             addSubview(useAmountLabel)

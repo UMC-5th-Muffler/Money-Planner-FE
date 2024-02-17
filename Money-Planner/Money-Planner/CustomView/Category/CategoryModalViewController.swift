@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 protocol CategorySelectionDelegate: AnyObject {
-    func didSelectCategory(id:Int64, category: String, iconName : String)
+    func didSelectCategory(_ category: String, iconName : String)
     func AddCategory()
 }
 
@@ -162,7 +162,6 @@ class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UI
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedId = categories[indexPath.item].categoryId
         let selectedCategory = categories[indexPath.item].name
         let selectedIcon = categories[indexPath.item].icon
         print("Selected Category: \(selectedCategory)")
@@ -173,7 +172,7 @@ class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UI
             delegate?.AddCategory() // 카테고리 추가 화면으로 이동
         }
         else{
-            delegate?.didSelectCategory(id: selectedId, category: selectedCategory, iconName: selectedIcon)
+            delegate?.didSelectCategory(selectedCategory, iconName: selectedIcon)
 
         }
         

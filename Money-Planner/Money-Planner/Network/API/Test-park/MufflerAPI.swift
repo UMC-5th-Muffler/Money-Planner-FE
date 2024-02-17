@@ -156,6 +156,6 @@ extension MufflerAPI: TargetType {
 
     // Define headers for the request
     var headers: [String: String]? {
-        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDgyNDc1NTR9.wOH46BMT5FnNkXWts9dRuRECdtvU8px_4m86yeVnru0"] // Replace with your actual access token
+        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDgxNjI4Njd9.nclYvHIAtOXFFStBP22TsQ9vXr6EKEUscxIS-txETW8"] // Replace with your actual access token
     }
 }
