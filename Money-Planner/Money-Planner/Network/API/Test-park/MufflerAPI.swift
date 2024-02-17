@@ -26,6 +26,7 @@ enum MufflerAPI {
     // Category Controller
     case getCategoryFilter
     case getCategory
+    case createCategory(request : CreateCategoryRequest)
     // Daily Plan Controller
     case updateZeroDay
 
@@ -86,10 +87,11 @@ extension MufflerAPI: TargetType {
 
         // Category Controller
         case .getCategory:
-            return "api/category/"
+            return "api/category"
         case .getCategoryFilter:
             return "api/category/filter"
-
+        case .createCategory:
+            return "api/category"
         // Daily Plan Controller
         case .updateZeroDay:
             return "/dailyPlan/zeroDay"
@@ -118,7 +120,7 @@ extension MufflerAPI: TargetType {
         switch self {
         // Define HTTP methods for each API endpoint
         case .refreshToken, .loginKakao, .loginApple,
-             .createGoal, .createExpense, .updateRate, .updateZeroDay:
+                .createGoal, .createExpense, .updateRate, .updateZeroDay, .createCategory:
             return .post
         case .connect, .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
@@ -135,7 +137,7 @@ extension MufflerAPI: TargetType {
     var task: Task {
         switch self {
         case .refreshToken, .loginKakao, .loginApple, .connect,
-                .createGoal, .getCategoryFilter,.getCategory, .updateRate, .updateZeroDay:
+                .createGoal, .getCategoryFilter,.getCategory,.updateRate, .updateZeroDay:
             return .requestPlain
         case .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
@@ -143,6 +145,8 @@ extension MufflerAPI: TargetType {
             return .requestPlain
         case .deleteGoal, .deleteExpense:
             return .requestPlain
+        case .createCategory(let request):
+            return .requestJSONEncodable(request)
         case .createExpense(let expenseRequest):
                 return .requestJSONEncodable(expenseRequest)
         case .updateExpense(let expenseRequest):

@@ -9,8 +9,9 @@ import Foundation
 import UIKit
 
 class CategoryEditViewController : UIViewController, AddCategoryViewDelegate {
-    func AddCategoryCompleted(_ name: String, iconName: Int) {
+    func AddCategoryCompleted(_ name: String, iconName: String) {
         // 카테고리 추가 후 실행되는 함수
+        
     }
     
     

@@ -12,22 +12,19 @@ import RxCocoa
 
 // 카테고리 직접 추가
 protocol AddCategoryViewDelegate : AnyObject{
-    func AddCategoryCompleted (_ name : String, iconName: Int)
+    func AddCategoryCompleted (_ name : String, iconName: String)
     
 }
 class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryIconSelectionDelegate {
-    func didSelectCategoryIcon(_ icon: Int?) {
+    func didSelectCategoryIcon(_ icon: Int) {
         print("아이콘 설정 완료")
         selectedIcon = icon
-        if let icon = icon{
-            picButton.setImage(icons[icon], for: .normal)
-            
-        }
+        picButton.setImage(icons[icon], for: .normal)
     }
     var categories : [String]!
     let disposeBag = DisposeBag()
     let viewModel = MufflerViewModel()
-    var selectedIcon : Int? = 3
+    var selectedIcon : Int = 3
     let icons: [UIImage?] = [
         UIImage(named: "add-01"),
         UIImage(named: "add-02"),
@@ -259,7 +256,7 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
         }
 
         // newText가 비어 있지 않고, 선택된 아이콘이 있는 경우 완료 버튼을 활성화
-        completeButton.isEnabled = !newText.isEmpty && selectedIcon != nil
+        completeButton.isEnabled = !newText.isEmpty
 
         return true // 입력을 허용
     }
@@ -269,7 +266,25 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
     private func completeButtonTapped(){
         print("카테고리 추가가 완료되었습니다.")
         // 카테고리 추가 완료
-        delegate?.AddCategoryCompleted(currText, iconName: selectedIcon!)
+        let iconNameString : String
+        let iconNamePlus = selectedIcon + 1
+        if selectedIcon != 10 {
+            iconNameString = "add-0\(iconNamePlus)"
+        }
+        else{
+            iconNameString = "add-\(iconNamePlus)"
+        }
+        let createCategoryRequest = CreateCategoryRequest(name: currText, icon: iconNameString)
+        viewModel.createCategory(request: createCategoryRequest)
+            .subscribe(onNext: {  response in
+             print(response)
+            }, onError: { error in
+                // 에러 처리
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
+        delegate?.AddCategoryCompleted(currText, iconName: iconNameString)
         dismiss(animated: true, completion: nil)
     }
 }

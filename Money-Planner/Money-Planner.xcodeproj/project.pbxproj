@@ -43,6 +43,8 @@
 		208F5E7B2B80BA0B00107735 /* ExpensePopupModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208F5E7A2B80BA0B00107735 /* ExpensePopupModalView.swift */; };
 		208F5E7E2B80C81E00107735 /* ZeroDayRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208F5E7D2B80C81E00107735 /* ZeroDayRequest.swift */; };
 		208F5E872B8125B300107735 /* GetCategoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208F5E862B8125B300107735 /* GetCategoryResponse.swift */; };
+		208F5E892B8131ED00107735 /* CreateCategoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208F5E882B8131ED00107735 /* CreateCategoryRequest.swift */; };
+		208F5E8B2B81320D00107735 /* CreateCategoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208F5E8A2B81320D00107735 /* CreateCategoryResponse.swift */; };
 		20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */; };
 		20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */; };
 		20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD902B656034008F8AB9 /* OneDayButton.swift */; };
@@ -187,6 +189,8 @@
 		208F5E7A2B80BA0B00107735 /* ExpensePopupModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensePopupModalView.swift; sourceTree = "<group>"; };
 		208F5E7D2B80C81E00107735 /* ZeroDayRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeroDayRequest.swift; sourceTree = "<group>"; };
 		208F5E862B8125B300107735 /* GetCategoryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCategoryResponse.swift; sourceTree = "<group>"; };
+		208F5E882B8131ED00107735 /* CreateCategoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCategoryRequest.swift; sourceTree = "<group>"; };
+		208F5E8A2B81320D00107735 /* CreateCategoryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCategoryResponse.swift; sourceTree = "<group>"; };
 		20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatModalViewController.swift; sourceTree = "<group>"; };
 		20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDayView.swift; sourceTree = "<group>"; };
 		20AFDD902B656034008F8AB9 /* OneDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDayButton.swift; sourceTree = "<group>"; };
@@ -429,10 +433,28 @@
 		208F5E852B81259100107735 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				208F5E8D2B81323500107735 /* get */,
+				208F5E8C2B81321400107735 /* create */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		208F5E8C2B81321400107735 /* create */ = {
+			isa = PBXGroup;
+			children = (
+				208F5E882B8131ED00107735 /* CreateCategoryRequest.swift */,
+				208F5E8A2B81320D00107735 /* CreateCategoryResponse.swift */,
+			);
+			path = create;
+			sourceTree = "<group>";
+		};
+		208F5E8D2B81323500107735 /* get */ = {
+			isa = PBXGroup;
+			children = (
 				208C90D22B7F751400C67960 /* ResponseGetCategoryListResponse.swift */,
 				208F5E862B8125B300107735 /* GetCategoryResponse.swift */,
 			);
-			path = Category;
+			path = get;
 			sourceTree = "<group>";
 		};
 		7A4C67322B5A47BD008BCAC9 /* CustomView */ = {
@@ -910,6 +932,7 @@
 				208C90D12B7BD33300C67960 /* UpdateExpenseRequest.swift in Sources */,
 				D253EEB32B7A5E6D00A4FC1C /* DayGoalCalendarView.swift in Sources */,
 				208C90C72B7BB06800C67960 /* ConsumeDetailViewController.swift in Sources */,
+				208F5E892B8131ED00107735 /* CreateCategoryRequest.swift in Sources */,
 				552A431C2B7AB534007AEAAD /* UIImage.swift in Sources */,
 				206C58D82B626465008410C1 /* CategoryModalViewController.swift in Sources */,
 				D2D0B7362B6BA83E003B6B5E /* HomeRepository.swift in Sources */,
@@ -1007,6 +1030,7 @@
 				D2D0B73D2B6BAB7A003B6B5E /* CalendarDaily.swift in Sources */,
 				7A610AD92B49009300D3096F /* HomeViewController.swift in Sources */,
 				D20D6FF12B5D6635006D6762 /* CategoryButton.swift in Sources */,
+				208F5E8B2B81320D00107735 /* CreateCategoryResponse.swift in Sources */,
 				20118A112B56A86100B2569E /* ConsumeViewController.swift in Sources */,
 				D20D6FDC2B581A5A006D6762 /* UITabBar.swift in Sources */,
 				D20D6FF82B5E974D006D6762 /* MainStatistics.swift in Sources */,

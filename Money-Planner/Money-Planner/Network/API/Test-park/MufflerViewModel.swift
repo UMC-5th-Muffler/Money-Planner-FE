@@ -116,6 +116,12 @@ class MufflerViewModel {
             .map(ResponseGetCategoryListResponse.self)
             .asObservable()
     }
+    // 카테고리 추가
+    func createCategory(request : CreateCategoryRequest) -> Observable<CreateCategoryResponse> {
+        return provider.request(.createCategory(request: request))
+            .map(CreateCategoryResponse.self)
+            .asObservable()
+    }
 //
 //    // Rate Controller
 //    func updateRate(date: String) -> Observable<MyRepo> {

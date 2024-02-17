@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 protocol CategoryIconSelectionDelegate: AnyObject {
-    func didSelectCategoryIcon(_ icon: Int?)
+    func didSelectCategoryIcon(_ icon: Int)
 }
 
 class CategoryIconSelectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {

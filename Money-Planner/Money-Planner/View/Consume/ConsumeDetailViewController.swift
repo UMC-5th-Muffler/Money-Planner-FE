@@ -12,6 +12,15 @@ import RxCocoa
 
 // 소비 수정 및 삭제 컨트롤러
 class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, CategorySelectionDelegate,CalendarSelectionDelegate,RepeatModalViewDelegate,AddCategoryViewDelegate {
+    func AddCategoryCompleted(_ name: String, iconName: String) {
+        print("카테고리 추가 반영 완료\(name)\(iconName)")
+        cateogoryTextField.text = name
+        cateogoryTextField.changeIcon(iconName: iconName)
+        catAdd = true // 카테고리 선택된 것 반영
+
+        view.layoutIfNeeded()
+    }
+    
     func didSelectCategory(id: Int64, category: String, iconName: String) {
         catAdd = true // 카테고리 선택된 것 반영
         cateogoryTextField.text = category
@@ -36,21 +45,6 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
     var routineRequest : ExpenseCreateRequest.RoutineRequest?
     //
 
-    func AddCategoryCompleted(_ name: String, iconName: Int) {
-        print("카테고리 추가 반영 완료\(name)\(iconName)")
-        let temp : String
-        if iconName != 10 {
-            temp = "add-0\(iconName)"
-        }
-        else{
-            temp = "add-\(iconName)"
-        }
-        cateogoryTextField.text = name
-        cateogoryTextField.changeIcon(iconName: temp)
-        catAdd = true // 카테고리 선택된 것 반영
-
-        view.layoutIfNeeded()
-    }
     func AddCategory() {
         let addCategoryVC = AddCategoryViewController()
         addCategoryVC.modalPresentationStyle = .fullScreen
