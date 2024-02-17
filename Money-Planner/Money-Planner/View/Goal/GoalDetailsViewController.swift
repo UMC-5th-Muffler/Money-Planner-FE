@@ -16,7 +16,7 @@ import FSCalendar
 extension GoalDetailsViewController {
     
     @objc func showModal() {
-        let modal = ShowingPeriodSelectionModal(startDate: goal.startDate?.toMPDate(), endDate: goal.endDate?.toMPDate())
+        let modal = ShowingPeriodSelectionModal(startDate: (viewModel.goalDetail.value?.startDate.toMPDate()) ?? Date(), endDate: (viewModel.goalDetail.value?.endDate.toMPDate()) ?? Date())
         modal.modalPresentationStyle = .popover
         modal.delegate = self
         present(modal, animated: true)
@@ -28,7 +28,7 @@ extension GoalDetailsViewController {
             self?.showModal()
         }
         
-        reportView.goal = self.goal // Pass the goal to the report view
+        reportView.goal = GoalDetailViewModel.shared.goalDetail.value // Pass the goal to the report view
         reportView.tableView.reloadData()
         
         spendingView.translatesAutoresizingMaskIntoConstraints = false
@@ -70,19 +70,18 @@ extension GoalDetailsViewController : PeriodSelectionDelegate {
 
 class GoalDetailsViewController : UIViewController {
     
-    private var goalDetail : GoalDetail
     private let viewModel = GoalDetailViewModel.shared
-    let consumeViewModel = GoalConsumeViewModel.shared
+    let expenseViewModel = GoalExpenseViewModel.shared
     let reportViewModel = GoalReportViewModel.shared
     private let disposeBag = DisposeBag()
-    
+    let goalId : Int
     
     private lazy var spendingView = SpendingView()
     private lazy var reportView = ReportView()
     
     init(goalID: Int) {
         //순서 미정의 된 변수, super init, 정의가 이제 된 변수를 바탕으로 한 개변
-        self.goal = goal
+        self.goalId = goalID
         super.init(nibName: nil, bundle: nil)
         configureViews()
     }
@@ -103,7 +102,7 @@ class GoalDetailsViewController : UIViewController {
         selectButton(spendingButton) // Default selected button
         
         // ViewModel에서 GoalReport 데이터 가져오기
-        reportViewModel.fetchGoalReport(for: goal.goalID)
+        reportViewModel.fetchGoalReport(for: goalId)
         
         // ViewModel의 CategoryTotalCost 데이터를 관찰하고 UI 업데이트
         reportViewModel.goalReportRelay.asObservable()
@@ -114,7 +113,7 @@ class GoalDetailsViewController : UIViewController {
     }
     
     func updateCategory(with reports: GoalReportResult) {
-        reportView.updateCategory(with: reports, goal: goal)
+        reportView.updateCategory(with: reports, goal: viewModel.goalDetail.value!)
     }
     
     var header = HeaderView(title: "")
@@ -310,26 +309,27 @@ class GoalDetailsViewController : UIViewController {
     
     func configureViews(){
         
-        header.setupTitleLabel(with: goal.icon + " " + goal.goalTitle)
+        let goalDetail = viewModel.goalDetail.value
+        header.setupTitleLabel(with: goalDetail!.icon + " " + goalDetail!.title)
         header.addBackButtonTarget(target: self, action: #selector(backButtonTapped), for: .touchUpInside)
         //layer1
         //dday
-        dday.configure(for: self.goal)
+        dday.configure(for: goalDetail!)
         
         //spanDuration
         dateFormatter.dateFormat = "yyyy.MM.dd"
-        let startdatestr = dateFormatter.string(from: goal.startDate)
+        let startdatestr = goalDetail!.startDate
         
         let enddatestr : String
-        if Calendar.current.dateComponents([.year], from: goal.startDate) == Calendar.current.dateComponents([.year], from: goal.endDate) {
-            enddatestr = dateFormatter.string(from: goal.endDate)
+        if Calendar.current.dateComponents([.year], from: goalDetail!.startDate.toMPDate()!) == Calendar.current.dateComponents([.year], from: goalDetail!.endDate.toMPDate()!) {
+            enddatestr = goalDetail!.endDate
         }else{
             dateFormatter.dateFormat = "MM.dd"
-            enddatestr = dateFormatter.string(from: goal.endDate)
+            enddatestr = dateFormatter.string(from: goalDetail!.endDate.toMPDate()!)
         }
         
-        if goal.startDate < Date() && Date() < goal.endDate {
-            let day = Calendar.current.dateComponents([.day], from: goal.startDate, to: Date()).day
+        if goalDetail!.startDate.toMPDate()! < Date() && Date() < goalDetail!.endDate.toMPDate()! {
+            let day = Calendar.current.dateComponents([.day], from: goalDetail!.startDate.toMPDate()!, to: Date()).day
             spanNDuration.text = startdatestr + " - " + enddatestr + " | " + "\(day ?? 0)" + "일차"
         }else{
             spanNDuration.text = startdatestr + " - " + enddatestr
@@ -340,8 +340,8 @@ class GoalDetailsViewController : UIViewController {
         //layer2
         //label1 이미 구현됨.
         //label2
-        let totalCostString = setComma(cash: goal.totalCost)
-        let goalBudgetString = " / \(setComma(cash: goal.goalBudget))원"
+        let totalCostString = setComma(cash: goalDetail!.totalCost)
+        let goalBudgetString = " / \(setComma(cash: goalDetail!.totalBudget))원"
         
         let attributedString = NSMutableAttributedString(string: totalCostString, attributes: [
             .font: UIFont.mpFont26B(),
@@ -457,7 +457,7 @@ class SpendingView: UIView, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data[section].expenseDetailList.count
+        return data[section].expenseDetailList!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -465,7 +465,7 @@ class SpendingView: UIView, UITableViewDelegate, UITableViewDataSource {
             fatalError("Unable to dequeue ConsumeRecordCell")
         }
         
-        let consumeRecord = data[indexPath.section].expenseDetailList[indexPath.row]
+        let consumeRecord = data[indexPath.section].expenseDetailList![indexPath.row]
         
         cell.configure(with: consumeRecord)
         
@@ -479,7 +479,7 @@ class SpendingView: UIView, UITableViewDelegate, UITableViewDataSource {
             let v = UIView()
             v.translatesAutoresizingMaskIntoConstraints = false
             v.backgroundColor = .mpGypsumGray
-            v.heightAnchor.constraint(equalToConstant: 1)
+            v.heightAnchor.constraint(equalToConstant: 1).isActive = true
             return v
         }()
         
@@ -494,7 +494,7 @@ class SpendingView: UIView, UITableViewDelegate, UITableViewDataSource {
         // "Cost" 텍스트를 추가
         let costLabel = MPLabel()
         
-        let result: String = data[section].dailyTotalCost.formattedWithSeparator()
+        let result: String = data[section].dailyTotalCost!.formattedWithSeparator()
         
         costLabel.text = "\(result)원"
         costLabel.textColor = UIColor.mpDarkGray
@@ -571,7 +571,7 @@ class SpendingView: UIView, UITableViewDelegate, UITableViewDataSource {
 
 class ReportView: UIView, UITableViewDataSource, UITableViewDelegate {
     
-    var goal: Goal_?
+    var goal: GoalDetail?
     let tableView = UITableView()
     var CategoryTotalCosts: [CategoryTotalCost] = []
     var CategoryGoalReports: [CategoryGoalReport] = []
@@ -604,7 +604,7 @@ class ReportView: UIView, UITableViewDataSource, UITableViewDelegate {
         tableView.tableFooterView = UIView() // to remove unused cells
     }
     
-    func updateCategory(with reports: GoalReportResult, goal : Goal_) {
+    func updateCategory(with reports: GoalReportResult, goal : GoalDetail) {
         self.CategoryTotalCosts = reports.categoryTotalCosts
         self.CategoryGoalReports = reports.categoryGoalReports
         self.goal = goal
@@ -803,7 +803,7 @@ class ReportSummaryCell : UITableViewCell {
         return attributedString
     }
     
-    func configureCell(goal : Goal_){
+    func configureCell(goal : GoalDetail){
         
         self.contentView.backgroundColor = .mpWhite
         
@@ -820,19 +820,19 @@ class ReportSummaryCell : UITableViewCell {
             var span : Int?
             
             if goal.endDate.toMPDate()! < Date() { //과거
-                span = Calendar.current.dateComponents([.day], from: goal.startDate, to: goal.endDate).day
+                span = Calendar.current.dateComponents([.day], from: goal.startDate.toMPDate()!, to: goal.endDate.toMPDate()!).day
             }else {
-                span = Calendar.current.dateComponents([.day], from: goal.startDate, to: Date()).day
+                span = Calendar.current.dateComponents([.day], from: goal.startDate.toMPDate()!, to: Date()).day
             }
             
             //card
             //cardLabel
-            let (color, front, middle, end): (UIColor, String, String, String) = goal.totalCost <= goal.goalBudget ?
-            (UIColor.mpMainColor, "목표 금액보다 ", "\(setComma(cash: goal.goalBudget - goal.totalCost))", " 원을 아꼈어요\n아주 잘 하고 있어요!") :
-            (UIColor.mpRed, "목표 금액보다 ", "\(setComma(cash: goal.totalCost - goal.goalBudget))", "원을 초과했어요\n조금만 더 아껴보아요!")
+            let (color, front, middle, end): (UIColor, String, String, String) = goal.totalCost <= goal.totalBudget ?
+            (UIColor.mpMainColor, "목표 금액보다 ", "\(setComma(cash: goal.totalBudget - goal.totalCost))", " 원을 아꼈어요\n아주 잘 하고 있어요!") :
+            (UIColor.mpRed, "목표 금액보다 ", "\(setComma(cash: goal.totalCost - goal.totalBudget))", "원을 초과했어요\n조금만 더 아껴보아요!")
             cardLabel.attributedText = makeLabelText(front: front, middle: middle, end: end, color: color)
             //cardImage 추후 수정
-            cardImage.image = goal.totalCost <= goal.goalBudget ? UIImage(systemName: "pencil"): UIImage(systemName: "pencil")
+            cardImage.image = goal.totalCost <= goal.totalBudget ? UIImage(systemName: "pencil"): UIImage(systemName: "pencil")
             
             averageLabel.attributedText = makeLabelText(front: "하루평균 ", middle: "\(setComma(cash: Int64(goal.totalCost)/Int64(span!)))원", end: " 결제했어요", color: .mpMainColor)
             
@@ -999,7 +999,7 @@ class ReportGraphCell: UITableViewCell {
         ])
     }
     
-    func configure(with reports: [CategoryTotalCost], goal : Goal) {
+    func configure(with reports: [CategoryTotalCost], goal : GoalDetail) {
         
         //그래프 configure
         categoryConsumeRatioGraph.configure(with: reports, goal: goal)
@@ -1139,11 +1139,11 @@ class CategoryConsumeRatioGraph : UIView {
         return formatter.string(from: NSNumber(value: cash)) ?? ""
     }
     
-    func configure(with reportData: [CategoryTotalCost], goal : Goal) {
+    func configure(with reportData: [CategoryTotalCost], goal : GoalDetail) {
         
         //leftAmountLabel 수정
-        leftAmountLabel.text = goal.goalBudget >= goal.totalCost ? setComma(cash: goal.goalBudget - goal.totalCost) + "원" : setComma(cash: goal.totalCost - goal.goalBudget) + "원 초과"
-        leftAmountLabel.textColor = goal.goalBudget >= goal.totalCost ? .mpBlack : .mpRed
+        leftAmountLabel.text = goal.totalBudget >= goal.totalCost ? setComma(cash: goal.totalBudget - goal.totalCost) + "원" : setComma(cash: goal.totalCost - goal.totalBudget) + "원 초과"
+        leftAmountLabel.textColor = goal.totalBudget >= goal.totalCost ? .mpBlack : .mpRed
 
         //그래프 형성
         let totalCost = reportData.reduce(0) { $0 + $1.totalCost }
@@ -1329,7 +1329,7 @@ class CategoryReportCell: UITableViewCell {
         ])
     }
     
-    public func configureCell(report : CategoryGoalReport, goal : Goal){
+    public func configureCell(report : CategoryGoalReport, goal : GoalDetail){
         
         contentView.backgroundColor = .mpWhite
         categoryIcon.image = UIImage(named: report.categoryName)
@@ -1337,7 +1337,7 @@ class CategoryReportCell: UITableViewCell {
         
         progressBar.changeUsedAmt(usedAmt: Int64(report.totalCost), goalAmt: Int64(report.categoryBudget))
         
-        let color : UIColor = goal.totalCost < goal.goalBudget ? .mpMainColor : .mpRed
+        let color : UIColor = goal.totalCost < goal.totalBudget ? .mpMainColor : .mpRed
         averageLabel.attributedText = makeLabelText(front: "평균적으로", middle: formatNumber(Int64(report.avgCost))+"원", end: "결제했어요", color: color)
         mostConsumedLabel.attributedText = makeLabelText(front: "가장 많이 쓴 돈은 ", middle: formatNumber(Int64(report.maxCost))+"원", end: "이에요", color: color)
         
@@ -1384,10 +1384,10 @@ class CategoryReportCell: UITableViewCell {
     }
     
     //총금액 알려주는 구간 업데이트
-    private func updateSumAmountDisplay(goal : Goal) {
+    private func updateSumAmountDisplay(goal : GoalDetail) {
         let sumAmount = goal.totalCost
         let formattedSumAmount = formatNumber(sumAmount)
-        let goalBudget = goal.goalBudget
+        let goalBudget = goal.totalBudget
         let formattedGoalAmount = formatNumber(goalBudget)
         
         let text = "\(formattedSumAmount)원 / \(formattedGoalAmount)원"

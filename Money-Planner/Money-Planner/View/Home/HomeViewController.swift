@@ -344,7 +344,7 @@ extension HomeViewController{
             statisticsView.goal = self.nowGoal
             calendarView.goal = self.nowGoal
             
-            statisticsView.progress = getProgress(numerator: self.nowGoal!.totalCost!, denominator: self.nowGoal!.goalBudget!)
+            statisticsView.progress = getProgress(numerator: Int(self.nowGoal!.totalCost!), denominator: Int(self.nowGoal!.goalBudget!))
         }else{
             statisticsView.progress = 0.0
         }
@@ -475,7 +475,7 @@ extension HomeViewController{
     func setupCalendarView(cell : UICollectionViewCell){
         
         if(self.nowGoal != nil){
-            statisticsView.progress = getProgress(numerator: self.nowGoal!.totalCost!, denominator: self.nowGoal!.goalBudget!)
+            statisticsView.progress = getProgress(numerator: Int(self.nowGoal!.totalCost!), denominator: Int(self.nowGoal!.goalBudget!))
         }else{
             statisticsView.progress = 0.0
         }

@@ -36,7 +36,6 @@ class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
     private var tableView : UITableView!
     private lazy var btmbtn : MainBottomBtn = MainBottomBtn(title: "다음")
     
-    private let goalViewModel = GoalViewModel.shared
     private let goalCreationManager = GoalCreationManager.shared //목표 생성용
     
     var btmbtnBottomConstraint: NSLayoutConstraint!//키보드 이동용

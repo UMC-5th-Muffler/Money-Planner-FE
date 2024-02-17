@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import FSCalendar
 
 protocol WarnAboutUneditableModalDelegate: AnyObject {
     func modalDismissed()
@@ -67,19 +68,31 @@ class WarnAboutUneditableModal : UIViewController {
     let durationLabel: UILabel = {
         let label = UILabel()
         let calendar = Calendar.current
-        let components = calendar.dateComponents([.day], from: GoalCreationManager.shared.startDate!, to: GoalCreationManager.shared.endDate!)
+
+        // GoalCreationManager에서 startDate와 endDate 가져오기
+        let startDate = GoalCreationManager.shared.startDate?.toMPDate() ?? Date()
+        let endDate = GoalCreationManager.shared.endDate?.toMPDate() ?? Date()
+
+        // startDate와 endDate 사이의 일수 계산
+        let components = calendar.dateComponents([.day], from: startDate, to: endDate)
         if let day = components.day {
+            // 일수를 주 단위로 변환하여 표시할지, 일 단위로 그대로 표시할지 결정
             label.text = day % 7 == 0 ? "\(day / 7)주" : "\(day)일"
+        } else {
+            // components.day가 nil인 경우의 기본값 처리
+            label.text = "기간 계산 불가"
         }
+        
         label.textAlignment = .center
-        label.font = .mpFont16M()
+        label.font = .mpFont16M() 
         return label
     }()
+
     
     let dateRangeLabel: UILabel = {
         let label = UILabel()
         dateFormatter.dateFormat = "yyyy년 MM월 dd일"
-        label.text = "\(dateFormatter.string(from: GoalCreationManager.shared.startDate!))" + " - " + "\(dateFormatter.string(from: GoalCreationManager.shared.endDate!))"
+        label.text = GoalCreationManager.shared.startDate! + " - " + GoalCreationManager.shared.endDate!
         label.textAlignment = .center
         label.font = .mpFont14M()
         label.textColor = .mpDarkGray

@@ -20,7 +20,7 @@ extension GoalCategoryViewController: CategorySelectionDelegate{
     func didSelectCategory(_ category: String, iconName: String) { // => categoryId 넘겨줘야 함.
         // 선택된 인덱스 패스에 해당하는 카테고리를 업데이트
         if let cell = tableView.cellForRow(at: selectedIndexPath!) as? GoalCategoryTableViewCell {
-            cell.configureCell(categoryId: <#Int?#>, text: category, iconName: iconName)
+//            cell.configureCell(categoryId: <#Int?#>, text: category, iconName: iconName)
             print(selectedIndexPath as Any)
         }
         
@@ -48,7 +48,7 @@ extension GoalCategoryViewController: MoneyAmountTextCellDelegate {
         }
         
         // Update sumAmount
-        sumAmount = categoryGoalMaker.reduce(0) { $0 + ($1.categoryBudget ?? 0) }
+        sumAmount = categoryGoalMaker.reduce(0) { $0 + ($1.categoryBudget ) }
         
         //총합 업데이트 및 디스플레이 반영
         updateSumAmountDisplay()
@@ -312,7 +312,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
         headerView.onDeleteButtonTapped = { [weak self] in
             guard let self = self else { return }
             //금액 빼고
-            sumAmount -= categoryGoalMaker[section].categoryBudget ?? 0
+            sumAmount -= categoryGoalMaker[section].categoryBudget 
             //초기화 시키고
             self.resetCategorySection(section)
             //삭제
@@ -416,9 +416,9 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     
     private func showCategoryModal() {
         print("클릭 : 카테고리 선택을 위해 카테고리 선택 모달로 이동합니다")
-        let categoryModalVC = CategoryModalViewController(categories: <#[CategoryDTO]#>)
-        categoryModalVC.delegate = self
-        present(categoryModalVC, animated: true, completion: nil)
+//        let categoryModalVC = CategoryModalViewController(categories: <#[CategoryDTO]#>)
+//        categoryModalVC.delegate = self
+//        present(categoryModalVC, animated: true, completion: nil)
     }
     
     //총금액 알려주는 구간 업데이트
