@@ -145,6 +145,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
             .subscribe(onNext: { [weak self] repos in
                 guard let self = self else { return }
                 // 네트워크 응답에 대한 처리
+                print(repos)
                 let categories = repos.result.categories
                 let categoryModalVC = CategoryModalViewController(categories: categories)
                 categoryModalVC.delegate = self

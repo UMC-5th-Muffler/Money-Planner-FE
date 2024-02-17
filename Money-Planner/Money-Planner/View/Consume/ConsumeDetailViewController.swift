@@ -930,8 +930,9 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
     private func completeButtonTapped(){
         print("수정이 완료되었습니다")
         print(expenseId)
-        
-      
+        let currDay : String
+        // 제로데이인지 확인
+    
         // api 연결
         expenseRequest.expenseId = expenseId
         expenseRequest.categoryId = 2
@@ -944,12 +945,15 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
             if let date = dateFormatter.date(from: text) {
                 dateFormatter.dateFormat = "yyyy-MM-dd"
                 let convertedDateString = dateFormatter.string(from: date)
+                currDay = convertedDateString
                 expenseRequest.expenseDate = convertedDateString
             } else {
                 print("날짜 변환 실패")
             }
         }
-
+        struct ZeroDayRequest{
+            var dailyPlanDate : String
+        }
         print(expenseRequest)
         do {
                 let encoder = JSONEncoder()
@@ -961,7 +965,13 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
             } catch {
                 print("Error encoding JSON: \(error)")
             }
+        // 제로데이 확인
+        dismiss()
         
+        
+        
+    }
+    private func dismiss(){
         viewModel.updateExpense(expenseRequest: expenseRequest)
             .subscribe(
             onSuccess: { response in
@@ -971,6 +981,5 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
             }).disposed(by: disposeBag)
         
         dismiss(animated: true)
-        
     }
 }
