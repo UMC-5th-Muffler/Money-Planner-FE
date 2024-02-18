@@ -424,7 +424,7 @@ extension HomeViewController{
                 
                 self.hasNext = data!.hasNext
                 let consumeList = data?.dailyExpenseList ?? []
-                self.consumeList = consumeList
+                self.consumeList.append(contentsOf: consumeList)
                 
                 DispatchQueue.main.async {
                     self.consumeView.data = self.consumeList
@@ -633,6 +633,7 @@ extension HomeViewController{
             let indexPath = IndexPath(item: 0, section: 0)
             collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
             self.consumeList.removeAll()
+            self.hasNext = false
             fetchChangeMonthCalendarData()
         }
     }
@@ -746,11 +747,32 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         if(collectionView.currentPage == 0 || self.loading){
             return
         }
-        //        if scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.bounds.height {
-        //            if self.hasNext {
-        //                fetchConsumeData(order: nil, lastDate: self.consumeList.last?.date, lastExpenseId: self.consumeList.last?.expenseDetailList?.last?.expenseId, categoryId: nil)
-        //            }
-        //        }
+        
+        // MARK: - 무한스크롤
+        
+        // 테이블 뷰의 컨텐츠 크기
+        let contentHeight = consumeView.tableView.contentSize.height
+        
+        // 테이블 뷰의 현재 위치
+        let offsetY = consumeView.tableView.contentOffset.y
+        
+        // 테이블 뷰의 높이
+        let tableViewHeight = consumeView.tableView.bounds.size.height
+        
+        // 만약 스크롤이 테이블 뷰의 맨 아래에 도달했을 때
+        if offsetY > contentHeight - tableViewHeight {
+            if self.hasNext {
+                var categoryId : Int? = categoryScrollView.selectedCategoryIndex
+                if(categoryId == -1){
+                    categoryId = nil
+                }
+                
+                fetchConsumeData(order: nil, lastDate: self.consumeList.last?.date, lastExpenseId: self.consumeList.last?.expenseDetailList?.last?.expenseId, categoryId: categoryId)
+            }
+        }
+        
+        
+        // MARK: - 중첩 스크롤
         
         // 1: determining whether scrollview is scrolling up or down
         goingUp = scrollView.panGestureRecognizer.translation(in: scrollView).y < 0
@@ -814,6 +836,7 @@ extension HomeViewController : GoalListModalViewDelegate{
             let indexPath = IndexPath(item: 0, section: 0)
             collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
             toggleButton.isRight.toggle()
+            self.hasNext = false
         }
         categoryScrollView.changeSelectedButton(index: -1)
         fetchChangeGoalData(goalId: goalId)
@@ -834,6 +857,8 @@ extension HomeViewController : CategoryButtonScrollDelegate{
         }
         
         if(collectionView.currentPage == 1){
+            self.consumeList = []
+            self.hasNext = false
             if(categoryId == -1){
                 // 전체 일때
                 fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil, categoryId: nil)

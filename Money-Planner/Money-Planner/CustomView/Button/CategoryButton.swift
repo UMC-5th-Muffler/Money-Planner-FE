@@ -134,6 +134,8 @@ class CategoryButtonsScrollView: UIView , CategoryButtonDelegate{
         }
     }
     
+    var selectedCategoryIndex = -1
+    
     var categoryButtons : [CategoryButton] = []
     
     override init(frame: CGRect) {
@@ -187,6 +189,7 @@ class CategoryButtonsScrollView: UIView , CategoryButtonDelegate{
     }
     
     func changeSelectedButton(index : Int){
+        selectedCategoryIndex = index
         if let targetButton = categoryButtons.first(where: { $0.category.id == index }) {
             targetButton.isSelected = true
             
@@ -199,6 +202,7 @@ class CategoryButtonsScrollView: UIView , CategoryButtonDelegate{
 
 extension CategoryButtonsScrollView {
     func onTapCategoryButton(categoryId: Int) {
+        selectedCategoryIndex = categoryId
         delegate?.onTapChangeCategory(categoryId: categoryId)
         
         if let targetButton = categoryButtons.first(where: { $0.category.id == categoryId }) {
