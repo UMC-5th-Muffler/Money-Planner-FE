@@ -107,7 +107,19 @@ class CategoryButton: UIView {
     }
 }
 
-class CategoryButtonsScrollView: UIScrollView , CategoryButtonDelegate{
+protocol CategoryButtonScrollDelegate{
+    func onTapChangeCategory(categoryId : Int)
+}
+
+class CategoryButtonsScrollView: UIView , CategoryButtonDelegate{
+    var delegate : CategoryButtonScrollDelegate?
+    
+    private var scrollView : UIScrollView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private lazy var stackView: UIStackView = {
         let view = UIStackView()
         view.axis = .horizontal
@@ -135,14 +147,19 @@ class CategoryButtonsScrollView: UIScrollView , CategoryButtonDelegate{
     }
     
     func setupUI() {
-        showsHorizontalScrollIndicator = false
-        
-        addSubview(stackView)
+        addSubview(scrollView)
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            scrollView.topAnchor.constraint(equalTo: topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.heightAnchor.constraint(equalTo: heightAnchor)
         ])
     }
@@ -168,10 +185,22 @@ class CategoryButtonsScrollView: UIScrollView , CategoryButtonDelegate{
             firstButton.isSelected = true
         }
     }
+    
+    func changeSelectedButton(index : Int){
+        if let targetButton = categoryButtons.first(where: { $0.category.id == index }) {
+            targetButton.isSelected = true
+            
+            for button in categoryButtons where button !== targetButton {
+                button.isSelected = false
+            }
+        }
+    }
 }
 
 extension CategoryButtonsScrollView {
     func onTapCategoryButton(categoryId: Int) {
+        delegate?.onTapChangeCategory(categoryId: categoryId)
+        
         if let targetButton = categoryButtons.first(where: { $0.category.id == categoryId }) {
             targetButton.isSelected = true
             

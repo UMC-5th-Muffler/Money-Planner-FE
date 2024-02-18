@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-class HomeViewController : UIViewController, MainMonthViewDelegate {
-    
+class HomeViewController : UIViewController, MainMonthViewDelegate, HomeConsumeViewDelegate, OrderModalDelegate {
+
     var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -102,17 +102,17 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     
     var nowGoal : Goal?
     var dailyList : [CalendarDaily?] = []
-    var categoryList : [Category] = [Category(id: 0, name: "전체"), Category(id: 1, name: "식사"), Category(id: 2, name: "카페"), Category(id: 3, name: "교통"), Category(id: 4, name: "쇼핑")]
+    var categoryList : [Category] = [Category(id: -1, name: "전체")]
     var consumeList : [DailyConsume] = []
     
-    var currentYear : Int = Calendar.current.component (.year, from: Date())
-    var currentMonth : Int = Calendar.current.component (.month, from: Date())
-    
+    var statisticsData : Statistics?
+        
     var hasNext : Bool = false
     var loading : Bool = false
     
     override func viewDidLoad(){
         contentScrollView.delegate = self
+        categoryScrollView.delegate = self
         
         fetchCalendarData()
         fetchCategoryList()
@@ -142,7 +142,8 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         contentViewHeight.priority = .defaultLow
         contentViewHeight.isActive = true
         
-        setupMonthAndCategoryView()
+        setupMonthView()
+        setupCategoryView()
         setupCollectionView()
         
     }
@@ -157,8 +158,28 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     func didChangeMonth(monthIndex: Int, year: Int) {
         // 값 있을 때는 넘겨주고 없으면 초기화 하기
         calendarView.changeMonth(monthIndex: monthIndex, year: year)
-        fetchChangeMonthData()
+        
+        if(collectionView.currentPage == 0){
+            fetchChangeMonthCalendarData()
+        }else{
+            self.consumeList = []
+            fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil, categoryId: nil)
+        }
+
     }
+    
+    // HomeConsumeView의 delegate
+    func onTapOrder() {
+        let vc = OrderModalViewController()
+        vc.delegate = self
+        present(vc, animated: true)
+    }
+    
+    // OrderModal의 delegate
+    func changeOrder(order : String) {
+        print("hi")
+    }
+    
     // ConsumeRecordCell의 delegate
     func didTapCell(_ cell: ConsumeRecordCell) {
         print("소비 내역으로 이동")
@@ -173,6 +194,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
 
 extension HomeViewController{
     
+    // 첫번째에만 호출
     func fetchCalendarData(){
         HomeRepository.shared.getHomeNow{
             (result) in
@@ -184,6 +206,7 @@ extension HomeViewController{
                 
                 if(goal != nil){
                     self.nowGoal = goal
+                    self.statisticsData = Statistics(totalCost: goal!.totalCost!, goalBudget: goal!.goalBudget!)
                 }
                 
                 
@@ -206,7 +229,8 @@ extension HomeViewController{
         
     }
     
-    func fetchChangeMonthData(){
+    // 달력 데이터 가져오기
+    func fetchChangeMonthCalendarData(){
         let currentYear = monthView.currentYear
         let currentMonth = monthView.currentMonth
         
@@ -280,17 +304,33 @@ extension HomeViewController{
         }
     }
     
-    func fetchCategoryList(){
-        CategoryRepository.shared.getCategoryFilteredList{
+    func fetchCalendarDataWithCategory(categoryId : Int){
+        
+        let currentYear = monthView.currentYear
+        let currentMonth = monthView.currentMonth
+        
+        var yearMonthStr = ""
+        if(currentMonth >= 10){
+            yearMonthStr = "\(currentYear)-\(currentMonth)"
+        }else{
+            yearMonthStr = "\(currentYear)-0\(currentMonth)"
+        }
+        
+        HomeRepository.shared.getCalendarListWithCategory(goalId: self.nowGoal!.goalID, categoryId: categoryId, yearMonth: yearMonthStr){
             (result) in
             switch result{
             case .success(let data):
-                // 아예 골이 없는 경우
-                
-                let categoryList = data
-                self.categoryList = categoryList!
+                let categoryInfo : Category? = data?.calendarInfo
+                if(categoryInfo != nil){
+                    self.statisticsData = Statistics(totalCost: categoryInfo!.categoryTotalCost!, goalBudget: categoryInfo!.categoryBudget!)
+                }
+             
+                if(data?.dailyList != nil){
+                    self.dailyList = data!.dailyList!
+                }
+
                 DispatchQueue.main.async {
-                    self.setupMonthAndCategoryView()
+                    self.reloadUI()
                 }
                 
                 
@@ -303,6 +343,29 @@ extension HomeViewController{
         }
     }
     
+    func fetchCategoryList(){
+        CategoryRepository.shared.getCategoryFilteredList{
+            (result) in
+            switch result{
+            case .success(let data):
+                var categoryList = data
+                categoryList?.insert(Category(id: -1, name: "전체"), at: 0)
+                self.categoryList = categoryList!
+                DispatchQueue.main.async {
+                    self.setupCategoryView()
+                }
+                
+                
+            case .failure(.failure(message: let message)):
+                print(message)
+            case .failure(.networkFail(let error)):
+                print(error)
+                print("networkFail in loginWithSocialAPI")
+            }
+        }
+    }
+    
+    // 목표 리스트에서 목표 바꿨을때
     func fetchChangeGoalData(goalId : Int){
         self.loading = true
         
@@ -315,7 +378,9 @@ extension HomeViewController{
                 
                 if(goal != nil){
                     self.nowGoal = goal
-                    print(goal)
+                    
+                    self.statisticsData = Statistics(totalCost: goal!.totalCost!, goalBudget: goal!.goalBudget!)
+                    
                     self.monthView.updateYearAndMonth(to: self.nowGoal!.startDate!.toDate!)
                     
                     self.calendarView.changeMonth(monthIndex: self.monthView.currentMonth, year: self.monthView.currentYear)
@@ -342,10 +407,11 @@ extension HomeViewController{
         
     }
     
+    // 소비 데이터 불러오기
     func fetchConsumeData(order : String?, lastDate: String?, lastExpenseId: Int?, categoryId: Int?){
         self.loading = true
         
-        let dateStr = (currentMonth >= 10) ? "\(currentYear)-\(currentMonth)" : "\(currentYear)-0\(currentMonth)"
+        let dateStr = (monthView.currentMonth >= 10) ? "\(monthView.currentYear)-\(monthView.currentMonth)" : "\(monthView.currentYear)-0\(monthView.currentMonth)"
         
         HomeRepository.shared.getExpenseList(yearMonth: dateStr, size: nil, goalId: self.nowGoal?.goalID, order: order, lastDate: lastDate, lastExpenseId: lastExpenseId, categoryId: categoryId){
             (result) in
@@ -354,7 +420,7 @@ extension HomeViewController{
                 
                 self.hasNext = data!.hasNext
                 let consumeList = data?.dailyExpenseList ?? []
-                self.consumeList.append(contentsOf: consumeList)
+                self.consumeList = consumeList
                 
                 DispatchQueue.main.async {
                     self.consumeView.data = self.consumeList
@@ -374,14 +440,14 @@ extension HomeViewController{
     
     func reloadUI(){
         setupHeader()
-        setupMonthAndCategoryView()
+        setupMonthView()
         
         // calendarView
         if(self.nowGoal != nil){
-            statisticsView.goal = self.nowGoal
+            statisticsView.statistics = statisticsData
             calendarView.goal = self.nowGoal
             
-            statisticsView.progress = getProgress(numerator: self.nowGoal!.totalCost!, denominator: self.nowGoal!.goalBudget!)
+            statisticsView.progress = getProgress(numerator: self.statisticsData!.totalCost, denominator: self.statisticsData!.goalBudget)
         }else{
             statisticsView.progress = 0.0
         }
@@ -454,16 +520,12 @@ extension HomeViewController{
         ])
     }
     
-    func setupMonthAndCategoryView(){
+    func setupMonthView(){
         toggleButton.addTarget(self, action: #selector(customToggleButtonTapped), for: .touchUpInside)
         
         monthView.delegate=self
         contentView.addSubview(monthView)
         contentView.addSubview(toggleButton)
-        
-        categoryScrollView.categories = self.categoryList
-        
-        contentView.addSubview(categoryScrollView)
         
         NSLayoutConstraint.activate([
             monthView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
@@ -476,13 +538,19 @@ extension HomeViewController{
             toggleButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
             toggleButton.widthAnchor.constraint(equalToConstant: 154),
             toggleButton.heightAnchor.constraint(equalToConstant: 46),
-            
+        ])
+    }
+    
+    func setupCategoryView(){
+        categoryScrollView.categories = self.categoryList
+        contentView.addSubview(categoryScrollView)
+        
+        NSLayoutConstraint.activate([
             categoryScrollView.topAnchor.constraint(equalTo: monthView.bottomAnchor,
                                                     constant: 24),
             categoryScrollView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
             categoryScrollView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
             categoryScrollView.heightAnchor.constraint(equalToConstant: 37)
-            
         ])
     }
     
@@ -549,18 +617,19 @@ extension HomeViewController{
     
     @objc func customToggleButtonTapped() {
         // 버튼을 탭했을 때 수행할 동작 추가
+        categoryScrollView.changeSelectedButton(index: -1)
+        
         if(collectionView.currentPage == 0){
             let indexPath = IndexPath(item: 1, section: 0)
             collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
             fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil, categoryId: nil)
-//            contentScrollView.updateContentSize()
         }
         
         if(collectionView.currentPage == 1){
             let indexPath = IndexPath(item: 0, section: 0)
             collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
             self.consumeList.removeAll()
-//            contentScrollView.updateContentSize()
+            fetchChangeMonthCalendarData()
         }
     }
     
@@ -684,7 +753,39 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 
 extension HomeViewController : GoalListModalViewDelegate{
     func changeGoal(goalId: Int) {
+        if(collectionView.currentPage == 1){
+            let indexPath = IndexPath(item: 0, section: 0)
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            toggleButton.isRight.toggle()
+        }
+        categoryScrollView.changeSelectedButton(index: -1)
         fetchChangeGoalData(goalId: goalId)
+    }
+}
+
+extension HomeViewController : CategoryButtonScrollDelegate{
+    func onTapChangeCategory(categoryId: Int) {
+        
+        if(collectionView.currentPage == 0){
+            if(categoryId == -1){
+               // 전체 일때
+                fetchChangeMonthCalendarData()
+            }else{
+              // 카테고리 일때
+                fetchCalendarDataWithCategory(categoryId: categoryId)
+            }
+        }
+        
+        if(collectionView.currentPage == 1){
+            if(categoryId == -1){
+               // 전체 일때
+                fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil, categoryId: nil)
+            }else{
+              // 카테고리 일때
+                fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil, categoryId: categoryId)
+            }
+        }
+
     }
 }
 

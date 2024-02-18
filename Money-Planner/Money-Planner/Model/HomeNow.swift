@@ -11,3 +11,8 @@ struct HomeNow : Codable {
     let calendarInfo : Goal?
     let dailyList: [CalendarDaily]?
 }
+
+struct HomeNowWithCategory : Codable {
+    let calendarInfo : Category?
+    let dailyList: [CalendarDaily]?
+}

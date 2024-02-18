@@ -10,10 +10,10 @@ import Foundation
 struct Goal : Codable {
     let goalID: Int
     let goalTitle: String?
-    let goalBudget: Int?
+    let goalBudget: Int64?
     let startDate : String?
     let endDate: String?
-    let totalCost: Int?
+    let totalCost: Int64?
     let icon : String? 
 
     enum CodingKeys: String, CodingKey {

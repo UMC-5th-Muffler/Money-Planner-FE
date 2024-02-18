@@ -9,8 +9,11 @@ enum HomeAPI  {
     case getCalendarListWithDate(yearMonth : String)
     // 목표 있을때 달력 넘길 떄
     case getCalendarListWithGoal(goalId : Int, yearMonth : String?)
+    // 카테고리 누른 상태로 달력
+    case getCalendarListWithCategory(goalId : Int, categoryId : Int, yearMonth : String)
     // 소비탭
     case getExpenseList( yearMonth : String?, size : Int?, goalId : Int?, order : String?, lastDate : String?, lastExpenseId : Int?, categoryId : Int?)
+    
     
 }
 
@@ -20,7 +23,7 @@ extension HomeAPI : BaseAPI {
         switch self {
         case .getHomeNow, .getGoalList, .getCalendarListWithGoal:
             return .requestPlain
-        case .getCalendarListWithDate(let yearMonth):
+        case .getCalendarListWithDate(let yearMonth), .getCalendarListWithCategory(_, _, let yearMonth):
             let parameters: [String: String] = ["yearMonth": yearMonth]
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .getExpenseList(let yearMonth, let size, let goalId, let order, let lastDate, let lastExpenseId, let categoryId):
@@ -49,13 +52,12 @@ extension HomeAPI : BaseAPI {
             }
             
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
-            
         }
     }
     
     public var method: Moya.Method {
         switch self {
-        case .getHomeNow, .getGoalList, .getCalendarListWithDate, .getCalendarListWithGoal, .getExpenseList:
+        case .getHomeNow, .getGoalList, .getCalendarListWithDate, .getCalendarListWithGoal,.getCalendarListWithCategory, .getExpenseList:
             return .get
         }
     }
@@ -74,14 +76,14 @@ extension HomeAPI : BaseAPI {
             }else{
                 return "/api/home/goal/\(goalId)/\(yearMonth!)"
             }
+        case .getCalendarListWithCategory(let goalId, let categoryId, let _):
+            return "/api/home/goal/\(goalId)/category/\(categoryId)"
         case .getExpenseList:
             return "/api/expense/monthly"
         }
     }
     
     public var headers: [String: String]? {
-
-        return ["Authorization": "Bearer  "]
-
+        return ["Authorization": "Bearer "]
     }
 }

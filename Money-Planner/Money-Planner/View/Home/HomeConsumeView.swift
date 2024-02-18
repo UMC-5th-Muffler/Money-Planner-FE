@@ -8,12 +8,18 @@
 import Foundation
 import UIKit
 
+protocol HomeConsumeViewDelegate : AnyObject {
+    func onTapOrder()
+}
 
 class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
+    
+    weak var delegate : HomeConsumeViewDelegate?
     
     let tableHeaderView : UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
+        v.isUserInteractionEnabled = true
         return v
     }()
 
@@ -23,15 +29,25 @@ class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
         table.isScrollEnabled = true
         table.separatorStyle = .none
         table.backgroundColor = .clear
+        table.showsVerticalScrollIndicator = false
         return table
     }()
     
     var data: [DailyConsume] = [] {
         didSet {
+            showView()
             tableView.reloadData()
             layoutIfNeeded()
         }
     }
+    
+    var noDataView : MPLabel = {
+       let v = MPLabel()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.text = "소비내역이 없습니다."
+        v.textColor = .mpDarkGray
+        return v
+    }()
     
     let arrow_small : UIImageView = {
         let img = UIImageView()
@@ -46,16 +62,34 @@ class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
         label.font = UIFont.mpFont14M()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "최신순"
+        label.isUserInteractionEnabled = true
         return label
     }()
     
+    let button : UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("최신순", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.addTarget(self, action: #selector(sortByLatest), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isUserInteractionEnabled = true
+        return button
+    }()
+    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTapOrder))
+        orderLabel.addGestureRecognizer(tapGesture)
+        showView()
         setupUI()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTapOrder))
+        orderLabel.addGestureRecognizer(tapGesture)
+        showView()
         setupUI()
     }
     
@@ -76,33 +110,49 @@ class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
         layer.mask = maskLayer
     }
     
+    func showView(){
+        if(data.isEmpty){
+            noDataView.isHidden = false
+            tableView.isHidden = true
+        }else{
+            noDataView.isHidden = true
+            tableView.isHidden = false
+        }
+    }
+    
     private func setupUI() {
-        tableHeaderView.addSubview(orderLabel)
+        tableHeaderView.addSubview(button)
         tableHeaderView.addSubview(arrow_small)
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .mpWhite
         
         tableView.tableHeaderView = tableHeaderView
+        tableHeaderView.isUserInteractionEnabled = true
+        tableView.tableHeaderView?.isUserInteractionEnabled = true
         
         addSubview(tableView)
+        addSubview(noDataView)
         
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(ConsumeRecordCell.self, forCellReuseIdentifier: "ConsumeRecordCell")
         
         NSLayoutConstraint.activate([
-            orderLabel.topAnchor.constraint(equalTo: tableHeaderView.topAnchor, constant: 32),
-            orderLabel.leadingAnchor.constraint(equalTo: tableHeaderView.leadingAnchor, constant: 16),
-            orderLabel.heightAnchor.constraint(equalToConstant: 24),
-            orderLabel.bottomAnchor.constraint(equalTo: tableHeaderView.bottomAnchor, constant: -32),
+            button.topAnchor.constraint(equalTo: tableHeaderView.topAnchor, constant: 32),
+            button.leadingAnchor.constraint(equalTo: tableHeaderView.leadingAnchor, constant: 16),
+            button.heightAnchor.constraint(equalToConstant: 24),
+            button.bottomAnchor.constraint(equalTo: tableHeaderView.bottomAnchor, constant: -32),
             
-            arrow_small.leadingAnchor.constraint(equalTo: orderLabel.trailingAnchor, constant: 4),
-            arrow_small.centerYAnchor.constraint(equalTo: orderLabel.centerYAnchor),
+            arrow_small.leadingAnchor.constraint(equalTo: button.trailingAnchor, constant: 4),
+            arrow_small.centerYAnchor.constraint(equalTo: button.centerYAnchor),
             
             tableView.topAnchor.constraint(equalTo: topAnchor),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            noDataView.topAnchor.constraint(equalTo: topAnchor, constant: 100),
+            noDataView.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
 }
@@ -203,8 +253,16 @@ extension HomeConsumeView {
         self.window?.rootViewController?.present(detailViewController, animated: true, completion: nil)
         
     }
+    
+    @objc func onTapOrder(){
+        print("여기 안옴?")
+        delegate?.onTapOrder()
+    }
+    
+    @objc func sortByLatest() {
+        print("안녕")
+    }
 }
-
 
 class ConsumeRecordCell: UITableViewCell {
     
