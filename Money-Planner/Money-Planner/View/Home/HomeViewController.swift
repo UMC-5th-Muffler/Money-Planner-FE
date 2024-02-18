@@ -110,9 +110,13 @@ class HomeViewController : UIViewController, MainMonthViewDelegate, HomeConsumeV
     var hasNext : Bool = false
     var loading : Bool = false
     
+    var goingUp: Bool?
+    var childScrollingDownDueToParent = false
+    
     override func viewDidLoad(){
         contentScrollView.delegate = self
         categoryScrollView.delegate = self
+        consumeView.tableView.delegate = self
         
         fetchCalendarData()
         fetchCategoryList()
@@ -252,6 +256,7 @@ extension HomeViewController{
                     
                     if(goal != nil){
                         self.nowGoal = goal
+                        self.statisticsData = Statistics(totalCost: goal!.totalCost!, goalBudget: goal!.goalBudget!)
                     }
                     
                     if(data?.dailyList != nil){
@@ -277,12 +282,11 @@ extension HomeViewController{
                 (result) in
                 switch result{
                 case .success(let data):
-                    // 아예 골이 없는 경우
-                    
                     let goal : Goal? = data?.calendarInfo
                     
                     if(goal != nil){
                         self.nowGoal = goal
+                        self.statisticsData = Statistics(totalCost: goal!.totalCost!, goalBudget: goal!.goalBudget!)
                     }
                     
                     if(data?.dailyList != nil){
@@ -742,10 +746,63 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         if(collectionView.currentPage == 0 || self.loading){
             return
         }
+        //        if scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.bounds.height {
+        //            if self.hasNext {
+        //                fetchConsumeData(order: nil, lastDate: self.consumeList.last?.date, lastExpenseId: self.consumeList.last?.expenseDetailList?.last?.expenseId, categoryId: nil)
+        //            }
+        //        }
         
-        if scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.bounds.height {
-            if self.hasNext {
-                fetchConsumeData(order: nil, lastDate: self.consumeList.last?.date, lastExpenseId: self.consumeList.last?.expenseDetailList?.last?.expenseId, categoryId: nil)
+        // 1: determining whether scrollview is scrolling up or down
+        goingUp = scrollView.panGestureRecognizer.translation(in: scrollView).y < 0
+        
+        // 2: maximum contentOffset y that parent scrollView can have
+        let parentViewMaxContentYOffset = contentScrollView.contentSize.height - contentScrollView.frame.height
+        
+        // 3: if scrollView is going upwards
+        if goingUp! {
+            // 4:  if scrollView is a child scrollView
+            
+            if scrollView == consumeView.tableView {
+                // 5:  if parent scroll view is't scrolled maximum (i.e. menu isn't sticked on top yet)
+                if contentScrollView.contentOffset.y < parentViewMaxContentYOffset && !childScrollingDownDueToParent {
+                    
+                    // 6: change parent scrollView contentOffset y which is equal to minimum between maximum y offset that parent scrollView can have and sum of parentScrollView's content's y offset and child's y content offset. Because, we don't want parent scrollView go above sticked menu.
+                    // Scroll parent scrollview upwards as much as child scrollView is scrolled
+                    contentScrollView.contentOffset.y = min(contentScrollView.contentOffset.y + consumeView.tableView.contentOffset.y, parentViewMaxContentYOffset)
+                    
+                    // 7: change child scrollView's content's y offset to 0 because we are scrolling parent scrollView instead with same content offset change.
+                    consumeView.tableView.contentOffset.y = 0
+                }
+            }
+        }
+        // 8: Scrollview is going downwards
+        else {
+            
+            if scrollView == consumeView.tableView {
+                // 9: when child view scrolls down. if childScrollView is scrolled to y offset 0 (child scrollView is completely scrolled down) then scroll parent scrollview instead
+                // if childScrollView's content's y offset is less than 0 and parent's content's y offset is greater than 0
+                if consumeView.tableView.contentOffset.y < 0 && contentScrollView.contentOffset.y > 0 {
+                    
+                    // 10: set parent scrollView's content's y offset to be the maximum between 0 and difference of parentScrollView's content's y offset and absolute value of childScrollView's content's y offset
+                    // we don't want parent to scroll more that 0 i.e. more downwards so we use max of 0.
+                    contentScrollView.contentOffset.y = max(contentScrollView.contentOffset.y - abs(consumeView.tableView.contentOffset.y), 0)
+                }
+            }
+            
+            // 11: if downward scrolling view is parent scrollView
+            if scrollView == contentScrollView {
+                // 12: if child scrollView's content's y offset is greater than 0. i.e. child is scrolled up and content is hiding up
+                // and parent scrollView's content's y offset is less than parentView's maximum y offset
+                // i.e. if child view's content is hiding up and parent scrollView is scrolled down than we need to scroll content of childScrollView first
+                if (consumeView.tableView.contentOffset.y > 0 && contentScrollView.contentOffset.y < parentViewMaxContentYOffset) {
+                    // 13:  set if scrolling is due to parent scrolled
+                    childScrollingDownDueToParent = true
+                    // 14:  assign the scrolled offset of parent to child not exceding the offset 0 for child scroll view
+                    consumeView.tableView.contentOffset.y = max(consumeView.tableView.contentOffset.y - (parentViewMaxContentYOffset - contentScrollView.contentOffset.y), 0)
+                    // 15:  stick parent view to top coz it's scrolled offset is assigned to child
+                    contentScrollView.contentOffset.y = parentViewMaxContentYOffset
+                    childScrollingDownDueToParent = false
+                }
             }
         }
     }
@@ -802,5 +859,16 @@ extension HomeViewController : HomeMoreModalDelegate{
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }
+    }
+}
+
+// 중첩 스크롤 구현 위해서 추가
+extension HomeViewController : UITableViewDelegate{
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return consumeView.tableViewHeader(section: section)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        consumeView.tableViewRowSelect(indexPath: indexPath)
     }
 }

@@ -177,6 +177,7 @@ extension HomeConsumeView {
         let consumeRecord = data[indexPath.section].expenseDetailList![indexPath.row]
         
         cell.configure(with: consumeRecord)
+        cell.selectionStyle = .none
         
         return cell
     }
@@ -185,7 +186,6 @@ extension HomeConsumeView {
     
     // 여기에 UITableViewDelegate 관련 메서드를 추가할 수 있습니다.
     // 예를 들면, 셀을 선택했을 때의 동작 등을 구현할 수 있습니다.
-    
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
@@ -261,6 +261,67 @@ extension HomeConsumeView {
     
     @objc func sortByLatest() {
         print("안녕")
+    }
+}
+
+extension HomeConsumeView{
+    func tableViewHeader(section: Int) -> UIView? {
+        let headerView = UIView()
+        
+        let separatorView : UIView = {
+            let v = UIView()
+            v.translatesAutoresizingMaskIntoConstraints = false
+            v.backgroundColor = .mpGypsumGray
+            v.heightAnchor.constraint(equalToConstant: 1)
+            return v
+        }()
+        
+        // 섹션 헤더에 표시할 내용을 추가
+        let titleLabel = UILabel()
+        titleLabel.text = data[section].date.formatMonthAndDate
+        titleLabel.textColor = UIColor(hexCode: "9FAAB0")
+        titleLabel.font = UIFont.mpFont14M()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(titleLabel)
+        
+        // "Cost" 텍스트를 추가
+        let costLabel = UILabel()
+        
+        if(data[section].dailyTotalCost != nil){
+            let result: String = data[section].dailyTotalCost!.formattedWithSeparator()
+            
+            costLabel.text = "\(result)원"
+        }else{
+            costLabel.text = ""
+        }
+
+        costLabel.textColor = UIColor.mpDarkGray
+        costLabel.font = UIFont.mpFont14M()
+        costLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(costLabel)
+        headerView.addSubview(separatorView)
+        
+        // Auto Layout 설정
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
+            titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            
+            costLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
+            costLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            
+        ])
+        
+        return headerView
+    }
+    
+    func tableViewRowSelect(indexPath: IndexPath){
+        let selectedRecord = data[indexPath.section].expenseDetailList![indexPath.row]
+
+        // expenseID
+        let expenseId : Int64 = Int64(selectedRecord.expenseId)
+        let detailViewController = ConsumeDetailViewController(expenseId: expenseId)
+        detailViewController.modalPresentationStyle = .fullScreen
+        self.window?.rootViewController?.present(detailViewController, animated: true, completion: nil)
     }
 }
 
