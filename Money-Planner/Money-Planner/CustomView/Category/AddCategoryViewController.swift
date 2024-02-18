@@ -139,16 +139,22 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
                 
                 if let index = categories.firstIndex(where: { $0.name == name }) {
                     print(index)
-                    if self?.categories[index].type == "CUSTOM"{
-                        self?.categories.remove(at: index)
-                        // 삭제 버튼 추가
-                        self?.setupDelete()
+                    print(self?.categories[index].type)
+                    if let type = self?.categories[index].type {
+                        if type == "CUSTOM"{
+                            print("타입 : 커스텀")
+                            self?.categories.remove(at: index)
+                            // 삭제 버튼 추가
+                            self?.setupDelete()
+                        }
+                        // 디폴트
+                        if type == "DEFAULT"{
+                            print("타입 : 디폴트 ")
+                            self?.categories.remove(at: index)
+                            self?.picButton.isUserInteractionEnabled = false
+                        }
                     }
-                    // 디폴트
-                    if self?.categories[index].type == "DEFAULT"{
-                        self?.categories.remove(at: index)
-                        self?.picButton.isUserInteractionEnabled = false
-                    }
+                   
                     
                 }
                 }, onError: { error in
@@ -407,11 +413,31 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
     
     private func fixCategoryComplete(){
         print("카테고리 수정 완료")
-        
-        
+        let request = UpdateCategoryRequest(categoryId: categoryId, name: currText, icon: currIcon)
+        viewModel.updateCategory(request: request)
+            .subscribe(onNext: {  response in
+             print(response)
+            }, onError: { error in
+                // 에러 처리
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        // 모달 닫기
+        dismiss(animated: true)
     }
     @objc private func deleteCategoryComplete(){
         print("카테고리 삭제 완료")
+        
+        viewModel.deleteCategory(categoryId: categoryId)
+            .subscribe(onNext: {  response in
+             print(response)
+            }, onError: { error in
+                // 에러 처리
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        // 모달 닫기
+        dismiss(animated: true)
         
     }
 }

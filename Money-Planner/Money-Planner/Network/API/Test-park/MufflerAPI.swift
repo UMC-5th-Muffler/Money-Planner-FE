@@ -28,6 +28,9 @@ enum MufflerAPI {
     case getCategoryFilter
     case getCategory
     case createCategory(request : CreateCategoryRequest)
+    case updateCategory(request : UpdateCategoryRequest)
+    case deleteCategory(categoryId : Int64)
+
     // Daily Plan Controller
     case updateZeroDay
 
@@ -95,6 +98,10 @@ extension MufflerAPI: TargetType {
             return "api/category/filter"
         case .createCategory:
             return "api/category"
+        case .updateCategory:
+            return "api/category"
+        case .deleteCategory(let categoryId):
+            return "api/category/\(categoryId)"
         // Daily Plan Controller
         case .updateZeroDay:
             return "/dailyPlan/zeroDay"
@@ -129,9 +136,9 @@ extension MufflerAPI: TargetType {
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
              .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo, .getCategoryFilter,.getCategory:
             return .get
-        case .deleteGoal, .deleteExpense:
+        case .deleteGoal, .deleteExpense, .deleteCategory:
             return .delete
-        case .updateExpense:
+        case .updateExpense,.updateCategory:
             return .patch
         }
     }
@@ -140,13 +147,13 @@ extension MufflerAPI: TargetType {
     var task: Task {
         switch self {
         case .refreshToken, .loginKakao, .loginApple, .connect,
-                .createGoal, .getCategoryFilter,.getCategory,.updateRate, .updateZeroDay:
+                .createGoal, .getCategoryFilter,.getCategory,.updateRate, .updateZeroDay,.updateCategory:
             return .requestPlain
         case .getPreviousGoals, .getExpense,.fetchAvailableExpenseDates, .getWeeklyExpense, .searchExpense,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
              .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo:
             return .requestPlain
-        case .deleteGoal, .deleteExpense:
+        case .deleteGoal, .deleteExpense, .deleteCategory:
             return .requestPlain
         case .createCategory(let request):
             return .requestJSONEncodable(request)

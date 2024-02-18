@@ -150,15 +150,15 @@ class MufflerViewModel {
     }
     
     // 카테고리 수정
-    func updateCategory(categoryId : Int64) -> Observable<CreateCategoryResponse> {
-        return provider.request(.createCategory(request: request))
-            .map(CreateCategoryResponse.self)
+    func updateCategory(request : UpdateCategoryRequest ) -> Observable<ConnectModel> {
+        return provider.request(.updateCategory(request: request))
+            .map(ConnectModel.self)
             .asObservable()
     }
     // 카테고리 삭제
-    func deleteCategory(categoryId : Int64) -> Observable<CreateCategoryResponse> {
-        return provider.request(.createCategory(request: request))
-            .map(CreateCategoryResponse.self)
+    func deleteCategory(categoryId : Int64) -> Observable<DeleteCategoryResponse> {
+        return provider.request(.deleteCategory(categoryId: categoryId))
+            .map(DeleteCategoryResponse.self)
             .asObservable()
     }
 //
