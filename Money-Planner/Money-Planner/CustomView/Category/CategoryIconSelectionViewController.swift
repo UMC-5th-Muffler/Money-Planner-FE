@@ -202,3 +202,4 @@ class CategoryIconSelectionViewController: UIViewController, UICollectionViewDel
         return CGSize(width: itemWidth, height: itemWidth)
     }
 }
+

@@ -18,6 +18,7 @@ enum MufflerAPI {
     case updateExpense(expenseRequest: UpdateExpenseRequest)
     case getExpense(expenseId: Int64)
     case deleteExpense(expenseId: Int64)
+    case fetchAvailableExpenseDates(yearMonth : String)
     case getWeeklyExpense
     case searchExpense
     case getMonthlyExpense
@@ -27,6 +28,9 @@ enum MufflerAPI {
     case getCategoryFilter
     case getCategory
     case createCategory(request : CreateCategoryRequest)
+    case updateCategory(request : UpdateCategoryRequest)
+    case deleteCategory(categoryId : Int64)
+
     // Daily Plan Controller
     case updateZeroDay
 
@@ -76,6 +80,8 @@ extension MufflerAPI: TargetType {
             return "/api/expense/\(expenseId)"
         case .deleteExpense(let expenseId):
             return "/api/expense/\(expenseId)"
+        case .fetchAvailableExpenseDates(let yearMonth):
+            return "/api/expense/overview/\(yearMonth)"
         case .getWeeklyExpense:
             return "/api/expense/weekly"
         case .searchExpense:
@@ -92,6 +98,10 @@ extension MufflerAPI: TargetType {
             return "api/category/filter"
         case .createCategory:
             return "api/category"
+        case .updateCategory:
+            return "api/category"
+        case .deleteCategory(let categoryId):
+            return "api/category/\(categoryId)"
         // Daily Plan Controller
         case .updateZeroDay:
             return "/dailyPlan/zeroDay"
@@ -122,13 +132,13 @@ extension MufflerAPI: TargetType {
         case .refreshToken, .loginKakao, .loginApple,
                 .createGoal, .createExpense, .updateRate, .updateZeroDay, .createCategory:
             return .post
-        case .connect, .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense,
+        case .connect, .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense, .fetchAvailableExpenseDates,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
              .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo, .getCategoryFilter,.getCategory:
             return .get
-        case .deleteGoal, .deleteExpense:
+        case .deleteGoal, .deleteExpense, .deleteCategory:
             return .delete
-        case .updateExpense:
+        case .updateExpense,.updateCategory:
             return .patch
         }
     }
@@ -139,11 +149,11 @@ extension MufflerAPI: TargetType {
         case .refreshToken, .loginKakao, .loginApple, .connect,
                 .createGoal, .getCategoryFilter,.getCategory,.updateRate, .updateZeroDay:
             return .requestPlain
-        case .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense,
+        case .getPreviousGoals, .getExpense,.fetchAvailableExpenseDates, .getWeeklyExpense, .searchExpense,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
              .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo:
             return .requestPlain
-        case .deleteGoal, .deleteExpense:
+        case .deleteGoal, .deleteExpense, .deleteCategory:
             return .requestPlain
         case .createCategory(let request):
             return .requestJSONEncodable(request)
@@ -151,6 +161,9 @@ extension MufflerAPI: TargetType {
                 return .requestJSONEncodable(expenseRequest)
         case .updateExpense(let expenseRequest):
             return .requestJSONEncodable(expenseRequest)
+        case .updateCategory(let request):
+            return .requestJSONEncodable(request)
+
         }
         
     }
@@ -162,6 +175,7 @@ extension MufflerAPI: TargetType {
 
     // Define headers for the request
     var headers: [String: String]? {
-        return ["Authorization": "Bearer "] // Replace with your actual access token
+        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDgzMzQ3NDR9.DArNLTr6H5OzdzxRekbIZUa-vLFrYBHgV0MW_o_j3Po"] // Replace with your actual access token
     }
 }
+

@@ -8,7 +8,15 @@
 import Foundation
 import UIKit
 
-class CategoryEditViewController : UIViewController, AddCategoryViewDelegate {
+class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, AddCategoryViewDelegate {
+    func categoryDidSelect(at indexPath: IndexPath) {
+        let category = categoryList[indexPath.item]
+        categoryName = category.name
+        categoryIcon = category.categoryIcon
+        categoryId = Int64(category.id)
+        presentCategoryDetail()
+    }
+    
     func AddCategoryCompleted(_ name: String, iconName: String) {
         // 카테고리 추가 후 실행되는 함수
         
@@ -32,7 +40,9 @@ class CategoryEditViewController : UIViewController, AddCategoryViewDelegate {
     }()
         
     var categoryList : [Category] = []
-    
+    var categoryName : String?
+    var categoryIcon : String?
+    var categoryId : Int64?
     private let canEditLabel: MPLabel = {
         let label = MPLabel()
         label.text = "카테고리 순서를 편집할 수 있습니다."
@@ -76,7 +86,7 @@ extension CategoryEditViewController{
     func setupUI(){
         
         categoryTableView.categoryList = categoryList
-        
+        categoryTableView.delegate = self
         
         view.addSubview(categoryTableView)
         view.addSubview(canCategoryEditGrayView)
@@ -115,12 +125,19 @@ extension CategoryEditViewController{
             }
         }
     }
+  
+    func presentCategoryDetail(){
+        let catDetailVC = AddCategoryViewController(name: categoryName ?? "", icon: categoryIcon ?? "", id : categoryId ?? -1)
+            catDetailVC.modalPresentationStyle = .overFullScreen
+            catDetailVC.delegate = self
+            present(catDetailVC, animated: true)
+        }
     
-    @objc 
+    @objc
     private func addButtonTapped() {
         print("add button tapped")
         // 카테고리 추가화면
-        let addCategoryVC = AddCategoryViewController()
+        let addCategoryVC = AddCategoryViewController(name: "", icon: "", id: -1)
         addCategoryVC.modalPresentationStyle = .fullScreen
         addCategoryVC.delegate = self
         present(addCategoryVC, animated: true)
