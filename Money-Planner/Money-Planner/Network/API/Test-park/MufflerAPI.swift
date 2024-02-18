@@ -18,6 +18,7 @@ enum MufflerAPI {
     case updateExpense(expenseRequest: UpdateExpenseRequest)
     case getExpense(expenseId: Int64)
     case deleteExpense(expenseId: Int64)
+    case fetchAvailableExpenseDates(yearMonth : String)
     case getWeeklyExpense
     case searchExpense
     case getMonthlyExpense
@@ -76,6 +77,8 @@ extension MufflerAPI: TargetType {
             return "/api/expense/\(expenseId)"
         case .deleteExpense(let expenseId):
             return "/api/expense/\(expenseId)"
+        case .fetchAvailableExpenseDates(let yearMonth):
+            return "/api/expense/overview/\(yearMonth)"
         case .getWeeklyExpense:
             return "/api/expense/weekly"
         case .searchExpense:
@@ -122,7 +125,7 @@ extension MufflerAPI: TargetType {
         case .refreshToken, .loginKakao, .loginApple,
                 .createGoal, .createExpense, .updateRate, .updateZeroDay, .createCategory:
             return .post
-        case .connect, .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense,
+        case .connect, .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense, .fetchAvailableExpenseDates,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
              .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo, .getCategoryFilter,.getCategory:
             return .get
@@ -139,7 +142,7 @@ extension MufflerAPI: TargetType {
         case .refreshToken, .loginKakao, .loginApple, .connect,
                 .createGoal, .getCategoryFilter,.getCategory,.updateRate, .updateZeroDay:
             return .requestPlain
-        case .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense,
+        case .getPreviousGoals, .getExpense,.fetchAvailableExpenseDates, .getWeeklyExpense, .searchExpense,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
              .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo:
             return .requestPlain
@@ -162,6 +165,7 @@ extension MufflerAPI: TargetType {
 
     // Define headers for the request
     var headers: [String: String]? {
-        return ["Authorization": "Bearer "] // Replace with your actual access token
+        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDgzMzQ3NDR9.DArNLTr6H5OzdzxRekbIZUa-vLFrYBHgV0MW_o_j3Po"] // Replace with your actual access token
     }
 }
+
