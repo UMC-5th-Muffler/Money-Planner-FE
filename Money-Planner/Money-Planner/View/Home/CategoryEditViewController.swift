@@ -31,7 +31,7 @@ class CategoryEditViewController : UIViewController, AddCategoryViewDelegate {
         
     }()
         
-    var categoryList : [Category] = []
+    var originalCategoryList : [Category] = []
     
     private let canEditLabel: MPLabel = {
         let label = MPLabel()
@@ -64,9 +64,26 @@ class CategoryEditViewController : UIViewController, AddCategoryViewDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        CategoryRepository.shared.updateCategoryFilter(categories: categoryTableView.categoryList){
-            _ in
+        if(!arraysAreEqual(array1: originalCategoryList, array2: categoryTableView.categoryList)){
+            
+            CategoryRepository.shared.updateCategoryFilter(categories: categoryTableView.categoryList){
+                _ in
+            }
         }
+    }
+    
+    func arraysAreEqual(array1: [Category],array2: [Category]) -> Bool {
+        guard array1.count == array2.count else {
+            return false
+        }
+        
+        for (element1, element2) in zip(array1, array2) {
+            if element1.id != element2.id {
+                return false
+            }
+        }
+        
+        return true
     }
     
 }
@@ -75,7 +92,7 @@ extension CategoryEditViewController{
     
     func setupUI(){
         
-        categoryTableView.categoryList = categoryList
+        categoryTableView.categoryList = originalCategoryList
         
         
         view.addSubview(categoryTableView)
@@ -104,8 +121,8 @@ extension CategoryEditViewController{
             switch result{
             case .success(let data):
                 let categoryList = data
-                self.categoryList = categoryList!
-                self.categoryTableView.categoryList = self.categoryList
+                self.originalCategoryList = categoryList!
+                self.categoryTableView.categoryList = self.originalCategoryList
                 
             case .failure(.failure(message: let message)):
                 print(message)
