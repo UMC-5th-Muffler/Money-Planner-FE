@@ -147,7 +147,7 @@ extension MufflerAPI: TargetType {
     var task: Task {
         switch self {
         case .refreshToken, .loginKakao, .loginApple, .connect,
-                .createGoal, .getCategoryFilter,.getCategory,.updateRate, .updateZeroDay,.updateCategory:
+                .createGoal, .getCategoryFilter,.getCategory,.updateRate, .updateZeroDay:
             return .requestPlain
         case .getPreviousGoals, .getExpense,.fetchAvailableExpenseDates, .getWeeklyExpense, .searchExpense,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
@@ -161,6 +161,9 @@ extension MufflerAPI: TargetType {
                 return .requestJSONEncodable(expenseRequest)
         case .updateExpense(let expenseRequest):
             return .requestJSONEncodable(expenseRequest)
+        case .updateCategory(let request):
+            return .requestJSONEncodable(request)
+
         }
         
     }

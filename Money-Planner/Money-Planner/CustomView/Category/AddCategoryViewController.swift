@@ -138,11 +138,10 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
             
                 
                 if let index = categories.firstIndex(where: { $0.name == name }) {
-                    print(index)
-                    print(self?.categories[index].type)
                     if let type = self?.categories[index].type {
                         if type == "CUSTOM"{
                             print("타입 : 커스텀")
+                            self?.currIcon = icon
                             self?.categories.remove(at: index)
                             // 삭제 버튼 추가
                             self?.setupDelete()
@@ -413,6 +412,7 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
     
     private func fixCategoryComplete(){
         print("카테고리 수정 완료")
+        print(categoryId, currText, currIcon)
         let request = UpdateCategoryRequest(categoryId: categoryId, name: currText, icon: currIcon)
         viewModel.updateCategory(request: request)
             .subscribe(onNext: {  response in
@@ -427,7 +427,6 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
     }
     @objc private func deleteCategoryComplete(){
         print("카테고리 삭제 완료")
-        
         viewModel.deleteCategory(categoryId: categoryId)
             .subscribe(onNext: {  response in
              print(response)

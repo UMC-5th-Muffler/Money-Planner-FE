@@ -7,15 +7,13 @@
 
 import Foundation
 
-struct ConnectModel: Decodable {
+struct ConnectModel: Codable {
     let isSuccess: Bool
     let message: String?
     let result: ResultType?
 
-    struct ResultType: Decodable {
-        let key1: String
-        let key2: Int
-        // ... 다른 속성들
+    struct ResultType: Codable {
+        
     }
 
     private enum CodingKeys: String, CodingKey {
