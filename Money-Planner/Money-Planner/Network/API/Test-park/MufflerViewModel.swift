@@ -148,6 +148,19 @@ class MufflerViewModel {
             .map(CreateCategoryResponse.self)
             .asObservable()
     }
+    
+    // 카테고리 수정
+    func updateCategory(categoryId : Int64) -> Observable<CreateCategoryResponse> {
+        return provider.request(.createCategory(request: request))
+            .map(CreateCategoryResponse.self)
+            .asObservable()
+    }
+    // 카테고리 삭제
+    func deleteCategory(categoryId : Int64) -> Observable<CreateCategoryResponse> {
+        return provider.request(.createCategory(request: request))
+            .map(CreateCategoryResponse.self)
+            .asObservable()
+    }
 //
 //    // Rate Controller
 //    func updateRate(date: String) -> Observable<MyRepo> {

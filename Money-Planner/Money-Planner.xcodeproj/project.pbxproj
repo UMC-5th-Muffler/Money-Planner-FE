@@ -396,7 +396,8 @@
 				208C90D02B7BD33300C67960 /* UpdateExpenseRequest.swift */,
 				205894032B825B36008F536D /* OverViewExpenseResponse.swift */,
 			);
-			path = Expense;
+			name = Expense;
+			path = ../ViewModel/Expense;
 			sourceTree = "<group>";
 		};
 		208F5E7C2B80C7EF00107735 /* DailyPlan */ = {
@@ -404,7 +405,8 @@
 			children = (
 				208F5E7D2B80C81E00107735 /* ZeroDayRequest.swift */,
 			);
-			path = DailyPlan;
+			name = DailyPlan;
+			path = ../ViewModel/DailyPlan;
 			sourceTree = "<group>";
 		};
 		208F5E7F2B8102A400107735 /* Calendar */ = {
@@ -447,7 +449,8 @@
 				208F5E8D2B81323500107735 /* get */,
 				208F5E8C2B81321400107735 /* create */,
 			);
-			path = Category;
+			name = Category;
+			path = ../ViewModel/Category;
 			sourceTree = "<group>";
 		};
 		208F5E8C2B81321400107735 /* create */ = {
@@ -608,9 +611,6 @@
 		7A610ACD2B480B1400D3096F /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				208F5E852B81259100107735 /* Category */,
-				208F5E7C2B80C7EF00107735 /* DailyPlan */,
-				208C90CB2B7BBC5500C67960 /* Expense */,
 				D20D701F2B66FE8F006D6762 /* Home */,
 			);
 			path = ViewModel;
@@ -619,6 +619,9 @@
 		7A610ACE2B480B5B00D3096F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				208F5E852B81259100107735 /* Category */,
+				208F5E7C2B80C7EF00107735 /* DailyPlan */,
+				208C90CB2B7BBC5500C67960 /* Expense */,
 				208C90BC2B6FE4CF00C67960 /* Member */,
 				7A610AE42B491ED600D3096F /* Dummy.swift */,
 				D20D6FF22B5D67B1006D6762 /* Category.swift */,

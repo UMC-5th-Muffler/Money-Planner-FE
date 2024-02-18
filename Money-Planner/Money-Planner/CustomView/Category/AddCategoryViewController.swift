@@ -47,6 +47,7 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
     private lazy var headerView = HeaderView(title: "카테고리 추가")
     var currText : String = ""
     var currIcon : String
+    let categoryId : Int64
     let picContainer : UIView = {
         let view = UIView()
         //view.backgroundColor = .red
@@ -100,8 +101,9 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
     }()
     
     // 이니셜라이저를 정의하여 expenseId를 전달 받을 수 있도록 합니다.
-    init(name: String, icon: String) {
+    init(name: String, icon: String, id : Int64) {
         initName = name
+        categoryId = id
         if name != "" {
             // 수정 화면 : 카테고리 이름과 아이콘 반영
             VCType = "FIX"

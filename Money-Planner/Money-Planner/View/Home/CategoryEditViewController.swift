@@ -13,7 +13,7 @@ class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, A
         let category = categoryList[indexPath.item]
         categoryName = category.name
         categoryIcon = category.categoryIcon
-        
+        categoryId = Int64(category.id)
         presentCategoryDetail()
     }
     
@@ -42,6 +42,7 @@ class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, A
     var categoryList : [Category] = []
     var categoryName : String?
     var categoryIcon : String?
+    var categoryId : Int64?
     private let canEditLabel: MPLabel = {
         let label = MPLabel()
         label.text = "카테고리 순서를 편집할 수 있습니다."
@@ -126,7 +127,7 @@ extension CategoryEditViewController{
     }
   
     func presentCategoryDetail(){
-        let catDetailVC = AddCategoryViewController(name: categoryName ?? "", icon: categoryIcon ?? "")
+        let catDetailVC = AddCategoryViewController(name: categoryName ?? "", icon: categoryIcon ?? "", id : categoryId ?? -1)
             catDetailVC.modalPresentationStyle = .overFullScreen
             catDetailVC.delegate = self
             present(catDetailVC, animated: true)
@@ -136,7 +137,7 @@ extension CategoryEditViewController{
     private func addButtonTapped() {
         print("add button tapped")
         // 카테고리 추가화면
-        let addCategoryVC = AddCategoryViewController(name: "", icon: "")
+        let addCategoryVC = AddCategoryViewController(name: "", icon: "", id: -1)
         addCategoryVC.modalPresentationStyle = .fullScreen
         addCategoryVC.delegate = self
         present(addCategoryVC, animated: true)
