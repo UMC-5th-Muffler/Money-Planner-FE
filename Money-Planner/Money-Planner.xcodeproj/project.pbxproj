@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		20118A112B56A86100B2569E /* ConsumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20118A102B56A86100B2569E /* ConsumeViewController.swift */; };
 		202754242B7FBF860084A757 /* ExpenseTapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202754232B7FBF860084A757 /* ExpenseTapController.swift */; };
+		205894022B825A92008F536D /* ExpenseZeroDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205894012B825A92008F536D /* ExpenseZeroDayView.swift */; };
 		206C58D42B623C43008410C1 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206C58D32B623C43008410C1 /* CategoryCell.swift */; };
 		206C58D82B626465008410C1 /* CategoryModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206C58D72B626465008410C1 /* CategoryModalViewController.swift */; };
 		206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */; };
@@ -165,6 +166,7 @@
 /* Begin PBXFileReference section */
 		20118A102B56A86100B2569E /* ConsumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumeViewController.swift; sourceTree = "<group>"; };
 		202754232B7FBF860084A757 /* ExpenseTapController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseTapController.swift; sourceTree = "<group>"; };
+		205894012B825A92008F536D /* ExpenseZeroDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseZeroDayView.swift; sourceTree = "<group>"; };
 		206C58D32B623C43008410C1 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		206C58D72B626465008410C1 /* CategoryModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModalViewController.swift; sourceTree = "<group>"; };
 		206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendartModalViewController.swift; sourceTree = "<group>"; };
@@ -633,6 +635,7 @@
 				551E8B752B7D13490008476B /* zeroModalView.swift */,
 				551E8B772B7D135E0008476B /* evaluationModalView.swift */,
 				208F5E7A2B80BA0B00107735 /* ExpensePopupModalView.swift */,
+				205894012B825A92008F536D /* ExpenseZeroDayView.swift */,
 			);
 			name = Notification;
 			path = ../../Notification;
@@ -1011,6 +1014,7 @@
 				7A610AD22B49004200D3096F /* MyPageViewController.swift in Sources */,
 				7A610AD22B49004200D3096F /* MyPageViewController.swift in Sources */,
 				D20D703A2B68C591006D6762 /* TestRepository.swift in Sources */,
+				205894022B825A92008F536D /* ExpenseZeroDayView.swift in Sources */,
 				D20D70022B5FF088006D6762 /* Formatter.swift in Sources */,
 				7AC060FF2B4C5D78008C0E63 /* Design.swift in Sources */,
 				7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */,
