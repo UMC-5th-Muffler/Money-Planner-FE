@@ -106,6 +106,7 @@ extension RepeatConsumeViewController {
         let routine = routineList[indexPath.row]
         
         cell.configure(with: routine)
+        cell.selectionStyle = .none
         
         return cell
     }
