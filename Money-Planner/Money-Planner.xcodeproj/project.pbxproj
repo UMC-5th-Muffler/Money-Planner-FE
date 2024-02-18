@@ -133,6 +133,9 @@
 		D253EEB92B7B59FE00A4FC1C /* RepeatConsumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEB82B7B59FE00A4FC1C /* RepeatConsumeViewController.swift */; };
 		D253EEBD2B7B652300A4FC1C /* ExpenseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEBC2B7B652300A4FC1C /* ExpenseAPI.swift */; };
 		D253EEBF2B7B653A00A4FC1C /* ExpenseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEBE2B7B653A00A4FC1C /* ExpenseRepository.swift */; };
+		D25D76582B80CC5C0044A74D /* Routine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25D76572B80CC5C0044A74D /* Routine.swift */; };
+		D25D765B2B80D9270044A74D /* RoutineAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25D765A2B80D9270044A74D /* RoutineAPI.swift */; };
+		D25D765D2B80D9330044A74D /* RoutineRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25D765C2B80D9330044A74D /* RoutineRepository.swift */; };
 		D29536F12B4C0DF000EEA81F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29536F02B4C0DF000EEA81F /* UserDefaults.swift */; };
 		D2D0B72B2B6A704B003B6B5E /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B72A2B6A704B003B6B5E /* BaseResponse.swift */; };
 		D2D0B72D2B6A7067003B6B5E /* BaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D0B72C2B6A7067003B6B5E /* BaseAPI.swift */; };
@@ -271,6 +274,9 @@
 		D253EEB82B7B59FE00A4FC1C /* RepeatConsumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatConsumeViewController.swift; sourceTree = "<group>"; };
 		D253EEBC2B7B652300A4FC1C /* ExpenseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseAPI.swift; sourceTree = "<group>"; };
 		D253EEBE2B7B653A00A4FC1C /* ExpenseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseRepository.swift; sourceTree = "<group>"; };
+		D25D76572B80CC5C0044A74D /* Routine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routine.swift; sourceTree = "<group>"; };
+		D25D765A2B80D9270044A74D /* RoutineAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineAPI.swift; sourceTree = "<group>"; };
+		D25D765C2B80D9330044A74D /* RoutineRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineRepository.swift; sourceTree = "<group>"; };
 		D29536EF2B4C091400EEA81F /* Money-Planner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Money-Planner.entitlements"; sourceTree = "<group>"; };
 		D29536F02B4C0DF000EEA81F /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		D2D0B72A2B6A704B003B6B5E /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
@@ -616,6 +622,7 @@
 				D2D0B7392B6BAB02003B6B5E /* Goal.swift */,
 				D2D0B73C2B6BAB7A003B6B5E /* CalendarDaily.swift */,
 				D2D0B7402B6BACAB003B6B5E /* HomeNow.swift */,
+				D25D76572B80CC5C0044A74D /* Routine.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -740,6 +747,7 @@
 		D20D702A2B68BB81006D6762 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				D25D76592B80D91A0044A74D /* Routine */,
 				D253EEBB2B7B651500A4FC1C /* Expense */,
 				208C90C52B7BA6EB00C67960 /* ConsumeAPI */,
 				D217EBED2B7460A700EB6BF3 /* Category */,
@@ -776,6 +784,15 @@
 				D253EEBE2B7B653A00A4FC1C /* ExpenseRepository.swift */,
 			);
 			path = Expense;
+			sourceTree = "<group>";
+		};
+		D25D76592B80D91A0044A74D /* Routine */ = {
+			isa = PBXGroup;
+			children = (
+				D25D765A2B80D9270044A74D /* RoutineAPI.swift */,
+				D25D765C2B80D9330044A74D /* RoutineRepository.swift */,
+			);
+			path = Routine;
 			sourceTree = "<group>";
 		};
 		D29536ED2B4C076F00EEA81F /* Common */ = {
@@ -962,6 +979,7 @@
 				7A4C67432B5A4B22008BCAC9 /* SmallButtonView.swift in Sources */,
 				208C90912B6AB7A200C67960 /* MufflerViewModel.swift in Sources */,
 				202754242B7FBF860084A757 /* ExpenseTapController.swift in Sources */,
+				D25D765D2B80D9330044A74D /* RoutineRepository.swift in Sources */,
 				208C90BE2B710F4800C67960 /* TextFieldContainerView.swift in Sources */,
 				D2D0B72B2B6A704B003B6B5E /* BaseResponse.swift in Sources */,
 				551E8B782B7D135E0008476B /* evaluationModalView.swift in Sources */,
@@ -1023,6 +1041,7 @@
 				7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */,
 				5591601C2B64595E00063F06 /* EvaluationViewController.swift in Sources */,
 				552A43002B7AA03E007AEAAD /* goalDeleteModalView.swift in Sources */,
+				D25D76582B80CC5C0044A74D /* Routine.swift in Sources */,
 				7A610AD62B49007100D3096F /* BattleViewController.swift in Sources */,
 				D29536F12B4C0DF000EEA81F /* UserDefaults.swift in Sources */,
 				D20D703C2B68C599006D6762 /* TestAPI.swift in Sources */,
@@ -1032,6 +1051,7 @@
 				D20D6FF12B5D6635006D6762 /* CategoryButton.swift in Sources */,
 				208F5E8B2B81320D00107735 /* CreateCategoryResponse.swift in Sources */,
 				20118A112B56A86100B2569E /* ConsumeViewController.swift in Sources */,
+				D25D765B2B80D9270044A74D /* RoutineAPI.swift in Sources */,
 				D20D6FDC2B581A5A006D6762 /* UITabBar.swift in Sources */,
 				D20D6FF82B5E974D006D6762 /* MainStatistics.swift in Sources */,
 			);

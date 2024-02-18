@@ -180,7 +180,7 @@ extension HomeViewController{
             case .success(let data):
                 // 아예 골이 없는 경우
                 
-                let goal : Goal? = data?.goalInfo
+                let goal : Goal? = data?.calendarInfo
                 
                 if(goal != nil){
                     self.nowGoal = goal
@@ -224,7 +224,7 @@ extension HomeViewController{
                 (result) in
                 switch result{
                 case .success(let data):
-                    let goal : Goal? = data?.goalInfo
+                    let goal : Goal? = data?.calendarInfo
                     
                     if(goal != nil){
                         self.nowGoal = goal
@@ -255,7 +255,7 @@ extension HomeViewController{
                 case .success(let data):
                     // 아예 골이 없는 경우
                     
-                    let goal : Goal? = data?.goalInfo
+                    let goal : Goal? = data?.calendarInfo
                     
                     if(goal != nil){
                         self.nowGoal = goal
@@ -311,7 +311,7 @@ extension HomeViewController{
             switch result{
             case .success(let data):
                 // 아예 골이 없는 경우
-                let goal : Goal? = data?.goalInfo
+                let goal : Goal? = data?.calendarInfo
                 
                 if(goal != nil){
                     self.nowGoal = goal
@@ -536,14 +536,6 @@ extension HomeViewController{
     }
     
     func setUpConsumeView(cell : UICollectionViewCell){
-        consumeView.data = [
-            DailyConsume(date: "1월 17일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
-            DailyConsume(date: "1월 16일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
-            DailyConsume(date: "1월 15일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
-            DailyConsume(date: "1월 14일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")])
-            
-        ]
-        
         cell.contentView.addSubview(consumeView)
         
         NSLayoutConstraint.activate([
