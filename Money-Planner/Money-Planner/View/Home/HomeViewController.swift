@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class HomeViewController : UIViewController, MainMonthViewDelegate, HomeConsumeViewDelegate, OrderModalDelegate {
-
+    
     var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -106,7 +106,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate, HomeConsumeV
     var consumeList : [DailyConsume] = []
     
     var statisticsData : Statistics?
-        
+    
     var hasNext : Bool = false
     var loading : Bool = false
     
@@ -165,7 +165,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate, HomeConsumeV
             self.consumeList = []
             fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil, categoryId: nil)
         }
-
+        
     }
     
     // HomeConsumeView의 delegate
@@ -324,11 +324,11 @@ extension HomeViewController{
                 if(categoryInfo != nil){
                     self.statisticsData = Statistics(totalCost: categoryInfo!.categoryTotalCost!, goalBudget: categoryInfo!.categoryBudget!)
                 }
-             
+                
                 if(data?.dailyList != nil){
                     self.dailyList = data!.dailyList!
                 }
-
+                
                 DispatchQueue.main.async {
                     self.reloadUI()
                 }
@@ -635,21 +635,21 @@ extension HomeViewController{
     
     
     @objc func searchButtonTapped() {
-                let vc = SearchConsumeViewController()
-                vc.hidesBottomBarWhenPushed = true
-                self.navigationController?.pushViewController(vc, animated: true)
+        let vc = SearchConsumeViewController()
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func bellButtonTapped() {
-                let vc = NotificationViewController()
-                vc.hidesBottomBarWhenPushed = true
-                self.navigationController?.pushViewController(vc, animated: true)
+        let vc = NotificationViewController()
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func menuButtonTapped() {
-              let vc = HomeMoreModalViewController()
-              vc.delegate = self
-              present(vc, animated: true)
+        let vc = HomeMoreModalViewController()
+        vc.delegate = self
+        present(vc, animated: true)
     }
     
     @objc func monthViewTapped(){
@@ -768,24 +768,24 @@ extension HomeViewController : CategoryButtonScrollDelegate{
         
         if(collectionView.currentPage == 0){
             if(categoryId == -1){
-               // 전체 일때
+                // 전체 일때
                 fetchChangeMonthCalendarData()
             }else{
-              // 카테고리 일때
+                // 카테고리 일때
                 fetchCalendarDataWithCategory(categoryId: categoryId)
             }
         }
         
         if(collectionView.currentPage == 1){
             if(categoryId == -1){
-               // 전체 일때
+                // 전체 일때
                 fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil, categoryId: nil)
             }else{
-              // 카테고리 일때
+                // 카테고리 일때
                 fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil, categoryId: categoryId)
             }
         }
-
+        
     }
 }
 
