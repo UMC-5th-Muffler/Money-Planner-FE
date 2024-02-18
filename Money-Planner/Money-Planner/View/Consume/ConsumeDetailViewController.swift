@@ -46,7 +46,7 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
     //
 
     func AddCategory() {
-        let addCategoryVC = AddCategoryViewController()
+        let addCategoryVC = AddCategoryViewController(name: "", icon: "")
         addCategoryVC.modalPresentationStyle = .fullScreen
         addCategoryVC.delegate = self
         present(addCategoryVC, animated: true)

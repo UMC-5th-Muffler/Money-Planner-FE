@@ -15,13 +15,19 @@ protocol AddCategoryViewDelegate : AnyObject{
     func AddCategoryCompleted (_ name : String, iconName: String)
     
 }
+struct CategoryType{
+    let name : String
+    let type : String
+}
 class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryIconSelectionDelegate {
     func didSelectCategoryIcon(_ icon: Int) {
         print("아이콘 설정 완료")
         selectedIcon = icon
         picButton.setImage(icons[icon], for: .normal)
     }
-    var categories : [String]!
+    var VCType : String
+    let initName : String
+    var categories : [CategoryType] = []
     let disposeBag = DisposeBag()
     let viewModel = MufflerViewModel()
     var selectedIcon : Int = 3
@@ -40,7 +46,7 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
     weak var delegate: AddCategoryViewDelegate?
     private lazy var headerView = HeaderView(title: "카테고리 추가")
     var currText : String = ""
-    
+    var currIcon : String
     let picContainer : UIView = {
         let view = UIView()
         //view.backgroundColor = .red
@@ -51,8 +57,6 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
         button.layer.cornerRadius = 45
         button.layer.masksToBounds = true
         button.backgroundColor = .red
-        let buttonImg = UIImage(named: "add-04")
-        button.setImage(buttonImg, for: .normal)
         button.backgroundColor = .mpGypsumGray
  
         return button
@@ -95,7 +99,90 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
         return label
     }()
     
-    
+    // 이니셜라이저를 정의하여 expenseId를 전달 받을 수 있도록 합니다.
+    init(name: String, icon: String) {
+        initName = name
+        if name != "" {
+            // 수정 화면 : 카테고리 이름과 아이콘 반영
+            VCType = "FIX"
+            categoryTextField.text = name
+            picButton.setImage(UIImage(named: icon), for: .normal)
+            completeButton.isEnabled = true
+            currIcon = ""
+
+        }else{
+            // 추가 화면 : 완료 버튼 비활성화
+            VCType = "ADD"
+            completeButton.isEnabled = false
+            // 기본 아이콘
+            currIcon = "add-04"
+            picButton.setImage(UIImage(named : currIcon), for: .normal)
+        }
+        
+        super.init(nibName: nil, bundle: nil)
+
+        // 현재 카테고리 리스트 가져오기
+        // 네트워크 요청을 통해 초기 데이터를 가져옵니다.
+        viewModel.getCategory()
+            .subscribe(onNext: { [weak self] response in
+                // 네트워크 응답에 대한 처리
+                print(response)
+                print("log : 카테고리 조회 성공! - 중복이름 설정을 위한")
+                let categories = response.result.categories
+                print(categories)
+                for item in categories {
+                    self?.categories.append(CategoryType(name: item.name, type: item.type))
+                }
+            
+                
+                if let index = categories.firstIndex(where: { $0.name == name }) {
+                    print(index)
+                    if self?.categories[index].type == "CUSTOM"{
+                        self?.categories.remove(at: index)
+                        // 삭제 버튼 추가
+                        self?.setupDelete()
+                    }
+                    // 디폴트
+                    if self?.categories[index].type == "DEFAULT"{
+                        self?.categories.remove(at: index)
+                        self?.picButton.isUserInteractionEnabled = false
+                    }
+                    
+                }
+                }, onError: { error in
+                // 에러 처리
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        if name != "" {
+            // 수정 화면 : 카테고리 이름과 아이콘 반영
+            VCType = "FIX"
+            categoryTextField.text = name
+            picButton.setImage(UIImage(named: icon), for: .normal)
+            completeButton.isEnabled = true
+            currIcon = ""
+
+        }else{
+            // 추가 화면 : 완료 버튼 비활성화
+            VCType = "ADD"
+            completeButton.isEnabled = false
+            // 기본 아이콘
+            currIcon = "add-04"
+            picButton.setImage(UIImage(named : currIcon), for: .normal)
+            
+            
+            // 직접 추가
+
+        }
+        
+       
+      
+    }
+   
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         setupUI()
     }
@@ -104,20 +191,7 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "mpWhite")
         view.backgroundColor = .systemBackground
-        
-        // 현재 카테고리 리스트 가져오기
-        // 네트워크 요청을 통해 초기 데이터를 가져옵니다.
-        viewModel.getCategory()
-            .subscribe(onNext: { response in
-                // 네트워크 응답에 대한 처리
-                print("log : 카테고리 조회 성공!")
-                print(response)
-                self.categories = response.result.categories.map { $0.name }
-                }, onError: { error in
-                // 에러 처리
-                print("Error: \(error)")
-            })
-            .disposed(by: disposeBag)
+    
         // 헤더
         setupHeader()
         
@@ -136,7 +210,29 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
         iconSelectionVC.delegate = self
         present(iconSelectionVC, animated: true)
     }
+    private func setupDelete(){
+        let deleteButton : UIButton = {
+            let btn = UIButton()
+            btn.clipsToBounds = true
+            btn.layer.cornerRadius = 12
+            btn.setTitle("삭제", for: .normal)
+            btn.backgroundColor = .mpGypsumGray
+            btn.setTitleColor(.mpRed, for: .normal)
+            return btn
+        }()
+        
+        view.addSubview(deleteButton)
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            deleteButton.heightAnchor.constraint(equalToConstant: 56),
+            deleteButton.widthAnchor.constraint(equalToConstant: 157),
+            deleteButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            deleteButton.bottomAnchor.constraint(equalTo: completeButton.topAnchor, constant: -40)
     
+        ])
+        
+        deleteButton.addTarget(self, action: #selector(deleteCategoryComplete), for: .touchUpInside)
+    }
     // 세팅 : 헤더
     private func setupHeader(){
         view.addSubview(headerView)
@@ -208,7 +304,6 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
     
     // 세팅 : 완료 버튼
     private func setupCompleteButton(){
-        completeButton.isEnabled = false
         view.addSubview(completeButton)
         completeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -242,7 +337,7 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
         print(currText)
 
         // 카테고리 이름 중복 검사
-        if categories.contains(currText) {
+        if categories.contains(where: { $0.name == currText }) {
             print("notice : 이미 있는 카테고리 이름입니다.")
             textField.layer.borderColor = UIColor.mpRed.cgColor
             textField.layer.borderWidth = 1.0
@@ -264,8 +359,29 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
    
     @objc
     private func completeButtonTapped(){
-        print("카테고리 추가가 완료되었습니다.")
-        // 카테고리 추가 완료
+        if currText == "" &&  currIcon == "" {
+            print("변경한 것이 없음")
+            
+        }else{
+            // 카테고리 추가
+            if VCType == "ADD"{
+                print("카테고리 추가가 완료되었습니다.")
+                addCategoryComplete()
+            }
+            
+            // 카테고리 수정
+            else if  VCType == "FIX"{
+                if initName != currText {
+                    fixCategoryComplete()
+                }
+            }
+        }
+        
+        // 모달 닫기
+        dismiss(animated: true, completion: nil)
+    }
+    
+    private func addCategoryComplete(){
         let iconNameString : String
         let iconNamePlus = selectedIcon + 1
         if selectedIcon != 10 {
@@ -285,7 +401,16 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
             .disposed(by: disposeBag)
         
         delegate?.AddCategoryCompleted(currText, iconName: iconNameString)
-        dismiss(animated: true, completion: nil)
+    }
+    
+    private func fixCategoryComplete(){
+        print("카테고리 수정 완료")
+        
+        
+    }
+    @objc private func deleteCategoryComplete(){
+        print("카테고리 삭제 완료")
+        
     }
 }
 
