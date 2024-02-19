@@ -34,5 +34,4 @@ class UnregisterTitleLabel: MPLabel {
 
         attributedText = attributedString
     }
-    
 }

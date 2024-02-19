@@ -180,7 +180,7 @@ extension HomeViewController{
             case .success(let data):
                 // 아예 골이 없는 경우
                 
-                let goal : Goal? = data?.calendarInfo
+                let goal : Goal? = data?.goalInfo
                 
                 if(goal != nil){
                     self.nowGoal = goal
@@ -224,7 +224,9 @@ extension HomeViewController{
                 (result) in
                 switch result{
                 case .success(let data):
-                    let goal : Goal? = data?.calendarInfo
+                    // 아예 골이 없는 경우
+                    
+                    let goal : Goal? = data?.goalInfo
                     
                     if(goal != nil){
                         self.nowGoal = goal
@@ -255,7 +257,7 @@ extension HomeViewController{
                 case .success(let data):
                     // 아예 골이 없는 경우
                     
-                    let goal : Goal? = data?.calendarInfo
+                    let goal : Goal? = data?.goalInfo
                     
                     if(goal != nil){
                         self.nowGoal = goal
@@ -303,45 +305,6 @@ extension HomeViewController{
         }
     }
     
-    func fetchChangeGoalData(goalId : Int){
-        self.loading = true
-        
-        HomeRepository.shared.getCalendarListWithGoal(goalId: goalId, yearMonth: nil){
-            (result) in
-            switch result{
-            case .success(let data):
-                // 아예 골이 없는 경우
-                let goal : Goal? = data?.calendarInfo
-                
-                if(goal != nil){
-                    self.nowGoal = goal
-                    print(goal)
-                    self.monthView.updateYearAndMonth(to: self.nowGoal!.startDate!.toDate!)
-                    
-                    self.calendarView.changeMonth(monthIndex: self.monthView.currentMonth, year: self.monthView.currentYear)
-                }
-                
-                if(data?.dailyList != nil){
-                    self.dailyList = data!.dailyList!
-                }
-                
-                DispatchQueue.main.async {
-                    self.reloadUI()
-                }
-                
-                self.loading = false
-            case .failure(.failure(message: let message)):
-                print(message)
-                self.loading = false
-            case .failure(.networkFail(let error)):
-                print(error)
-                print("networkFail in loginWithSocialAPI")
-                self.loading = false
-            }
-        }
-        
-    }
-    
     func fetchConsumeData(order : String?, lastDate: String?, lastExpenseId: Int?, categoryId: Int?){
         self.loading = true
         
@@ -381,7 +344,7 @@ extension HomeViewController{
             statisticsView.goal = self.nowGoal
             calendarView.goal = self.nowGoal
             
-            statisticsView.progress = getProgress(numerator: self.nowGoal!.totalCost!, denominator: self.nowGoal!.goalBudget!)
+            statisticsView.progress = getProgress(numerator: Int(self.nowGoal!.totalCost!), denominator: Int(self.nowGoal!.goalBudget!))
         }else{
             statisticsView.progress = 0.0
         }
@@ -512,7 +475,7 @@ extension HomeViewController{
     func setupCalendarView(cell : UICollectionViewCell){
         
         if(self.nowGoal != nil){
-            statisticsView.progress = getProgress(numerator: self.nowGoal!.totalCost!, denominator: self.nowGoal!.goalBudget!)
+            statisticsView.progress = getProgress(numerator: Int(self.nowGoal!.totalCost!), denominator: Int(self.nowGoal!.goalBudget!))
         }else{
             statisticsView.progress = 0.0
         }
@@ -536,6 +499,14 @@ extension HomeViewController{
     }
     
     func setUpConsumeView(cell : UICollectionViewCell){
+        consumeView.data = [
+            DailyConsume(date: "1월 17일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
+            DailyConsume(date: "1월 16일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
+            DailyConsume(date: "1월 15일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")]),
+            DailyConsume(date: "1월 14일", dailyTotalCost: 3000, expenseDetailList: [ConsumeDetail(expenseId: 0, title: "아메리카노", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 1, title: "카페라떼", cost: 1000, categoryIcon: "1"), ConsumeDetail(expenseId: 2, title: "맛있는거", cost: 1000, categoryIcon: "1")])
+            
+        ]
+        
         cell.contentView.addSubview(consumeView)
         
         NSLayoutConstraint.activate([
@@ -585,7 +556,6 @@ extension HomeViewController{
     
     @objc func monthViewTapped(){
         let goalListModalVC = GoalListModalViewController()
-        goalListModalVC.selectedGoal = nowGoal
         goalListModalVC.delegate = self
         present(goalListModalVC, animated: true)
     }
@@ -683,8 +653,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 }
 
 extension HomeViewController : GoalListModalViewDelegate{
-    func changeGoal(goalId: Int) {
-        fetchChangeGoalData(goalId: goalId)
+    func changeGoal(category: Category) {
+        print("hi")
     }
 }
 
