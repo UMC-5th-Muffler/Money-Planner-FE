@@ -10,12 +10,14 @@ import UIKit
 
 class RepeatConsumeViewController : UIViewController,  UITableViewDataSource, UITableViewDelegate  {
     
-    var data: [DailyConsume] = [] {
+    var routineList: [Routine] = [] {
         didSet {
             tableView.reloadData()
         }
     }
     
+    var loading : Bool = false
+    var hasNext : Bool = false
     
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -25,34 +27,60 @@ class RepeatConsumeViewController : UIViewController,  UITableViewDataSource, UI
         table.backgroundColor = .clear
         return table
     }()
-
+    
     override func viewDidLoad(){
         super.viewDidLoad()
+        fetchRepeatConsumeData()
         view.backgroundColor = .mpWhite
-
+        
         
         self.navigationController?.navigationBar.tintColor = .mpBlack
         self.navigationController?.navigationBar.topItem?.title = ""
         self.navigationItem.title = "반복 소비내역"
         
-
-    }
-    
-    override func loadView() {
-        super.loadView()
         setupUI()
     }
-        
+    
 }
 
 extension RepeatConsumeViewController{
     
     func setupUI(){
-
+        view.addSubview(tableView)
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(RepeatConsumeRecordCell.self, forCellReuseIdentifier: "RepeatConsumeRecordCell")
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
     }
     
-    @objc func addButtonTapped() {
-        print("add button tapped")
+    func fetchRepeatConsumeData(){
+        self.loading = true
+        RoutineRepository.shared.getRoutineList{
+            (result) in
+            switch result{
+            case .success(let data):
+                self.loading = false
+                self.hasNext = data!.hasNext
+                let routineList = data?.routineList ?? []
+                self.routineList = routineList
+                
+                
+            case .failure(.failure(message: let message)):
+                print(message)
+                self.loading = false
+            case .failure(.networkFail(let error)):
+                print(error)
+                print("networkFail in loginWithSocialAPI")
+                self.loading = false
+            }
+        }
     }
 }
 
@@ -60,98 +88,60 @@ extension RepeatConsumeViewController{
 extension RepeatConsumeViewController {
     // MARK: - UITableViewDataSource
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return data.count
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return routineList.count
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data[section].expenseDetailList!.count
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 86 // 셀의 높이
     }
+
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "RepeatConsumeRecordCell", for: indexPath) as? RepeatConsumeRecordCell else {
             
-            fatalError("Unable to dequeue ConsumeRecordCell")
+            fatalError("Unable to dequeue RepeatConsumeRecordCell")
         }
         
-        let consumeRecord = data[indexPath.section].expenseDetailList![indexPath.row]
+        let routine = routineList[indexPath.row]
         
-        cell.configure(with: consumeRecord)
+        cell.configure(with: routine)
+        cell.selectionStyle = .none
         
         return cell
     }
     
-    // MARK: - UITableViewDelegate
-    
-    // 여기에 UITableViewDelegate 관련 메서드를 추가할 수 있습니다.
-    // 예를 들면, 셀을 선택했을 때의 동작 등을 구현할 수 있습니다.
-    
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        
-        let separatorView : UIView = {
-            let v = UIView()
-            v.translatesAutoresizingMaskIntoConstraints = false
-            v.backgroundColor = .mpGypsumGray
-            v.heightAnchor.constraint(equalToConstant: 1)
-            return v
-        }()
-        
-        // 섹션 헤더에 표시할 내용을 추가
-        let titleLabel = UILabel()
-        titleLabel.text = data[section].date.formatMonthAndDate
-        titleLabel.textColor = UIColor(hexCode: "9FAAB0")
-        titleLabel.font = UIFont.mpFont14M()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addSubview(titleLabel)
-        
-        // "Cost" 텍스트를 추가
-        let costLabel = UILabel()
-        
-        let result: String = data[section].dailyTotalCost!.formattedWithSeparator()
-        
-        costLabel.text = "\(result)원"
-        costLabel.textColor = UIColor.mpDarkGray
-        costLabel.font = UIFont.mpFont14M()
-        costLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addSubview(costLabel)
-        headerView.addSubview(separatorView)
-        
-        // Auto Layout 설정
-        NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
-            titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            
-            costLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
-            costLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            
-            
-            //            separatorView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            //            separatorView.trailingAnchor.constraint(equalTo: costLabel.trailingAnchor)
-        ])
-        
-        return headerView
-    }
 }
 
 
 class RepeatConsumeRecordCell: UITableViewCell {
     
-    private let costLabel: UILabel = {
+    private let repeatNameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.mpFont16B()
+        label.font = UIFont.mpFont16M()
         label.translatesAutoresizingMaskIntoConstraints = false
         // 다른 설정을 추가할 수 있습니다.
         return label
     }()
     
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.mpFont14M()
+    private let stackView : UIStackView = {
+        let view = UIStackView()
+        view.axis = .horizontal
+        view.spacing = 4
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layoutMargins = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
+        view.isLayoutMarginsRelativeArrangement = true
+        view.layer.cornerRadius = 6
+        view.backgroundColor = .mpGypsumGray
+        
+        return view
+    }()
+    
+    private let repeatDayLabel: MPLabel = {
+        let label = MPLabel()
+        label.font = UIFont.mpFont12M()
         label.textColor = .mpDarkGray
         label.translatesAutoresizingMaskIntoConstraints = false
-        // 다른 설정을 추가할 수 있습니다.
         return label
     }()
     
@@ -162,6 +152,23 @@ class RepeatConsumeRecordCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    private let costLabel: MPLabel = {
+        let label = MPLabel()
+        label.font = UIFont.mpFont16R()
+        label.textColor = .mpDarkGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let chevronView: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(systemName: "chevron.right")
+        view.tintColor = .mpDarkGray
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -174,32 +181,88 @@ class RepeatConsumeRecordCell: UITableViewCell {
     }
     
     private func setupUI() {
-        addSubview(circleView)
-        addSubview(costLabel)
-        addSubview(titleLabel)
+        contentView.addSubview(circleView)
+        contentView.addSubview(repeatNameLabel)
+        contentView.addSubview(chevronView)
+        contentView.addSubview(stackView)
+        contentView.addSubview(costLabel)
+        
+        stackView.addArrangedSubview(repeatDayLabel)
         
         NSLayoutConstraint.activate([
-            circleView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            circleView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
             circleView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+//            circleView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
             circleView.heightAnchor.constraint(equalToConstant: 44),
             circleView.widthAnchor.constraint(equalToConstant: 44),
             
-            costLabel.topAnchor.constraint(equalTo: circleView.topAnchor, constant: 2),
-            costLabel.leadingAnchor.constraint(equalTo: circleView.trailingAnchor, constant: 16),
-            costLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            repeatNameLabel.topAnchor.constraint(equalTo: circleView.topAnchor, constant: 0),
+            repeatNameLabel.leadingAnchor.constraint(equalTo: circleView.trailingAnchor, constant: 16),
+            repeatNameLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             
-            titleLabel.leadingAnchor.constraint(equalTo: circleView.trailingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: circleView.bottomAnchor, constant: -2)
+            chevronView.centerYAnchor.constraint(equalTo: repeatNameLabel.centerYAnchor),
+            chevronView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            
+            costLabel.topAnchor.constraint(equalTo: repeatNameLabel.topAnchor),
+            costLabel.trailingAnchor.constraint(equalTo: chevronView.leadingAnchor, constant: -6),
+            
+            
+            stackView.leadingAnchor.constraint(equalTo: circleView.trailingAnchor, constant: 16),
+            stackView.bottomAnchor.constraint(equalTo: circleView.bottomAnchor, constant: 0)
         ])
         
     }
     
-    func configure(with consumeRecord: ConsumeDetail) {
-        titleLabel.text = consumeRecord.title
-        costLabel.text = consumeRecord.cost.formattedWithSeparator() + "원"
-        // 다른 데이터를 사용하여 셀을 업데이트할 수 있습니다.
+    func configure(with routine: Routine) {
+        repeatNameLabel.text = routine.routineTitle
+        //        repeatDayLabel.text = routine.rout
+        
+        costLabel.text = routine.routineCost!.formattedWithSeparator() + "원"
+        
+        if(routine.monthlyRepeatDay != nil){
+            //매달
+            repeatDayLabel.text = "매달 \(routine.monthlyRepeatDay)일"
+        }else{
+            //매주
+            if(routine.weeklyDetail?.weeklyTerm == 1){
+                repeatDayLabel.text = "매주 "
+            }
+            
+            if(routine.weeklyDetail?.weeklyTerm == 2){
+                repeatDayLabel.text = "격주 "
+            }
+            
+            if(routine.weeklyDetail?.weeklyTerm == 3){
+                repeatDayLabel.text = "3주 "
+            }
+            
+            for day in routine.weeklyDetail!.weeklyRepeatDays! {
+                switch day {
+                case 1:
+                    repeatDayLabel.text = repeatDayLabel.text! + "월"
+                case 2:
+                    repeatDayLabel.text = repeatDayLabel.text! + "화"
+                case 3:
+                    repeatDayLabel.text = repeatDayLabel.text! + "수"
+                case 4:
+                    repeatDayLabel.text = repeatDayLabel.text! + "목"
+                case 5:
+                    repeatDayLabel.text = repeatDayLabel.text! + "금"
+                case 6:
+                    repeatDayLabel.text = repeatDayLabel.text! + "토"
+                case 7:
+                    repeatDayLabel.text = repeatDayLabel.text! + "일"
+                default:
+                    break
+                }
+                
+                if(day != routine.weeklyDetail!.weeklyRepeatDays!.last){
+                    repeatDayLabel.text = repeatDayLabel.text! + ","
+                }
+            }
+            
+            repeatDayLabel.text = repeatDayLabel.text! + "요일"
+            
+        }
     }
 }

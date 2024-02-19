@@ -12,9 +12,25 @@ import RxCocoa
 
 // 소비 수정 및 삭제 컨트롤러
 class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, CategorySelectionDelegate,CalendarSelectionDelegate,RepeatModalViewDelegate,AddCategoryViewDelegate {
+    func AddCategoryCompleted(_ name: String, iconName: String) {
+        print("카테고리 추가 반영 완료\(name)\(iconName)")
+        cateogoryTextField.text = name
+        cateogoryTextField.changeIcon(iconName: iconName)
+        catAdd = true // 카테고리 선택된 것 반영
+
+        view.layoutIfNeeded()
+    }
+    
+    func didSelectCategory(id: Int64, category: String, iconName: String) {
+        catAdd = true // 카테고리 선택된 것 반영
+        cateogoryTextField.text = category
+        cateogoryTextField.changeIcon(iconName: iconName)
+        currentCategoryId = id
+    }
+    
     var expenseId: Int64 = 0
     var initExpense : ResponseExpenseDto.ExpenseDto?
-
+    var currentCategoryId : Int64 = 0
 
 
     let StackView = UIStackView()
@@ -29,23 +45,8 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
     var routineRequest : ExpenseCreateRequest.RoutineRequest?
     //
 
-    func AddCategoryCompleted(_ name: String, iconName: Int) {
-        print("카테고리 추가 반영 완료\(name)\(iconName)")
-        let temp : String
-        if iconName != 10 {
-            temp = "add-0\(iconName)"
-        }
-        else{
-            temp = "add-\(iconName)"
-        }
-        cateogoryTextField.text = name
-        cateogoryTextField.changeIcon(iconName: temp)
-        catAdd = true // 카테고리 선택된 것 반영
-
-        view.layoutIfNeeded()
-    }
     func AddCategory() {
-        let addCategoryVC = AddCategoryViewController()
+        let addCategoryVC = AddCategoryViewController(name: "", icon: "", id: -1)
         addCategoryVC.modalPresentationStyle = .fullScreen
         addCategoryVC.delegate = self
         present(addCategoryVC, animated: true)
@@ -132,8 +133,6 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
     
     @objc
     private func showCategoryModal() {
-        var categories : [CategoryDTO] = []
-
         print("클릭 : 카테고리 선택을 위해 카테고리 선택 모달로 이동합니다")
         // 카테고리 조회 하기
         viewModel.getCategoryFilter()
@@ -151,12 +150,7 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
             .disposed(by: disposeBag)
     }
     
-    func didSelectCategory(_ category: String, iconName : String) {
-        catAdd = true // 카테고리 선택된 것 반영
-        cateogoryTextField.text = category
-        cateogoryTextField.changeIcon(iconName: iconName)
-
-    }
+ 
     let deleteButton: UIButton = {
         let arrowImage = UIImage(systemName: "xmark")?.withTintColor(.mpWhite, renderingMode: .alwaysOriginal)
         let button = UIButton()
@@ -365,7 +359,7 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
             cateogoryTextField.text = expense.categoryName
             titleTextField.text = expense.title
             memoTextField.text = expense.memo
-            
+            currentCategoryId = expense.categoryId
             let dateString = expense.date
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -932,11 +926,12 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
     private func completeButtonTapped(){
         print("수정이 완료되었습니다")
         print(expenseId)
-        
-      
+        let currDay : String
+        // 제로데이인지 확인
+    
         // api 연결
         expenseRequest.expenseId = expenseId
-        expenseRequest.categoryId = 2
+        expenseRequest.categoryId = currentCategoryId
         expenseRequest.expenseCost = currentAmount
         if let text = titleTextField.text { expenseRequest.expenseTitle = text}
         if let text = memoTextField.text { expenseRequest.expenseMemo = text}
@@ -946,12 +941,15 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
             if let date = dateFormatter.date(from: text) {
                 dateFormatter.dateFormat = "yyyy-MM-dd"
                 let convertedDateString = dateFormatter.string(from: date)
+                currDay = convertedDateString
                 expenseRequest.expenseDate = convertedDateString
             } else {
                 print("날짜 변환 실패")
             }
         }
-
+        struct ZeroDayRequest{
+            var dailyPlanDate : String
+        }
         print(expenseRequest)
         do {
                 let encoder = JSONEncoder()
@@ -963,7 +961,13 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
             } catch {
                 print("Error encoding JSON: \(error)")
             }
+        // 제로데이 확인
+        dismiss()
         
+        
+        
+    }
+    private func dismiss(){
         viewModel.updateExpense(expenseRequest: expenseRequest)
             .subscribe(
             onSuccess: { response in
@@ -973,6 +977,5 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
             }).disposed(by: disposeBag)
         
         dismiss(animated: true)
-        
     }
 }

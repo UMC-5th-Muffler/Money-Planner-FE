@@ -8,22 +8,28 @@
 import Foundation
 import UIKit
 
-class CategoryEditViewController : UIViewController {
+class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, AddCategoryViewDelegate {
+    func categoryDidSelect(at indexPath: IndexPath) {
+        let category = categoryList[indexPath.item]
+        categoryName = category.name
+        categoryIcon = category.categoryIcon
+        categoryId = Int64(category.id)
+        presentCategoryDetail()
+    }
+    
+    func AddCategoryCompleted(_ name: String, iconName: String) {
+        // 카테고리 추가 후 실행되는 함수
+        
+    }
+    
     
     var categoryTableView : CategoryTableView = {
         let v = CategoryTableView()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
-    
-    var settingButton : UIBarButtonItem = {
-        let button = UIButton(type: .system)
-        button.setTitle("추가", for: .normal)
-        button.tintColor = .mpMainColor
-        button.addTarget(CategoryEditViewController.self, action: #selector(addButtonTapped), for: .touchUpInside)
-        
-        return UIBarButtonItem(customView: button)
-    }()
+
+
     
     var canCategoryEditGrayView : UIView = {
         let view = UIView()
@@ -34,7 +40,9 @@ class CategoryEditViewController : UIViewController {
     }()
         
     var categoryList : [Category] = []
-    
+    var categoryName : String?
+    var categoryIcon : String?
+    var categoryId : Int64?
     private let canEditLabel: MPLabel = {
         let label = MPLabel()
         label.text = "카테고리 순서를 편집할 수 있습니다."
@@ -53,8 +61,12 @@ class CategoryEditViewController : UIViewController {
         self.navigationController?.navigationBar.tintColor = .mpBlack
         self.navigationController?.navigationBar.topItem?.title = ""
         self.navigationItem.title = "카테고리 편집"
-        self.navigationItem.rightBarButtonItems = [settingButton]
         
+        // settingButton의 액션 설정
+        let addButton = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addButtonTapped))
+        addButton.tintColor = .mpMainColor
+        self.navigationItem.rightBarButtonItem = addButton
+
         fetchCategoryList()
         setupUI()
     }
@@ -74,7 +86,7 @@ extension CategoryEditViewController{
     func setupUI(){
         
         categoryTableView.categoryList = categoryList
-        
+        categoryTableView.delegate = self
         
         view.addSubview(categoryTableView)
         view.addSubview(canCategoryEditGrayView)
@@ -113,8 +125,21 @@ extension CategoryEditViewController{
             }
         }
     }
+  
+    func presentCategoryDetail(){
+        let catDetailVC = AddCategoryViewController(name: categoryName ?? "", icon: categoryIcon ?? "", id : categoryId ?? -1)
+            catDetailVC.modalPresentationStyle = .overFullScreen
+            catDetailVC.delegate = self
+            present(catDetailVC, animated: true)
+        }
     
-    @objc func addButtonTapped() {
+    @objc
+    private func addButtonTapped() {
         print("add button tapped")
+        // 카테고리 추가화면
+        let addCategoryVC = AddCategoryViewController(name: "", icon: "", id: -1)
+        addCategoryVC.modalPresentationStyle = .fullScreen
+        addCategoryVC.delegate = self
+        present(addCategoryVC, animated: true)
     }
 }

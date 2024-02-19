@@ -7,9 +7,18 @@
 
 import Foundation
 import UIKit
+protocol CategoryTableViewDelegate: AnyObject {
+    func categoryDidSelect(at indexPath: IndexPath)
+}
 
-class CategoryTableView : UIView{
+class CategoryTableView : UIView, AddCategoryViewDelegate{
+    func AddCategoryCompleted(_ name: String, iconName: String) {
+        
+    }
     
+    
+    weak var delegate: CategoryTableViewDelegate?
+
     
     private let tableView: UITableView = {
         let table = UITableView()
@@ -93,7 +102,7 @@ extension CategoryTableView : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .none
     }
-    
+     
     // editing = true 일 때 왼쪽 버튼이 나오기 위해 들어오는 indent 없애기
     func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return false
@@ -108,6 +117,8 @@ extension CategoryTableView : UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("Selected row at index: \(indexPath.row)")
+        print(indexPath)
+        delegate?.categoryDidSelect(at: indexPath)
     }
     
     func changeVisibility(forCellAt indexPath: IndexPath) {
@@ -142,8 +153,8 @@ class CategoryTableCell: UITableViewCell {
         return label
     }()
     
-    let iconView: UIView = {
-        let view = UIView()
+    let iconView: UIImageView = {
+        let view = UIImageView()
         view.backgroundColor = UIColor.mpDarkGray
         view.layer.cornerRadius = 16 // 동그라미의 반지름 설정
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -189,15 +200,21 @@ class CategoryTableCell: UITableViewCell {
     func configure(with category: Category) {
         titleLabel.text = category.name
         titleLabel.alpha = 1.0
+        if let iconName = category.categoryIcon {
+            iconView.image = UIImage(named: iconName)
+        }
         
         if category.isVisible! {
             eyeImageView.image = UIImage(systemName: "eye.fill")
             eyeImageView.tintColor = .mpGray
+            iconView.alpha = 1.0
         } else {
             eyeImageView.image = UIImage(systemName: "eye.slash.fill")
             eyeImageView.tintColor = .mpLightGray
             
             titleLabel.alpha = 0.4
+            iconView.alpha = 0.4
+
         }
     }
     
@@ -216,3 +233,4 @@ class CategoryTableCell: UITableViewCell {
         eyeImageView.addGestureRecognizer(tapGesture)
     }
 }
+
