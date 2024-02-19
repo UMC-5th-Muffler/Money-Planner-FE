@@ -10,7 +10,7 @@ import UIKit
 
 class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, AddCategoryViewDelegate {
     func categoryDidSelect(at indexPath: IndexPath) {
-        let category = categoryList[indexPath.item]
+        let category = categoryTableView.categoryList[indexPath.item]
         categoryName = category.name
         categoryIcon = category.categoryIcon
         categoryId = Int64(category.id)
@@ -43,6 +43,7 @@ class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, A
     var categoryName : String?
     var categoryIcon : String?
     var categoryId : Int64?
+    
     private let canEditLabel: MPLabel = {
         let label = MPLabel()
         label.text = "카테고리 순서를 편집할 수 있습니다."

@@ -114,6 +114,7 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         cell.dayConsumeAmount.text = ""
         cell.imageView.image = UIImage(named: "btn_date_off")
         cell.lbl.text = ""
+        cell.dayConsumeAmount.textColor = UIColor.mpDarkGray
         
         // 이번달 달력 시작 인덱스
         let startMonthIndex = firstWeekDayOfMonth - 1
@@ -143,6 +144,7 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         }
         
         let daily = dailyList[indexPath.item]
+        print(daily)
         
         if(daily != nil){
             if(self.goal != nil && daily!.date.toDate!.isInRange(startDate: self.goal!.startDate!.toDate!, endDate: self.goal!.endDate!.toDate!)){
@@ -169,6 +171,10 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                     }
                 }else{
                     cell.imageView.image = UIImage(named: "btn_date_on")
+                    if let zeroday = daily!.isZeroDay, zeroday{
+                        cell.imageView.image = UIImage(named: "btn_date_zero_grey")
+                        cell.lbl.text = ""
+                    }
                 }
                 
                 if(daily!.dailyTotalCost != nil){
@@ -332,7 +338,7 @@ class dateCVCell: UICollectionViewCell {
     
     let dayGoalAmount : UILabel = {
         let label = UILabel()
-        label.text = ""
+        label.text = nil
         label.textAlignment = .center
         label.font=UIFont.mpFont10R()
         label.textColor = UIColor.mpDarkGray
@@ -345,7 +351,7 @@ class dateCVCell: UICollectionViewCell {
         label.text = ""
         label.textAlignment = .center
         label.font=UIFont.mpFont10R()
-        label.textColor = UIColor.mpMainColor
+        label.textColor = UIColor.mpDarkGray
         label.translatesAutoresizingMaskIntoConstraints=false
         return label
     }()
@@ -378,7 +384,6 @@ class dateCVCell: UICollectionViewCell {
             
             dayGoalAmount.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
             dayGoalAmount.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
-            dayGoalAmount.heightAnchor.constraint(equalToConstant: 10),
             
             dayConsumeAmount.topAnchor.constraint(equalTo: dayGoalAmount.bottomAnchor, constant: 2),
             dayConsumeAmount.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),

@@ -74,8 +74,8 @@ class OrderModalViewController : UIViewController, UITableViewDataSource, UITabl
         
         NSLayoutConstraint.activate([
             customModal.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            customModal.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
-            customModal.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -32),
+            customModal.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -36),
+            customModal.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -64),
             customModal.heightAnchor.constraint(equalToConstant: 460),
             
             modalBar.widthAnchor.constraint(equalToConstant: 49),
