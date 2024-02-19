@@ -44,7 +44,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         view.layoutIfNeeded()
     }
     func AddCategory() {
-        let addCategoryVC = AddCategoryViewController()
+        let addCategoryVC = AddCategoryViewController(name: "", icon: "", id: -1)
         addCategoryVC.modalPresentationStyle = .fullScreen
         addCategoryVC.delegate = self
         present(addCategoryVC, animated: true)

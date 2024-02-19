@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		20118A112B56A86100B2569E /* ConsumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20118A102B56A86100B2569E /* ConsumeViewController.swift */; };
 		202754242B7FBF860084A757 /* ExpenseTapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202754232B7FBF860084A757 /* ExpenseTapController.swift */; };
+		205894022B825A92008F536D /* ExpenseZeroDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205894012B825A92008F536D /* ExpenseZeroDayView.swift */; };
+		205894042B825B36008F536D /* OverViewExpenseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205894032B825B36008F536D /* OverViewExpenseResponse.swift */; };
+		205894072B827B58008F536D /* UpdateCategoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205894062B827B58008F536D /* UpdateCategoryRequest.swift */; };
+		2058940A2B827BF3008F536D /* DeleteCategoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205894092B827BF3008F536D /* DeleteCategoryResponse.swift */; };
 		206C58D42B623C43008410C1 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206C58D32B623C43008410C1 /* CategoryCell.swift */; };
 		206C58D82B626465008410C1 /* CategoryModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206C58D72B626465008410C1 /* CategoryModalViewController.swift */; };
 		206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */; };
@@ -165,6 +169,10 @@
 /* Begin PBXFileReference section */
 		20118A102B56A86100B2569E /* ConsumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumeViewController.swift; sourceTree = "<group>"; };
 		202754232B7FBF860084A757 /* ExpenseTapController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseTapController.swift; sourceTree = "<group>"; };
+		205894012B825A92008F536D /* ExpenseZeroDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseZeroDayView.swift; sourceTree = "<group>"; };
+		205894032B825B36008F536D /* OverViewExpenseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverViewExpenseResponse.swift; sourceTree = "<group>"; };
+		205894062B827B58008F536D /* UpdateCategoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UpdateCategoryRequest.swift; path = "Money-Planner/ViewModel/Expense/UpdateCategoryRequest.swift"; sourceTree = SOURCE_ROOT; };
+		205894092B827BF3008F536D /* DeleteCategoryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCategoryResponse.swift; sourceTree = "<group>"; };
 		206C58D32B623C43008410C1 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		206C58D72B626465008410C1 /* CategoryModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModalViewController.swift; sourceTree = "<group>"; };
 		206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendartModalViewController.swift; sourceTree = "<group>"; };
@@ -331,6 +339,22 @@
 			path = Consume;
 			sourceTree = "<group>";
 		};
+		205894052B827B4A008F536D /* update */ = {
+			isa = PBXGroup;
+			children = (
+				205894062B827B58008F536D /* UpdateCategoryRequest.swift */,
+			);
+			path = update;
+			sourceTree = "<group>";
+		};
+		205894082B827BDE008F536D /* delete */ = {
+			isa = PBXGroup;
+			children = (
+				205894092B827BF3008F536D /* DeleteCategoryResponse.swift */,
+			);
+			path = delete;
+			sourceTree = "<group>";
+		};
 		206C58D02B617396008410C1 /* Modal */ = {
 			isa = PBXGroup;
 			children = (
@@ -390,8 +414,10 @@
 				208C90CC2B7BBC6700C67960 /* ExpenseCreateResponse.swift */,
 				208C90CE2B7BBC8400C67960 /* ExpenseCreateRequest.swift */,
 				208C90D02B7BD33300C67960 /* UpdateExpenseRequest.swift */,
+				205894032B825B36008F536D /* OverViewExpenseResponse.swift */,
 			);
-			path = Expense;
+			name = Expense;
+			path = ../ViewModel/Expense;
 			sourceTree = "<group>";
 		};
 		208F5E7C2B80C7EF00107735 /* DailyPlan */ = {
@@ -399,7 +425,8 @@
 			children = (
 				208F5E7D2B80C81E00107735 /* ZeroDayRequest.swift */,
 			);
-			path = DailyPlan;
+			name = DailyPlan;
+			path = ../ViewModel/DailyPlan;
 			sourceTree = "<group>";
 		};
 		208F5E7F2B8102A400107735 /* Calendar */ = {
@@ -439,10 +466,13 @@
 		208F5E852B81259100107735 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				205894082B827BDE008F536D /* delete */,
+				205894052B827B4A008F536D /* update */,
 				208F5E8D2B81323500107735 /* get */,
 				208F5E8C2B81321400107735 /* create */,
 			);
-			path = Category;
+			name = Category;
+			path = ../ViewModel/Category;
 			sourceTree = "<group>";
 		};
 		208F5E8C2B81321400107735 /* create */ = {
@@ -603,9 +633,6 @@
 		7A610ACD2B480B1400D3096F /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				208F5E852B81259100107735 /* Category */,
-				208F5E7C2B80C7EF00107735 /* DailyPlan */,
-				208C90CB2B7BBC5500C67960 /* Expense */,
 				D20D701F2B66FE8F006D6762 /* Home */,
 			);
 			path = ViewModel;
@@ -614,6 +641,9 @@
 		7A610ACE2B480B5B00D3096F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				208F5E852B81259100107735 /* Category */,
+				208F5E7C2B80C7EF00107735 /* DailyPlan */,
+				208C90CB2B7BBC5500C67960 /* Expense */,
 				208C90BC2B6FE4CF00C67960 /* Member */,
 				7A610AE42B491ED600D3096F /* Dummy.swift */,
 				D20D6FF22B5D67B1006D6762 /* Category.swift */,
@@ -633,6 +663,7 @@
 				551E8B752B7D13490008476B /* zeroModalView.swift */,
 				551E8B772B7D135E0008476B /* evaluationModalView.swift */,
 				208F5E7A2B80BA0B00107735 /* ExpensePopupModalView.swift */,
+				205894012B825A92008F536D /* ExpenseZeroDayView.swift */,
 			);
 			name = Notification;
 			path = ../../Notification;
@@ -939,6 +970,7 @@
 				7A610ABC2B47FA8E00D3096F /* LoginViewController.swift in Sources */,
 				206C58D42B623C43008410C1 /* CategoryCell.swift in Sources */,
 				7A610AF02B49414100D3096F /* RegisterProfileViewController.swift in Sources */,
+				205894072B827B58008F536D /* UpdateCategoryRequest.swift in Sources */,
 				208C90D52B7F7B6100C67960 /* CategoryIconSelectionViewController.swift in Sources */,
 				7A4C67462B5A4B77008BCAC9 /* MainTextField.swift in Sources */,
 				D20D70142B612BB4006D6762 /* CategoryTableView.swift in Sources */,
@@ -976,6 +1008,7 @@
 				D253EEAD2B79FE8400A4FC1C /* UIScrollView.swift in Sources */,
 				208C90D72B7F7FBB00C67960 /* CategoryIconCell.swift in Sources */,
 				D2D0B7412B6BACAB003B6B5E /* HomeNow.swift in Sources */,
+				205894042B825B36008F536D /* OverViewExpenseResponse.swift in Sources */,
 				7A4C67432B5A4B22008BCAC9 /* SmallButtonView.swift in Sources */,
 				208C90912B6AB7A200C67960 /* MufflerViewModel.swift in Sources */,
 				202754242B7FBF860084A757 /* ExpenseTapController.swift in Sources */,
@@ -1011,6 +1044,7 @@
 				7A610AD22B49004200D3096F /* MyPageViewController.swift in Sources */,
 				7A610AD22B49004200D3096F /* MyPageViewController.swift in Sources */,
 				D20D703A2B68C591006D6762 /* TestRepository.swift in Sources */,
+				205894022B825A92008F536D /* ExpenseZeroDayView.swift in Sources */,
 				D20D70022B5FF088006D6762 /* Formatter.swift in Sources */,
 				7AC060FF2B4C5D78008C0E63 /* Design.swift in Sources */,
 				7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */,
@@ -1028,6 +1062,7 @@
 				20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */,
 				208F5E872B8125B300107735 /* GetCategoryResponse.swift in Sources */,
 				208C908F2B6AB78900C67960 /* MufflerAPI.swift in Sources */,
+				2058940A2B827BF3008F536D /* DeleteCategoryResponse.swift in Sources */,
 				D217EBEF2B7460BC00EB6BF3 /* CategoryAPI.swift in Sources */,
 				7A610AEE2B493F6D00D3096F /* RegisterUsageViewController.swift in Sources */,
 				D20D6FED2B5B9962006D6762 /* MainCalendarView.swift in Sources */,

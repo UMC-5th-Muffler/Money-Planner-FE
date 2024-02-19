@@ -77,3 +77,4 @@ class CategoryIconCell: UICollectionViewCell {
 //        }
 //    }
 }
+

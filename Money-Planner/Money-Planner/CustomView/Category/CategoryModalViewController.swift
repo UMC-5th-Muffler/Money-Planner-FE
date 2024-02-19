@@ -15,7 +15,7 @@ protocol CategorySelectionDelegate: AnyObject {
     func AddCategory()
 }
 
-// 카테고리 선택 뷰 
+// 카테고리 선택 뷰
 class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
     var addCatName : String = ""
     var addCatIconName : String = ""
@@ -187,6 +187,7 @@ class CategoryModalViewController : UIViewController,UICollectionViewDelegate,UI
     
     
 }
+
 
 
 
