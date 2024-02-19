@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>BaseURL</key>
+	<string>${BASE_SERVER_URL}</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -22,7 +24,5 @@
 			</array>
 		</dict>
 	</dict>
-	<key>BaseURL</key>
-	<string>${BASE_SERVER_URL}</string>
 </dict>
 </plist>

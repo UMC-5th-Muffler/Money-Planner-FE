@@ -77,6 +77,7 @@ class MyPageViewController: UIViewController, UITableViewDataSource, UITableView
         if item == "프로필"{
             text = "프로필 설정"
             cell.optionalLabel.text = text
+            tempProfileImage = UIImage(named: "add-05")
             cell.addProfile(user.userNameString, image : tempProfileImage)
 
             // 프로필인 경우 프로필 띄우기
