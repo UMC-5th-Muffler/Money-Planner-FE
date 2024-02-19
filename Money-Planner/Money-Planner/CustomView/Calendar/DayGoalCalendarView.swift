@@ -5,7 +5,7 @@ import UIKit
 
 
 class DayGoalCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
+
     // 0인덱스를 없애기 위해 처리
     var numOfDaysInMonth = [-1,31,28,31,30,31,30,31,31,30,31,30,31]
     
@@ -73,7 +73,6 @@ class DayGoalCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
     
     func initializeView() {
         setupViews()
-        
         myCollectionView.delegate=self
         myCollectionView.dataSource=self
         myCollectionView.register(dayGoalDateCVCell.self, forCellWithReuseIdentifier: "Cell")
@@ -90,21 +89,34 @@ class DayGoalCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
         
         // 이번달 달력 시작 인덱스
         let startMonthIndex = firstWeekDayOfMonth - 1
+        var calcDate : Int
         
         if indexPath.item < startMonthIndex {
             // 이전달 부분
             
             let previousMonth = (currentMonth == 1) ? 12 : currentMonth - 1
             
-            let calcDate = numOfDaysInMonth[previousMonth] - ((startMonthIndex-1) - indexPath.item)
-            cell.isHidden=false
+            calcDate = numOfDaysInMonth[previousMonth] - ((startMonthIndex-1) - indexPath.item)
+            cell.isHidden = false
             cell.lbl.text="\(calcDate)"
             
             cell.isUserInteractionEnabled=true
             cell.lbl.textColor = UIColor.mpBlack
             
+            let usingMonth = currentMonth == 1 ? 12 : currentMonth - 1
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let dateString = "\(currentYear)-\(String(format: "%02d", usingMonth))-\(String(format: "%02d", calcDate))"
+            if let date = dateFormatter.date(from: dateString), let startDate = self.startDate, let endDate = self.endDate {
+                if date >= startDate && date <= endDate { // 기간 안에 있는 경우
+                    cell.imageView.image = UIImage(named: "btn_date_off")
+                }else{
+                    cell.imageView.image = nil
+                }
+            }
+            
         } else {
-            var calcDate = indexPath.row-firstWeekDayOfMonth+2
+            calcDate = indexPath.row-firstWeekDayOfMonth+2
             if(calcDate > numOfDaysInMonth[currentMonth]){
                 calcDate = calcDate - numOfDaysInMonth[currentMonth]
             }
@@ -113,9 +125,20 @@ class DayGoalCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
             
             cell.isUserInteractionEnabled=true
             cell.lbl.textColor = UIColor.mpBlack
-        }
-    
             
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let dateString = "\(currentYear)-\(String(format: "%02d", currentMonth))-\(String(format: "%02d", calcDate))"
+            
+            if let date = dateFormatter.date(from: dateString), let startDate = self.startDate, let endDate = self.endDate {
+                if date >= startDate && date <= endDate { // 기간 안에 있는 경우
+                    cell.imageView.image = UIImage(named: "btn_date_off")
+                }else{
+                    cell.imageView.image = nil
+                }
+            }
+        }
+        
         return cell
     }
     
@@ -191,6 +214,17 @@ class DayGoalCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDat
         let dateCount = cellCount % 7 == 0 ? cellCount : cellCount + (7 - cellCount % 7)
         return dateCount
     }
+    
+    //GoalDailyVC에서 쓰기 위해 추가
+    var startDate: Date?
+    var endDate: Date?
+    
+    //startDate와 endDate 설정후 반영
+    func setPeriod(startDate: Date?, endDate: Date?) {
+        self.startDate = startDate
+        self.endDate = endDate
+        self.myCollectionView.reloadData()
+    }
 }
 
 class dayGoalDateCVCell: UICollectionViewCell {
@@ -207,7 +241,7 @@ class dayGoalDateCVCell: UICollectionViewCell {
     let imageView : UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "btn_date_off")
+        imageView.image = nil
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -255,4 +289,5 @@ class dayGoalDateCVCell: UICollectionViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
 }

@@ -17,6 +17,9 @@ class DayGoalMonthView: UIView {
     var currentMonth : Int = 0
     var delegate : DayGoalMonthViewDelegate?
     
+    //GoalDailyVC에서 사용하기 위해 추가
+    var monthLabelLeftConstraint: NSLayoutConstraint?
+    
     var monthLabel: UILabel = {
         let label = UILabel()
         label.text = ""
@@ -61,7 +64,11 @@ class DayGoalMonthView: UIView {
         self.addSubview(monthLabel)
         monthLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         monthLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
-        monthLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 28).isActive = true
+        
+        //변화된 부분
+        monthLabelLeftConstraint = monthLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 28)
+        monthLabelLeftConstraint?.isActive = true
+        
         monthLabel.text = "\(currentYear)년 \(currentMonth)월"
         monthLabel.font = UIFont.mpFont20B()
         
@@ -94,6 +101,17 @@ class DayGoalMonthView: UIView {
         }
         monthLabel.text="\(currentYear)년 \(currentMonth)월"
         delegate?.didChangeMonth(monthIndex: currentMonth, year: currentYear)
+    }
+    
+    func setLayoutMiddle() {
+        monthLabelLeftConstraint?.isActive = false
+        monthLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+    }
+    
+    //Goal에서 안보이도록 추가한 함수
+    func hideButtons() {
+        btnLeft.isHidden = true
+        btnRight.isHidden = true
     }
     
 }

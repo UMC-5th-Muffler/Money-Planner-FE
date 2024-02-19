@@ -117,6 +117,7 @@
 		7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF12B49421F00D3096F /* KakaoLoginViewController.swift */; };
 		7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF32B49422E00D3096F /* AppleLoginViewController.swift */; };
 		7AC060FF2B4C5D78008C0E63 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC060FE2B4C5D78008C0E63 /* Design.swift */; };
+		7ADBE3582B812A9E00C23563 /* DailyExpenseGoalModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBE3572B812A9E00C23563 /* DailyExpenseGoalModal.swift */; };
 		D20D6FDA2B581A05006D6762 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D6FD92B581A05006D6762 /* CustomTabBarController.swift */; };
 		D20D6FDC2B581A5A006D6762 /* UITabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D6FDB2B581A5A006D6762 /* UITabBar.swift */; };
 		D20D6FDE2B581B20006D6762 /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D6FDD2B581B20006D6762 /* CALayer.swift */; };
@@ -279,6 +280,7 @@
 		7A610AF12B49421F00D3096F /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
 		7A610AF32B49422E00D3096F /* AppleLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewController.swift; sourceTree = "<group>"; };
 		7AC060FE2B4C5D78008C0E63 /* Design.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design.swift; sourceTree = "<group>"; };
+		7ADBE3572B812A9E00C23563 /* DailyExpenseGoalModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyExpenseGoalModal.swift; sourceTree = "<group>"; };
 		D20D6FD92B581A05006D6762 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		D20D6FDB2B581A5A006D6762 /* UITabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBar.swift; sourceTree = "<group>"; };
 		D20D6FDD2B581B20006D6762 /* CALayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
@@ -454,6 +456,7 @@
 				7A0D33282B7E00C0007B2736 /* ShowingPeriodSelectionModal.swift */,
 				7A0D33292B7E00C0007B2736 /* FoundPreviousConsumeRecordModal.swift */,
 				7A0D332A2B7E00C0007B2736 /* WarnAboutUneditableModal.swift */,
+				7ADBE3572B812A9E00C23563 /* DailyExpenseGoalModal.swift */,
 			);
 			path = GoalModal;
 			sourceTree = "<group>";
@@ -1068,6 +1071,7 @@
 				D253EEAF2B7A0CA500A4FC1C /* MainNoGoal.swift in Sources */,
 				7A0D332B2B7E00C0007B2736 /* PeriodCalendarViewController.swift in Sources */,
 				D20D6FE92B5AF1E9006D6762 /* MainMonthView.swift in Sources */,
+				7ADBE3582B812A9E00C23563 /* DailyExpenseGoalModal.swift in Sources */,
 				7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */,
 				D253EEBD2B7B652300A4FC1C /* ExpenseAPI.swift in Sources */,
 				D20D6FDA2B581A05006D6762 /* CustomTabBarController.swift in Sources */,
