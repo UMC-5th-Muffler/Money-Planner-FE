@@ -66,7 +66,7 @@ struct PostGoalRequest: Encodable {
 
 // A substructure for the category goals within the PostGoalRequest
 struct CategoryGoal: Encodable {
-    let categoryId: Int
+    let categoryId: Int64
     let categoryBudget: Int64
 }
 

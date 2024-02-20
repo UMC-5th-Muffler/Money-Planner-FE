@@ -37,19 +37,6 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .mpGypsumGray
-        // 테스트
-        let provider = MufflerViewModel()
-        provider.getGoalNow()
-            .subscribe(onNext:{ response in  // 타입 어노테이션 추가
-                // 성공적으로 데이터를 가져온 경우
-                print(response)
-                print("Current goals fetched successfully!")
-                //self?.nowGoals.accept(response.result.goalTitle)
-            }, onError: { error in
-                // 에러가 발생한 경우
-                print("Error fetching current goals: \(error.localizedDescription)")
-            })
-            .disposed(by: disposeBag)
         setupSubscriptions()
 //        viewModel.resetData()
         viewModel.fetchNowGoal()

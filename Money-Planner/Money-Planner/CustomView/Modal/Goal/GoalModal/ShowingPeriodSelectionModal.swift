@@ -226,7 +226,7 @@ class ShowingPeriodSelectionModal : UIViewController, FSCalendarDelegate, FSCale
         view.backgroundColor = .clear // Replace with .mpWhite if it's a custom color in your project
         setupHeaderStackView()
         setupCalendar()
-        subTitleLabel.text = "\(dateFormatter.string(from: startDate!)) - \(dateFormatter.string(from: endDate!))"
+        subTitleLabel.text = ""
         completeBtn.addTarget(self, action: #selector(didTapCompleteButton), for: .touchUpInside)
         setupLayoutConstraints()
         updateMonthLabelForDate(startDate!)

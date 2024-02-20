@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import Moya
 
+// 도전할 소비 목표의 기간을 선택해주세요
 extension GoalPeriodViewController: PeriodSelectionDelegate {
     func periodSelectionDidSelectDates(startDate: Date, endDate: Date) {
         periodBtn.setPeriod(startDate: startDate, endDate: endDate)
@@ -59,7 +60,7 @@ class GoalPeriodViewController : UIViewController, UINavigationControllerDelegat
     }
     
     @objc func btmButtonTapped() {
-        
+
         //이전 소비내역 발견, 모달 띄우기.
         if findOutPreviousConsumeRecord() {
             let modal = FoundPreviousConsumeRecordModal(startDate: periodBtn.startDate, endDate: periodBtn.endDate)
@@ -74,8 +75,18 @@ class GoalPeriodViewController : UIViewController, UINavigationControllerDelegat
     func goToGoalAmountVC(){
         print("목표 금액 등록 화면으로 이동")
         let goalTotalAmountVC = GoalTotalAmountViewController()
-        goalCreationManager.startDate = periodBtn.startDate.toString(format: "yyyy-MM-dd")
-        goalCreationManager.endDate = periodBtn.endDate.toString(format: "yyyy-MM-dd")
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        // goalCreationManager에 목표기간의 처음과 시작을 저장합니다
+        let startDate = dateFormatter.string(from: periodBtn.startDate)
+        goalCreationManager.startDate = startDate
+        
+        let endDate = dateFormatter.string(from: periodBtn.endDate)
+        goalCreationManager.endDate = endDate
+        
+
         navigationController?.pushViewController(goalTotalAmountVC, animated: true)
     }
     
@@ -151,12 +162,9 @@ class GoalPeriodViewController : UIViewController, UINavigationControllerDelegat
     
     //다음 버튼을 눌렀을때,
     func findOutPreviousConsumeRecord() -> Bool {
-        
         let startDate = periodBtn.startDate
         let endDate = periodBtn.endDate
-        
-        //startDate, endDate를 포함한 데이터를 보냄.
-        //소비내역 있으면 true 없으면 false
+
         
         return true
     }

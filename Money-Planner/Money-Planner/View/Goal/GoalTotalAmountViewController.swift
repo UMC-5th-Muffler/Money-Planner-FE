@@ -25,6 +25,7 @@ extension GoalTotalAmountViewController: MoneyAmountTextCellDelegate {
 
 extension GoalTotalAmountViewController: WarnAboutUneditableModalDelegate {
     func modalDismissed() {
+        print("카테고리별 목표 금액 입력 화면으로 이동합니다")
         goToGoalCategoryVC()
     }
 }
