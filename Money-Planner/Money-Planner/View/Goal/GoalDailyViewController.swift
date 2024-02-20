@@ -43,6 +43,173 @@ class GoalDailyViewController: UIViewController, FSCalendarDelegate, FSCalendarD
     var isEdited: [String: Bool] = [:]
     var amountInfo: [String: String] = [:]
     
+    var customCalendarView: CustomCalendarView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+        
+        // CustomCalendarView 인스턴스 생성 및 뷰에 추가
+        customCalendarView = CustomCalendarView()
+        customCalendarView.calendar.delegate = self
+        customCalendarView.calendar.dataSource = self
+        customCalendarView.translatesAutoresizingMaskIntoConstraints = false // Auto Layout 사용 설정
+        view.addSubview(customCalendarView)
+        
+        if let start = goalCreationManager.startDate?.toMPDate(), let end = goalCreationManager.endDate?.toMPDate() {
+            customCalendarView.setPeriod(startDate: start, endDate: end)
+            initializeArray(start: start, end: end)
+        }
+        
+        setupNavigationBar()
+        setupViews()
+        setupConstraints()
+        setupWeekdayLabels()
+        
+        btmBtn.addTarget(self, action: #selector(btmButtonTapped), for: .touchUpInside)
+        btmBtn.isEnabled = false
+        
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    private func setupNavigationBar() {
+        let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(backButtonTapped))
+        let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium, scale: .medium)
+        backButton.image = UIImage(systemName: "chevron.left", withConfiguration: config)
+        backButton.tintColor = .mpBlack
+        
+        navigationItem.leftBarButtonItem = backButton
+    }
+    
+    private func setupViews() {
+        view.addSubview(descriptionView)
+        view.addSubview(subdescriptionView)
+        view.addSubview(customCalendarView)
+        view.addSubview(btmBtn)
+    }
+    
+    private func setupConstraints() {
+        descriptionView.translatesAutoresizingMaskIntoConstraints = false
+        subdescriptionView.translatesAutoresizingMaskIntoConstraints = false
+        btmBtn.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            descriptionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            descriptionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            descriptionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            
+            subdescriptionView.topAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: 10),
+            subdescriptionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            subdescriptionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            
+            customCalendarView.topAnchor.constraint(equalTo: subdescriptionView.bottomAnchor, constant: 20),
+            customCalendarView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            customCalendarView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            customCalendarView.bottomAnchor.constraint(equalTo: btmBtn.topAnchor, constant: -30),
+            
+            btmBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            btmBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            btmBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
+            btmBtn.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
+    @objc private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func btmButtonTapped() {
+        let goalFinalVC = GoalFinalViewController() // 가정: GoalFinalViewController가 존재함
+        let budgets = convertToInt64Array(from: amountInfo)
+        goalCreationManager.addDailyBudgets(budgets: budgets)
+        navigationController?.pushViewController(goalFinalVC, animated: true)
+    }
+    
+    
+    ///calendar관련
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        // 예를 들어, 선택된 날짜에 대한 현재 금액을 가져옵니다. 실제 구현에서는 모델 또는 데이터 소스에서 이 값을 조회해야 합니다.
+        let currentTotalAmount = calculateEditedAmount(from: (goalCreationManager.startDate?.toMPDate(format: "yyyy/MM/dd"))!, to: (goalCreationManager.endDate?.toMPDate(format: "yyyy/MM/dd"))!)
+        
+        presentEditModal(for: date, with: currentTotalAmount)
+        
+    }
+    
+    
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
+        let dateString = formatDate(date)
+        if let startDate = customCalendarView.startDate, let endDate = customCalendarView.endDate,
+           date >= startDate && date <= endDate {
+            
+            
+            let currentYear = Calendar.current.component(.year, from: calendar.currentPage)
+            let currentMonth = Calendar.current.component(.month, from: calendar.currentPage)
+            let dateYear = Calendar.current.component(.year, from: date)
+            let dateMonth = Calendar.current.component(.month, from: date)
+            
+            if currentMonth == dateMonth && currentYear == dateYear {
+                return .mpGray // Dates in the current month
+            }else {
+                return .mpBlack // Your custom color for edited dates
+            }
+            
+        }
+        return .mpMidGray
+    }
+    
+    
+    func calendar(_ calendar: FSCalendar, cellFor date: Date, at position: FSCalendarMonthPosition) -> FSCalendarCell {
+        let cell = calendar.dequeueReusableCell(withIdentifier: "customCell", for: date, at: position) as! CustomFSCalendarCell
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        let dateKey = dateFormatter.string(from: date)
+        
+        // startDate와 endDate 사이의 날짜에 대해서만 금액 정보 표시 및 이미지 설정
+        if let startDate = customCalendarView.startDate, let endDate = customCalendarView.endDate,
+           date >= startDate && date <= endDate {
+            cell.configureBackgroundImage(image: UIImage(named: "btn_date_on"))
+            cell.configureImageSize(CGSize(width: 30, height: 30)) // 이미지 크기 조정
+            // 금액 정보가 있는 경우 해당 금액을 표시
+            if let amount = amountInfo[dateKey] {
+                cell.configureAmountText(amount)
+            } else {
+                // 금액 정보가 없는 경우 빈 문자열로 설정
+                cell.configureAmountText("")
+            }
+        } else {
+            cell.configureBackgroundImage(image: nil)
+            cell.configureAmountText("") // 금액 정보 없는 경우 빈 문자열로 설정
+        }
+        
+        return cell
+    }
+    
+    func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
+        guard let startDate = customCalendarView.startDate, let endDate = customCalendarView.endDate else {
+            return false
+        }
+        
+        // 오직 startDate와 endDate 사이의 날짜만 선택 가능하게 함
+        return date >= startDate && date <= endDate
+    }
+
+    
+    private func setupWeekdayLabels() {
+        let calendarWeekdayView = customCalendarView.calendar.calendarWeekdayView
+        let weekdays = ["일", "월", "화", "수", "목", "금", "토"]
+        for (index, label) in calendarWeekdayView.weekdayLabels.enumerated() {
+            label.text = weekdays[index]
+            label.font = .mpFont14B()
+        }
+    }
+
+    
+    private func formatDate(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        return dateFormatter.string(from: date)
+    }
+    
     private func initializeArray(start: Date, end: Date) {
         var currentDate = start
         let calendar = Calendar.current
@@ -270,168 +437,21 @@ class GoalDailyViewController: UIViewController, FSCalendarDelegate, FSCalendarD
         return totalAmount
     }
     
-    var customCalendarView: CustomCalendarView!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+    func convertToInt64Array(from dict: [String: String]) -> [Int64] {
+        var intArray: [Int64] = []
         
-        // CustomCalendarView 인스턴스 생성 및 뷰에 추가
-        customCalendarView = CustomCalendarView()
-        customCalendarView.calendar.delegate = self
-        customCalendarView.calendar.dataSource = self
-        customCalendarView.translatesAutoresizingMaskIntoConstraints = false // Auto Layout 사용 설정
-        view.addSubview(customCalendarView)
-        
-        if let start = goalCreationManager.startDate?.toMPDate(), let end = goalCreationManager.endDate?.toMPDate() {
-            customCalendarView.setPeriod(startDate: start, endDate: end)
-            initializeArray(start: start, end: end)
-        }
-        
-        setupNavigationBar()
-        setupViews()
-        setupConstraints()
-        setupWeekdayLabels()
-        
-        btmBtn.addTarget(self, action: #selector(btmButtonTapped), for: .touchUpInside)
-        btmBtn.isEnabled = false
-        
-        self.tabBarController?.tabBar.isHidden = true
-    }
-    
-    private func setupNavigationBar() {
-        let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(backButtonTapped))
-        let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium, scale: .medium)
-        backButton.image = UIImage(systemName: "chevron.left", withConfiguration: config)
-        backButton.tintColor = .mpBlack
-        
-        navigationItem.leftBarButtonItem = backButton
-    }
-    
-    private func setupViews() {
-        view.addSubview(descriptionView)
-        view.addSubview(subdescriptionView)
-        view.addSubview(customCalendarView)
-        view.addSubview(btmBtn)
-    }
-    
-    private func setupConstraints() {
-        descriptionView.translatesAutoresizingMaskIntoConstraints = false
-        subdescriptionView.translatesAutoresizingMaskIntoConstraints = false
-        btmBtn.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            descriptionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            descriptionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            descriptionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            
-            subdescriptionView.topAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: 10),
-            subdescriptionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            subdescriptionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            
-            customCalendarView.topAnchor.constraint(equalTo: subdescriptionView.bottomAnchor, constant: 20),
-            customCalendarView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            customCalendarView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            customCalendarView.bottomAnchor.constraint(equalTo: btmBtn.topAnchor, constant: -30),
-            
-            btmBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            btmBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            btmBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
-            btmBtn.heightAnchor.constraint(equalToConstant: 50)
-        ])
-    }
-    
-    @objc private func backButtonTapped() {
-        navigationController?.popViewController(animated: true)
-    }
-    
-    @objc private func btmButtonTapped() {
-        let goalFinalVC = GoalFinalViewController() // 가정: GoalFinalViewController가 존재함
-        navigationController?.pushViewController(goalFinalVC, animated: true)
-    }
-    
-    
-    ///calendar관련
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        // 예를 들어, 선택된 날짜에 대한 현재 금액을 가져옵니다. 실제 구현에서는 모델 또는 데이터 소스에서 이 값을 조회해야 합니다.
-        let currentTotalAmount = calculateEditedAmount(from: (goalCreationManager.startDate?.toMPDate(format: "yyyy/MM/dd"))!, to: (goalCreationManager.endDate?.toMPDate(format: "yyyy/MM/dd"))!)
-        
-        presentEditModal(for: date, with: currentTotalAmount)
-        
-    }
-    
-    
-    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
-        let dateString = formatDate(date)
-        if let startDate = customCalendarView.startDate, let endDate = customCalendarView.endDate,
-           date >= startDate && date <= endDate {
-            
-            
-            let currentYear = Calendar.current.component(.year, from: calendar.currentPage)
-            let currentMonth = Calendar.current.component(.month, from: calendar.currentPage)
-            let dateYear = Calendar.current.component(.year, from: date)
-            let dateMonth = Calendar.current.component(.month, from: date)
-            
-            if currentMonth == dateMonth && currentYear == dateYear {
-                return .mpGray // Dates in the current month
-            }else {
-                return .mpBlack // Your custom color for edited dates
-            }
-            
-        }
-        return .mpMidGray
-    }
-    
-    
-    func calendar(_ calendar: FSCalendar, cellFor date: Date, at position: FSCalendarMonthPosition) -> FSCalendarCell {
-        let cell = calendar.dequeueReusableCell(withIdentifier: "customCell", for: date, at: position) as! CustomFSCalendarCell
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd"
-        let dateKey = dateFormatter.string(from: date)
-        
-        // startDate와 endDate 사이의 날짜에 대해서만 금액 정보 표시 및 이미지 설정
-        if let startDate = customCalendarView.startDate, let endDate = customCalendarView.endDate,
-           date >= startDate && date <= endDate {
-            cell.configureBackgroundImage(image: UIImage(named: "btn_date_on"))
-            cell.configureImageSize(CGSize(width: 30, height: 30)) // 이미지 크기 조정
-            // 금액 정보가 있는 경우 해당 금액을 표시
-            if let amount = amountInfo[dateKey] {
-                cell.configureAmountText(amount)
+        for (_, value) in dict {
+            // 쉼표를 제거하고 숫자로 변환하여 배열에 추가
+            let numericValue = value.replacingOccurrences(of: ",", with: "")
+            if let intValue = Int64(numericValue) {
+                intArray.append(intValue)
             } else {
-                // 금액 정보가 없는 경우 빈 문자열로 설정
-                cell.configureAmountText("")
+                // 숫자로 변환할 수 없는 경우 0으로 처리하거나 오류 처리
+                // 여기서는 일단 0으로 처리합니다.
+                intArray.append(0)
             }
-        } else {
-            cell.configureBackgroundImage(image: nil)
-            cell.configureAmountText("") // 금액 정보 없는 경우 빈 문자열로 설정
         }
         
-        return cell
-    }
-    
-    func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
-        guard let startDate = customCalendarView.startDate, let endDate = customCalendarView.endDate else {
-            return false
-        }
-        
-        // 오직 startDate와 endDate 사이의 날짜만 선택 가능하게 함
-        return date >= startDate && date <= endDate
-    }
-
-    
-    private func setupWeekdayLabels() {
-        let calendarWeekdayView = customCalendarView.calendar.calendarWeekdayView
-        let weekdays = ["일", "월", "화", "수", "목", "금", "토"]
-        for (index, label) in calendarWeekdayView.weekdayLabels.enumerated() {
-            label.text = weekdays[index]
-            label.font = .mpFont14B()
-        }
-    }
-
-    
-    private func formatDate(_ date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd"
-        return dateFormatter.string(from: date)
+        return intArray
     }
 }
