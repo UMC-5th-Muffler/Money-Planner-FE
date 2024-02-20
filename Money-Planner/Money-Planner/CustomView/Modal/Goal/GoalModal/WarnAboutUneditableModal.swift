@@ -91,6 +91,7 @@ class WarnAboutUneditableModal : UIViewController {
     
     let dateRangeLabel: UILabel = {
         let label = UILabel()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy년 MM월 dd일"
         label.text = GoalCreationManager.shared.startDate! + " - " + GoalCreationManager.shared.endDate!
         label.textAlignment = .center
