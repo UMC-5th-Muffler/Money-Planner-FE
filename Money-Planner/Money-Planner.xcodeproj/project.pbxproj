@@ -108,7 +108,6 @@
 		7A8F3EDA2B85057000480902 /* DdayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3ED92B85057000480902 /* DdayLabel.swift */; };
 		7A8F3EDC2B85057700480902 /* LabelAndImageBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EDB2B85057700480902 /* LabelAndImageBtn.swift */; };
 		7A8F3EE12B85058400480902 /* GoalMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EDE2B85058400480902 /* GoalMain.swift */; };
-		7A8F3EE22B85058400480902 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EDF2B85058400480902 /* Goal.swift */; };
 		7A8F3EE32B85058400480902 /* GoalDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EE02B85058400480902 /* GoalDetail.swift */; };
 		7A8F3EEE2B85059D00480902 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EE42B85059D00480902 /* TestViewController.swift */; };
 		7A8F3EF02B85059D00480902 /* GoalFinalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EE62B85059D00480902 /* GoalFinalViewController.swift */; };
@@ -119,6 +118,7 @@
 		7A8F3EF52B85059D00480902 /* GoalPeriodVeiwController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EEB2B85059D00480902 /* GoalPeriodVeiwController.swift */; };
 		7A8F3EF62B85059D00480902 /* GoalTotalAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EEC2B85059D00480902 /* GoalTotalAmountViewController.swift */; };
 		7A8F3EF72B85059D00480902 /* GoalMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EED2B85059D00480902 /* GoalMainViewController.swift */; };
+		7A8F3EF92B8506A600480902 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7A8F3EF82B8506A600480902 /* Config.xcconfig */; };
 		7AC060FF2B4C5D78008C0E63 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC060FE2B4C5D78008C0E63 /* Design.swift */; };
 		D20D6FDA2B581A05006D6762 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D6FD92B581A05006D6762 /* CustomTabBarController.swift */; };
 		D20D6FDC2B581A5A006D6762 /* UITabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D6FDB2B581A5A006D6762 /* UITabBar.swift */; };
@@ -279,7 +279,6 @@
 		7A8F3ED92B85057000480902 /* DdayLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DdayLabel.swift; sourceTree = "<group>"; };
 		7A8F3EDB2B85057700480902 /* LabelAndImageBtn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelAndImageBtn.swift; sourceTree = "<group>"; };
 		7A8F3EDE2B85058400480902 /* GoalMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalMain.swift; sourceTree = "<group>"; };
-		7A8F3EDF2B85058400480902 /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		7A8F3EE02B85058400480902 /* GoalDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalDetail.swift; sourceTree = "<group>"; };
 		7A8F3EE42B85059D00480902 /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		7A8F3EE62B85059D00480902 /* GoalFinalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalFinalViewController.swift; sourceTree = "<group>"; };
@@ -290,6 +289,7 @@
 		7A8F3EEB2B85059D00480902 /* GoalPeriodVeiwController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalPeriodVeiwController.swift; sourceTree = "<group>"; };
 		7A8F3EEC2B85059D00480902 /* GoalTotalAmountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalTotalAmountViewController.swift; sourceTree = "<group>"; };
 		7A8F3EED2B85059D00480902 /* GoalMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalMainViewController.swift; sourceTree = "<group>"; };
+		7A8F3EF82B8506A600480902 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		7AC060FE2B4C5D78008C0E63 /* Design.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design.swift; sourceTree = "<group>"; };
 		D20D6FD92B581A05006D6762 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		D20D6FDB2B581A5A006D6762 /* UITabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBar.swift; sourceTree = "<group>"; };
@@ -656,6 +656,7 @@
 				7A610AC02B47FA8F00D3096F /* Assets.xcassets */,
 				7A610AC22B47FA8F00D3096F /* LaunchScreen.storyboard */,
 				7A610AC52B47FA8F00D3096F /* Info.plist */,
+				7A8F3EF82B8506A600480902 /* Config.xcconfig */,
 				D2D0B7322B6A74CD003B6B5E /* Config.xcconfig */,
 			);
 			path = "Money-Planner";
@@ -832,7 +833,6 @@
 			isa = PBXGroup;
 			children = (
 				7A8F3EDE2B85058400480902 /* GoalMain.swift */,
-				7A8F3EDF2B85058400480902 /* Goal.swift */,
 				7A8F3EE02B85058400480902 /* GoalDetail.swift */,
 			);
 			path = Goal;
@@ -1055,6 +1055,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A610AC42B47FA8F00D3096F /* LaunchScreen.storyboard in Resources */,
+				7A8F3EF92B8506A600480902 /* Config.xcconfig in Resources */,
 				7A610AC12B47FA8F00D3096F /* Assets.xcassets in Resources */,
 				D20D701E2B668800006D6762 /* Home.json in Resources */,
 				7A8F3EF12B85059D00480902 /* consumeDummy.json in Resources */,
@@ -1186,7 +1187,6 @@
 				2058940A2B827BF3008F536D /* DeleteCategoryResponse.swift in Sources */,
 				D217EBEF2B7460BC00EB6BF3 /* CategoryAPI.swift in Sources */,
 				7A610AEE2B493F6D00D3096F /* RegisterUsageViewController.swift in Sources */,
-				7A8F3EE22B85058400480902 /* Goal.swift in Sources */,
 				D20D6FED2B5B9962006D6762 /* MainCalendarView.swift in Sources */,
 				208C90C22B74E01700C67960 /* UnregisterPopupViewController.swift in Sources */,
 				D253EEAF2B7A0CA500A4FC1C /* MainNoGoal.swift in Sources */,
