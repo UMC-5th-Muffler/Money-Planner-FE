@@ -11,7 +11,7 @@ import Foundation
 struct Category: Codable {
     let id: Int
     var categoryIcon : String?
-    let name: String
+    var name: String
     var priority : Int?
     var categoryBudget: Int64?
     var categoryTotalCost: Int64?

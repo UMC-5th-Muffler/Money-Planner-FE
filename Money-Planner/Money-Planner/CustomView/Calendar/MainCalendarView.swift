@@ -144,7 +144,6 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         }
         
         let daily = dailyList[indexPath.item]
-        print(daily)
         
         if(daily != nil){
             if(self.goal != nil && daily!.date.toDate!.isInRange(startDate: self.goal!.startDate!.toDate!, endDate: self.goal!.endDate!.toDate!)){

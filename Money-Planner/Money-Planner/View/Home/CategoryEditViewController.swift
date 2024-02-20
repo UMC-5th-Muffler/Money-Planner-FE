@@ -8,7 +8,38 @@
 import Foundation
 import UIKit
 
-class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, AddCategoryViewDelegate {
+class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, AddCategoryViewDelegate, EditCategoryViewDelegate, DeleteCategoryViewDelegate  {
+    func DeleteCategoryCompleted(categoryId: Int) {
+        categoryTableView.categoryList.removeAll { $0.id == categoryId }
+        originalCategoryList.removeAll { $0.id == categoryId }
+    }
+    
+    func EditCategoryCompleted(categoryId: Int, name: String, icon: String) {
+        for index in 0..<categoryTableView.categoryList.count {
+            if categoryTableView.categoryList[index].id == categoryId {
+                categoryTableView.categoryList[index].name = name
+                categoryTableView.categoryList[index].categoryIcon = icon
+                break
+            }
+        }
+        
+        for index in 0..<originalCategoryList.count {
+            if originalCategoryList[index].id == categoryId {
+                originalCategoryList[index].name = name
+                originalCategoryList[index].categoryIcon = icon
+                break
+            }
+        }
+    }
+    
+    func AddCategoryCompleted(_ name: String, iconName: String) {
+        // 카테고리 추가 후 실행되는 함수
+        let newCategory = Category(id: -1, categoryIcon : iconName, name: name, isVisible: true)
+        originalCategoryList.append(newCategory)
+        categoryTableView.categoryList.append(newCategory)
+    }
+    
+    
     func categoryDidSelect(at indexPath: IndexPath) {
         let category = categoryTableView.categoryList[indexPath.item]
         categoryName = category.name
@@ -17,19 +48,14 @@ class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, A
         presentCategoryDetail()
     }
     
-    func AddCategoryCompleted(_ name: String, iconName: String) {
-        // 카테고리 추가 후 실행되는 함수
-        
-    }
-    
-    
+
     var categoryTableView : CategoryTableView = {
         let v = CategoryTableView()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
-
-
+    
+    
     
     var canCategoryEditGrayView : UIView = {
         let view = UIView()
@@ -38,7 +64,7 @@ class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, A
         return view
         
     }()
-        
+    
     var originalCategoryList : [Category] = []
     var categoryName : String?
     var categoryIcon : String?
@@ -67,7 +93,7 @@ class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, A
         let addButton = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addButtonTapped))
         addButton.tintColor = .mpMainColor
         self.navigationItem.rightBarButtonItem = addButton
-
+        
         fetchCategoryList()
         setupUI()
     }
@@ -143,13 +169,15 @@ extension CategoryEditViewController{
             }
         }
     }
-  
+    
     func presentCategoryDetail(){
         let catDetailVC = AddCategoryViewController(name: categoryName ?? "", icon: categoryIcon ?? "", id : categoryId ?? -1)
-            catDetailVC.modalPresentationStyle = .overFullScreen
-            catDetailVC.delegate = self
-            present(catDetailVC, animated: true)
-        }
+        catDetailVC.modalPresentationStyle = .overFullScreen
+        catDetailVC.delegate = self
+        catDetailVC.delegateEdit = self
+        catDetailVC.delegateDelete = self
+        present(catDetailVC, animated: true)
+    }
     
     @objc
     private func addButtonTapped() {
