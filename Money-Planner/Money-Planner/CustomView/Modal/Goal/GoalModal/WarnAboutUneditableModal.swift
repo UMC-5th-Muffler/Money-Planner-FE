@@ -70,8 +70,8 @@ class WarnAboutUneditableModal : UIViewController {
         let calendar = Calendar.current
 
         // GoalCreationManager에서 startDate와 endDate 가져오기
-        let startDate = GoalCreationManager.shared.startDate?.toMPDate() ?? Date()
-        let endDate = GoalCreationManager.shared.endDate?.toMPDate() ?? Date()
+        let startDate = GoalCreationManager.shared.startDate?.toDate ?? Date()
+        let endDate = GoalCreationManager.shared.endDate?.toDate ?? Date()
 
         // startDate와 endDate 사이의 일수 계산
         let components = calendar.dateComponents([.day], from: startDate, to: endDate)
@@ -91,6 +91,7 @@ class WarnAboutUneditableModal : UIViewController {
     
     let dateRangeLabel: UILabel = {
         let label = UILabel()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy년 MM월 dd일"
         label.text = GoalCreationManager.shared.startDate! + " - " + GoalCreationManager.shared.endDate!
         label.textAlignment = .center
