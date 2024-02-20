@@ -37,7 +37,14 @@ class MufflerViewModel {
             .asObservable()
     }
 //
-//    // Goal Controller
+    // Goal Controller
+    // 현재 목표 조회
+    func getGoalNow() -> Observable<GetGoalNowResponse> {
+        return provider.request(.getGoalNow)
+            .map(GetGoalNowResponse.self)
+            .asObservable()
+    }
+
 //    func createGoal() -> Observable<MyRepo> {
 //        return provider.request(.createGoal)
 //            .map(MyRepo.self)

@@ -613,7 +613,10 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
 //        self.calendar.appearance.titlePlaceholderColor = .clear
         
         //현재달의 오늘 날짜를 특수 표시
+        
+//        let currentYear = Calendar.current.component(.year, from: calendar.currentPage)
         let currentMonth = Calendar.current.component(.month, from: calendar.currentPage)
+//        let dateYear = Calendar.current.component(.year, from: date)
         let dateMonth = Calendar.current.component(.month, from: date)
         
         if Calendar.current.isDateInToday(date) {

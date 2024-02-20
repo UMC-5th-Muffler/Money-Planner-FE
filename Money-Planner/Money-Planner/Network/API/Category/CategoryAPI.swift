@@ -39,6 +39,6 @@ extension CategoryAPI : BaseAPI {
     }
     
     public var headers: [String: String]? {
-        return ["Authorization": "Bearer "]
+        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDg0MTI1Nzl9.t1NusZW7wFB2BQ7Y8jVuRTrpbWe6X8v4Enib0yfmyDA"]
     }
 }

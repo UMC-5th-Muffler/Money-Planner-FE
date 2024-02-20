@@ -11,6 +11,7 @@ enum MufflerAPI {
     // Goal Controller
     case createGoal
     case getPreviousGoals
+    case getGoalNow
     case deleteGoal(goalId: String)
 
     // Expense Controller
@@ -65,6 +66,8 @@ extension MufflerAPI: TargetType {
             return "/api/goal/previous"
         case .deleteGoal(let goalId):
             return "/api/goal/\(goalId)"
+        case .getGoalNow:
+            return "api/goal/now"
 
         // Expense Controller
         case .createExpense:
@@ -120,7 +123,7 @@ extension MufflerAPI: TargetType {
             return .post
         case .connect, .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
-             .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo, .getCategoryFilter:
+             .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo, .getCategoryFilter,.getGoalNow:
             return .get
         case .deleteGoal, .deleteExpense:
             return .delete
@@ -137,7 +140,7 @@ extension MufflerAPI: TargetType {
             return .requestPlain
         case .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
-             .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo:
+             .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo,.getGoalNow:
             return .requestPlain
         case .deleteGoal, .deleteExpense:
             return .requestPlain
@@ -156,6 +159,6 @@ extension MufflerAPI: TargetType {
 
     // Define headers for the request
     var headers: [String: String]? {
-        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDgxNjI4Njd9.nclYvHIAtOXFFStBP22TsQ9vXr6EKEUscxIS-txETW8"] // Replace with your actual access token
+        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDg0MTI1Nzl9.t1NusZW7wFB2BQ7Y8jVuRTrpbWe6X8v4Enib0yfmyDA"] // Replace with your actual access token
     }
 }

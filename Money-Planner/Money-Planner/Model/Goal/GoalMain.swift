@@ -8,11 +8,37 @@
 import Foundation
 
 //now, 이용주소 : /api/goal/now
-struct NowResponse: Codable {
+struct NowResponse : Codable {
     let isSuccess: Bool
     let message: String
-    let result: Goal_
+    let result: GoalResult
+
+    enum CodingKeys: String, CodingKey {
+        case isSuccess
+        case message
+        case result
+    }
+
+    // Nested struct for the "result" part of the JSON
+    struct GoalResult: Codable {
+        let goalId: Int64
+        let goalTitle: String
+        let icon: String
+        let totalBudget: Int64
+        let totalCost: Int64
+        let endDate: String
+
+        enum CodingKeys: String, CodingKey {
+            case goalId = "goalId"
+            case goalTitle = "goalTitle"
+            case icon = "icon"
+            case totalBudget = "totalBudget"
+            case totalCost = "totalCost"
+            case endDate = "endDate"
+        }
+    }
 }
+
 
 //not-now,이용주소 : /api/goal/not-now
 struct NotNowResponse: Codable {

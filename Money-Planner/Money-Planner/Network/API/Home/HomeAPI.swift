@@ -77,7 +77,7 @@ extension HomeAPI : BaseAPI {
     
     public var headers: [String: String]? {
 
-        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDgxNjI4Njd9.nclYvHIAtOXFFStBP22TsQ9vXr6EKEUscxIS-txETW8"]
+        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDg0MTI1Nzl9.t1NusZW7wFB2BQ7Y8jVuRTrpbWe6X8v4Enib0yfmyDA"]
 
     }
 }

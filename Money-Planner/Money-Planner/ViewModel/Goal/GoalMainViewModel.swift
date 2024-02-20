@@ -20,7 +20,8 @@ class GoalMainViewModel {
     private let disposeBag = DisposeBag()
     
     // Observables for goals
-    let nowGoals = BehaviorRelay<Goal_?>(value: nil)
+    let nowGoalResponse : BehaviorRelay<NowResponse?> = BehaviorRelay(value: nil)
+    let nowGoal : BehaviorRelay<Goal_?> = BehaviorRelay(value: nil)
 //    let notNowResult = BehaviorRelay<NotNowResult?>(value: nil) // Holds both past and future goals
     let notNowGoals = BehaviorRelay<[Goal_]>(value : [])
 //    let futureGoals = BehaviorRelay<[Goal_]>(value: [])
@@ -34,22 +35,24 @@ class GoalMainViewModel {
 
     // Initial fetch without endDate
     func fetchInitialGoals() {
-        resetData()
+//        resetData()
         fetchNowGoal()
         fetchNotNowGoals()
     }
     
     func fetchNowGoal() {
-        goalRepository.getNowGoal().subscribe { [weak self] event in
-            switch event {
-            case .success(let response):
-                self?.nowGoals.accept(response.result)
-            case .failure(let error):
-                print("Error fetching current goals: \(error.localizedDescription)")
-            }
-        }.disposed(by: disposeBag)
+        goalRepository.getNowGoal()
+            .subscribe(onSuccess: { [weak self] nowResponse in
+                self?.nowGoalResponse.accept(nowResponse)
+            }, onFailure: { error in
+                // Handle error
+                print(error)
+            })
+            .disposed(by: disposeBag)
+        print(self.nowGoal.value?.goalTitle ?? "1")
     }
     
+
     func fetchNotNowGoals() {
         //hasNext가 true일때만 받을 수 있도록 처리
         guard hasNext.value else { return }
@@ -60,8 +63,9 @@ class GoalMainViewModel {
                 self.addedNotNowGoals.accept(newGoals)
                 var currentGoals = self.notNowGoals.value
                 currentGoals.append(contentsOf: newGoals)
+                print(newGoals)
                 self.notNowGoals.accept(currentGoals)
-                
+                print(currentGoals)
                 // Update hasNext and endDate for pagination
                 self.hasNext.accept(response.result.hasNext)
                 self.endDate = currentGoals.last?.endDate
@@ -72,10 +76,10 @@ class GoalMainViewModel {
     }
     
     // 초기화 용도
-    func resetData() {
-        nowGoals.accept(nil)
-        notNowGoals.accept([])
-        hasNext.accept(true)
-        endDate = nil
-    }
+//    func resetData() {
+//        nowGoals.accept(nil)
+//        notNowGoals.accept([])
+//        hasNext.accept(true)
+//        endDate = nil
+//    }
 }

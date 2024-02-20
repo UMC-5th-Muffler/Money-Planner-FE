@@ -162,7 +162,7 @@ class GoalEmptyCell: UITableViewCell {
 //목표가 있을때 셀
 class GoalPresentationCell: UITableViewCell {
     
-    var goal : Goal_?
+    var goal : NowResponse.GoalResult?
     let containerView = UIView()
     let btn = UIButton()
     let title = MPLabel()
@@ -238,10 +238,10 @@ class GoalPresentationCell: UITableViewCell {
         ])
     }
     
-    func configureCell(with goal: Goal_, isNow : Bool) {
+    func configureCell(with goal: NowResponse.GoalResult, isNow : Bool) {
         
         self.goal = goal
-        self.progressBar = GoalProgressBar(goalAmt: goal.totalBudget, usedAmt: goal.totalCost ?? 0)
+        self.progressBar = GoalProgressBar(goalAmt: goal.totalBudget, usedAmt: goal.totalCost )
         
         btn.backgroundColor = .mpWhite
         btn.layer.cornerRadius = 10
@@ -301,13 +301,13 @@ class GoalPresentationCell: UITableViewCell {
         dday.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         //progressPercentage
-        let progressPercentageValue = Double(goal.totalCost!) / Double(goal.totalBudget) * 100.0
+        let progressPercentageValue = Double(goal.totalCost) / Double(goal.totalBudget) * 100.0
         progressPercentage.text = String(format: "%.0f%%", progressPercentageValue)
         progressPercentage.textColor = progressPercentageValue > 100 ? .mpRed : .mpMainColor
         progressPercentage.font = .mpFont14M()
         
         
-        let totalCostText = setComma(cash: goal.totalCost!) + " 원 / " + setComma(cash: goal.totalBudget) + " 원 사용"
+        let totalCostText = setComma(cash: goal.totalCost) + " 원 / " + setComma(cash: goal.totalBudget) + " 원 사용"
         let totalBudgetTextCnt = "/ \(goal.totalBudget) 원 사용".count
         let attributedText = NSMutableAttributedString(string: totalCostText)
         attributedText.addAttribute(.foregroundColor, value: UIColor.mpDarkGray, range: NSRange(location: 0, length: totalCostText.count))
@@ -782,7 +782,32 @@ class MoneyAmountTextCell: UITableViewCell, UITextFieldDelegate {
         
     }
     
-    private func formatNumber(_ number: Int64) -> String {
+    func setAmountLabel(dailyGoalSumOver : Bool, dailyGoalOver : Bool, overCost : Int64?){
+        //단독 오버
+        if dailyGoalOver {
+            amountLabel.text = "전체 목표 금액을 초과했어요."
+            amountLabel.textColor = .mpRed
+            self.contentView.layer.borderWidth = 1
+            self.contentView.layer.borderColor = UIColor.mpRed.cgColor
+            return
+        }else{
+            amountLabel.textColor = .mpBlack
+            self.contentView.layer.borderWidth = 0
+        }
+        
+        //총합이 오버
+        if dailyGoalSumOver {
+            amountLabel.text = "입력 가능한 최대 금액은 " + formatNumber(overCost ?? 0) + "원이에요"
+            amountLabel.textColor = .mpRed
+            self.contentView.layer.borderWidth = 1
+            self.contentView.layer.borderColor = UIColor.mpRed.cgColor
+        }else{
+            amountLabel.textColor = .mpBlack
+            self.contentView.layer.borderWidth = 0
+        }
+    }
+    
+    func formatNumber(_ number: Int64) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         return  formatter.string(from: NSNumber(value: number)) ?? ""

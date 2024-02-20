@@ -18,7 +18,7 @@ class GoalCreationManager {
     var icon: String?
     var goalTitle: String?
     var goalDetail: String? // Added detail property
-    var goalBudget: Int64?
+    var goalBudget: Int64? = 1000
     var startDate: String? = "2024-3-12"
     var endDate: String? = "2024-4-27"
     var categoryGoals: [CategoryGoal] = [] // Assuming this matches your CategoryGoal structure

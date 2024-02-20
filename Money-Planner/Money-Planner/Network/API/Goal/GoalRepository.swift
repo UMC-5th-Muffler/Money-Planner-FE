@@ -19,7 +19,7 @@ final class GoalRepository {
     // 현재 진행 중인 목표를 가져오는 메서드
     func getNowGoal() -> Single<NowResponse> {
         return provider.rx.request(.now)
-            .filterSuccessfulStatusCodes()
+            .filterSuccessfulStatusAndRedirectCodes()
             .map(NowResponse.self)
     }
     

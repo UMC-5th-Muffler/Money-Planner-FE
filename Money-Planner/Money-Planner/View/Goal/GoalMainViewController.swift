@@ -37,8 +37,21 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .mpGypsumGray
+        // 테스트
+        let provider = MufflerViewModel()
+        provider.getGoalNow()
+            .subscribe(onNext:{ response in  // 타입 어노테이션 추가
+                // 성공적으로 데이터를 가져온 경우
+                print(response)
+                print("Current goals fetched successfully!")
+                //self?.nowGoals.accept(response.result.goalTitle)
+            }, onError: { error in
+                // 에러가 발생한 경우
+                print("Error fetching current goals: \(error.localizedDescription)")
+            })
+            .disposed(by: disposeBag)
         setupSubscriptions()
-        viewModel.resetData()
+//        viewModel.resetData()
         viewModel.fetchNowGoal()
         viewModel.fetchNotNowGoals()
         setupHeaderView()
@@ -48,7 +61,8 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     private func setupSubscriptions() {
-        viewModel.nowGoals.asObservable().subscribe(onNext: { [weak self] _ in
+        viewModel.nowGoalResponse.asObservable()
+            .subscribe(onNext: { [weak self] _ in
             self?.goalTable.reloadData()
         }).disposed(by: disposeBag)
         
@@ -127,7 +141,7 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             // Now Goals section
-            if let nowGoal = viewModel.nowGoals.value {
+            if let nowGoal = viewModel.nowGoalResponse.value?.result {
                 // If there is a current goal, configure and return a GoalPresentationCell
                 let cell = tableView.dequeueReusableCell(withIdentifier: "GoalPresentationCell", for: indexPath) as! GoalPresentationCell
                 cell.configureCell(with: nowGoal, isNow: true)
@@ -154,9 +168,9 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
                 return cell
             } else {
                 // If there are past or future goals, configure and return a GoalPresentationCell
-                let goal = notNowGoals[indexPath.row]
+//                let goal = notNowGoals[indexPath.row]
                 let cell = tableView.dequeueReusableCell(withIdentifier: "GoalPresentationCell", for: indexPath) as! GoalPresentationCell
-                cell.configureCell(with: goal, isNow: false)
+//                cell.configureCell(with: goal, isNow: false)
 //                cell.btnTapped = { [weak self] in
 //                    // Navigate to GoalDetailsViewController with the selected goal's details
 //                    let goalDetailsVC = GoalDetailsViewController(goalID: goal.goalID)
@@ -212,8 +226,8 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
         
         if indexPath.section == 0 {
             // 현재 진행 중인 목표 선택 처리
-            if let goal = viewModel.nowGoals.value {
-                let goalDetailsVC = GoalDetailsViewController(goalID: goal.goalID)
+            if let goal = viewModel.nowGoalResponse.value?.result {
+                let goalDetailsVC = GoalDetailsViewController(goalID: Int(goal.goalId))
                 navigationController?.pushViewController(goalDetailsVC, animated: true)
                 self.tabBarController?.tabBar.isHidden = true
             }
@@ -235,6 +249,7 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
         let newCount = viewModel.addedNotNowGoals.value.count // 새로운 데이터의 개수
 
         // 새로 추가될 셀들의 인덱스 경로를 계산
+        
         let indexPaths = (currentCount..<newCount).map { IndexPath(row: $0, section: 1) }
         
         // 테이블 뷰 업데이트 시작

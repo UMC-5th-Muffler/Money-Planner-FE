@@ -92,6 +92,8 @@
 		7A0D33D42B80BE00007B2736 /* GoalCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33D32B80BE00007B2736 /* GoalCategoryViewModel.swift */; };
 		7A0D33D62B8127A5007B2736 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0D33D52B8127A5007B2736 /* MyPageViewController.swift */; };
 		7A0D33D72B812804007B2736 /* MyPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EF78302B68E3AD00AA135E /* MyPageTableViewCell.swift */; };
+		7A13EC7B2B8340D100C9A03C /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7A13EC7A2B8340D100C9A03C /* Config.xcconfig */; };
+		7A13EC7D2B834E6100C9A03C /* GetGoalNowResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A13EC7C2B834E6100C9A03C /* GetGoalNowResponse.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -116,6 +118,7 @@
 		7A610AF02B49414100D3096F /* RegisterProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AEF2B49414100D3096F /* RegisterProfileViewController.swift */; };
 		7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF12B49421F00D3096F /* KakaoLoginViewController.swift */; };
 		7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF32B49422E00D3096F /* AppleLoginViewController.swift */; };
+		7A8F3EC42B84632B00480902 /* CustomCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EC32B84632B00480902 /* CustomCalendarView.swift */; };
 		7AC060FF2B4C5D78008C0E63 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC060FE2B4C5D78008C0E63 /* Design.swift */; };
 		7ADBE3582B812A9E00C23563 /* DailyExpenseGoalModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBE3572B812A9E00C23563 /* DailyExpenseGoalModal.swift */; };
 		D20D6FDA2B581A05006D6762 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D6FD92B581A05006D6762 /* CustomTabBarController.swift */; };
@@ -257,6 +260,8 @@
 		7A0D33D12B809DD6007B2736 /* GoalPeriodViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalPeriodViewModel.swift; sourceTree = "<group>"; };
 		7A0D33D32B80BE00007B2736 /* GoalCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalCategoryViewModel.swift; sourceTree = "<group>"; };
 		7A0D33D52B8127A5007B2736 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		7A13EC7A2B8340D100C9A03C /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		7A13EC7C2B834E6100C9A03C /* GetGoalNowResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetGoalNowResponse.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -279,6 +284,7 @@
 		7A610AEF2B49414100D3096F /* RegisterProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterProfileViewController.swift; sourceTree = "<group>"; };
 		7A610AF12B49421F00D3096F /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
 		7A610AF32B49422E00D3096F /* AppleLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewController.swift; sourceTree = "<group>"; };
+		7A8F3EC32B84632B00480902 /* CustomCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCalendarView.swift; sourceTree = "<group>"; };
 		7AC060FE2B4C5D78008C0E63 /* Design.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design.swift; sourceTree = "<group>"; };
 		7ADBE3572B812A9E00C23563 /* DailyExpenseGoalModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyExpenseGoalModal.swift; sourceTree = "<group>"; };
 		D20D6FD92B581A05006D6762 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
@@ -583,11 +589,11 @@
 		7A610AB62B47FA8E00D3096F /* Money-Planner */ = {
 			isa = PBXGroup;
 			children = (
+				7A610AB72B47FA8E00D3096F /* AppDelegate.swift */,
+				7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */,
 				7A4C67322B5A47BD008BCAC9 /* CustomView */,
 				D29536EF2B4C091400EEA81F /* Money-Planner.entitlements */,
 				D29536ED2B4C076F00EEA81F /* Common */,
-				7A610AB72B47FA8E00D3096F /* AppDelegate.swift */,
-				7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */,
 				7A610AD02B48FEE000D3096F /* Notification */,
 				7A610ACE2B480B5B00D3096F /* Model */,
 				7A610ACD2B480B1400D3096F /* ViewModel */,
@@ -596,6 +602,7 @@
 				7A610AC02B47FA8F00D3096F /* Assets.xcassets */,
 				7A610AC22B47FA8F00D3096F /* LaunchScreen.storyboard */,
 				7A610AC52B47FA8F00D3096F /* Info.plist */,
+				7A13EC7A2B8340D100C9A03C /* Config.xcconfig */,
 				7A0D33C22B7F53A3007B2736 /* Config.xcconfig */,
 			);
 			path = "Money-Planner";
@@ -633,6 +640,7 @@
 				208C90CB2B7BBC5500C67960 /* Expense */,
 				D20D701F2B66FE8F006D6762 /* Home */,
 				208C90D22B7F751400C67960 /* ResponseGetCategoryListResponse.swift */,
+				7A13EC7C2B834E6100C9A03C /* GetGoalNowResponse.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -725,6 +733,7 @@
 				7A0D33842B7F48AA007B2736 /* GoalFinalViewController.swift */,
 				7A0D337B2B7F48AA007B2736 /* TestViewController.swift */,
 				552A423D2B671B86007AEAAD /* EditGoalViewController.swift */,
+				7A8F3EC32B84632B00480902 /* CustomCalendarView.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -945,6 +954,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A610AC42B47FA8F00D3096F /* LaunchScreen.storyboard in Resources */,
+				7A13EC7B2B8340D100C9A03C /* Config.xcconfig in Resources */,
 				7A610AC12B47FA8F00D3096F /* Assets.xcassets in Resources */,
 				D20D701E2B668800006D6762 /* Home.json in Resources */,
 				7A0D338D2B7F48AA007B2736 /* consumeDummy.json in Resources */,
@@ -997,6 +1007,7 @@
 				208C90C02B72636C00C67960 /* UIHelper.swift in Sources */,
 				208C90A82B6D48B300C67960 /* User.swift in Sources */,
 				20AFDD952B65B882008F8AB9 /* ChooseDateView.swift in Sources */,
+				7A8F3EC42B84632B00480902 /* CustomCalendarView.swift in Sources */,
 				7A0D33952B7F4993007B2736 /* GoalViewModel.swift in Sources */,
 				D217EBEC2B6F846400EB6BF3 /* Progress.swift in Sources */,
 				208C90AC2B6E3F8100C67960 /* UnregisterViewController.swift in Sources */,
@@ -1057,6 +1068,7 @@
 				208C90D32B7F751400C67960 /* ResponseGetCategoryListResponse.swift in Sources */,
 				D20D70232B67E1DD006D6762 /* GoalListModalViewController.swift in Sources */,
 				7A0D33892B7F48AA007B2736 /* GoalTitleViewController.swift in Sources */,
+				7A13EC7D2B834E6100C9A03C /* GetGoalNowResponse.swift in Sources */,
 				D20D70212B66FEA0006D6762 /* HomeViewModel.swift in Sources */,
 				208C90A42B6CD72000C67960 /* PopupViewController.swift in Sources */,
 				D20D6FF52B5E5B91006D6762 /* ToggleButton.swift in Sources */,
