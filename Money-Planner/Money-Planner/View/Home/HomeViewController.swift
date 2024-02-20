@@ -325,8 +325,10 @@ extension HomeViewController{
             switch result{
             case .success(let data):
                 let categoryInfo : Category? = data?.calendarInfo
-                if(categoryInfo != nil){
+                if(categoryInfo != nil && categoryInfo?.categoryBudget != nil){
                     self.statisticsData = Statistics(totalCost: categoryInfo!.categoryTotalCost!, goalBudget: categoryInfo!.categoryBudget!)
+                }else{
+                    self.statisticsData = nil
                 }
                 
                 if(data?.dailyList != nil){
@@ -446,13 +448,18 @@ extension HomeViewController{
         setupHeader()
         setupMonthView()
         
+        statisticsView.goal = self.nowGoal
+        
         // calendarView
-        if(self.nowGoal != nil){
+        if(self.nowGoal != nil && self.statisticsData != nil){
+            statisticsView.isHidden = false
             statisticsView.statistics = statisticsData
             calendarView.goal = self.nowGoal
             
             statisticsView.progress = getProgress(numerator: self.statisticsData!.totalCost, denominator: self.statisticsData!.goalBudget)
         }else{
+            statisticsView.isHidden = true
+            statisticsView.statistics = nil
             statisticsView.progress = 0.0
         }
         
@@ -876,6 +883,7 @@ extension HomeViewController : HomeMoreModalDelegate{
         if(index == 0){
             let vc = CategoryEditViewController()
             vc.hidesBottomBarWhenPushed = true
+            vc.delegate = self
             self.navigationController?.pushViewController(vc, animated: true)
         }
         
@@ -895,5 +903,11 @@ extension HomeViewController : UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         consumeView.tableViewRowSelect(indexPath: indexPath)
+    }
+}
+
+extension HomeViewController : CategoryEditDelegate{
+    func changeCategoryView() {
+        fetchCategoryList()
     }
 }

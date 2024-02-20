@@ -435,7 +435,6 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
             })
             .disposed(by: disposeBag)
         // 모달 닫기
-        print("여길로는?")
         delegateEdit?.EditCategoryCompleted(categoryId: Int(categoryId), name: currText, icon: currIcon)
         dismiss(animated: true)
     }

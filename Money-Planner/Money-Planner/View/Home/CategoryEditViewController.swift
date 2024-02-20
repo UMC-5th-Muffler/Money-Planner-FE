@@ -8,10 +8,16 @@
 import Foundation
 import UIKit
 
+protocol CategoryEditDelegate : AnyObject {
+    func changeCategoryView()
+}
+
 class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, AddCategoryViewDelegate, EditCategoryViewDelegate, DeleteCategoryViewDelegate  {
     func DeleteCategoryCompleted(categoryId: Int) {
         categoryTableView.categoryList.removeAll { $0.id == categoryId }
         originalCategoryList.removeAll { $0.id == categoryId }
+        
+        change = true
     }
     
     func EditCategoryCompleted(categoryId: Int, name: String, icon: String) {
@@ -30,6 +36,8 @@ class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, A
                 break
             }
         }
+        
+        change = true
     }
     
     func AddCategoryCompleted(_ name: String, iconName: String) {
@@ -37,6 +45,8 @@ class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, A
         let newCategory = Category(id: -1, categoryIcon : iconName, name: name, isVisible: true)
         originalCategoryList.append(newCategory)
         categoryTableView.categoryList.append(newCategory)
+        
+        change = true
     }
     
     
@@ -69,6 +79,8 @@ class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, A
     var categoryName : String?
     var categoryIcon : String?
     var categoryId : Int64?
+    var change : Bool = false
+    weak var delegate : CategoryEditDelegate?
     
     private let canEditLabel: MPLabel = {
         let label = MPLabel()
@@ -105,7 +117,12 @@ class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, A
             
             CategoryRepository.shared.updateCategoryFilter(categories: categoryTableView.categoryList){
                 _ in
+                self.delegate?.changeCategoryView()
             }
+        }
+        
+        if(change){
+            delegate?.changeCategoryView()
         }
     }
     
