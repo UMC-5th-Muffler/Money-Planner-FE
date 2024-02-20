@@ -9,11 +9,24 @@ import Foundation
 import UIKit
 
 
+enum SortType: String {
+    case descending = "DESC"
+    case ascending = "ASC"
+}
+
+protocol HomeConsumeViewDelegate : AnyObject {
+    func onTapOrder()
+    func changeConsumeData()
+}
+
 class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
+    
+    weak var delegate : HomeConsumeViewDelegate?
     
     let tableHeaderView : UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
+        v.isUserInteractionEnabled = true
         return v
     }()
 
@@ -23,15 +36,25 @@ class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
         table.isScrollEnabled = true
         table.separatorStyle = .none
         table.backgroundColor = .clear
+        table.showsVerticalScrollIndicator = false
         return table
     }()
     
     var data: [DailyConsume] = [] {
         didSet {
+            showView()
             tableView.reloadData()
             layoutIfNeeded()
         }
     }
+    
+    var noDataView : MPLabel = {
+       let v = MPLabel()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.text = "소비내역이 없습니다."
+        v.textColor = .mpDarkGray
+        return v
+    }()
     
     let arrow_small : UIImageView = {
         let img = UIImageView()
@@ -39,23 +62,39 @@ class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
         img.image = UIImage(named: "btn_arrow_small")
         return img
     }()
-    
-    let orderLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .mpBlack
-        label.font = UIFont.mpFont14M()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "최신순"
-        return label
+        
+    let button : MPLabel = {
+        let lb = MPLabel()
+        lb.text = "최신순"
+        lb.translatesAutoresizingMaskIntoConstraints = false
+        lb.textColor = .mpBlack
+        lb.font = .mpFont14M()
+        return lb
     }()
     
+    var sort : SortType = SortType.descending{
+        didSet{
+            if(sort == SortType.descending){
+                button.text = "최신순"
+            }else{
+                button.text = "오래된순"
+            }
+        }
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTapOrder))
+        tableHeaderView.addGestureRecognizer(tapGesture)
+        showView()
         setupUI()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTapOrder))
+        tableHeaderView.addGestureRecognizer(tapGesture)
+        showView()
         setupUI()
     }
     
@@ -76,33 +115,54 @@ class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
         layer.mask = maskLayer
     }
     
+    func showView(){
+        if(data.isEmpty){
+            noDataView.isHidden = false
+            tableView.isHidden = true
+        }else{
+            noDataView.isHidden = true
+            tableView.isHidden = false
+        }
+    }
+    
     private func setupUI() {
-        tableHeaderView.addSubview(orderLabel)
+        if(sort == SortType.descending){
+            button.text = "최신순"
+        }else{
+            button.text = "오래된순"
+        }
+        tableHeaderView.addSubview(button)
         tableHeaderView.addSubview(arrow_small)
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .mpWhite
         
-        tableView.tableHeaderView = tableHeaderView
-        
+        addSubview(tableHeaderView)
         addSubview(tableView)
+        addSubview(noDataView)
         
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(ConsumeRecordCell.self, forCellReuseIdentifier: "ConsumeRecordCell")
         
         NSLayoutConstraint.activate([
-            orderLabel.topAnchor.constraint(equalTo: tableHeaderView.topAnchor, constant: 32),
-            orderLabel.leadingAnchor.constraint(equalTo: tableHeaderView.leadingAnchor, constant: 16),
-            orderLabel.heightAnchor.constraint(equalToConstant: 24),
-            orderLabel.bottomAnchor.constraint(equalTo: tableHeaderView.bottomAnchor, constant: -32),
+            tableHeaderView.topAnchor.constraint(equalTo: topAnchor, constant: 32),
+            tableHeaderView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableHeaderView.widthAnchor.constraint(equalToConstant: 60),
+            tableHeaderView.heightAnchor.constraint(equalToConstant: 24),
             
-            arrow_small.leadingAnchor.constraint(equalTo: orderLabel.trailingAnchor, constant: 4),
-            arrow_small.centerYAnchor.constraint(equalTo: orderLabel.centerYAnchor),
+            button.leadingAnchor.constraint(equalTo: tableHeaderView.leadingAnchor, constant: 16),
+            button.heightAnchor.constraint(equalToConstant: 24),
             
-            tableView.topAnchor.constraint(equalTo: topAnchor),
+            arrow_small.leadingAnchor.constraint(equalTo: button.trailingAnchor, constant: 4),
+            arrow_small.centerYAnchor.constraint(equalTo: button.centerYAnchor),
+            
+            tableView.topAnchor.constraint(equalTo: tableHeaderView.bottomAnchor, constant: 32),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            noDataView.topAnchor.constraint(equalTo: topAnchor, constant: 100),
+            noDataView.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
 }
@@ -127,6 +187,7 @@ extension HomeConsumeView {
         let consumeRecord = data[indexPath.section].expenseDetailList![indexPath.row]
         
         cell.configure(with: consumeRecord)
+        cell.selectionStyle = .none
         
         return cell
     }
@@ -135,7 +196,6 @@ extension HomeConsumeView {
     
     // 여기에 UITableViewDelegate 관련 메서드를 추가할 수 있습니다.
     // 예를 들면, 셀을 선택했을 때의 동작 등을 구현할 수 있습니다.
-    
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
@@ -203,8 +263,73 @@ extension HomeConsumeView {
         self.window?.rootViewController?.present(detailViewController, animated: true, completion: nil)
         
     }
+    
+    @objc func onTapOrder(){
+        delegate?.onTapOrder()
+    }
 }
 
+extension HomeConsumeView{
+    func tableViewHeader(section: Int) -> UIView? {
+        let headerView = UIView()
+        
+        let separatorView : UIView = {
+            let v = UIView()
+            v.translatesAutoresizingMaskIntoConstraints = false
+            v.backgroundColor = .mpGypsumGray
+            v.heightAnchor.constraint(equalToConstant: 1)
+            return v
+        }()
+        
+        // 섹션 헤더에 표시할 내용을 추가
+        let titleLabel = UILabel()
+        titleLabel.text = data[section].date.formatMonthAndDate
+        titleLabel.textColor = UIColor(hexCode: "9FAAB0")
+        titleLabel.font = UIFont.mpFont14M()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(titleLabel)
+        
+        // "Cost" 텍스트를 추가
+        let costLabel = UILabel()
+        
+        if(data[section].dailyTotalCost != nil){
+            let result: String = data[section].dailyTotalCost!.formattedWithSeparator()
+            
+            costLabel.text = "\(result)원"
+        }else{
+            costLabel.text = ""
+        }
+
+        costLabel.textColor = UIColor.mpDarkGray
+        costLabel.font = UIFont.mpFont14M()
+        costLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(costLabel)
+        headerView.addSubview(separatorView)
+        
+        // Auto Layout 설정
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
+            titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            
+            costLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
+            costLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            
+        ])
+        
+        return headerView
+    }
+    
+    func tableViewRowSelect(indexPath: IndexPath){
+        let selectedRecord = data[indexPath.section].expenseDetailList![indexPath.row]
+
+        // expenseID
+        let expenseId : Int64 = Int64(selectedRecord.expenseId)
+        let detailViewController = ConsumeDetailViewController(expenseId: expenseId)
+        detailViewController.modalPresentationStyle = .fullScreen
+        detailViewController.delegate = self
+        self.window?.rootViewController?.present(detailViewController, animated: true, completion: nil)
+    }
+}
 
 class ConsumeRecordCell: UITableViewCell {
     
@@ -225,8 +350,9 @@ class ConsumeRecordCell: UITableViewCell {
         return label
     }()
     
-    let circleView: UIView = {
-        let view = UIView()
+    let circleView: UIImageView = {
+        let view = UIImageView()
+        view.image = nil
         view.backgroundColor = UIColor.mpDarkGray
         view.layer.cornerRadius = 22 // 동그라미의 반지름 설정
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -270,6 +396,13 @@ class ConsumeRecordCell: UITableViewCell {
     func configure(with consumeRecord: ConsumeDetail) {
         titleLabel.text = consumeRecord.title
         costLabel.text = consumeRecord.cost.formattedWithSeparator() + "원"
+        circleView.image = UIImage(named: consumeRecord.categoryIcon)
         // 다른 데이터를 사용하여 셀을 업데이트할 수 있습니다.
+    }
+}
+
+extension HomeConsumeView : ConsumeDetailViewDelegate{
+    func changeDetail() {
+        delegate?.changeConsumeData()
     }
 }

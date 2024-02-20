@@ -8,28 +8,64 @@
 import Foundation
 import UIKit
 
-class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, AddCategoryViewDelegate {
+protocol CategoryEditDelegate : AnyObject {
+    func changeCategoryView()
+}
+
+class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, AddCategoryViewDelegate, EditCategoryViewDelegate, DeleteCategoryViewDelegate  {
+    func DeleteCategoryCompleted(categoryId: Int) {
+        categoryTableView.categoryList.removeAll { $0.id == categoryId }
+        originalCategoryList.removeAll { $0.id == categoryId }
+        
+        change = true
+    }
+    
+    func EditCategoryCompleted(categoryId: Int, name: String, icon: String) {
+        for index in 0..<categoryTableView.categoryList.count {
+            if categoryTableView.categoryList[index].id == categoryId {
+                categoryTableView.categoryList[index].name = name
+                categoryTableView.categoryList[index].categoryIcon = icon
+                break
+            }
+        }
+        
+        for index in 0..<originalCategoryList.count {
+            if originalCategoryList[index].id == categoryId {
+                originalCategoryList[index].name = name
+                originalCategoryList[index].categoryIcon = icon
+                break
+            }
+        }
+        
+        change = true
+    }
+    
+    func AddCategoryCompleted(_ name: String, iconName: String) {
+        // 카테고리 추가 후 실행되는 함수
+        let newCategory = Category(id: -1, categoryIcon : iconName, name: name, isVisible: true)
+        originalCategoryList.append(newCategory)
+        categoryTableView.categoryList.append(newCategory)
+        
+        change = true
+    }
+    
+    
     func categoryDidSelect(at indexPath: IndexPath) {
-        let category = categoryList[indexPath.item]
+        let category = categoryTableView.categoryList[indexPath.item]
         categoryName = category.name
         categoryIcon = category.categoryIcon
         categoryId = Int64(category.id)
         presentCategoryDetail()
     }
     
-    func AddCategoryCompleted(_ name: String, iconName: String) {
-        // 카테고리 추가 후 실행되는 함수
-        
-    }
-    
-    
+
     var categoryTableView : CategoryTableView = {
         let v = CategoryTableView()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
-
-
+    
+    
     
     var canCategoryEditGrayView : UIView = {
         let view = UIView()
@@ -38,11 +74,14 @@ class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, A
         return view
         
     }()
-        
-    var categoryList : [Category] = []
+    
+    var originalCategoryList : [Category] = []
     var categoryName : String?
     var categoryIcon : String?
     var categoryId : Int64?
+    var change : Bool = false
+    weak var delegate : CategoryEditDelegate?
+    
     private let canEditLabel: MPLabel = {
         let label = MPLabel()
         label.text = "카테고리 순서를 편집할 수 있습니다."
@@ -66,7 +105,7 @@ class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, A
         let addButton = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addButtonTapped))
         addButton.tintColor = .mpMainColor
         self.navigationItem.rightBarButtonItem = addButton
-
+        
         fetchCategoryList()
         setupUI()
     }
@@ -74,9 +113,31 @@ class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, A
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        CategoryRepository.shared.updateCategoryFilter(categories: categoryTableView.categoryList){
-            _ in
+        if(!arraysAreEqual(array1: originalCategoryList, array2: categoryTableView.categoryList)){
+            
+            CategoryRepository.shared.updateCategoryFilter(categories: categoryTableView.categoryList){
+                _ in
+                self.delegate?.changeCategoryView()
+            }
         }
+        
+        if(change){
+            delegate?.changeCategoryView()
+        }
+    }
+    
+    func arraysAreEqual(array1: [Category],array2: [Category]) -> Bool {
+        guard array1.count == array2.count else {
+            return false
+        }
+        
+        for (element1, element2) in zip(array1, array2) {
+            if element1.id != element2.id {
+                return false
+            }
+        }
+        
+        return true
     }
     
 }
@@ -85,7 +146,7 @@ extension CategoryEditViewController{
     
     func setupUI(){
         
-        categoryTableView.categoryList = categoryList
+        categoryTableView.categoryList = originalCategoryList
         categoryTableView.delegate = self
         
         view.addSubview(categoryTableView)
@@ -114,8 +175,8 @@ extension CategoryEditViewController{
             switch result{
             case .success(let data):
                 let categoryList = data
-                self.categoryList = categoryList!
-                self.categoryTableView.categoryList = self.categoryList
+                self.originalCategoryList = categoryList!
+                self.categoryTableView.categoryList = self.originalCategoryList
                 
             case .failure(.failure(message: let message)):
                 print(message)
@@ -125,13 +186,15 @@ extension CategoryEditViewController{
             }
         }
     }
-  
+    
     func presentCategoryDetail(){
         let catDetailVC = AddCategoryViewController(name: categoryName ?? "", icon: categoryIcon ?? "", id : categoryId ?? -1)
-            catDetailVC.modalPresentationStyle = .overFullScreen
-            catDetailVC.delegate = self
-            present(catDetailVC, animated: true)
-        }
+        catDetailVC.modalPresentationStyle = .overFullScreen
+        catDetailVC.delegate = self
+        catDetailVC.delegateEdit = self
+        catDetailVC.delegateDelete = self
+        present(catDetailVC, animated: true)
+    }
     
     @objc
     private func addButtonTapped() {

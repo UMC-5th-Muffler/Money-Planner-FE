@@ -11,7 +11,7 @@ import Foundation
 struct DailyConsume: Codable {
     let date: String
     let dailyTotalCost: Int?
-    let expenseDetailList: [ConsumeDetail]?
+    var expenseDetailList: [ConsumeDetail]?
     
     enum CodingKeys: String, CodingKey {
         case date, dailyTotalCost, expenseDetailList

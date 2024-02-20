@@ -1,24 +1,26 @@
-//
-//  HomeMoreModal.swift
-//  Money-Planner
-//
-//  Created by seonwoo on 2024/02/13.
-//
 
 import Foundation
 import UIKit
 
-protocol HomeMoreModalDelegate : AnyObject {
-    func selectPage ( index : Int )
+protocol OrderModalDelegate : AnyObject {
+    func changeOrder(order : SortType)
 }
 
 
-class HomeMoreModalViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    weak var delegate: HomeMoreModalDelegate?
-    private let pages = [
-        "카테고리 편집",
-        "반복소비 관리"
+class OrderModalViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
+    weak var delegate: OrderModalDelegate?
+    private let sortName = [
+        "최신순",
+        "오래된순"
     ]
+    
+    private let sortTypeArray = [
+        SortType.descending,
+        SortType.ascending
+    ]
+    
+    var selectedSortType : SortType = SortType.descending
+    
     private let modalBar : UIView = {
         let view = UIView()
         view.layer.cornerRadius = 8
@@ -28,7 +30,7 @@ class HomeMoreModalViewController: UIViewController, UITableViewDataSource, UITa
     }()
     private let titleLabel : MPLabel = {
         let label = MPLabel()
-        label.text = "더보기"
+        label.text = "정렬"
         label.font = .mpFont20B()
         label.textColor = .mpBlack
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -38,7 +40,8 @@ class HomeMoreModalViewController: UIViewController, UITableViewDataSource, UITa
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.tableFooterView = UIView()
-        tableView.separatorStyle = .singleLine
+        tableView.separatorStyle = .none // Set separator style to none
+        
         return tableView
     }()
     
@@ -51,7 +54,6 @@ class HomeMoreModalViewController: UIViewController, UITableViewDataSource, UITa
         return view
     }()
     private var selectedIndexPath: IndexPath?
-    private var selectedReason: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +67,7 @@ class HomeMoreModalViewController: UIViewController, UITableViewDataSource, UITa
             customModal.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             customModal.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -36),
             customModal.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -64),
-            customModal.heightAnchor.constraint(equalToConstant: 256),
+            customModal.heightAnchor.constraint(equalToConstant: 228),
             
             modalBar.widthAnchor.constraint(equalToConstant: 49),
             modalBar.heightAnchor.constraint(equalToConstant: 4),
@@ -80,36 +82,38 @@ class HomeMoreModalViewController: UIViewController, UITableViewDataSource, UITa
             
             tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
             tableView.leadingAnchor.constraint(equalTo: customModal.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -24),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -36)
+            tableView.trailingAnchor.constraint(equalTo: customModal.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: customModal.bottomAnchor,constant: -16)
         ])
         
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        
     }
     
-    @objc private func closeModal(index : Int = -1) {
+    @objc private func closeModal() {
         dismiss(animated: true, completion: nil)
-        if(index != -1){
-            delegate?.selectPage(index: index)
-        }
     }
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return pages.count
+        return sortName.count
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60.0 // Change the cell height as needed
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = pages[indexPath.row]
-        cell.textLabel?.font = .mpFont18M()
-        cell.textLabel?.textColor = .mpBlack
+        cell.textLabel?.text = sortName[indexPath.row]
+        cell.textLabel?.font = .mpFont16M()
+        cell.textLabel?.textColor = .mpDarkGray
         cell.selectionStyle = .none
+        
+        if(selectedSortType == sortTypeArray[indexPath.row]){
+            cell.accessoryType = .checkmark
+            cell.tintColor = .mpMainColor // Change the color of the checkmark
+        }
+        
         return cell
     }
     
@@ -118,7 +122,11 @@ class HomeMoreModalViewController: UIViewController, UITableViewDataSource, UITa
         if let selectedIndexPath = selectedIndexPath {
             tableView.cellForRow(at: selectedIndexPath)?.accessoryType = .none
         }
-        
-        closeModal(index: indexPath.row)
+                
+        selectedSortType = sortTypeArray[indexPath.row]
+        delegate?.changeOrder(order: selectedSortType)
+        closeModal()
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
+

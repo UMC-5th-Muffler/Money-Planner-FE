@@ -13,8 +13,17 @@ import RxCocoa
 // 카테고리 직접 추가
 protocol AddCategoryViewDelegate : AnyObject{
     func AddCategoryCompleted (_ name : String, iconName: String)
-    
 }
+
+protocol EditCategoryViewDelegate : AnyObject{
+    func EditCategoryCompleted(categoryId: Int, name: String, icon: String)
+}
+
+protocol DeleteCategoryViewDelegate : AnyObject{
+    func DeleteCategoryCompleted(categoryId: Int)
+}
+
+
 struct CategoryType{
     let name : String
     let type : String
@@ -44,6 +53,9 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
         UIImage(named: "add-10"),
     ]
     weak var delegate: AddCategoryViewDelegate?
+    weak var delegateEdit : EditCategoryViewDelegate?
+    weak var delegateDelete : DeleteCategoryViewDelegate?
+    
     private lazy var headerView = HeaderView(title: "카테고리 추가")
     var currText : String = ""
     var currIcon : String
@@ -423,6 +435,7 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
             })
             .disposed(by: disposeBag)
         // 모달 닫기
+        delegateEdit?.EditCategoryCompleted(categoryId: Int(categoryId), name: currText, icon: currIcon)
         dismiss(animated: true)
     }
     @objc private func deleteCategoryComplete(){
@@ -436,6 +449,7 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
             })
             .disposed(by: disposeBag)
         // 모달 닫기
+        delegateDelete?.DeleteCategoryCompleted(categoryId: Int(categoryId))
         dismiss(animated: true)
         
     }

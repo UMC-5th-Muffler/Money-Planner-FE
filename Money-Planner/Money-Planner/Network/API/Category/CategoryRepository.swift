@@ -79,6 +79,7 @@ final class CategoryRepository : BaseRepository<CategoryAPI>{
                 } catch {
                     // 디코딩 오류 처리
                     print("Decoding error: \(error)")
+                    completion(.failure(.networkFail(error: error)))
                 }
             case let .failure(error):
                 // 네트워크 요청 실패 처리

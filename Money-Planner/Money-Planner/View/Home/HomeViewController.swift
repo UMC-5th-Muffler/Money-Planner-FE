@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class HomeViewController : UIViewController, MainMonthViewDelegate {
+class HomeViewController : UIViewController, MainMonthViewDelegate{
     
     var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -102,17 +102,28 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     
     var nowGoal : Goal?
     var dailyList : [CalendarDaily?] = []
-    var categoryList : [Category] = [Category(id: 0, name: "전체"), Category(id: 1, name: "식사"), Category(id: 2, name: "카페"), Category(id: 3, name: "교통"), Category(id: 4, name: "쇼핑")]
+    var categoryList : [Category] = [Category(id: -1, name: "전체")]
     var consumeList : [DailyConsume] = []
     
-    var currentYear : Int = Calendar.current.component (.year, from: Date())
-    var currentMonth : Int = Calendar.current.component (.month, from: Date())
+    var statisticsData : Statistics?
     
     var hasNext : Bool = false
     var loading : Bool = false
     
+    var goingUp: Bool?
+    var childScrollingDownDueToParent = false
+    
+    var sort : SortType = SortType.descending {
+        didSet{
+            consumeView.sort = sort
+        }
+    }
+    
     override func viewDidLoad(){
         contentScrollView.delegate = self
+        categoryScrollView.delegate = self
+        consumeView.tableView.delegate = self
+//        consumeView.
         
         fetchCalendarData()
         fetchCategoryList()
@@ -121,6 +132,8 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         contentScrollView.addSubview(contentView)
         
         setupHeader()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(getNotificationConsumeView), name: Notification.Name("addConsume"), object: nil)
         
         // 스크롤 뷰 작업
         NSLayoutConstraint.activate([
@@ -142,7 +155,8 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         contentViewHeight.priority = .defaultLow
         contentViewHeight.isActive = true
         
-        setupMonthAndCategoryView()
+        setupMonthView()
+        setupCategoryView()
         setupCollectionView()
         
     }
@@ -157,8 +171,17 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
     func didChangeMonth(monthIndex: Int, year: Int) {
         // 값 있을 때는 넘겨주고 없으면 초기화 하기
         calendarView.changeMonth(monthIndex: monthIndex, year: year)
-        fetchChangeMonthData()
+        
+        if(collectionView.currentPage == 0){
+            fetchChangeMonthCalendarData()
+        }else{
+            self.consumeList.removeAll()
+            self.hasNext = false
+            fetchConsumeData(lastDate: nil, lastExpenseId: nil)
+        }
+        
     }
+    
     // ConsumeRecordCell의 delegate
     func didTapCell(_ cell: ConsumeRecordCell) {
         print("소비 내역으로 이동")
@@ -173,6 +196,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
 
 extension HomeViewController{
     
+    // 첫번째에만 호출
     func fetchCalendarData(){
         HomeRepository.shared.getHomeNow{
             (result) in
@@ -184,6 +208,7 @@ extension HomeViewController{
                 
                 if(goal != nil){
                     self.nowGoal = goal
+                    self.statisticsData = Statistics(totalCost: goal!.totalCost!, goalBudget: goal!.goalBudget!)
                 }
                 
                 
@@ -206,7 +231,8 @@ extension HomeViewController{
         
     }
     
-    func fetchChangeMonthData(){
+    // 달력 데이터 가져오기
+    func fetchChangeMonthCalendarData(){
         let currentYear = monthView.currentYear
         let currentMonth = monthView.currentMonth
         
@@ -228,6 +254,7 @@ extension HomeViewController{
                     
                     if(goal != nil){
                         self.nowGoal = goal
+                        self.statisticsData = Statistics(totalCost: goal!.totalCost!, goalBudget: goal!.goalBudget!)
                     }
                     
                     if(data?.dailyList != nil){
@@ -253,12 +280,11 @@ extension HomeViewController{
                 (result) in
                 switch result{
                 case .success(let data):
-                    // 아예 골이 없는 경우
-                    
                     let goal : Goal? = data?.calendarInfo
                     
                     if(goal != nil){
                         self.nowGoal = goal
+                        self.statisticsData = Statistics(totalCost: goal!.totalCost!, goalBudget: goal!.goalBudget!)
                     }
                     
                     if(data?.dailyList != nil){
@@ -280,17 +306,35 @@ extension HomeViewController{
         }
     }
     
-    func fetchCategoryList(){
-        CategoryRepository.shared.getCategoryFilteredList{
+    func fetchCalendarDataWithCategory(categoryId : Int){
+        
+        let currentYear = monthView.currentYear
+        let currentMonth = monthView.currentMonth
+        
+        var yearMonthStr = ""
+        if(currentMonth >= 10){
+            yearMonthStr = "\(currentYear)-\(currentMonth)"
+        }else{
+            yearMonthStr = "\(currentYear)-0\(currentMonth)"
+        }
+        
+        HomeRepository.shared.getCalendarListWithCategory(goalId: self.nowGoal!.goalID, categoryId: categoryId, yearMonth: yearMonthStr){
             (result) in
             switch result{
             case .success(let data):
-                // 아예 골이 없는 경우
+                let categoryInfo : Category? = data?.calendarInfo
+                if(categoryInfo != nil && categoryInfo?.categoryBudget != nil){
+                    self.statisticsData = Statistics(totalCost: categoryInfo!.categoryTotalCost!, goalBudget: categoryInfo!.categoryBudget!)
+                }else{
+                    self.statisticsData = nil
+                }
                 
-                let categoryList = data
-                self.categoryList = categoryList!
+                if(data?.dailyList != nil){
+                    self.dailyList = data!.dailyList!
+                }
+                
                 DispatchQueue.main.async {
-                    self.setupMonthAndCategoryView()
+                    self.reloadUI()
                 }
                 
                 
@@ -303,6 +347,29 @@ extension HomeViewController{
         }
     }
     
+    func fetchCategoryList(){
+        CategoryRepository.shared.getCategoryFilteredList{
+            (result) in
+            switch result{
+            case .success(let data):
+                var categoryList = data
+                categoryList?.insert(Category(id: -1, name: "전체"), at: 0)
+                self.categoryList = categoryList!
+                DispatchQueue.main.async {
+                    self.setupCategoryView()
+                }
+                
+                
+            case .failure(.failure(message: let message)):
+                print(message)
+            case .failure(.networkFail(let error)):
+                print(error)
+                print("networkFail in loginWithSocialAPI")
+            }
+        }
+    }
+    
+    // 목표 리스트에서 목표 바꿨을때
     func fetchChangeGoalData(goalId : Int){
         self.loading = true
         
@@ -315,7 +382,9 @@ extension HomeViewController{
                 
                 if(goal != nil){
                     self.nowGoal = goal
-                    print(goal)
+                    
+                    self.statisticsData = Statistics(totalCost: goal!.totalCost!, goalBudget: goal!.goalBudget!)
+                    
                     self.monthView.updateYearAndMonth(to: self.nowGoal!.startDate!.toDate!)
                     
                     self.calendarView.changeMonth(monthIndex: self.monthView.currentMonth, year: self.monthView.currentYear)
@@ -342,12 +411,18 @@ extension HomeViewController{
         
     }
     
-    func fetchConsumeData(order : String?, lastDate: String?, lastExpenseId: Int?, categoryId: Int?){
+    // 소비 데이터 불러오기
+    func fetchConsumeData(lastDate: String?, lastExpenseId: Int?){
         self.loading = true
         
-        let dateStr = (currentMonth >= 10) ? "\(currentYear)-\(currentMonth)" : "\(currentYear)-0\(currentMonth)"
+        var categoryId : Int? = categoryScrollView.selectedCategoryIndex
+        if(categoryId == -1){
+            categoryId = nil
+        }
         
-        HomeRepository.shared.getExpenseList(yearMonth: dateStr, size: nil, goalId: self.nowGoal?.goalID, order: order, lastDate: lastDate, lastExpenseId: lastExpenseId, categoryId: categoryId){
+        let dateStr = (monthView.currentMonth >= 10) ? "\(monthView.currentYear)-\(monthView.currentMonth)" : "\(monthView.currentYear)-0\(monthView.currentMonth)"
+        
+        HomeRepository.shared.getExpenseList(yearMonth: dateStr, size: nil, goalId: self.nowGoal?.goalID, order: sort.rawValue, lastDate: lastDate, lastExpenseId: lastExpenseId, categoryId: categoryId){
             (result) in
             switch result{
             case .success(let data):
@@ -374,15 +449,20 @@ extension HomeViewController{
     
     func reloadUI(){
         setupHeader()
-        setupMonthAndCategoryView()
+        setupMonthView()
+        
+        statisticsView.goal = self.nowGoal
         
         // calendarView
-        if(self.nowGoal != nil){
-            statisticsView.goal = self.nowGoal
+        if(self.nowGoal != nil && self.statisticsData != nil){
+            statisticsView.isHidden = false
+            statisticsView.statistics = statisticsData
             calendarView.goal = self.nowGoal
             
-            statisticsView.progress = getProgress(numerator: self.nowGoal!.totalCost!, denominator: self.nowGoal!.goalBudget!)
+            statisticsView.progress = getProgress(numerator: self.statisticsData!.totalCost, denominator: self.statisticsData!.goalBudget)
         }else{
+            statisticsView.isHidden = true
+            statisticsView.statistics = nil
             statisticsView.progress = 0.0
         }
         
@@ -454,16 +534,12 @@ extension HomeViewController{
         ])
     }
     
-    func setupMonthAndCategoryView(){
+    func setupMonthView(){
         toggleButton.addTarget(self, action: #selector(customToggleButtonTapped), for: .touchUpInside)
         
         monthView.delegate=self
         contentView.addSubview(monthView)
         contentView.addSubview(toggleButton)
-        
-        categoryScrollView.categories = self.categoryList
-        
-        contentView.addSubview(categoryScrollView)
         
         NSLayoutConstraint.activate([
             monthView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
@@ -476,13 +552,19 @@ extension HomeViewController{
             toggleButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
             toggleButton.widthAnchor.constraint(equalToConstant: 154),
             toggleButton.heightAnchor.constraint(equalToConstant: 46),
-            
+        ])
+    }
+    
+    func setupCategoryView(){
+        categoryScrollView.categories = self.categoryList
+        contentView.addSubview(categoryScrollView)
+        
+        NSLayoutConstraint.activate([
             categoryScrollView.topAnchor.constraint(equalTo: monthView.bottomAnchor,
                                                     constant: 24),
             categoryScrollView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
             categoryScrollView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
             categoryScrollView.heightAnchor.constraint(equalToConstant: 37)
-            
         ])
     }
     
@@ -537,6 +619,7 @@ extension HomeViewController{
     
     func setUpConsumeView(cell : UICollectionViewCell){
         cell.contentView.addSubview(consumeView)
+        consumeView.delegate = self
         
         NSLayoutConstraint.activate([
             consumeView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
@@ -549,38 +632,40 @@ extension HomeViewController{
     
     @objc func customToggleButtonTapped() {
         // 버튼을 탭했을 때 수행할 동작 추가
+        categoryScrollView.changeSelectedButton(index: -1)
+        
         if(collectionView.currentPage == 0){
             let indexPath = IndexPath(item: 1, section: 0)
             collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-            fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil, categoryId: nil)
-//            contentScrollView.updateContentSize()
+            fetchConsumeData(lastDate: nil, lastExpenseId: nil)
         }
         
         if(collectionView.currentPage == 1){
             let indexPath = IndexPath(item: 0, section: 0)
             collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
             self.consumeList.removeAll()
-//            contentScrollView.updateContentSize()
+            self.hasNext = false
+            fetchChangeMonthCalendarData()
         }
     }
     
     
     @objc func searchButtonTapped() {
-                let vc = SearchConsumeViewController()
-                vc.hidesBottomBarWhenPushed = true
-                self.navigationController?.pushViewController(vc, animated: true)
+        let vc = SearchConsumeViewController()
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func bellButtonTapped() {
-                let vc = NotificationViewController()
-                vc.hidesBottomBarWhenPushed = true
-                self.navigationController?.pushViewController(vc, animated: true)
+        let vc = NotificationViewController()
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func menuButtonTapped() {
-              let vc = HomeMoreModalViewController()
-              vc.delegate = self
-              present(vc, animated: true)
+        let vc = HomeMoreModalViewController()
+        vc.delegate = self
+        present(vc, animated: true)
     }
     
     @objc func monthViewTapped(){
@@ -674,9 +759,78 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             return
         }
         
-        if scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.bounds.height {
+        // MARK: - 무한스크롤
+        
+        // 테이블 뷰의 컨텐츠 크기
+        let contentHeight = consumeView.tableView.contentSize.height
+        
+        // 테이블 뷰의 현재 위치
+        let offsetY = consumeView.tableView.contentOffset.y
+        
+        // 테이블 뷰의 높이
+        let tableViewHeight = consumeView.tableView.bounds.size.height
+        
+        // 만약 스크롤이 테이블 뷰의 맨 아래에 도달했을 때
+        if offsetY > contentHeight - tableViewHeight {
             if self.hasNext {
-                fetchConsumeData(order: nil, lastDate: self.consumeList.last?.date, lastExpenseId: self.consumeList.last?.expenseDetailList?.last?.expenseId, categoryId: nil)
+                fetchConsumeData(lastDate: self.consumeList.last?.date, lastExpenseId: self.consumeList.last?.expenseDetailList?.last?.expenseId)
+            }
+        }
+        
+        
+        // MARK: - 중첩 스크롤
+        
+        // 1: determining whether scrollview is scrolling up or down
+        goingUp = scrollView.panGestureRecognizer.translation(in: scrollView).y < 0
+        
+        // 2: maximum contentOffset y that parent scrollView can have
+        let parentViewMaxContentYOffset = contentScrollView.contentSize.height - contentScrollView.frame.height
+        
+        // 3: if scrollView is going upwards
+        if goingUp! {
+            // 4:  if scrollView is a child scrollView
+            
+            if scrollView == consumeView.tableView {
+                // 5:  if parent scroll view is't scrolled maximum (i.e. menu isn't sticked on top yet)
+                if contentScrollView.contentOffset.y < parentViewMaxContentYOffset && !childScrollingDownDueToParent {
+                    
+                    // 6: change parent scrollView contentOffset y which is equal to minimum between maximum y offset that parent scrollView can have and sum of parentScrollView's content's y offset and child's y content offset. Because, we don't want parent scrollView go above sticked menu.
+                    // Scroll parent scrollview upwards as much as child scrollView is scrolled
+                    contentScrollView.contentOffset.y = min(contentScrollView.contentOffset.y + consumeView.tableView.contentOffset.y, parentViewMaxContentYOffset)
+                    
+                    // 7: change child scrollView's content's y offset to 0 because we are scrolling parent scrollView instead with same content offset change.
+                    consumeView.tableView.contentOffset.y = 0
+                }
+            }
+        }
+        // 8: Scrollview is going downwards
+        else {
+            
+            if scrollView == consumeView.tableView {
+                // 9: when child view scrolls down. if childScrollView is scrolled to y offset 0 (child scrollView is completely scrolled down) then scroll parent scrollview instead
+                // if childScrollView's content's y offset is less than 0 and parent's content's y offset is greater than 0
+                if consumeView.tableView.contentOffset.y < 0 && contentScrollView.contentOffset.y > 0 {
+                    
+                    // 10: set parent scrollView's content's y offset to be the maximum between 0 and difference of parentScrollView's content's y offset and absolute value of childScrollView's content's y offset
+                    // we don't want parent to scroll more that 0 i.e. more downwards so we use max of 0.
+                    contentScrollView.contentOffset.y = max(contentScrollView.contentOffset.y - abs(consumeView.tableView.contentOffset.y), 0)
+                }
+            }
+            
+            // 11: if downward scrolling view is parent scrollView
+            if scrollView == contentScrollView {
+                // 12: if child scrollView's content's y offset is greater than 0. i.e. child is scrolled up and content is hiding up
+                // and parent scrollView's content's y offset is less than parentView's maximum y offset
+                // i.e. if child view's content is hiding up and parent scrollView is scrolled down than we need to scroll content of childScrollView first
+                if (consumeView.tableView.contentOffset.y > 0 && contentScrollView.contentOffset.y < parentViewMaxContentYOffset) {
+                    // 13:  set if scrolling is due to parent scrolled
+                    childScrollingDownDueToParent = true
+                    // 14:  assign the scrolled offset of parent to child not exceding the offset 0 for child scroll view
+                    consumeView.tableView.contentOffset.y = max(consumeView.tableView.contentOffset.y - (parentViewMaxContentYOffset - contentScrollView.contentOffset.y), 0)
+                    // 15:  stick parent view to top coz it's scrolled offset is assigned to child
+                    contentScrollView.contentOffset.y = parentViewMaxContentYOffset
+                    childScrollingDownDueToParent = false
+                }
             }
         }
     }
@@ -684,7 +838,37 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 
 extension HomeViewController : GoalListModalViewDelegate{
     func changeGoal(goalId: Int) {
+        if(collectionView.currentPage == 1){
+            let indexPath = IndexPath(item: 0, section: 0)
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            toggleButton.isRight.toggle()
+            self.hasNext = false
+        }
+        categoryScrollView.changeSelectedButton(index: -1)
         fetchChangeGoalData(goalId: goalId)
+    }
+}
+
+extension HomeViewController : CategoryButtonScrollDelegate{
+    func onTapChangeCategory(categoryId: Int) {
+        
+        if(collectionView.currentPage == 0){
+            if(categoryId == -1){
+                // 전체 일때
+                fetchChangeMonthCalendarData()
+            }else{
+                // 카테고리 일때
+                fetchCalendarDataWithCategory(categoryId: categoryId)
+            }
+        }
+        
+        if(collectionView.currentPage == 1){
+            self.consumeList.removeAll()
+            self.hasNext = false
+ 
+            fetchConsumeData(lastDate: nil, lastExpenseId: nil)
+        }
+        
     }
 }
 
@@ -693,6 +877,7 @@ extension HomeViewController : HomeMoreModalDelegate{
         if(index == 0){
             let vc = CategoryEditViewController()
             vc.hidesBottomBarWhenPushed = true
+            vc.delegate = self
             self.navigationController?.pushViewController(vc, animated: true)
         }
         
@@ -702,4 +887,68 @@ extension HomeViewController : HomeMoreModalDelegate{
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
+}
+
+// 중첩 스크롤 구현 위해서 추가
+extension HomeViewController : UITableViewDelegate{
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return consumeView.tableViewHeader(section: section)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        consumeView.tableViewRowSelect(indexPath: indexPath)
+    }
+}
+
+extension HomeViewController : CategoryEditDelegate{
+    func changeCategoryView() {
+        fetchCategoryList()
+    }
+}
+
+extension HomeViewController : HomeConsumeViewDelegate{
+    func changeConsumeData() {
+        self.consumeList.removeAll()
+        self.hasNext = false
+        fetchConsumeData(lastDate: nil, lastExpenseId: nil)
+    }
+    
+    func onTapOrder() {
+        let vc = OrderModalViewController()
+        vc.selectedSortType = sort
+        vc.delegate = self
+        present(vc, animated: true)
+    }
+    
+}
+
+extension HomeViewController : OrderModalDelegate {
+    func changeOrder(order : SortType) {
+        if(sort == order){
+            return
+        }
+        sort = order
+        
+        self.consumeList.removeAll()
+        self.hasNext = false
+        
+        fetchConsumeData(lastDate: nil, lastExpenseId: nil)
+    }
+}
+
+
+// notification 기능 등록 함수
+extension HomeViewController {
+    @objc func getNotificationConsumeView(){
+        if(collectionView.currentPage == 0){
+            fetchChangeMonthCalendarData()
+        }
+        
+        if(collectionView.currentPage == 1){
+            self.consumeList.removeAll()
+            self.hasNext = false
+            fetchConsumeData(lastDate: nil, lastExpenseId: nil)
+        }
+    }
+    
 }

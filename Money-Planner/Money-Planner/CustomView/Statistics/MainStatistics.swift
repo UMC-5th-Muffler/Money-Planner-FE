@@ -10,12 +10,15 @@ import UIKit
 
 class MainStatisticsView : UIView {
     // 게이지의 진행도 (0.0 ~ 1.0)
-    
-    var goal : Goal? = nil {
+        
+    var statistics : Statistics? = nil {
         didSet{
             setupView()
         }
     }
+    
+    var goal : Goal?
+    
     var progress: CGFloat = 0.0 {
         didSet{
             setNeedsDisplay()
@@ -100,17 +103,17 @@ class MainStatisticsView : UIView {
     }
     
     private func setupView() {
-        if(goal != nil){
+        if(statistics != nil){
             noGoalView.removeFromSuperview()
             
             backgroundColor = UIColor.clear
-            if(goal != nil){
-                useAmount.text = goal!.totalCost!.formattedWithSeparator()+"원"
-                totalAmount.text = "/ "+goal!.goalBudget!.formattedWithSeparator() + "원"
-                remainAmount.text = (goal!.goalBudget!-goal!.totalCost!).formattedWithSeparator() +  "원"
+            if(statistics != nil){
+                useAmount.text = statistics!.totalCost.formattedWithSeparator()+"원"
+                totalAmount.text = "/ "+statistics!.goalBudget.formattedWithSeparator() + "원"
+                remainAmount.text = (statistics!.goalBudget-statistics!.totalCost).formattedWithSeparator() +  "원"
             }
             
-            if(goal != nil && goal!.goalBudget! < goal!.totalCost!){
+            if(statistics != nil && statistics!.goalBudget < statistics!.totalCost){
                 remainAmount.textColor = .mpRed
             }else{
                 remainAmount.textColor = .mpMainColor
@@ -135,7 +138,17 @@ class MainStatisticsView : UIView {
                 stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
                 stackView.leftAnchor.constraint(equalTo: leftAnchor),
             ])
-        }else{
+        }else if(self.goal != nil){
+            let view = UIView()
+            addSubview(view)
+            NSLayoutConstraint.activate([
+                view.topAnchor.constraint(equalTo: topAnchor),
+                view.leadingAnchor.constraint(equalTo: leadingAnchor),
+                view.trailingAnchor.constraint(equalTo: trailingAnchor),
+                view.bottomAnchor.constraint(equalTo: bottomAnchor)
+            ])
+        }
+        else{
             addSubview(noGoalView)
             
             NSLayoutConstraint.activate([
@@ -149,8 +162,11 @@ class MainStatisticsView : UIView {
         
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        if(goal != nil){
+        if(statistics != nil){
             drawDonutChart()
+        }else{
+            backgroundColor?.setFill()
+            UIRectFill(rect)
         }
     }
     
@@ -175,7 +191,7 @@ class MainStatisticsView : UIView {
         
         path.lineWidth = lineWidth
         path.lineCapStyle = .round
-        if(goal != nil && goal!.goalBudget! < goal!.totalCost!){
+        if(statistics != nil && statistics!.goalBudget < statistics!.totalCost){
             UIColor.mpRed.setStroke()
         }else{
             UIColor.mpMainColor.setStroke()
