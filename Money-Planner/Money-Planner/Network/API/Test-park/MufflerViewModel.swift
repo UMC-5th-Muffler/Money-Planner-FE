@@ -181,6 +181,21 @@ class MufflerViewModel {
 //        return provider.request((expenseRequest: expenseRequest))
 //            .map(ConnectModel.self)
 //    }
+    // routine controller
+    
+    // 루틴 디테일 조회
+    // 소비등록 > 카테고리 선택 뷰에서 활용
+    func getRoutine(routineId : Int64) -> Observable<GetRoutineIdResponse> {
+        return provider.request(.getRoutine(routineId: routineId))
+            .map(GetRoutineIdResponse.self)
+            .asObservable()
+    }
+    // 소비내역 삭제 : [DELETE] /api/expense/{expenseId}
+    func deleteRoutine(routineId: Int64) -> Observable<ConnectModel> {
+        return provider.request(.deleteRoutine(routineId: routineId))
+            .map(ConnectModel.self).asObservable()
+    }
+    
 //    // Home Controller
 //    func getNow() -> Observable<MyRepo> {
 //        return provider.request(.getNow)
@@ -212,4 +227,5 @@ class MufflerViewModel {
 //            .asObservable()
 //    }
 }
+
 
