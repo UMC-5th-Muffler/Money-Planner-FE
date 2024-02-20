@@ -138,6 +138,7 @@ class WarnAboutUneditableModal : UIViewController {
         setupLayout()
         setupPanGesture()
         setupActions()
+        
     }
     
     private func setupLayout() {

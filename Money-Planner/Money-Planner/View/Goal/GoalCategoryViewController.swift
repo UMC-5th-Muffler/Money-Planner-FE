@@ -7,27 +7,40 @@
 
 import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
 
 extension GoalCategoryViewController: CategorySelectionDelegate{
-    
-    func AddCategory() {
-        let addCategoryVC = AddCategoryViewController()
-        addCategoryVC.modalPresentationStyle = .fullScreen
-//        addCategoryVC.delegate = self => 이걸... 어케..
-        present(addCategoryVC, animated: true)
-    }
-    
-    func didSelectCategory(_ category: String, iconName: String) { // => categoryId 넘겨줘야 함.
+    func didSelectCategory(id: Int64, category: String, iconName: String) {
+        // 카테고리 선택된 것 반영
+        // => categoryId 넘겨줘야 함.
+        // 카테고리 정보를 담는 리스트에 저장
+        let add = GoalCategory(categoryName: category, categoryIcon: iconName, categoryId: id)
+        data.append(add) // 리스트에 데이터 추가
+        print(data) // 추가된 것 확인
+        let id = data[currentCellIndex].categoryId
+        let name = data[currentCellIndex].categoryName
+        let icon = data[currentCellIndex].categoryIcon
         // 선택된 인덱스 패스에 해당하는 카테고리를 업데이트
-        if let cell = tableView.cellForRow(at: selectedIndexPath!) as? GoalCategoryTableViewCell {
-//            cell.configureCell(categoryId: <#Int?#>, text: category, iconName: iconName)
+        if let cell = tableView.cellForRow(at: selectedIndexPath!) as? GoalCategoryTableViewCell {cell.configureCell(categoryId: id, text: name, iconName: icon)
             print(selectedIndexPath as Any)
         }
+            
+            //btmBtn 활성화 결정
+            checkForDuplicateCategoriesAndUpdateUI()
+    //        tableView.reloadSections([selectedIndexPath!.section], with: .none) => 이거 있으면 오히려 안됨
         
-        //btmBtn 활성화 결정
-        checkForDuplicateCategoriesAndUpdateUI()
-//        tableView.reloadSections([selectedIndexPath!.section], with: .none) => 이거 있으면 오히려 안됨
     }
+    
+    
+    func AddCategory() {
+        // 직접 추가 화면으로 이동합니다
+        let addCategoryVC = AddCategoryViewController(name: "", icon: "", id: -1)
+        addCategoryVC.modalPresentationStyle = .fullScreen
+        addCategoryVC.delegate = self
+        present(addCategoryVC, animated: true)
+    }
+
 }
 
 
@@ -48,7 +61,7 @@ extension GoalCategoryViewController: MoneyAmountTextCellDelegate {
         }
         
         // Update sumAmount
-        sumAmount = categoryGoalMaker.reduce(0) { $0 + ($1.categoryBudget ) }
+        sumAmount = categoryGoalMaker.reduce(0) { $0 + ($1.categoryBudget ?? 0 ) }
         
         //총합 업데이트 및 디스플레이 반영
         updateSumAmountDisplay()
@@ -76,16 +89,31 @@ extension GoalCategoryViewController: MoneyAmountTextCellDelegate {
         progressBar.changeUsedAmt(usedAmt: sumAmount, goalAmt: goalCreationManager.goalBudget!)
         
         //btmBtn 활성화 결정
-        checkForDuplicateCategoriesAndUpdateUI()
+        //checkForDuplicateCategoriesAndUpdateUI()
     }
 }
-
-class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
+// 카테고리별 목표 금액 입력 화면
+class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddCategoryViewDelegate{
+    func AddCategoryCompleted(_ name: String, iconName: String) {
+        // 직접 추가 완료 후
+    }
+    
     
     
     ///카테고리 셀을 만들기 위함.
     weak var delegate: CategorySelectionDelegate?
+    // api 연결
+    let viewModel = MufflerViewModel()
+    let disposeBag = DisposeBag()
+    // 카테고리 내용 저장
+    struct GoalCategory {
+        let categoryName : String
+        let categoryIcon : String
+        let categoryId : Int64
+    }
     
+    var data : [GoalCategory] = []
+    var currentCellIndex : Int = 0
     //화면 구성 요소
     var header = HeaderView(title: "")
     var descriptionView = DescriptionView(text: "카테고리별 목표 금액을\n입력해주세요", alignToCenter: false)
@@ -102,7 +130,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     var sumAmount : Int64 = 0
     
     //카테고리별 목표
-    var categoryGoalMaker : [GoalCategory] = [] //같은 카테고리 목표는 모달에서 막아야함.
+    var categoryGoalMaker : [Category] = [] //같은 카테고리 목표는 모달에서 막아야함.
     /// categoryGoalMaker를 인자로 넘겨주고,
     /// 여기에 겹치는 id를 가진 버튼만 전부 disable 시킬 수 있게 만들어야함.
     
@@ -137,7 +165,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
         for section in 0..<categoryCount - 1 {  // Exclude the "Add Category" section
             if let categoryCell = tableView.cellForRow(at: IndexPath(row: 0, section: section)) as? GoalCategoryTableViewCell,
                let amountCell = tableView.cellForRow(at: IndexPath(row: 1, section: section)) as? MoneyAmountTextCell,
-               let categoryId = categoryCell.categoryId,  // Assuming your cell holds a categoryId
+               let categoryId = categoryCell.categoryId,
                let categoryBudgetText = amountCell.textField.text,
                let categoryBudget = Int64(categoryBudgetText.replacingOccurrences(of: ",", with: "")) {
                 
@@ -147,7 +175,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
         }
         
         // Add category goals to the goalCreationManager
-        goalCreationManager.addCategoryGoals(categoryGoals: categoryGoals)
+       // goalCreationManager.addCategoryGoals(categoryGoals: categoryGoals)
         
         // Proceed to the next view controller or show an error/alert if needed
         let goalDailyVC = GoalDailyViewController()
@@ -312,7 +340,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
         headerView.onDeleteButtonTapped = { [weak self] in
             guard let self = self else { return }
             //금액 빼고
-            sumAmount -= categoryGoalMaker[section].categoryBudget 
+            sumAmount -= categoryGoalMaker[section].categoryBudget ?? 0
             //초기화 시키고
             self.resetCategorySection(section)
             //삭제
@@ -331,7 +359,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
             progressBar.changeUsedAmt(usedAmt: sumAmount, goalAmt: goalCreationManager.goalBudget!)
             
             //btmBtn 활성화 체크
-            checkForDuplicateCategoriesAndUpdateUI()
+            //checkForDuplicateCategoriesAndUpdateUI()
         }
         
         if section == categoryCount - 1 {
@@ -358,18 +386,19 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
                 self.categoryCount += 1
                 // 마지막 섹션 바로 앞에 새로운 GoalCategoryTableViewCell 섹션 추가
                 self.tableView.insertSections([self.categoryCount - 2], with: .automatic)
-                let newCategory = GoalCategory(id: nil, name: nil, categoryBudget: 0) // TODO : id는 나중에
+                let newCategory = Category(id: 0, name: "")// TODO : id는 나중에
                 self.categoryGoalMaker.append(newCategory)
                 
                 //btmBtn 체크
-                checkForDuplicateCategoriesAndUpdateUI()
+                //checkForDuplicateCategoriesAndUpdateUI()
             }
             return cell
         } else {
             if indexPath.row == 0 {
+                currentCellIndex = indexPath.row
                 // Dequeue GoalCategoryTableViewCell for category name input
                 let cell = tableView.dequeueReusableCell(withIdentifier: "GoalCategoryTableViewCell", for: indexPath) as! GoalCategoryTableViewCell
-                cell.configureCell(categoryId: nil, text: "카테고리 선택", iconName: "icon_category")
+                cell.configureCell(categoryId: -1, text: "카테고리 선택", iconName: "icon_category")
                 cell.isModified = false
                 cell.categoryModalBtn.addTarget(self, action: #selector(categoryModalButtonTapped), for: .touchUpInside)
                 return cell
@@ -416,9 +445,23 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     
     private func showCategoryModal() {
         print("클릭 : 카테고리 선택을 위해 카테고리 선택 모달로 이동합니다")
-//        let categoryModalVC = CategoryModalViewController(categories: <#[CategoryDTO]#>)
-//        categoryModalVC.delegate = self
-//        present(categoryModalVC, animated: true, completion: nil)
+
+        // 카테고리 조회 하기
+        viewModel.getCategoryFilter()
+            .subscribe(onNext: { [weak self] repos in
+                guard let self = self else { return }
+                // 네트워크 응답에 대한 처리
+                print(repos)
+                let categories = repos.result.categories
+                let categoryModalVC = CategoryModalViewController(categories: categories)
+                categoryModalVC.delegate = self
+                self.present(categoryModalVC, animated: true)
+            }, onError: { error in
+                // 에러 처리
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+
     }
     
     //총금액 알려주는 구간 업데이트
@@ -466,7 +509,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     
     func resetCategorySection(_ section: Int) {
         // 데이터 모델 초기화
-        let resetCategory = GoalCategory(id: nil, name: nil, categoryBudget: 0)
+        let resetCategory = Category(id: 0, name: "")
         categoryGoalMaker[section] = resetCategory
         
         // 섹션 리로드 전에 셀 내용 초기화

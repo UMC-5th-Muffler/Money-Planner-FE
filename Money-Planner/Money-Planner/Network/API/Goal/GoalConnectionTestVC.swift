@@ -36,16 +36,16 @@ class GoalConnectionTestVC: UIViewController {
         goalRepository.getPreviousGoals()
             .subscribe(on: MainScheduler.instance)
             .subscribe { [weak self] goalResponse in
-                self?.handleGoalResponse(goalResponse)
+                //self?.handleGoalResponse(goalResponse)
             } onError: { [weak self] error in
                 self?.resultsLabel.text = "Error: \(error.localizedDescription)"
             }
             .disposed(by: disposeBag)
     }
     
-    private func handleGoalResponse(_ response: GoalResponse) {
+    private func handleGoalResponse(_ response: GetCategoryResponse) {
         // Handle your response and update UI accordingly
         // This is just a simple way to show the response in a label
-        resultsLabel.text = "Goals: \(response.result.terms.map { "\($0.startDate) to \($0.endDate)" }.joined(separator: ", "))"
+//        resultsLabel.text = "Goals: \(response.result.terms.map { "\($0.startDate) to \($0.endDate)" }.joined(separator: ", "))"
     }
 }

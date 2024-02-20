@@ -22,9 +22,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBarController.tabBar.tintColor = .mpMainColor
 
         let homeVC = UINavigationController(rootViewController: HomeViewController())
-        let goalVC = UINavigationController(rootViewController: EditGoalViewController())
+        let goalVC = UINavigationController(rootViewController: GoalMainViewController())
         let consumeVC = UINavigationController(rootViewController: ConsumeViewController())
-        let battleVC = UINavigationController(rootViewController: BattleViewController())
+        let battleVC = UINavigationController(rootViewController: GoalCategoryViewController())
         let settingVC = UINavigationController(rootViewController: MyPageViewController())
         
         homeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "home"), tag: 0)

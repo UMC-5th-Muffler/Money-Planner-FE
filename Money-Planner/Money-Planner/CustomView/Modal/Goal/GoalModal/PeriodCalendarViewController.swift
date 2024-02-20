@@ -72,6 +72,8 @@ class PeriodCalendarModal: UIViewController, FSCalendarDelegate, FSCalendarDataS
     }()
     
     @objc func didTapCompleteButton() {
+        print(startDate)
+        print(endDate)
         if let start = startDate, let end = endDate {
             delegate?.periodSelectionDidSelectDates(startDate: start, endDate: end)
         }
