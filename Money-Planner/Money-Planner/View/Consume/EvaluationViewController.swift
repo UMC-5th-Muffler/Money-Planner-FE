@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 class EvaluationViewController : UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
     var dateText = ""
     var isThroughFloatButton : Bool = false
     
@@ -78,7 +79,7 @@ class EvaluationViewController : UIViewController, UICollectionViewDelegate, UIC
     override func viewDidLoad(){
         view.backgroundColor = UIColor.mpWhite
         
-        if(isThroughFloatButton){
+        if (isThroughFloatButton){
             view.addSubview(headerView)
             headerView.translatesAutoresizingMaskIntoConstraints = false
             headerView.addBackButtonTarget(target: self, action: #selector(backAction), for: .touchUpInside)  // 이전 화면으로 돌아가기
@@ -111,12 +112,17 @@ class EvaluationViewController : UIViewController, UICollectionViewDelegate, UIC
         //diaryTextView.becomeFirstResponder()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.post(name: NSNotification.Name("Dismiss"), object: nil, userInfo: nil)
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true) /// 화면을 누르면 키보드 내리기
     }
     
     private func presentCustomModal() {
-        // CustomModal을 띄웁니다.
+        // CustomModal 띄우기
         let customModalVC = evaluationModalView()
         customModalVC.dateText = dateText
         customModalVC.modalPresentationStyle = .overFullScreen
@@ -141,7 +147,7 @@ class EvaluationViewController : UIViewController, UICollectionViewDelegate, UIC
 extension EvaluationViewController : UITextViewDelegate {
 
     func setupNavigationBar() {
-        self.navigationItem.title = "평가"
+        self.navigationItem.title = ""
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.mpBlack, NSAttributedString.Key.font: UIFont.mpFont18B()]
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -189,6 +195,10 @@ extension EvaluationViewController : UITextViewDelegate {
 
         if let rateMemo = rateInfo?.rateMemo, !rateMemo.isEmpty {
             diaryTextView.text = rateMemo // rateMemo가 비어 있지 않으면 내용을 표시
+            diaryTextView.textColor = UIColor.mpCharcoal
+        } else {
+            diaryTextView.text = placeholder // rateMemo가 비어 있으면 placeholder 표시
+            diaryTextView.textColor = UIColor.mpGray
         }
         numLabel.text = "\(diaryTextView.text.count)/100"
         
@@ -438,13 +448,17 @@ extension EvaluationViewController : UITextViewDelegate {
             return
         }
         
-        let rateMemo = diaryTextView.text.isEmpty ? nil : diaryTextView.text
+        var rateMemo: String? = nil
+        if diaryTextView.text != placeholder && !diaryTextView.text.isEmpty {
+            rateMemo = diaryTextView.text
+        }
         
         // API 호출을 통해 변경사항을 업데이트합니다.
         ExpenseRepository.shared.rateDailyConsume(date: dateText, rate: rate, rateMemo: rateMemo) { result in
             switch result {
             case .success(let updatedRateInfo):
                 NotificationCenter.default.post(name: Notification.Name("changeCalendar"), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name("EvaluationCompleted"), object: nil, userInfo: ["rate": updatedRateInfo?.rate, "rateMemo": updatedRateInfo?.rateMemo])
                 print("Rate daily info updated successfully: \(updatedRateInfo)")
             case .failure(let error):
                 print("Failed to update rate daily info: \(error)")
@@ -502,4 +516,8 @@ class estimateCell: UICollectionViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+extension Notification.Name {
+    static let DailyConsumeViewRefresh = Notification.Name("DailyConsumeViewRefresh")
 }
