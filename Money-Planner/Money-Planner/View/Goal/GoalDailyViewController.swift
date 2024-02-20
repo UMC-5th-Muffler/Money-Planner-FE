@@ -20,11 +20,11 @@ extension GoalDailyViewController: GoalAmountModalViewControllerDelegate {
         amountInfo[dateKey] = newAmount
         isEdited[dateKey] = true
         
-        refreshAmountInfo(startDate: goalCreationManager.startDate!.toMPDate(format: "yyyy/MM/dd")!, endDate: goalCreationManager.endDate!.toMPDate(format: "yyyy/MM/dd")!)
+        refreshAmountInfo(startDate: goalCreationManager.startDate!.toDate ?? Date(), endDate: goalCreationManager.endDate!.toDate ?? Date())
         
         customCalendarView.calendar.reloadData()
         
-        if calculateTotalAmount(from: goalCreationManager.startDate!.toMPDate(format: "yyyy/MM/dd")!, to: (goalCreationManager.endDate?.toMPDate(format: "yyyy/MM/dd"))!) == goalCreationManager.goalBudget {
+        if calculateTotalAmount(from: goalCreationManager.startDate!.toDate ?? Date(), to: goalCreationManager.endDate?.toDate ?? Date()) == goalCreationManager.goalBudget {
             btmBtn.isEnabled = true
         }else{
             btmBtn.isEnabled = false
@@ -56,7 +56,7 @@ class GoalDailyViewController: UIViewController, FSCalendarDelegate, FSCalendarD
         customCalendarView.translatesAutoresizingMaskIntoConstraints = false // Auto Layout 사용 설정
         view.addSubview(customCalendarView)
         
-        if let start = goalCreationManager.startDate?.toMPDate(), let end = goalCreationManager.endDate?.toMPDate() {
+        if let start = goalCreationManager.startDate?.toDate, let end = goalCreationManager.endDate?.toDate {
             customCalendarView.setPeriod(startDate: start, endDate: end)
             initializeArray(start: start, end: end)
         }
@@ -119,20 +119,21 @@ class GoalDailyViewController: UIViewController, FSCalendarDelegate, FSCalendarD
     }
     
     @objc private func btmButtonTapped() {
-        let goalFinalVC = GoalFinalViewController() // 가정: GoalFinalViewController가 존재함
+//        let goalFinalVC = GoalFinalViewController() // 가정: GoalFinalViewController가 존재함
         let budgets = convertToInt64Array(from: amountInfo)
         goalCreationManager.addDailyBudgets(budgets: budgets)
-        navigationController?.pushViewController(goalFinalVC, animated: true)
+//        navigationController?.pushViewController(goalFinalVC, animated: true)
     }
     
     
     ///calendar관련
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         // 예를 들어, 선택된 날짜에 대한 현재 금액을 가져옵니다. 실제 구현에서는 모델 또는 데이터 소스에서 이 값을 조회해야 합니다.
-        let currentTotalAmount = calculateEditedAmount(from: (goalCreationManager.startDate?.toMPDate(format: "yyyy/MM/dd"))!, to: (goalCreationManager.endDate?.toMPDate(format: "yyyy/MM/dd"))!)
+//        let currentTotalAmount = calculateEditedAmount(from: goalCreationManager.startDate?.toDate ?? Date(), to: goalCreationManager.endDate?.toDate ?? Date()),
+        let currentTotalAmount = calculateTotalAmount(from: (goalCreationManager.startDate?.toDate)!, to: (goalCreationManager.endDate?.toDate)!)
         
         presentEditModal(for: date, with: currentTotalAmount)
-        
+ 
     }
     
     

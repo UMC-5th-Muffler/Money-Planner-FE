@@ -29,34 +29,35 @@ class GoalCreationManager {
 
     private init() {} // Private initializer to ensure singleton usage
 
-    func createGoalRequest() -> PostGoalRequest? {
-        guard let icon = icon,
-              let goalTitle = goalTitle,
-              let goalDetail = goalDetail, // Ensure goalDetail is not nil
-              let goalBudget = goalBudget,
-              let startDate = startDate,
-              let endDate = endDate
-        else {
-            return nil
-        }
-        
-        return PostGoalRequest(icon: icon,
-                               title: goalTitle,
-                               detail: goalDetail,
-                               startDate: startDate,
-                               endDate: endDate,
-                               totalBudget: goalBudget,
-                               categoryGoals: categoryGoals,
-                               dailyBudgets: dailyBudgets)
-    }
+//    func createGoalRequest() -> PostGoalRequest? {
+//        guard let icon = icon,
+//              let goalTitle = goalTitle,
+//              let goalDetail = goalDetail, // Ensure goalDetail is not nil
+//              let goalBudget = goalBudget,
+//              let startDate = startDate,
+//              let endDate = endDate
+//        else {
+//            return nil
+//        }
+//        
+//        return PostGoalRequest(icon: icon,
+//                               title: goalTitle,
+//                               detail: goalDetail,
+//                               startDate: startDate,
+//                               endDate: endDate,
+//                               totalBudget: goalBudget,
+//                               categoryGoals: categoryGoals,
+//                               dailyBudgets: dailyBudgets)
+//    }
 
     //목표를 post하려 한다. 성공 여부에 따라 postGoalResultRelay를 사용
-    func postGoal() {
-        guard let request = createGoalRequest() else {
-            postGoalResultRelay.accept(false) // Could not create request
-            return
-        }
-        
+//    func postGoal() {
+//        guard let request = createGoalRequest() else {
+//            postGoalResultRelay.accept(false) // Could not create request
+//            return
+//        }
+//    
+//        
 //        GoalRepository.shared.postGoal(request: request)
 //            .subscribe(onSuccess: { [weak self] response in // 성공 response
 //                // Assuming response has an isSuccess property or similar to indicate success
@@ -65,7 +66,7 @@ class GoalCreationManager {
 //                self?.postGoalResultRelay.accept(false) //실패 response
 //            })
 //            .disposed(by: disposeBag)
-    }
+//    }
 
     //카테고리별 목표 추가 (카테고리VC에서 scrap해오는건 이녀석의 몫)
 //    func addCategoryGoals(categoryGoals: [CategoryGoal]) {
@@ -91,7 +92,7 @@ class GoalCreationManager {
     func addDailyBudgets(budgets: [Int64]) {
         
         guard let startDateString = startDate, let endDateString = endDate,
-            let startDate = startDate?.toMPDate(), let endDate = endDate?.toMPDate() else {
+              let startDate = startDate?.toDate, let endDate = endDate?.toDate else {
             print("Invalid dates")
             return
         }
@@ -119,7 +120,7 @@ class GoalCreationManager {
         goalBudget = nil
         startDate = nil
         endDate = nil
-        categoryGoals = [] // Clear categoryGoals
+//        categoryGoals = [] // Clear categoryGoals
         dailyBudgets = [] // Clear dailyBudgets
     }
 }
