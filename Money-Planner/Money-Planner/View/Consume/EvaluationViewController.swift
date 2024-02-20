@@ -458,7 +458,7 @@ extension EvaluationViewController : UITextViewDelegate {
             switch result {
             case .success(let updatedRateInfo):
                 NotificationCenter.default.post(name: Notification.Name("changeCalendar"), object: nil)
-                NotificationCenter.default.post(name: NSNotification.Name("EvaluationCompleted"), object: nil, userInfo: ["rate": updatedRateInfo?.rate, "rateMemo": updatedRateInfo?.rateMemo])
+                NotificationCenter.default.post(name: NSNotification.Name("EvaluationCompleted"), object: nil, userInfo: ["rate": rate, "rateMemo": self.dateText])
                 print("Rate daily info updated successfully: \(updatedRateInfo)")
             case .failure(let error):
                 print("Failed to update rate daily info: \(error)")
