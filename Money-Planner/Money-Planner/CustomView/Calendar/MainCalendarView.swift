@@ -122,21 +122,26 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         if indexPath.item < startMonthIndex {
             // 이전달 부분
             
-            let previousMonth = (currentMonth == 1) ? 12 : currentMonth - 1
-            
-            let calcDate = numOfDaysInMonth[previousMonth] - ((startMonthIndex-1) - indexPath.item)
-            cell.isHidden=false
-            cell.lbl.text="\(calcDate)"
-            
-            cell.isUserInteractionEnabled=true
-            cell.lbl.textColor = UIColor.mpBlack
+//            let previousMonth = (currentMonth == 1) ? 12 : currentMonth - 1
+//            
+//            let calcDate = numOfDaysInMonth[previousMonth] - ((startMonthIndex-1) - indexPath.item)
+//            cell.isHidden=false
+//            cell.lbl.text="\(calcDate)"
+//            
+//            cell.isUserInteractionEnabled=true
+//            cell.lbl.textColor = UIColor.mpBlack
+//            cell.imageView.image = nil
+            cell.isHidden = true
             
         } else {
             var calcDate = indexPath.row-firstWeekDayOfMonth+2
             if(calcDate > numOfDaysInMonth[currentMonth]){
+                // 다음달 부분
                 calcDate = calcDate - numOfDaysInMonth[currentMonth]
+                cell.isHidden = true
+            }else{
+                cell.isHidden=false
             }
-            cell.isHidden=false
             cell.lbl.text="\(calcDate)"
             
             cell.isUserInteractionEnabled=true
@@ -228,7 +233,6 @@ class MainCalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             }
             
         }else{
-            // 아예 정보가 아무것도 없는 경우
             cell.imageView.image = UIImage(named: "btn_date_off")
             cell.lbl.textColor = .mpGray
         }

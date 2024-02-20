@@ -457,13 +457,11 @@ extension HomeViewController{
         
         // calendarView
         if(self.nowGoal != nil && self.statisticsData != nil){
-//            statisticsView.isHidden = false
             statisticsView.statistics = statisticsData
             calendarView.goal = self.nowGoal
             
             statisticsView.progress = getProgress(numerator: self.statisticsData!.totalCost, denominator: self.statisticsData!.goalBudget)
         }else{
-//            statisticsView.isHidden = true
             statisticsView.statistics = nil
             statisticsView.progress = 0.0
         }
@@ -610,9 +608,8 @@ extension HomeViewController{
             statisticsView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
             statisticsView.rightAnchor.constraint(equalTo: cell.contentView.rightAnchor, constant: -24),
             statisticsView.leftAnchor.constraint(equalTo: cell.contentView.leftAnchor, constant: 24),
-            statisticsView.heightAnchor.constraint(equalToConstant: 150),
             
-            calendarView.topAnchor.constraint(equalTo: statisticsView.bottomAnchor, constant: 36),
+            calendarView.topAnchor.constraint(equalTo: statisticsView.bottomAnchor, constant: 0),
             calendarView.rightAnchor.constraint(equalTo: cell.contentView.rightAnchor),
             calendarView.leftAnchor.constraint(equalTo: cell.contentView.leftAnchor),
             calendarView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: 0),

@@ -10,13 +10,15 @@ import UIKit
 
 class MainStatisticsView : UIView {
     // 게이지의 진행도 (0.0 ~ 1.0)
+    
+    weak var viewHeightConstraint: NSLayoutConstraint?
         
     var statistics : Statistics? = nil {
         didSet{
             setupView()
         }
     }
-    
+        
     var goal : Goal?
     
     var progress: CGFloat = 0.0 {
@@ -136,20 +138,24 @@ class MainStatisticsView : UIView {
                 useAmount.leftAnchor.constraint(equalTo: leftAnchor),
                 totalAmount.topAnchor.constraint(equalTo: useAmount.bottomAnchor, constant: 0),
                 totalAmount.leftAnchor.constraint(equalTo: leftAnchor),
-                stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
+                stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -40),
                 stackView.leftAnchor.constraint(equalTo: leftAnchor),
             ])
+            
+            viewHeightConstraint?.isActive = false
+            viewHeightConstraint = heightAnchor.constraint(equalToConstant: 186)
+            viewHeightConstraint?.isActive = true
         }
-//        else if(self.goal != nil){
-//            let view = UIView()
-//            addSubview(view)
-//            NSLayoutConstraint.activate([
-//                view.topAnchor.constraint(equalTo: topAnchor),
-//                view.leadingAnchor.constraint(equalTo: leadingAnchor),
-//                view.trailingAnchor.constraint(equalTo: trailingAnchor),
-//                view.bottomAnchor.constraint(equalTo: bottomAnchor)
-//            ])
-//        }
+        else if(self.goal != nil){
+            viewHeightConstraint?.isActive = false
+            viewHeightConstraint = heightAnchor.constraint(equalToConstant: 0)
+            viewHeightConstraint?.isActive = true
+            
+            useAmountLabel.removeFromSuperview()
+            useAmount.removeFromSuperview()
+            totalAmount.removeFromSuperview()
+            stackView.removeFromSuperview()
+        }
         else{
             addSubview(noGoalView)
             
@@ -157,8 +163,12 @@ class MainStatisticsView : UIView {
                 noGoalView.topAnchor.constraint(equalTo: topAnchor),
                 noGoalView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 noGoalView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                noGoalView.bottomAnchor.constraint(equalTo: bottomAnchor)
+                noGoalView.bottomAnchor.constraint(equalTo: bottomAnchor),
             ])
+            
+            viewHeightConstraint?.isActive = false
+            viewHeightConstraint = heightAnchor.constraint(equalToConstant: 186)
+            viewHeightConstraint?.isActive = true
         }
     }
         
