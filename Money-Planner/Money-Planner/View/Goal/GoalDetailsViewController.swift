@@ -16,7 +16,7 @@ import FSCalendar
 extension GoalDetailsViewController {
     
     @objc func showModal() {
-        let modal = ShowingPeriodSelectionModal(startDate: (viewModel.goalDetail.value?.startDate.toMPDate()) ?? Date(), endDate: (viewModel.goalDetail.value?.endDate.toMPDate()) ?? Date())
+        let modal = ShowingPeriodSelectionModal(startDate: (viewModel.goalDetail.value?.startDate.toDate) ?? Date(), endDate: (viewModel.goalDetail.value?.endDate.toDate) ?? Date())
         modal.modalPresentationStyle = .popover
         modal.delegate = self
         present(modal, animated: true)
@@ -316,20 +316,22 @@ class GoalDetailsViewController : UIViewController {
         //dday
         dday.configure(for: goalDetail!)
         
+        let dateFormatter = DateFormatter()
+        
         //spanDuration
         dateFormatter.dateFormat = "yyyy.MM.dd"
         let startdatestr = goalDetail!.startDate
         
         let enddatestr : String
-        if Calendar.current.dateComponents([.year], from: goalDetail!.startDate.toMPDate()!) == Calendar.current.dateComponents([.year], from: goalDetail!.endDate.toMPDate()!) {
+        if Calendar.current.dateComponents([.year], from: goalDetail!.startDate.toDate!) == Calendar.current.dateComponents([.year], from: goalDetail!.endDate.toDate!) {
             enddatestr = goalDetail!.endDate
         }else{
             dateFormatter.dateFormat = "MM.dd"
-            enddatestr = dateFormatter.string(from: goalDetail!.endDate.toMPDate()!)
+            enddatestr = dateFormatter.string(from: goalDetail!.endDate.toDate!)
         }
         
-        if goalDetail!.startDate.toMPDate()! < Date() && Date() < goalDetail!.endDate.toMPDate()! {
-            let day = Calendar.current.dateComponents([.day], from: goalDetail!.startDate.toMPDate()!, to: Date()).day
+        if goalDetail!.startDate.toDate! < Date() && Date() < goalDetail!.endDate.toDate! {
+            let day = Calendar.current.dateComponents([.day], from: goalDetail!.startDate.toDate!, to: Date()).day
             spanNDuration.text = startdatestr + " - " + enddatestr + " | " + "\(day ?? 0)" + "일차"
         }else{
             spanNDuration.text = startdatestr + " - " + enddatestr
@@ -815,14 +817,14 @@ class ReportSummaryCell : UITableViewCell {
         mostConsumedCatLabel.translatesAutoresizingMaskIntoConstraints = false
         zeroDayCountLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        if goal.endDate.toMPDate()! <= Date() { //현재, 과거 startDate >= Date
+        if goal.endDate.toDate! <= Date() { //현재, 과거 startDate >= Date
             
             var span : Int?
             
-            if goal.endDate.toMPDate()! < Date() { //과거
-                span = Calendar.current.dateComponents([.day], from: goal.startDate.toMPDate()!, to: goal.endDate.toMPDate()!).day
+            if goal.endDate.toDate! < Date() { //과거
+                span = Calendar.current.dateComponents([.day], from: goal.startDate.toDate!, to: goal.endDate.toDate!).day
             }else {
-                span = Calendar.current.dateComponents([.day], from: goal.startDate.toMPDate()!, to: Date()).day
+                span = Calendar.current.dateComponents([.day], from: goal.startDate.toDate!, to: Date()).day
             }
             
             //card

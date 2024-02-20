@@ -260,7 +260,7 @@ class GoalPresentationCell: UITableViewCell {
         
         let currentDate = calendar.date(from: currentDateComponents) ?? Date()
         
-        let goalEndDate = goal.endDate.toMPDate() ?? currentDate // Fallback to current date if conversion fails
+        let goalEndDate = goal.endDate.toDate ?? currentDate // Fallback to current date if conversion fails
         let daysLeft = Calendar.current.dateComponents([.day], from: currentDate, to: goalEndDate).day ?? 0
         
         // Initialize D-day text and color variables
