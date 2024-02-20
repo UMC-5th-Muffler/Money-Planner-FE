@@ -94,6 +94,10 @@ class MainStatisticsView : UIView {
         return view
     }()
     
+    var imageView : UIImageView = {
+        let view = UIImageView()
+        return view
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -108,6 +112,7 @@ class MainStatisticsView : UIView {
         backgroundColor = UIColor.clear
         
         if(statistics != nil){
+            setupImageView()
             noGoalView.removeFromSuperview()
 
             if(statistics != nil){
@@ -180,6 +185,21 @@ class MainStatisticsView : UIView {
             backgroundColor?.setFill()
             UIRectFill(rect)
         }
+    }
+    
+    private func setupImageView() {
+        if(statistics != nil && statistics!.goalBudget < statistics!.totalCost){
+            imageView.image = UIImage(named: "img_home-over")
+        }else{
+            imageView.image = UIImage(named: "img_home-deafult")
+        }
+        
+        imageView.contentMode = .scaleAspectFit
+        
+        let imageSize: CGFloat = 110
+        imageView.frame = CGRect(x: bounds.width - 132, y: 20, width: imageSize, height: imageSize)
+        
+        addSubview(imageView)
     }
     
     private func drawDonutChart() {
