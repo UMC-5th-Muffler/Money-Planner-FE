@@ -256,6 +256,8 @@ class CalendartModalViewController : UIViewController{
             print("소비 가능 날짜에 포함되어 있음")
             if currentDateInfo.zeroDay {
                 // 제로데이인 경우 알람 띄우기
+                // 취소 버튼 비활성화
+                completeButton.isEnabled = false
                 presentZeroDayModal()
             }
             else{

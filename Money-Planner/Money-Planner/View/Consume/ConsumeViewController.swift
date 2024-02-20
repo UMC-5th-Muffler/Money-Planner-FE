@@ -254,7 +254,15 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         print(checkButton.isChecked)
         if checkButton.isChecked {
             print("반복 모달로 이동합니다")
-            let repeatModalVC = RepeatModalViewController()
+            var todayDatedd : String = ""
+            // 이동 시 소비 등록 날짜 같이 전달
+            if let date : Date = dateFormatter.date(from: currnetCal){
+                todayDatedd = {
+                    dateFormatter.dateFormat = "dd"
+                        return dateFormatter.string(from: date)
+                }()
+            }
+            let repeatModalVC = RepeatModalViewController(currCal: "\(todayDatedd)일")
             repeatModalVC.delegate = self
             present(repeatModalVC, animated: true)
         }
@@ -268,7 +276,8 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
     
     @objc private func showRepeatModalResult() {
         print("반복 모달로 이동합니다")
-        let repeatModalVC = RepeatModalViewController()
+        print(currnetCal)
+        let repeatModalVC = RepeatModalViewController(currCal: currnetCal)
         repeatModalVC.routineRequest = routineRequest
         repeatModalVC.delegate = self
         present(repeatModalVC, animated: true)
@@ -332,6 +341,9 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         deleteButton2.addTarget(self, action: #selector(deleteTitle2), for: .touchUpInside)
 
         memoTextField.delegate = self
+        
+        
+        currnetCal = todayDateJson // 현재 날짜 초기화
 
         
     }
@@ -897,6 +909,9 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
         }
         if currnetCal == "" {
             currnetCal = todayDateJson
+        }
+        if routineRequest?.monthlyRepeatType == nil {
+            
         }
         expenseRequest = ExpenseCreateRequest(
             expenseCost: currentAmount,

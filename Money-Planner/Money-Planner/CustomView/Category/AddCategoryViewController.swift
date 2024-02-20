@@ -123,6 +123,7 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
             picButton.setImage(UIImage(named: icon), for: .normal)
             completeButton.isEnabled = true
             currIcon = ""
+           
 
         }else{
             // 추가 화면 : 완료 버튼 비활성화
@@ -148,31 +149,32 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
                     self?.categories.append(CategoryType(name: item.name, type: item.type))
                 }
             
-                
-                if let index = categories.firstIndex(where: { $0.name == name }) {
-                    if let type = self?.categories[index].type {
-                        if type == "CUSTOM"{
-                            print("타입 : 커스텀")
-                            self?.currIcon = icon
-                            self?.categories.remove(at: index)
-                            // 삭제 버튼 추가
-                            self?.setupDelete()
-                        }
-                        // 디폴트
-                        if type == "DEFAULT"{
-                            print("타입 : 디폴트 ")
-                            self?.categories.remove(at: index)
-                            self?.picButton.isUserInteractionEnabled = false
-                        }
+            
+            if let index = categories.firstIndex(where: { $0.name == name }) {
+                if let type = self?.categories[index].type {
+                    if type == "CUSTOM"{
+                        print("타입 : 커스텀")
+                        self?.currIcon = icon
+                        self?.categories.remove(at: index)
+                        // 삭제 버튼 추가
+                        self?.setupDelete()
+                        self?.addPlus()
                     }
-                   
-                    
+                    // 디폴트
+                    if type == "DEFAULT"{
+                        print("타입 : 디폴트 ")
+                        self?.categories.remove(at: index)
+                        self?.picButton.isUserInteractionEnabled = false
+                    }
                 }
-                }, onError: { error in
-                // 에러 처리
-                print("Error: \(error)")
-            })
-            .disposed(by: disposeBag)
+               
+                
+            }
+            }, onError: { error in
+            // 에러 처리
+            print("Error: \(error)")
+        })
+        .disposed(by: disposeBag)
         if name != "" {
             // 수정 화면 : 카테고리 이름과 아이콘 반영
             VCType = "FIX"
@@ -180,6 +182,7 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
             picButton.setImage(UIImage(named: icon), for: .normal)
             completeButton.isEnabled = true
             currIcon = ""
+            
 
         }else{
             // 추가 화면 : 완료 버튼 비활성화
@@ -188,7 +191,7 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
             // 기본 아이콘
             currIcon = "add-04"
             picButton.setImage(UIImage(named : currIcon), for: .normal)
-            
+            self.addPlus()
             
             // 직접 추가
 
@@ -197,7 +200,43 @@ class AddCategoryViewController: UIViewController,UITextFieldDelegate, CategoryI
        
       
     }
-   
+    func addPlus(){
+        let plus: UIView = {
+                 let view = UIView()
+                 view.backgroundColor = .mpWhite
+                 view.layer.cornerRadius = 10
+                 view.layer.masksToBounds = true
+                 return view
+             }()
+        let plusImageView: UIImageView = {
+            let imageView = UIImageView()
+            imageView.image = UIImage(systemName: "plus.circle.fill")?
+                .withTintColor(.mpGray, renderingMode: .alwaysOriginal)
+            .withConfiguration(UIImage.SymbolConfiguration(pointSize: 20, weight: .medium))
+            imageView.contentMode = .scaleAspectFit
+                       return imageView
+                   }()
+
+         view.addSubview(plus)
+         plus.addSubview(plusImageView)
+
+         plus.translatesAutoresizingMaskIntoConstraints = false
+         plusImageView.translatesAutoresizingMaskIntoConstraints = false
+ 
+         NSLayoutConstraint.activate([
+             plus.heightAnchor.constraint(equalToConstant: 20),
+             plus.widthAnchor.constraint(equalToConstant: 20),
+             plus.trailingAnchor.constraint(equalTo: picContainer.trailingAnchor),
+             plus.bottomAnchor.constraint(equalTo: picContainer.bottomAnchor),
+         ])
+ 
+         NSLayoutConstraint.activate([
+             plusImageView.topAnchor.constraint(equalTo: plus.topAnchor),
+             plusImageView.leadingAnchor.constraint(equalTo: plus.leadingAnchor),
+             plusImageView.trailingAnchor.constraint(equalTo: plus.trailingAnchor),
+             plusImageView.bottomAnchor.constraint(equalTo: plus.bottomAnchor),
+         ])
+    }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
