@@ -135,6 +135,8 @@ class HomeViewController : UIViewController, MainMonthViewDelegate{
         
         NotificationCenter.default.addObserver(self, selector: #selector(getNotificationConsumeView), name: Notification.Name("addConsume"), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(getNotificationChangeCalendarView), name: Notification.Name("changeCalendar"), object: nil)
+        
         // 스크롤 뷰 작업
         NSLayoutConstraint.activate([
             contentScrollView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 12),
@@ -851,6 +853,10 @@ extension HomeViewController : GoalListModalViewDelegate{
 
 extension HomeViewController : CategoryButtonScrollDelegate{
     func onTapChangeCategory(categoryId: Int) {
+        if(self.nowGoal == nil){
+            categoryScrollView.changeSelectedButton(index: -1)
+            return
+        }
         
         if(collectionView.currentPage == 0){
             if(categoryId == -1){
@@ -951,4 +957,9 @@ extension HomeViewController {
         }
     }
     
+    @objc func getNotificationChangeCalendarView(){
+        if(collectionView.currentPage == 0){
+            fetchChangeMonthCalendarData()
+        }
+    }
 }

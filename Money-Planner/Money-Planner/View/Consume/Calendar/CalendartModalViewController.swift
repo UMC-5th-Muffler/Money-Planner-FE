@@ -326,6 +326,7 @@ class CalendartModalViewController : UIViewController{
         ExpenseRepository.shared.isZeroDay(dailyPlanDate: checkedDate) { result in
             switch result {
             case .success(let updatedInfo):
+                NotificationCenter.default.post(name: Notification.Name("changeCalendar"), object: nil)
                 print("zero updated successfully: \(String(describing: updatedInfo))")
             case .failure(let error):
                 print("Failed to update zero info: \(error)")

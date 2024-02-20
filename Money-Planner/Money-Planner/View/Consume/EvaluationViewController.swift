@@ -421,6 +421,7 @@ extension EvaluationViewController : UITextViewDelegate {
         ExpenseRepository.shared.rateDailyConsume(date: dateText, rate: rate, rateMemo: rateMemo) { result in
             switch result {
             case .success(let updatedRateInfo):
+                NotificationCenter.default.post(name: Notification.Name("changeCalendar"), object: nil)
                 print("Rate daily info updated successfully: \(updatedRateInfo)")
             case .failure(let error):
                 print("Failed to update rate daily info: \(error)")

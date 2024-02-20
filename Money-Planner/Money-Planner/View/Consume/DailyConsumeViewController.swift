@@ -398,6 +398,7 @@ extension DailyConsumeViewController {
             switch result {
             case .success(let updatedInfo):
                 print("zero updated successfully: \(updatedInfo)")
+                NotificationCenter.default.post(name: Notification.Name("changeCalendar"), object: nil)
             case .failure(let error):
                 print("Failed to update zero info: \(error)")
             }
