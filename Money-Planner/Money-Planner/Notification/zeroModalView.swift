@@ -33,9 +33,8 @@ class zeroModalView : UIViewController {
         return label
     }()
     
-    let ImageView : UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.mpGray
+    let imageView : UIImageView = {
+        let view = UIImageView()
         
         return view
     }()
@@ -64,6 +63,11 @@ class zeroModalView : UIViewController {
         fetchRateData()
         presentCustomModal()
         setupBackground()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.post(name: NSNotification.Name("Dismiss"), object: nil, userInfo: nil)
     }
     
     func presentCustomModal() {
@@ -106,19 +110,22 @@ class zeroModalView : UIViewController {
             
         ])
         
-        ImageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "img_popup_save-zero")
+        imageView.contentMode = .scaleAspectFit
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         confirmButton.translatesAutoresizingMaskIntoConstraints = false
         
-        customModal.addSubview(ImageView)
+        customModal.addSubview(imageView)
         customModal.addSubview(confirmButton)
         
         NSLayoutConstraint.activate([
-            ImageView.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 87),
-            ImageView.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -87),
-            ImageView.bottomAnchor.constraint(equalTo: confirmButton.topAnchor, constant: -50),
-            ImageView.heightAnchor.constraint(equalToConstant: 87),
+            imageView.centerXAnchor.constraint(equalTo: customModal.centerXAnchor),
+            imageView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 12),
+            imageView.heightAnchor.constraint(equalToConstant: 161),
+            imageView.widthAnchor.constraint(equalToConstant: 194),
             
-            confirmButton.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -15),
+            confirmButton.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -19),
             confirmButton.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 15),
             confirmButton.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -15),
             confirmButton.heightAnchor.constraint(equalToConstant: 58)
@@ -152,20 +159,23 @@ class zeroModalView : UIViewController {
             
         ])
         
-        ImageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "img_popup_zeroday")
+        imageView.contentMode = .scaleAspectFit
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         controlButtons.translatesAutoresizingMaskIntoConstraints = false
         
-        customModal.addSubview(ImageView)
+        customModal.addSubview(imageView)
         customModal.addSubview(controlButtons)
         
         controlButtons.cancelButton.setTitle("취소", for: .normal)
         controlButtons.completeButton.setTitle("해제하기", for: .normal)
         
         NSLayoutConstraint.activate([
-            ImageView.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 87),
-            ImageView.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -87),
-            ImageView.bottomAnchor.constraint(equalTo: controlButtons.topAnchor, constant: -50),
-            ImageView.heightAnchor.constraint(equalToConstant: 87),
+            imageView.centerXAnchor.constraint(equalTo: customModal.centerXAnchor),
+            imageView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 12),
+            imageView.heightAnchor.constraint(equalToConstant: 144),
+            imageView.widthAnchor.constraint(equalToConstant: 166),
             
             controlButtons.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -15),
             controlButtons.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 15),

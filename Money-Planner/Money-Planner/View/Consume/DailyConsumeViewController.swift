@@ -8,8 +8,11 @@
 import Foundation
 import UIKit
 
+protocol ZeroViewDelegate : AnyObject {
+    func changeZeroView()
+}
+
 class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
     
     var dailyInfo : DailyInfo = DailyInfo(date: "", isZeroDay: false, dailyTotalCost: 1234, rate: "MEDIUM", rateMemo: "soso", expenseDetailList: [], hasNext: false)
     var historyList : [ExpenseDetailList] = []
@@ -44,7 +47,7 @@ class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITabl
     let historyTableView = UITableView()
     
     let imageView : UIImageView = {
-        let imageview = UIImageView(image: UIImage(named: "icon_Paper"))
+        let imageview = UIImageView()
         
         return imageview
     }()
@@ -60,6 +63,8 @@ class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITabl
         return label
     }()
     
+    weak var zeroViewDelegate: ZeroViewDelegate?
+    
     let zeroOnBtn = UIButton()
     let zeroOffBtn = UIButton()
     
@@ -69,17 +74,27 @@ class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITabl
     override func viewDidLoad(){
         view.backgroundColor = UIColor.mpWhite
         
-//        fetchRateData()
-//        fetchConsumeHistoryData(lastExpenseId: nil)
+        fetchRateData()
+        fetchConsumeHistoryData(lastExpenseId: nil)
         setupNavigationBar()
         setupDateView()
         dateLabel.text = dateText
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUI(_:)), name: NSNotification.Name("EvaluationCompleted"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.refreshData), name: NSNotification.Name("Dismiss"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchRateData()
         fetchConsumeHistoryData(lastExpenseId: nil)
+    }
+    
+    @objc func refreshData(_ notification: Notification) {
+        DispatchQueue.main.async {
+            self.fetchRateData()
+            self.fetchConsumeHistoryData(lastExpenseId: nil)
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -307,6 +322,27 @@ extension DailyConsumeViewController {
         navigationController?.pushViewController(evaluationVC, animated: true)
     }
     
+    @objc func addConsumeViewTapped() {
+        let addConsumeVC = ConsumeViewController()
+        addConsumeVC.modalPresentationStyle = .fullScreen
+        self.present(addConsumeVC, animated: true) {
+            self.navigationController?.popToRootViewController(animated: true)
+        }
+    }
+    
+    @objc func updateUI(_ notification: Notification) {
+        let rateContent = rateInfo
+        
+        if let userInfo = notification.userInfo,
+           let rate = userInfo["rate"] as? String,
+           let rateMemo = userInfo["rateMemo"] as? String {
+            // rate 및 rateMemo를 사용하여 UI를 업데이트합니다.
+            self.rateInfo = RateInfo(rate: rate, rateMemo: rateMemo, dailyPlanBudget: rateContent?.dailyPlanBudget, dailyTotalCost: rateContent?.dailyTotalCost, isZeroDay: rateContent?.isZeroDay)
+            // UI 업데이트 메소드 호출
+            reloadUI()
+        }
+    }
+    
     func setupHistory() {
         historyTableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -323,6 +359,8 @@ extension DailyConsumeViewController {
             historyTableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             historyTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80)
         ])
+        
+        imageView.isHidden = true
     }
     
     func setupInitial() {
@@ -331,6 +369,9 @@ extension DailyConsumeViewController {
         zeroOnBtn.titleLabel?.font = UIFont.mpFont18B()
         zeroOnBtn.backgroundColor = UIColor.mpMainColor
         zeroOnBtn.layer.cornerRadius = 12
+        
+        imageView.image = UIImage(named: "img_popup_save-zero")
+        imageView.contentMode = .scaleAspectFit
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
         guideLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -341,12 +382,12 @@ extension DailyConsumeViewController {
         view.addSubview(zeroOnBtn)
         
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 160),
+            imageView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 97),
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 95),
-            imageView.heightAnchor.constraint(equalToConstant: 79),
+            imageView.widthAnchor.constraint(equalToConstant: 174),
+            imageView.heightAnchor.constraint(equalToConstant: 174),
             
-            guideLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 25),
+            guideLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 4),
             guideLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             guideLabel.heightAnchor.constraint(equalToConstant: 50),
             
@@ -363,6 +404,10 @@ extension DailyConsumeViewController {
         print("제로데이 설정 버튼 클릭")
         checkZeroDay()
         presentCustomModal()
+        zeroViewDelegate?.changeZeroView()
+//        addConsumeBtn.removeTarget(self, action: #selector(addConsumeViewTapped), for: .touchUpInside)
+//
+//        addConsumeBtn.addTarget(self, action: #selector(evaluationViewTapped), for: .touchUpInside)
     }
     
     private func presentCustomModal() {
@@ -377,22 +422,27 @@ extension DailyConsumeViewController {
         customModalVC.confirmButton.addTarget(self, action: #selector(dismissCustomModal), for: .touchUpInside)
         customModalVC.controlButtons.cancelButton.addTarget(self, action: #selector(dismissCustomModal), for: .touchUpInside)
         customModalVC.controlButtons.completeButton.addTarget(self, action: #selector(cancelZero), for: .touchUpInside)
+        zeroViewDelegate?.changeZeroView()
     }
     
-    @objc private func dismissCustomModal() {
+    @objc func dismissCustomModal() {
          // 모달 닫기
         print("모달닫기")
-         dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
+        //zeroViewDelegate?.changeZeroView()
      }
     
-    @objc private func cancelZero() {
+    @objc func cancelZero() {
         print("제로데이 해제하기")
         checkZeroDay()
         dismiss(animated: true, completion: nil)
+        zeroViewDelegate?.changeZeroView()
+        
+        self.navigationController?.popToRootViewController(animated: true)
+        addConsumeViewTapped()
      }
     
 
-    
     func checkZeroDay() {
         ExpenseRepository.shared.isZeroDay(dailyPlanDate: dateText) { result in
             switch result {
@@ -406,11 +456,14 @@ extension DailyConsumeViewController {
     }
     
     func setupZeroday() {
-        guideLabel.text = "0원 소비를 한 날이에요!\n소비내역을 추가하려면\n0원소비를 해제해주세요."
+        guideLabel.text = "0원 소비를 한 날이에요!\n소비내역을 추가하려면 해제해주세요."
         guideLabel.numberOfLines = 0
         guideLabel.font = UIFont.mpFont16M()
         guideLabel.textColor = UIColor.mpDarkGray
         guideLabel.textAlignment = .center
+        
+        imageView.image = UIImage(named: "img_popup_save-zero")
+        imageView.contentMode = .scaleAspectFit
         
         zeroOffBtn.setTitle("0원소비 해제", for: .normal)
         zeroOffBtn.setTitleColor(.mpWhite, for: .normal)
@@ -427,12 +480,12 @@ extension DailyConsumeViewController {
         view.addSubview(zeroOffBtn)
         
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 160),
+            imageView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 97),
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 95),
-            imageView.heightAnchor.constraint(equalToConstant: 79),
+            imageView.widthAnchor.constraint(equalToConstant: 174),
+            imageView.heightAnchor.constraint(equalToConstant: 174),
             
-            guideLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 25),
+            guideLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 4),
             guideLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             guideLabel.heightAnchor.constraint(equalToConstant: 75),
             
@@ -445,9 +498,10 @@ extension DailyConsumeViewController {
         zeroOffBtn.addTarget(self, action: #selector(zeroOffButtonTapped), for: .touchUpInside)
     }
     
-    @objc private func zeroOffButtonTapped() {
+    @objc func zeroOffButtonTapped() {
         print("해제 버튼 클릭")
         presentCustomModal()
+        //zeroViewDelegate?.changeZeroView()
      }
     
     func setupAddBtn() {
@@ -560,16 +614,19 @@ extension DailyConsumeViewController {
                 // expenseDetailList가 비어있고 제로데이 아닌 경우 처리
                 setupInitial()
                 setupAddBtn()
+                addConsumeBtn.addTarget(self, action: #selector(addConsumeViewTapped), for: .touchUpInside)
             }
             else {
                 setupZeroday()
                 setupAddBtn()
                 addConsumeBtn.setTitle("하루평가 하러가기", for: .normal)
+                addConsumeBtn.removeTarget(self, action: #selector(addConsumeViewTapped), for: .touchUpInside)
                 addConsumeBtn.addTarget(self, action: #selector(evaluationViewTapped), for: .touchUpInside)
             }
         }
         else {
             // expenseDetailList가 비어있지 않은 경우 처리
+            imageView.isHidden = true
             setupTotalAmount()
             setupEvaluation()
             setupHistory()
@@ -682,5 +739,13 @@ class historyCell : UITableViewCell {
     
     func configureSeparatorViewVisibility(isVisible: Bool) {
         separatorView.isHidden = !isVisible
+    }
+}
+
+extension DailyConsumeViewController : ZeroViewDelegate {
+    func changeZeroView() {
+        fetchRateData()
+        fetchConsumeHistoryData(lastExpenseId: nil)
+        reloadUI()
     }
 }

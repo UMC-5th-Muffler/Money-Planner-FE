@@ -36,9 +36,8 @@ class evaluationModalView : UIViewController {
         return label
     }()
     
-    let ImageView : UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.mpGray
+    let imageView : UIImageView = {
+        let view = UIImageView()
         
         return view
     }()
@@ -64,7 +63,6 @@ class evaluationModalView : UIViewController {
         
         fetchRateData()
 
-        
     }
     
     func presentCustomModal() {
@@ -119,6 +117,9 @@ class evaluationModalView : UIViewController {
     }
 
     private func setupSpareView() {
+        customModal.frame = CGRect(x: 0, y: 0, width: 322, height: 426)
+        customModal.center = view.center
+        
         customModal.addSubview(titleLabel)
         customModal.addSubview(contentLabel)
         
@@ -147,19 +148,22 @@ class evaluationModalView : UIViewController {
             
         ])
         
-        ImageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "img_popup_save")
+        imageView.contentMode = .scaleAspectFit
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         completeButton.translatesAutoresizingMaskIntoConstraints = false
         
-        customModal.addSubview(ImageView)
+        customModal.addSubview(imageView)
         customModal.addSubview(completeButton)
         
         NSLayoutConstraint.activate([
-            ImageView.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 87),
-            ImageView.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -87),
-            ImageView.bottomAnchor.constraint(equalTo: completeButton.topAnchor, constant: -50),
-            ImageView.heightAnchor.constraint(equalToConstant: 87),
+            imageView.centerXAnchor.constraint(equalTo: customModal.centerXAnchor),
+            imageView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 12),
+            imageView.heightAnchor.constraint(equalToConstant: 178),
+            imageView.widthAnchor.constraint(equalToConstant: 210),
             
-            completeButton.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -15),
+            completeButton.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -19),
             completeButton.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 15),
             completeButton.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -15),
             completeButton.heightAnchor.constraint(equalToConstant: 58)
@@ -167,6 +171,9 @@ class evaluationModalView : UIViewController {
     }
     
     private func setupWasteView() {
+        customModal.frame = CGRect(x: 0, y: 0, width: 322, height: 426)
+        customModal.center = view.center
+        
         customModal.addSubview(titleLabel)
         customModal.addSubview(contentLabel)
         
@@ -196,19 +203,22 @@ class evaluationModalView : UIViewController {
             
         ])
         
-        ImageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "img_popup_over")
+        imageView.contentMode = .scaleAspectFit
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         completeButton.translatesAutoresizingMaskIntoConstraints = false
         
-        customModal.addSubview(ImageView)
+        customModal.addSubview(imageView)
         customModal.addSubview(completeButton)
         
         NSLayoutConstraint.activate([
-            ImageView.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 87),
-            ImageView.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -87),
-            ImageView.bottomAnchor.constraint(equalTo: completeButton.topAnchor, constant: -50),
-            ImageView.heightAnchor.constraint(equalToConstant: 87),
+            imageView.centerXAnchor.constraint(equalTo: customModal.centerXAnchor),
+            imageView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 12),
+            imageView.heightAnchor.constraint(equalToConstant: 161),
+            imageView.widthAnchor.constraint(equalToConstant: 194),
             
-            completeButton.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -15),
+            completeButton.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -19),
             completeButton.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 15),
             completeButton.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -15),
             completeButton.heightAnchor.constraint(equalToConstant: 58)
@@ -216,6 +226,9 @@ class evaluationModalView : UIViewController {
     }
     
     private func setupGoodView() {
+        customModal.frame = CGRect(x: 0, y: 0, width: 322, height: 426)
+        customModal.center = view.center
+        
         customModal.addSubview(titleLabel)
         customModal.addSubview(contentLabel)
         
@@ -243,19 +256,22 @@ class evaluationModalView : UIViewController {
             
         ])
         
-        ImageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "img_popup_save")
+        imageView.contentMode = .scaleAspectFit
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         completeButton.translatesAutoresizingMaskIntoConstraints = false
         
-        customModal.addSubview(ImageView)
+        customModal.addSubview(imageView)
         customModal.addSubview(completeButton)
         
         NSLayoutConstraint.activate([
-            ImageView.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 87),
-            ImageView.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -87),
-            ImageView.bottomAnchor.constraint(equalTo: completeButton.topAnchor, constant: -50),
-            ImageView.heightAnchor.constraint(equalToConstant: 87),
+            imageView.centerXAnchor.constraint(equalTo: customModal.centerXAnchor),
+            imageView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 12),
+            imageView.heightAnchor.constraint(equalToConstant: 178),
+            imageView.widthAnchor.constraint(equalToConstant: 210),
             
-            completeButton.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -15),
+            completeButton.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -19),
             completeButton.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 15),
             completeButton.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -15),
             completeButton.heightAnchor.constraint(equalToConstant: 58)
@@ -273,7 +289,7 @@ class evaluationModalView : UIViewController {
         let titleAttributedText = NSAttributedString(string: titleText, attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
         titleLabel.attributedText = titleAttributedText
         titleLabel.textAlignment = .center
-       
+        
         let contentAttributedText = NSAttributedString(string: "아주 잘 하고 있어요!\n스스로를 칭찬해주세요", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
         contentLabel.attributedText = contentAttributedText
         contentLabel.textAlignment = .center
@@ -290,24 +306,26 @@ class evaluationModalView : UIViewController {
             
         ])
         
-        ImageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "img_popup_save-zero")
+        imageView.contentMode = .scaleAspectFit
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         completeButton.translatesAutoresizingMaskIntoConstraints = false
         
-        customModal.addSubview(ImageView)
+        customModal.addSubview(imageView)
         customModal.addSubview(completeButton)
         
         NSLayoutConstraint.activate([
-            ImageView.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 87),
-            ImageView.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -87),
-            ImageView.bottomAnchor.constraint(equalTo: completeButton.topAnchor, constant: -50),
-            ImageView.heightAnchor.constraint(equalToConstant: 87),
+            imageView.centerXAnchor.constraint(equalTo: customModal.centerXAnchor),
+            imageView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 12),
+            imageView.heightAnchor.constraint(equalToConstant: 161),
+            imageView.widthAnchor.constraint(equalToConstant: 194),
             
-            completeButton.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -15),
+            completeButton.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -19),
             completeButton.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 15),
             completeButton.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -15),
             completeButton.heightAnchor.constraint(equalToConstant: 58)
         ])
     }
-    
 
 }
