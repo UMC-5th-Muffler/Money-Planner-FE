@@ -31,12 +31,17 @@ struct ExpenseCreateRequest: Codable {
         let endDate: String?
         let weeklyRepeatDays: [String]?
         let weeklyTerm: String?
-        let monthlyRepeatDay: String?
+        let monthlyRepeatType: monthlyRepeatType?
     }
 
     enum RoutineType: String, Codable {
         case weekly = "WEEKLY"
         case monthly = "MONTHLY"
+    }
+    enum monthlyRepeatType : String, Codable {
+        case first = "FIRST_DAY_OF_MONTH"
+        case specific = "SPECIFIC_DAY_OF_MONTH"
+        case last = "LAST_DAY_OF_MONTH"
     }
 }
 

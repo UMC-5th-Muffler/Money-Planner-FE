@@ -21,7 +21,7 @@ class RepeatModalViewController : UIViewController {
     var endDay : UIStackView?
     // 높이 제약 조건
     var heightConstraint : NSLayoutConstraint?
-    
+    var checkedIndex : Int?
     // 날짜
     let currentDate = Date()
     let dateFormatter = DateFormatter()
@@ -127,6 +127,19 @@ class RepeatModalViewController : UIViewController {
     let view2 = ChooseDateView() // 날짜 선택 시 나오는 화면
     let cancelNcomplte = SmallBtnView() // 취소 & 완료
     
+    var checkedDate : String = ""
+    // 이니셜라이저를 정의하여 expenseId를 전달 받을 수 있도록 합니다.
+    
+    init(currCal : String) {
+        print(currCal)
+        checkedDate = currCal
+        super.init(nibName: nil, bundle: nil)
+     
+    }
+   
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         presentCustomModal() // 배경설정
@@ -163,8 +176,8 @@ class RepeatModalViewController : UIViewController {
                 print("log")
                 chooseDateButton.isChecked = true // 요일 선택 버튼 체크 활성화
                 showChooseDateModal()
-                let monthlyRepeatDay = routineRequest?.monthlyRepeatDay
-                view2.weekIntervalButton.setTitle(monthlyRepeatDay, for: .normal)
+                let monthlyRepeatType = routineRequest?.monthlyRepeatType
+//              view2.weekIntervalButton.setTitle(monthlyRepeatDay, for: .normal)
                 
                 if (routineRequest?.endDate != nil){
                     // 반복 종료일이 있는 경우
@@ -504,7 +517,7 @@ class RepeatModalViewController : UIViewController {
         }
         if chooseDateButton.isChecked{
             IntervalSelectionVC.changeTitle(title: "매월 언제 반복할까요?")
-            IntervalSelectionVC.intervals = ["매월 \(dateString)에 반복","매월 첫째 날에 반복", "매월 마지막 날에 반복"]
+            IntervalSelectionVC.intervals = ["매월 \(checkedDate)에 반복","매월 첫째 날에 반복", "매월 마지막 날에 반복"]
         }
         present(IntervalSelectionVC, animated: true)
         print("간격 모달 뷰로 스위치")
@@ -569,9 +582,10 @@ class RepeatModalViewController : UIViewController {
         // 요일 선택 - 주 반복 간격
         var weeklyTerm : String?
         // 날짜 선택 - 매월 반복되는 날짜
-        var monthlyRepeatDay : String?
+        var monthlyRepeatType : ExpenseCreateRequest.monthlyRepeatType?
         
-        var routineType : ExpenseCreateRequest.RoutineType = .weekly // 초기화 - 요일 선택
+        var routineType : ExpenseCreateRequest.RoutineType?
+        // 초기화 - 요일 선택
         if chooseDayButton.isChecked {
             // 요일 선택을 한 경우
             
@@ -583,11 +597,15 @@ class RepeatModalViewController : UIViewController {
             if view1.RepeatEndDateButton.isChecked {
                 endDate = currEndDate
             }
+            else{
+                endDate = ""
+            }
             // 요일 반복 - 월,화,수,목,금,토
             weeklyRepeatDays = apiWeeklyRepeatDays
             weeklyTerm = view1.weekIntervalButton.title(for: .normal)
             // 날짜 선택 시 나오는 것 nill 처리
-            monthlyRepeatDay = nil
+            monthlyRepeatType = .first
+            
             
         }
         if chooseDateButton.isChecked{
@@ -605,10 +623,30 @@ class RepeatModalViewController : UIViewController {
             if view1.RepeatEndDateButton.isChecked {
                 endDate = currEndDate
             }
-            monthlyRepeatDay = view2.weekIntervalButton.title(for: .normal)
+            else{
+                endDate = ""
+            }
+
+            switch checkedIndex {
+            case 0:
+                monthlyRepeatType = .specific
+            case 1:
+                monthlyRepeatType = .first
+            case 2:
+                monthlyRepeatType = .last
+            default: // 아무것도 선택한 게 없으면 소비등록 날짜로
+                monthlyRepeatType = .specific
+               
+            }
+            // 요일 선택 시 보내는 것들 데이터 처리
+            weeklyRepeatDays = []
+            weeklyTerm = ""
+
+        }
+        if let routineType = routineType{
+            routineRequest  = ExpenseCreateRequest.RoutineRequest(type: routineType, endDate: endDate, weeklyRepeatDays:weeklyRepeatDays, weeklyTerm: weeklyTerm, monthlyRepeatType: monthlyRepeatType)
         }
         
-        routineRequest  = ExpenseCreateRequest.RoutineRequest(type: routineType, endDate: endDate, weeklyRepeatDays:weeklyRepeatDays, weeklyTerm: weeklyTerm, monthlyRepeatDay: monthlyRepeatDay)
         // 소비등록 화면으로 전달
         delegate?.GetResultofInterval(resultButtonString, api : routineRequest)
       
@@ -729,6 +767,7 @@ extension RepeatModalViewController : ChooseDateViewDelegate{
 // MARK: - 반복 날짜/요일 선택
 extension RepeatModalViewController : RepeatIntervalDelegate {
     func didIntervalSelected(_ index : Int){
+        checkedIndex = index
         UIView.animate(withDuration: 0.3) {
                 self.view.layoutIfNeeded()
             }

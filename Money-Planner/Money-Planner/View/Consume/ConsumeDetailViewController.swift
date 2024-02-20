@@ -35,8 +35,6 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
     var expenseId: Int64 = 0
     var initExpense : ResponseExpenseDto.ExpenseDto?
     var currentCategoryId : Int64 = 0
-
-
     let StackView = UIStackView()
 
     // api 연결
@@ -254,7 +252,7 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
         print(checkButton.isChecked)
         if checkButton.isChecked {
             print("반복 모달로 이동합니다")
-            let repeatModalVC = RepeatModalViewController()
+            let repeatModalVC = RepeatModalViewController(currCal: currnetCal)
             repeatModalVC.delegate = self
             present(repeatModalVC, animated: true)
         }
@@ -268,7 +266,7 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
     
     @objc private func showRepeatModalResult() {
         print("반복 모달로 이동합니다")
-        let repeatModalVC = RepeatModalViewController()
+        let repeatModalVC = RepeatModalViewController(currCal: currnetCal)
         repeatModalVC.routineRequest = routineRequest
         repeatModalVC.delegate = self
         present(repeatModalVC, animated: true)
@@ -939,20 +937,8 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
         expenseRequest.expenseId = expenseId
         expenseRequest.categoryId = currentCategoryId
         expenseRequest.expenseCost = currentAmount
-        if let text = titleTextField.text { expenseRequest.expenseTitle = text}
-        if let text = memoTextField.text { expenseRequest.expenseMemo = text}
-        if let text = calTextField.text {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy년 MM월 dd일"
-            if let date = dateFormatter.date(from: text) {
-                dateFormatter.dateFormat = "yyyy-MM-dd"
-                let convertedDateString = dateFormatter.string(from: date)
-                currDay = convertedDateString
-                expenseRequest.expenseDate = convertedDateString
-            } else {
-                print("날짜 변환 실패")
-            }
-        }
+        expenseRequest.expenseDate = currnetCal
+    
         struct ZeroDayRequest{
             var dailyPlanDate : String
         }

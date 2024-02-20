@@ -164,7 +164,7 @@ class RepeatIntervalViewController : UIViewController,UIPickerViewDelegate,UIPic
        func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
            returnValue = row
            let selectedInterval = intervals[row]
-           
+           print(row)
            print("Selected Interval: \(selectedInterval)")
            // 선택된 항목을 처리하거나 delegate를 통해 전달할 수 있습니다.
        }
@@ -181,6 +181,7 @@ class RepeatIntervalViewController : UIViewController,UIPickerViewDelegate,UIPic
             label.font = UIFont.mpFont20B()// 원하는 글꼴 및 크기로 변경
            label.textAlignment = .center
            label.backgroundColor = .mpMainColorA30
+        
             returnValue = row
            return label
        }
@@ -195,7 +196,6 @@ class RepeatIntervalViewController : UIViewController,UIPickerViewDelegate,UIPic
     @objc private func completeButtonTapped() {
         print("완료 버튼이 탭되었습니다.")
         print(returnValue)
-        var  stirngReturnValue = ""
         delegate?.didIntervalSelected(returnValue)
         // 완료 버튼 액션 처리
         dismiss(animated: true, completion: nil)
