@@ -455,13 +455,13 @@ extension HomeViewController{
         
         // calendarView
         if(self.nowGoal != nil && self.statisticsData != nil){
-            statisticsView.isHidden = false
+//            statisticsView.isHidden = false
             statisticsView.statistics = statisticsData
             calendarView.goal = self.nowGoal
             
             statisticsView.progress = getProgress(numerator: self.statisticsData!.totalCost, denominator: self.statisticsData!.goalBudget)
         }else{
-            statisticsView.isHidden = true
+//            statisticsView.isHidden = true
             statisticsView.statistics = nil
             statisticsView.progress = 0.0
         }

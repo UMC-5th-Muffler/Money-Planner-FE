@@ -103,10 +103,11 @@ class MainStatisticsView : UIView {
     }
     
     private func setupView() {
+        backgroundColor = UIColor.clear
+        
         if(statistics != nil){
             noGoalView.removeFromSuperview()
-            
-            backgroundColor = UIColor.clear
+
             if(statistics != nil){
                 useAmount.text = statistics!.totalCost.formattedWithSeparator()+"원"
                 totalAmount.text = "/ "+statistics!.goalBudget.formattedWithSeparator() + "원"
@@ -138,16 +139,17 @@ class MainStatisticsView : UIView {
                 stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
                 stackView.leftAnchor.constraint(equalTo: leftAnchor),
             ])
-        }else if(self.goal != nil){
-            let view = UIView()
-            addSubview(view)
-            NSLayoutConstraint.activate([
-                view.topAnchor.constraint(equalTo: topAnchor),
-                view.leadingAnchor.constraint(equalTo: leadingAnchor),
-                view.trailingAnchor.constraint(equalTo: trailingAnchor),
-                view.bottomAnchor.constraint(equalTo: bottomAnchor)
-            ])
         }
+//        else if(self.goal != nil){
+//            let view = UIView()
+//            addSubview(view)
+//            NSLayoutConstraint.activate([
+//                view.topAnchor.constraint(equalTo: topAnchor),
+//                view.leadingAnchor.constraint(equalTo: leadingAnchor),
+//                view.trailingAnchor.constraint(equalTo: trailingAnchor),
+//                view.bottomAnchor.constraint(equalTo: bottomAnchor)
+//            ])
+//        }
         else{
             addSubview(noGoalView)
             
