@@ -17,6 +17,8 @@ class MainStatisticsView : UIView {
         }
     }
     
+    var goal : Goal?
+    
     var progress: CGFloat = 0.0 {
         didSet{
             setNeedsDisplay()
@@ -136,7 +138,17 @@ class MainStatisticsView : UIView {
                 stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
                 stackView.leftAnchor.constraint(equalTo: leftAnchor),
             ])
-        }else{
+        }else if(self.goal != nil){
+            let view = UIView()
+            addSubview(view)
+            NSLayoutConstraint.activate([
+                view.topAnchor.constraint(equalTo: topAnchor),
+                view.leadingAnchor.constraint(equalTo: leadingAnchor),
+                view.trailingAnchor.constraint(equalTo: trailingAnchor),
+                view.bottomAnchor.constraint(equalTo: bottomAnchor)
+            ])
+        }
+        else{
             addSubview(noGoalView)
             
             NSLayoutConstraint.activate([
@@ -152,6 +164,9 @@ class MainStatisticsView : UIView {
         super.draw(rect)
         if(statistics != nil){
             drawDonutChart()
+        }else{
+            backgroundColor?.setFill()
+            UIRectFill(rect)
         }
     }
     
