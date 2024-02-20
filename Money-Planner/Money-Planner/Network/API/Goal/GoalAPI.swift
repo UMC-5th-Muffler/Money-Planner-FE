@@ -25,7 +25,7 @@ extension GoalAPI : BaseAPI {
     
     var headers: [String: String]? {
         // Replace 'YourTokenHere' with the actual bearer token.
-        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDg0MTI1Nzl9.t1NusZW7wFB2BQ7Y8jVuRTrpbWe6X8v4Enib0yfmyDA"]
+        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDg0ODUzMTd9.XuzFNk-rsRpVzMjoRHnGLaAia9ghjQn66_M8w6CWNPA"]
     }
     
     var path: String {

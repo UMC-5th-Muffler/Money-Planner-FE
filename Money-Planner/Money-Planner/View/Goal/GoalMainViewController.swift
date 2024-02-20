@@ -12,17 +12,17 @@ import RxCocoa
 
 extension GoalMainViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offsetY = scrollView.contentOffset.y
-        let contentHeight = scrollView.contentSize.height
-        let boundsHeight = scrollView.bounds.size.height
-
-        // Check if the user has scrolled to the bottom of the table view
-        if offsetY > (contentHeight - boundsHeight) {
-            // Attempt to fetch more not-now goals
-            viewModel.fetchNotNowGoals()
-        }
-        onNotNowGoalsUpdated()
-        self.goalTable.reloadData()
+//        let offsetY = scrollView.contentOffset.y
+//        let contentHeight = scrollView.contentSize.height
+//        let boundsHeight = scrollView.bounds.size.height
+//
+//        // Check if the user has scrolled to the bottom of the table view
+//        if offsetY > (contentHeight - boundsHeight) {
+//            // Attempt to fetch more not-now goals
+//            viewModel.fetchNotNowGoals()
+//        }
+//        onNotNowGoalsUpdated()
+//        self.goalTable.reloadData()
     }
 }
 
@@ -62,7 +62,6 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
     
     @objc func addNewGoalButtonTapped() {
         // Create and present GoalTitleViewController
-        print("aaaa")
         let goalTitleViewController = GoalTitleViewController()
         navigationController?.pushViewController(goalTitleViewController, animated: true)
         
@@ -84,6 +83,7 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
     private func setupGoalTable() {
         
         view.addSubview(goalTable)
+        goalTable.showsVerticalScrollIndicator = false
         goalTable.backgroundColor = .mpLightGray
         goalTable.separatorStyle = .none
         goalTable.translatesAutoresizingMaskIntoConstraints = false
@@ -118,7 +118,8 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
         case 0:
             return 1
         case 1:
-            return max(viewModel.notNowGoals.value.count, 1)
+            let count = viewModel.notNowGoals.value.count
+            return count == 0 ? 1 : count
         default:
             return 0
         }
@@ -159,12 +160,12 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
                 let cell = tableView.dequeueReusableCell(withIdentifier: "GoalPresentationCell", for: indexPath) as! GoalPresentationCell
                 let goal = viewModel.notNowGoals.value[indexPath.row]
                 cell.configureCell(with: goal, isNow: false)
-                cell.btnTapped = { [weak self] in
-                    // Navigate to GoalDetailsViewController with the selected goal's details
-                    let goalDetailsVC = GoalDetailsViewController(goalID: goal.goalId)
-                    self?.navigationController?.pushViewController(goalDetailsVC, animated: true)
-                    self?.tabBarController?.tabBar.isHidden = true
-                }
+//                cell.btnTapped = { [weak self] in
+//                    // Navigate to GoalDetailsViewController with the selected goal's details
+//                    let goalDetailsVC = GoalDetailsViewController(goalID: goal.goalId)
+//                    self?.navigationController?.pushViewController(goalDetailsVC, animated: true)
+//                    self?.tabBarController?.tabBar.isHidden = true
+//                }
                 return cell
             }
         } else {
@@ -238,21 +239,30 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
 
     
     func onNotNowGoalsUpdated() {
-        let currentCount = goalTable.numberOfRows(inSection: 1) // 현재 not-now 섹션의 셀 개수
-        let newCount = viewModel.addedNotNowGoals.value.count // 새로운 데이터의 개수
+        let currentCount = goalTable.numberOfRows(inSection: 1)
 
+        let newCount = viewModel.notNowGoals.value.count // 새로운 데이터의 개수
+
+        // 새로운 항목이 추가되었는지 확인
+        guard newCount > currentCount else { return }
+        
         // 새로 추가될 셀들의 인덱스 경로를 계산
-        if newCount == 0 {
-            return
+        var indexPaths: [IndexPath] = []
+        for index in currentCount..<newCount {
+            let indexPath = IndexPath(row: index, section: 1)
+            indexPaths.append(indexPath)
         }
-        let indexPaths = (currentCount..<newCount).map { IndexPath(row: $0, section: 1) }
         
         // 테이블 뷰 업데이트 시작
-//        goalTable.beginUpdates()
+        goalTable.beginUpdates()
+        
         // 새로운 셀들을 삽입
         goalTable.insertRows(at: indexPaths, with: .automatic) // .automatic은 애니메이션 효과
+        
         // 테이블 뷰 업데이트 종료
-//        goalTable.endUpdates()
+        goalTable.endUpdates()
+        
+        goalTable.reloadData()
     }
 
 

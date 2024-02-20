@@ -47,9 +47,12 @@ class GoalMainViewModel {
             }, onFailure: { error in
                 // Handle error
                 print(error)
+                
+                //테스트 용도
+//                let nowResponse = NowResponse(isSuccess: true, message: "", result: Goal_(goalId: 11, goalTitle: "제목 수정", icon: "👻", totalBudget: 200, totalCost: 10, endDate: "2024-03-02"))
+//                self.nowGoalResponse.accept(nowResponse)
             })
             .disposed(by: disposeBag)
-        print(self.nowGoal.value?.goalTitle ?? "1")
     }
     
 

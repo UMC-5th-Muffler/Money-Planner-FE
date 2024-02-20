@@ -239,9 +239,9 @@ class GoalPresentationCell: UITableViewCell {
     }
     
     func configureCell(with goal: Goal_, isNow : Bool) {
-        
         self.goal = goal
-        self.progressBar = GoalProgressBar(goalAmt: goal.totalBudget, usedAmt: goal.totalCost! )
+        self.progressBar.goalAmt = goal.totalBudget
+        self.progressBar.usedAmt = goal.totalCost ?? 0
         
         btn.backgroundColor = .mpWhite
         btn.layer.cornerRadius = 10
@@ -284,9 +284,9 @@ class GoalPresentationCell: UITableViewCell {
                 ddayBackgroundColor = UIColor.mpLightGray
                 ddayTextColor = UIColor.mpDarkGray
             } else {
-                ddayText = "시작 전"
-                ddayBackgroundColor = UIColor.mpLightGray
-                ddayTextColor = UIColor.mpDarkGray
+                ddayText = "진행 전"
+                ddayBackgroundColor = UIColor.mpMainColorA30
+                ddayTextColor = UIColor.mpMainColor
             }
         }
         
@@ -301,19 +301,20 @@ class GoalPresentationCell: UITableViewCell {
         dday.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         //progressPercentage
-        let progressPercentageValue = Double(goal.totalCost!) / Double(goal.totalBudget) * 100.0
+        let progressPercentageValue = Double(goal.totalCost ?? 0) / Double(goal.totalBudget) * 100.0
         progressPercentage.text = String(format: "%.0f%%", progressPercentageValue)
         progressPercentage.textColor = progressPercentageValue > 100 ? .mpRed : .mpMainColor
         progressPercentage.font = .mpFont14M()
         
-        
-        let totalCostText = setComma(cash: goal.totalCost!) + " 원 / " + setComma(cash: goal.totalBudget) + " 원 사용"
+        let totalCostText = setComma(cash: goal.totalCost ?? 0) + " 원 / " + setComma(cash: goal.totalBudget) + " 원 사용"
         let totalBudgetTextCnt = "/ \(goal.totalBudget) 원 사용".count
         let attributedText = NSMutableAttributedString(string: totalCostText)
         attributedText.addAttribute(.foregroundColor, value: UIColor.mpDarkGray, range: NSRange(location: 0, length: totalCostText.count))
         attributedText.addAttribute(.foregroundColor, value: UIColor.mpGray, range: NSRange(location: totalCostText.count - totalBudgetTextCnt , length: totalBudgetTextCnt))
         totalCost.attributedText = attributedText
         totalCost.font = .mpFont14M()
+        
+        self.progressBar.setupUsedAmtBar()
     }
 }
 
