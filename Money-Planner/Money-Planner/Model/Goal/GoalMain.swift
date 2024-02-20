@@ -11,34 +11,33 @@ import Foundation
 struct NowResponse : Codable {
     let isSuccess: Bool
     let message: String
-    let result: GoalResult
+    let result: Goal_
 
     enum CodingKeys: String, CodingKey {
         case isSuccess
         case message
         case result
     }
-
-    // Nested struct for the "result" part of the JSON
-    struct GoalResult: Codable {
-        let goalId: Int64
-        let goalTitle: String
-        let icon: String
-        let totalBudget: Int64
-        let totalCost: Int64
-        let endDate: String
-
-        enum CodingKeys: String, CodingKey {
-            case goalId = "goalId"
-            case goalTitle = "goalTitle"
-            case icon = "icon"
-            case totalBudget = "totalBudget"
-            case totalCost = "totalCost"
-            case endDate = "endDate"
-        }
-    }
+    
 }
 
+//struct GoalResult: Codable {
+//    let goalId: Int64
+//    let goalTitle: String
+//    let icon: String
+//    let totalBudget: Int64
+//    let totalCost: Int64
+//    let endDate: String
+//
+//    enum CodingKeys: String, CodingKey {
+//        case goalId = "goalId"
+//        case goalTitle = "goalTitle"
+//        case icon = "icon"
+//        case totalBudget = "totalBudget"
+//        case totalCost = "totalCost"
+//        case endDate = "endDate"
+//    }
+//}
 
 //not-now,이용주소 : /api/goal/not-now
 struct NotNowResponse: Codable {
@@ -53,7 +52,7 @@ struct NotNowResult: Codable {
 }
 
 struct Goal_: Codable {
-    let goalID: Int
+    let goalId: Int
     let goalTitle: String
     let icon: String
     let totalBudget: Int64
@@ -61,7 +60,7 @@ struct Goal_: Codable {
     let endDate: String
     
     enum CodingKeys: String, CodingKey {
-        case goalID = "goalId"
+        case goalId = "goalId"
         case goalTitle, icon, totalBudget, totalCost, endDate
     }
 }

@@ -6,119 +6,6 @@
 //
 
 
-//import Foundation
-//import UIKit
-//
-//class GoalDailyViewController: UIViewController, DayGoalMonthViewDelegate {
-//
-//    private let header = HeaderView(title: "")
-//    private let descriptionView = DescriptionView(text: "하루하루의 목표금액을\n조정해주세요", alignToCenter: false)
-//    private let subdescriptionView = SubDescriptionView(text: "일정에 맞게 일일 목표 금액을 변경하면\n나머지 금액은 1/n 해드릴게요", alignToCenter: false)
-//    private let btmBtn = MainBottomBtn(title: "다음")
-//
-//    private let goalCreationManager = GoalCreationManager.shared
-//
-//    let monthView: DayGoalMonthView = {
-//        let v = DayGoalMonthView()
-//        v.translatesAutoresizingMaskIntoConstraints = false
-//        return v
-//    }()
-//
-//    let calendarView: DayGoalCalendarView = {
-//        let v = DayGoalCalendarView()
-//        v.translatesAutoresizingMaskIntoConstraints = false
-//        return v
-//    }()
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        view.backgroundColor = .systemBackground
-//        monthView.delegate = self
-//
-//        setupViews()
-//        setupConstraints()
-//
-//        navigationItem.hidesBackButton = true
-//        navigationItem.leftBarButtonItem = nil
-//
-//        header.addBackButtonTarget(target: self, action: #selector(backButtonTapped), for: .touchUpInside)
-//        btmBtn.addTarget(self, action: #selector(btmButtonTapped), for: .touchUpInside)
-//
-//        self.tabBarController?.tabBar.isHidden = true
-//    }
-//
-//    private func setupViews() {
-//        // Add subviews to the view hierarchy
-//        view.addSubview(header)
-//        view.addSubview(descriptionView)
-//        view.addSubview(subdescriptionView)
-//        view.addSubview(monthView)
-//        view.addSubview(calendarView)
-//        view.addSubview(btmBtn)
-//    }
-//
-//    private func setupConstraints() {
-//        // Disable autoresizing mask translation for all subviews
-//        header.translatesAutoresizingMaskIntoConstraints = false
-//        descriptionView.translatesAutoresizingMaskIntoConstraints = false
-//        subdescriptionView.translatesAutoresizingMaskIntoConstraints = false
-//        // monthView and calendarView are already set to false
-//        btmBtn.translatesAutoresizingMaskIntoConstraints = false
-//
-//        // Set up constraints for all subviews
-//        NSLayoutConstraint.activate([
-//            // Header constraints
-//            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-//            header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-//            header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-//            header.heightAnchor.constraint(equalToConstant: 60),
-//
-//            // DescriptionView constraints
-//            descriptionView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 20),
-//            descriptionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-//            descriptionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-//
-//            // SubDescriptionView constraints
-//            subdescriptionView.topAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: 10),
-//            subdescriptionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-//            subdescriptionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-//
-//            // MonthView constraints
-//            monthView.topAnchor.constraint(equalTo: subdescriptionView.bottomAnchor, constant: 20),
-//            monthView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-//            monthView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-//            monthView.heightAnchor.constraint(equalToConstant: 46),
-//
-//            // CalendarView constraints
-//            calendarView.topAnchor.constraint(equalTo: monthView.bottomAnchor, constant: 5),
-//            calendarView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-//            calendarView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-//            calendarView.bottomAnchor.constraint(equalTo: btmBtn.topAnchor, constant: -30),
-//
-//            // btmBtn constraints
-//            btmBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-//            btmBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-//            btmBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
-//            btmBtn.heightAnchor.constraint(equalToConstant: 50)
-//        ])
-//    }
-//
-//    @objc private func backButtonTapped() {
-//        // Navigate back
-//        navigationController?.popViewController(animated: true)
-//    }
-//
-//    @objc private func btmButtonTapped() {
-//        // Navigate to the next screen
-//        let goalFinalVC = GoalFinalViewController() // Assume GoalFinalViewController exists
-//        navigationController?.pushViewController(goalFinalVC, animated: true)
-//    }
-//
-//    func didChangeMonth(monthIndex: Int, year: Int) {
-//        calendarView.changeMonth(monthIndex: monthIndex, year: year)
-//    }
-//}
-
 import Foundation
 import UIKit
 import FSCalendar
@@ -133,7 +20,15 @@ extension GoalDailyViewController: GoalAmountModalViewControllerDelegate {
         amountInfo[dateKey] = newAmount
         isEdited[dateKey] = true
         
+        refreshAmountInfo(startDate: goalCreationManager.startDate!.toMPDate(format: "yyyy/MM/dd")!, endDate: goalCreationManager.endDate!.toMPDate(format: "yyyy/MM/dd")!)
+        
         customCalendarView.calendar.reloadData()
+        
+        if calculateTotalAmount(from: goalCreationManager.startDate!.toMPDate(format: "yyyy/MM/dd")!, to: (goalCreationManager.endDate?.toMPDate(format: "yyyy/MM/dd"))!) == goalCreationManager.goalBudget {
+            btmBtn.isEnabled = true
+        }else{
+            btmBtn.isEnabled = false
+        }
     }
 }
 
@@ -148,8 +43,234 @@ class GoalDailyViewController: UIViewController, FSCalendarDelegate, FSCalendarD
     var isEdited: [String: Bool] = [:]
     var amountInfo: [String: String] = [:]
     
-    var customCalendarView: CustomCalendarView!
+    private func initializeArray(start: Date, end: Date) {
+        var currentDate = start
+        let calendar = Calendar.current
+        while currentDate <= end {
+            let dateString = formatDate(currentDate)
+            isEdited[dateString] = false
+            amountInfo[dateString] = "0"
+            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+        }
+        refreshAmountInfo(startDate: start, endDate: end)
+    }
     
+    func presentEditModal(for date: Date, with currentAmount: Int64) {
+        // Create an instance of GoalAmountModalViewController
+        let goalAmountModalVC = GoalAmountModalViewController()
+        
+        // Configure the properties of the modal
+        goalAmountModalVC.modalPresentationStyle = .pageSheet
+        goalAmountModalVC.modalTransitionStyle = .crossDissolve
+        goalAmountModalVC.delegate = self
+        goalAmountModalVC.date = date
+        goalAmountModalVC.currentTotalAmount = currentAmount
+        
+        // Present the modal
+        self.present(goalAmountModalVC, animated: true, completion: nil)
+    }
+    
+    private func refreshAmountInfo(startDate : Date, endDate : Date) {
+        
+        let goalBudget = GoalCreationManager.shared.goalBudget
+        let unedited = findAllTheUneditedDays()
+        let editedsum = calculateEditedAmount(from: startDate, to: endDate)
+        let distributingBudget = goalBudget! - editedsum
+        
+        if distributingBudget < 0 {
+            //1/N 진행안됨.
+            print("합이 너무 큼.")
+        }else if distributingBudget == 0 {
+            //0원 분배
+            if unedited.count <= 1 { //한번씩은 다 수정이 되었다. 이제부터는 1/n 기능이 꺼진다. 이젠 금액이 넘어가는지만 체크한다.
+                return
+            }else{ //아직 수정이 다 안됐다. 1/N 지원!
+                if (distributingBudget / Int64(unedited.count)) < 100 {
+                    let distributingDays = distributingBudget/100
+                    let remainder = distributingBudget%100
+                    distribution(startDate: startDate, endDate: endDate, days: distributingDays, budget: 100, remainder: remainder, addToHead: false)
+                }else{
+                    //발생해선 안됨
+                    print("error")
+                }
+            }
+        }else{
+            if unedited.count <= 1 { //한번씩은 다 수정이 되었다. 이제부터는 1/n 기능이 꺼진다.
+                return
+            }else{ //아직 수정이 다 안됐다. 1/N 지원!
+                if (distributingBudget / Int64(unedited.count)) < 100 {
+                    let distributingDays = distributingBudget/100
+                    let remainder = distributingBudget%100
+                    distribution(startDate: startDate, endDate: endDate, days: distributingDays, budget: 100, remainder: remainder, addToHead: false)
+                }else{
+                    let k = distributingBudget / Int64(unedited.count)
+                    if k % 100 == 0 {
+                        distribution(startDate: startDate, endDate: endDate, days: Int64(unedited.count), budget: k, remainder: 0, addToHead: true)
+                    }else{
+                        let remainderConstant = k%100
+                        let budget = k - remainderConstant
+                        let remainderMultiplier = Int64(unedited.count)
+                        let remainder = remainderConstant * remainderMultiplier
+                        distribution(startDate: startDate, endDate: endDate, days: Int64(unedited.count), budget: budget, remainder: remainder, addToHead: true)
+                    }
+                }
+            }
+        }
+    }
+    
+//    func distribution(startDate: Date, endDate: Date, days : Int, budget : Int, remainder : Int, addToHead : Bool){
+//        var firstAdded = false
+//        var lastAdded = false
+//        //while문으로 startDate ~ endDate 까지 돌면서
+//        //isEdited[dateKey] = false 인 곳에 budget을 넣는다.
+//        //addToHead가 true일때, firstAdded가 false라면 처음 넣는 날이다. remainder + budget를 더한다. firstAdded =true. days-=1
+//        //addToHead가 true일때, firstAdded가 true라면 budget를 더한다. days-=1. 마지막에 days가 0이 되면 return
+//        //addToHead가 false일때, days가 0이고, lastAdded == false면, remainder를 amountInfo[dateKey] 에 할당하고,
+//        //addToHead가 false일때, days가 0이고, lastAdded == true면, amountInfo[dateKey]에 0을 할당.
+//    }
+    
+    func distribution(startDate: Date, endDate: Date, days: Int64, budget: Int64, remainder: Int64, addToHead: Bool) {
+        
+        var firstAdded = false
+        var lastAdded = false
+        var currentDate = startDate
+        var daysLeft = days
+        
+        while currentDate <= endDate {
+            let dateString = formatDate(currentDate)
+            
+            // isEdited[dateKey] = false 인 경우 budget 할당
+            if !isEdited[dateString]! {
+//                amountInfo[dateString] = "\(budget)"
+//                isEdited[dateString] = true
+//                daysLeft -= 1
+                
+                if addToHead {
+                    if !firstAdded {
+                        let initialBudget = remainder + budget
+                        amountInfo[dateString] = "\(initialBudget)"
+                        firstAdded = true
+                        daysLeft -= 1
+                    } else {
+                        amountInfo[dateString] = "\(budget)"
+                        daysLeft -= 1
+                        if daysLeft == 0 {
+                            return
+                        }
+                    }
+                }else{
+                    if daysLeft == 0 && !lastAdded{
+                        amountInfo[dateString] = "\(remainder)"
+                        lastAdded = true
+                    }
+                    else if daysLeft == 0 && lastAdded {
+                        amountInfo[dateString] = "0"
+                    }
+                    else if daysLeft > 0 {
+                        amountInfo[dateString] = "\(budget)"
+                        daysLeft -= 1
+                    }
+                    
+                }
+            }
+            
+            // endDate까지 도달한 경우 (사실 이 작업 의미 없을수도)
+            if currentDate == endDate {
+                lastAdded = true
+            }
+            
+            // 다음 날짜로 이동
+            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate)!
+        }
+        
+    }
+
+    func updateAmount(for date: Date, with text: String) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        let dateKey = dateFormatter.string(from: date)
+        
+        // startDate와 endDate 사이의 날짜에 대해서만 업데이트를 허용합니다.
+        if let startDate = customCalendarView.startDate, let endDate = customCalendarView.endDate,
+           date >= startDate && date <= endDate {
+            amountInfo[dateKey] = text
+            
+            // 필요한 경우 캘린더 뷰를 업데이트합니다.
+            customCalendarView.calendar.reloadData()
+        } else {
+            print("날짜는 startDate와 endDate 사이여야 합니다.")
+        }
+    }
+    
+    func findAllTheUneditedDays() -> [String] {
+        var uneditedDays: [String] = []
+        // amountInfo 딕셔너리의 키들을 반복하여 uneditedDays 배열에 편집되지 않은 날짜를 추가합니다.
+        for (dateKey, edited) in isEdited {
+            if !edited {
+                uneditedDays.append(dateKey)
+            }
+        }
+        return uneditedDays
+    }
+
+    
+    func calculateTotalAmount(from startDate: Date, to endDate: Date) -> Int64 {
+        var totalAmount: Int64 = 0
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        
+        for (dateKey, value) in amountInfo {
+            if let date = dateFormatter.date(from: dateKey) {
+                // startDate와 endDate 사이의 날짜에 대해서만 계산합니다.
+                if date >= startDate && date <= endDate {
+                    // 금액의 문자열에서 ','를 제거하고 Int64로 변환하여 총합에 더합니다.
+                    let formattedValue = value.replacingOccurrences(of: ",", with: "")
+                    if let amount = Int64(formattedValue) {
+                        totalAmount += amount
+                    } else {
+                        print("잘못된 형식의 금액입니다: \(value)")
+                    }
+                }
+            } else {
+                print("잘못된 날짜 형식입니다: \(dateKey)")
+            }
+        }
+        
+        return totalAmount
+    }
+    
+    func calculateEditedAmount(from startDate: Date, to endDate: Date) -> Int64 {
+        var totalAmount: Int64 = 0
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        
+        if findAllTheUneditedDays().count == 1 {
+            return calculateTotalAmount(from: startDate, to: endDate)
+        }
+        
+        for (dateKey, value) in isEdited {
+            if let date = dateFormatter.date(from: dateKey) {
+                // startDate와 endDate 사이의 날짜에 대해서만 계산합니다.
+                if date >= startDate && date <= endDate && value {
+                    // 금액의 문자열에서 ','를 제거하고 Int64로 변환하여 총합에 더합니다.
+                    let formattedValue = amountInfo[dateKey]?.replacingOccurrences(of: ",", with: "") ?? "0"
+                    if let amount = Int64(formattedValue) {
+                        totalAmount += amount
+                    } else {
+                        print("잘못된 형식의 금액입니다: \(value)")
+                    }
+                }
+            } else {
+                print("잘못된 날짜 형식입니다: \(dateKey)")
+            }
+        }
+        
+        return totalAmount
+    }
+    
+    var customCalendarView: CustomCalendarView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -164,6 +285,7 @@ class GoalDailyViewController: UIViewController, FSCalendarDelegate, FSCalendarD
         
         if let start = goalCreationManager.startDate?.toMPDate(), let end = goalCreationManager.endDate?.toMPDate() {
             customCalendarView.setPeriod(startDate: start, endDate: end)
+            initializeArray(start: start, end: end)
         }
         
         setupNavigationBar()
@@ -172,6 +294,8 @@ class GoalDailyViewController: UIViewController, FSCalendarDelegate, FSCalendarD
         setupWeekdayLabels()
         
         btmBtn.addTarget(self, action: #selector(btmButtonTapped), for: .touchUpInside)
+        btmBtn.isEnabled = false
+        
         self.tabBarController?.tabBar.isHidden = true
     }
     
@@ -230,8 +354,10 @@ class GoalDailyViewController: UIViewController, FSCalendarDelegate, FSCalendarD
     ///calendar관련
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         // 예를 들어, 선택된 날짜에 대한 현재 금액을 가져옵니다. 실제 구현에서는 모델 또는 데이터 소스에서 이 값을 조회해야 합니다.
-        let currentTotalAmount = calculateTotalAmount(from: (goalCreationManager.startDate?.toMPDate(format: "yyyy/MM/dd"))!, to: (goalCreationManager.endDate?.toMPDate(format: "yyyy/MM/dd"))!)
+        let currentTotalAmount = calculateEditedAmount(from: (goalCreationManager.startDate?.toMPDate(format: "yyyy/MM/dd"))!, to: (goalCreationManager.endDate?.toMPDate(format: "yyyy/MM/dd"))!)
+        
         presentEditModal(for: date, with: currentTotalAmount)
+        
     }
     
     
@@ -291,92 +417,6 @@ class GoalDailyViewController: UIViewController, FSCalendarDelegate, FSCalendarD
         // 오직 startDate와 endDate 사이의 날짜만 선택 가능하게 함
         return date >= startDate && date <= endDate
     }
-    
-    
-    func presentEditModal(for date: Date, with currentAmount: Int64) {
-        // Create an instance of GoalAmountModalViewController
-        let goalAmountModalVC = GoalAmountModalViewController()
-        
-        // Configure the properties of the modal
-        goalAmountModalVC.modalPresentationStyle = .pageSheet
-        goalAmountModalVC.modalTransitionStyle = .crossDissolve
-        goalAmountModalVC.delegate = self
-        goalAmountModalVC.date = date
-        goalAmountModalVC.currentTotalAmount = currentAmount
-        
-        // Present the modal
-        self.present(goalAmountModalVC, animated: true, completion: nil)
-    }
-    
-    private func refreshAmountInfo(startDate : Date, endDate : Date) {
-        
-        let goalBudget = GoalCreationManager.shared.goalBudget
-        var sum = calculateTotalAmount(from: startDate, to: endDate)
-        
-        if goalBudget ?? 0 > sum {
-            btmBtn.isEnabled = false
-            
-            //isEdited를 읽어서 value가 false인 녀석들만 key를 모아 여기에서 만든 배열에 저장. 이 날짜에만 goalBudget - sum 을 분배한다.
-            // 이를 분배하는 로직 :
-            
-        }else if goalBudget == sum{
-            btmBtn.isEnabled = true
-        }else{
-            btmBtn.isEnabled = false
-            
-        }
-        
-        var currentDate = startDate
-        let calendar = Calendar.current
-        while currentDate <= endDate {
-            let dateString = formatDate(currentDate)
-            amountInfo[dateString] = "0"
-            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
-        }
-    }
-    
-    func updateAmount(for date: Date, with text: String) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd"
-        let dateKey = dateFormatter.string(from: date)
-        
-        // startDate와 endDate 사이의 날짜에 대해서만 업데이트를 허용합니다.
-        if let startDate = customCalendarView.startDate, let endDate = customCalendarView.endDate,
-           date >= startDate && date <= endDate {
-            amountInfo[dateKey] = text
-            
-            // 필요한 경우 캘린더 뷰를 업데이트합니다.
-            customCalendarView.calendar.reloadData()
-        } else {
-            print("날짜는 startDate와 endDate 사이여야 합니다.")
-        }
-    }
-    
-    func calculateTotalAmount(from startDate: Date, to endDate: Date) -> Int64 {
-        var totalAmount: Int64 = 0
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd"
-        
-        for (dateKey, value) in amountInfo {
-            if let date = dateFormatter.date(from: dateKey) {
-                // startDate와 endDate 사이의 날짜에 대해서만 계산합니다.
-                if date >= startDate && date <= endDate {
-                    // 금액의 문자열에서 ','를 제거하고 Int64로 변환하여 총합에 더합니다.
-                    let formattedValue = value.replacingOccurrences(of: ",", with: "")
-                    if let amount = Int64(formattedValue) {
-                        totalAmount += amount
-                    } else {
-                        print("잘못된 형식의 금액입니다: \(value)")
-                    }
-                }
-            } else {
-                print("잘못된 날짜 형식입니다: \(dateKey)")
-            }
-        }
-        
-        return totalAmount
-    }
 
     
     private func setupWeekdayLabels() {
@@ -387,18 +427,7 @@ class GoalDailyViewController: UIViewController, FSCalendarDelegate, FSCalendarD
             label.font = .mpFont14B()
         }
     }
-    
-    private func initializeIsEdited(start: Date, end: Date) {
-        var currentDate = start
-        let calendar = Calendar.current
-        while currentDate <= end {
-            let dateString = formatDate(currentDate)
-            isEdited[dateString] = false
-            amountInfo[dateString] = "0"
-            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
-        }
-        refreshAmountInfo(startDate: start, endDate: end)
-    }
+
     
     private func formatDate(_ date: Date) -> String {
         let dateFormatter = DateFormatter()

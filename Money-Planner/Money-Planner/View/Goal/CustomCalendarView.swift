@@ -231,14 +231,13 @@ class GoalAmountModalViewController: UIViewController, UITextFieldDelegate, Mone
     
     func didChangeAmountText(to newValue: String?, cell: MoneyAmountTextCell, oldValue: String?) {
         
-        if let newValue = newValue, newValue != oldValue {
-            delegate?.didChangeAmount(to: newValue, for: date ?? Date())
-        }
+//        if let newValue = newValue, newValue != oldValue {
+//            delegate?.didChangeAmount(to: newValue, for: date ?? Date())
+//        }
         
         var sum : Int64 = currentTotalAmount!
         var dGSO = false
         var dGO = false
-        var overCost = 0
         
         if let newValue = newValue, newValue != oldValue {
             
@@ -258,7 +257,7 @@ class GoalAmountModalViewController: UIViewController, UITextFieldDelegate, Mone
             
             cell.setAmountLabel(dailyGoalSumOver: dGSO, dailyGoalOver: dGO, overCost: GoalCreationManager.shared.goalBudget!-(currentTotalAmount ?? 0))
             
-            if dGO || dGSO {
+            if dGO {
                 confirmButton.isEnabled = false
                 confirmButton.backgroundColor = .mpLightGray
             }else{

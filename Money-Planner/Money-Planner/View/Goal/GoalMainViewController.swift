@@ -145,12 +145,12 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
                 // If there is a current goal, configure and return a GoalPresentationCell
                 let cell = tableView.dequeueReusableCell(withIdentifier: "GoalPresentationCell", for: indexPath) as! GoalPresentationCell
                 cell.configureCell(with: nowGoal, isNow: true)
-//                cell.btnTapped = { [weak self] in
-//                    // Navigate to GoalDetailsViewController with the selected goal's details
-//                    let goalDetailsVC = GoalDetailsViewController(goalID: nowGoal.goalID)
-//                    self?.navigationController?.pushViewController(goalDetailsVC, animated: true)
-//                    self?.tabBarController?.tabBar.isHidden = true
-//                }
+                cell.btnTapped = { [weak self] in
+                    // Navigate to GoalDetailsViewController with the selected goal's details
+                    let goalDetailsVC = GoalDetailsViewController(goalID: nowGoal.goalId)
+                    self?.navigationController?.pushViewController(goalDetailsVC, animated: true)
+                    self?.tabBarController?.tabBar.isHidden = true
+                }
                 return cell
             } else {
                 // If there are no current goals, configure and return a GoalEmptyCell
@@ -170,13 +170,14 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
                 // If there are past or future goals, configure and return a GoalPresentationCell
 //                let goal = notNowGoals[indexPath.row]
                 let cell = tableView.dequeueReusableCell(withIdentifier: "GoalPresentationCell", for: indexPath) as! GoalPresentationCell
-//                cell.configureCell(with: goal, isNow: false)
-//                cell.btnTapped = { [weak self] in
-//                    // Navigate to GoalDetailsViewController with the selected goal's details
-//                    let goalDetailsVC = GoalDetailsViewController(goalID: goal.goalID)
-//                    self?.navigationController?.pushViewController(goalDetailsVC, animated: true)
-//                    self?.tabBarController?.tabBar.isHidden = true
-//                }
+                let goal = viewModel.notNowGoals.value[indexPath.row]
+                cell.configureCell(with: goal, isNow: false)
+                cell.btnTapped = { [weak self] in
+                    // Navigate to GoalDetailsViewController with the selected goal's details
+                    let goalDetailsVC = GoalDetailsViewController(goalID: goal.goalId)
+                    self?.navigationController?.pushViewController(goalDetailsVC, animated: true)
+                    self?.tabBarController?.tabBar.isHidden = true
+                }
                 return cell
             }
         } else {
@@ -234,9 +235,14 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
         } else if indexPath.section == 1 {
             // 과거 혹은 미래 목표 선택 처리
             let notNowGoals = viewModel.notNowGoals.value
+            
+            if notNowGoals.count == 0 {
+                return
+            }
+            
             if indexPath.row < notNowGoals.count {
                 let selectedGoal = notNowGoals[indexPath.row]
-                let goalDetailsVC = GoalDetailsViewController(goalID: selectedGoal.goalID)
+                let goalDetailsVC = GoalDetailsViewController(goalID: selectedGoal.goalId)
                 navigationController?.pushViewController(goalDetailsVC, animated: true)
                 self.tabBarController?.tabBar.isHidden = true
             }
@@ -249,7 +255,9 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
         let newCount = viewModel.addedNotNowGoals.value.count // 새로운 데이터의 개수
 
         // 새로 추가될 셀들의 인덱스 경로를 계산
-        
+        if newCount == 0 {
+            return
+        }
         let indexPaths = (currentCount..<newCount).map { IndexPath(row: $0, section: 1) }
         
         // 테이블 뷰 업데이트 시작

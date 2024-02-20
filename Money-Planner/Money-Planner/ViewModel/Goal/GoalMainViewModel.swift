@@ -24,8 +24,8 @@ class GoalMainViewModel {
     let nowGoal : BehaviorRelay<Goal_?> = BehaviorRelay(value: nil)
 //    let notNowResult = BehaviorRelay<NotNowResult?>(value: nil) // Holds both past and future goals
     let notNowGoals = BehaviorRelay<[Goal_]>(value : [])
-//    let futureGoals = BehaviorRelay<[Goal_]>(value: [])
-//    let pastGoals = BehaviorRelay<[Goal_]>(value: [])
+    let futureGoals = BehaviorRelay<[Goal_]>(value: [])
+    let pastGoals = BehaviorRelay<[Goal_]>(value: [])
     let addedNotNowGoals = BehaviorRelay<[Goal_]>(value : [])
     
     var hasNext = BehaviorRelay<Bool>(value: true)
