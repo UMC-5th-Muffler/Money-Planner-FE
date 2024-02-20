@@ -164,6 +164,7 @@
 		D217EBEC2B6F846400EB6BF3 /* Progress.swift in Sources */ = {isa = PBXBuildFile; fileRef = D217EBEB2B6F846400EB6BF3 /* Progress.swift */; };
 		D217EBEF2B7460BC00EB6BF3 /* CategoryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D217EBEE2B7460BC00EB6BF3 /* CategoryAPI.swift */; };
 		D217EBF12B7460CC00EB6BF3 /* CategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D217EBF02B7460CC00EB6BF3 /* CategoryRepository.swift */; };
+		D223B7552B85379000A21267 /* WhichAddModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D223B7542B85379000A21267 /* WhichAddModalViewController.swift */; };
 		D253EEAD2B79FE8400A4FC1C /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEAC2B79FE8400A4FC1C /* UIScrollView.swift */; };
 		D253EEAF2B7A0CA500A4FC1C /* MainNoGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEAE2B7A0CA500A4FC1C /* MainNoGoal.swift */; };
 		D253EEB12B7A5E4700A4FC1C /* DayGoalMonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D253EEB02B7A5E4700A4FC1C /* DayGoalMonthView.swift */; };
@@ -347,6 +348,7 @@
 		D217EBEB2B6F846400EB6BF3 /* Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progress.swift; sourceTree = "<group>"; };
 		D217EBEE2B7460BC00EB6BF3 /* CategoryAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryAPI.swift; sourceTree = "<group>"; };
 		D217EBF02B7460CC00EB6BF3 /* CategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRepository.swift; sourceTree = "<group>"; };
+		D223B7542B85379000A21267 /* WhichAddModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhichAddModalViewController.swift; sourceTree = "<group>"; };
 		D253EEAC2B79FE8400A4FC1C /* UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
 		D253EEAE2B7A0CA500A4FC1C /* MainNoGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNoGoal.swift; sourceTree = "<group>"; };
 		D253EEB02B7A5E4700A4FC1C /* DayGoalMonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayGoalMonthView.swift; sourceTree = "<group>"; };
@@ -527,6 +529,7 @@
 			children = (
 				D253EEB62B7B505B00A4FC1C /* HomeMoreModalViewController.swift */,
 				D25D765E2B81E2240044A74D /* OrderModalViewController.swift */,
+				D223B7542B85379000A21267 /* WhichAddModalViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -1152,6 +1155,7 @@
 				D253EEBF2B7B653A00A4FC1C /* ExpenseRepository.swift in Sources */,
 				7A610AE72B491F1600D3096F /* HeaderView.swift in Sources */,
 				D20D700D2B611EE3006D6762 /* SearchConsumeViewController.swift in Sources */,
+				D223B7552B85379000A21267 /* WhichAddModalViewController.swift in Sources */,
 				D20D6FFA2B5FB971006D6762 /* HomeConsumeView.swift in Sources */,
 				D20D6FEF2B5D3909006D6762 /* UIColor.swift in Sources */,
 				D2D0B72D2B6A7067003B6B5E /* BaseAPI.swift in Sources */,

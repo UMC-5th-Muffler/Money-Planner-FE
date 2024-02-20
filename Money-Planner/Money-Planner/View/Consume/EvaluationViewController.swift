@@ -9,8 +9,11 @@ import Foundation
 import UIKit
 
 class EvaluationViewController : UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
     var dateText = ""
+    var isThroughFloatButton : Bool = false
+    
+    private lazy var headerView = HeaderView(title: "")
+    
     var rateInfo : RateInfo?
     
     let descriptionView = DescriptionView(text: "오늘의 소비를\n스스로 평가해주세요", alignToCenter: false)
@@ -75,6 +78,19 @@ class EvaluationViewController : UIViewController, UICollectionViewDelegate, UIC
     override func viewDidLoad(){
         view.backgroundColor = UIColor.mpWhite
         
+        if(isThroughFloatButton){
+            view.addSubview(headerView)
+            headerView.translatesAutoresizingMaskIntoConstraints = false
+            headerView.addBackButtonTarget(target: self, action: #selector(backAction), for: .touchUpInside)  // 이전 화면으로 돌아가기
+            
+            NSLayoutConstraint.activate([
+                headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                headerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                headerView.heightAnchor.constraint(equalToConstant: 60)
+            ])
+        }
+        
         fetchRateData()
         presentCustomModal()
         
@@ -116,6 +132,10 @@ class EvaluationViewController : UIViewController, UICollectionViewDelegate, UIC
          dismiss(animated: true, completion: nil)
      }
     
+    @objc private func backAction() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
 }
 
 extension EvaluationViewController : UITextViewDelegate {
@@ -133,7 +153,10 @@ extension EvaluationViewController : UITextViewDelegate {
         view.addSubview(descriptionView)
         
         NSLayoutConstraint.activate([
-            descriptionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 36),
+            isThroughFloatButton ?
+            descriptionView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 36) :
+            descriptionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 36)
+                ,
             
             descriptionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             descriptionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
