@@ -797,10 +797,19 @@ class MoneyAmountTextCell: UITableViewCell, UITextFieldDelegate {
         
         //총합이 오버
         if dailyGoalSumOver {
-            amountLabel.text = "입력 가능한 최대 금액은 " + formatNumber(overCost ?? 0) + "원이에요"
-            amountLabel.textColor = .mpRed
-            self.contentView.layer.borderWidth = 1
-            self.contentView.layer.borderColor = UIColor.mpRed.cgColor
+            if let overCost = overCost{
+                if overCost > 0 {
+                    amountLabel.text = "입력 가능한 최대 금액은 " + formatNumber(overCost) + "원이에요"
+                    amountLabel.textColor = .mpRed
+                    self.contentView.layer.borderWidth = 1
+                    self.contentView.layer.borderColor = UIColor.mpRed.cgColor
+                }else if overCost < 0{
+                    amountLabel.text = "어디선가는" + formatNumber(-overCost) + "원을 줄여야해요"
+                    amountLabel.textColor = .mpRed
+                    self.contentView.layer.borderWidth = 1
+                    self.contentView.layer.borderColor = UIColor.mpRed.cgColor
+                }
+            }
         }else{
             amountLabel.textColor = .mpBlack
             self.contentView.layer.borderWidth = 0
