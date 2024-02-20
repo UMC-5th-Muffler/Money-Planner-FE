@@ -49,6 +49,8 @@
 		208F5E872B8125B300107735 /* GetCategoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208F5E862B8125B300107735 /* GetCategoryResponse.swift */; };
 		208F5E892B8131ED00107735 /* CreateCategoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208F5E882B8131ED00107735 /* CreateCategoryRequest.swift */; };
 		208F5E8B2B81320D00107735 /* CreateCategoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208F5E8A2B81320D00107735 /* CreateCategoryResponse.swift */; };
+		209FF8712B851E79009E68E7 /* RoutineDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209FF8702B851E79009E68E7 /* RoutineDetailViewController.swift */; };
+		209FF8742B851EA8009E68E7 /* GetRoutineIdResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209FF8732B851EA8009E68E7 /* GetRoutineIdResponse.swift */; };
 		20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */; };
 		20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */; };
 		20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD902B656034008F8AB9 /* OneDayButton.swift */; };
@@ -228,6 +230,8 @@
 		208F5E862B8125B300107735 /* GetCategoryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCategoryResponse.swift; sourceTree = "<group>"; };
 		208F5E882B8131ED00107735 /* CreateCategoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCategoryRequest.swift; sourceTree = "<group>"; };
 		208F5E8A2B81320D00107735 /* CreateCategoryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCategoryResponse.swift; sourceTree = "<group>"; };
+		209FF8702B851E79009E68E7 /* RoutineDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineDetailViewController.swift; sourceTree = "<group>"; };
+		209FF8732B851EA8009E68E7 /* GetRoutineIdResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRoutineIdResponse.swift; sourceTree = "<group>"; };
 		20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatModalViewController.swift; sourceTree = "<group>"; };
 		20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDayView.swift; sourceTree = "<group>"; };
 		20AFDD902B656034008F8AB9 /* OneDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDayButton.swift; sourceTree = "<group>"; };
@@ -546,6 +550,14 @@
 			path = get;
 			sourceTree = "<group>";
 		};
+		209FF8722B851E93009E68E7 /* Routine */ = {
+			isa = PBXGroup;
+			children = (
+				209FF8732B851EA8009E68E7 /* GetRoutineIdResponse.swift */,
+			);
+			path = Routine;
+			sourceTree = "<group>";
+		};
 		7A4C67322B5A47BD008BCAC9 /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
@@ -699,6 +711,7 @@
 		7A610ACE2B480B5B00D3096F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				209FF8722B851E93009E68E7 /* Routine */,
 				7A8F3EDD2B85058400480902 /* Goal */,
 				208F5E852B81259100107735 /* Category */,
 				208F5E7C2B80C7EF00107735 /* DailyPlan */,
@@ -765,6 +778,7 @@
 				D20D70102B612490006D6762 /* CategoryEditViewController.swift */,
 				D20D701D2B668800006D6762 /* Home.json */,
 				D253EEB82B7B59FE00A4FC1C /* RepeatConsumeViewController.swift */,
+				209FF8702B851E79009E68E7 /* RoutineDetailViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -1080,6 +1094,7 @@
 				7A4C67462B5A4B77008BCAC9 /* MainTextField.swift in Sources */,
 				D20D70142B612BB4006D6762 /* CategoryTableView.swift in Sources */,
 				208C90CA2B7BBBB600C67960 /* ResponseExpenseDto.swift in Sources */,
+				209FF8712B851E79009E68E7 /* RoutineDetailViewController.swift in Sources */,
 				7A4C673F2B5A4AC9008BCAC9 /* CheckBtn.swift in Sources */,
 				D25D765F2B81E2240044A74D /* OrderModalViewController.swift in Sources */,
 				D20D701A2B664996006D6762 /* UICollectionView.swift in Sources */,
@@ -1155,6 +1170,7 @@
 				20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */,
 				206C58DF2B6306FE008410C1 /* CalendartModalViewController.swift in Sources */,
 				D20D70042B5FF094006D6762 /* Numeric.swift in Sources */,
+				209FF8742B851EA8009E68E7 /* GetRoutineIdResponse.swift in Sources */,
 				7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */,
 				D20D70112B612490006D6762 /* CategoryEditViewController.swift in Sources */,
 				551E8B742B7D10050008476B /* NotificationSettingViewController.swift in Sources */,

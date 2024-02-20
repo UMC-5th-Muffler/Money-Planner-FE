@@ -33,7 +33,10 @@ enum MufflerAPI {
 
     // Daily Plan Controller
     case updateZeroDay
-
+    
+    // Routine Controller
+    case getRoutine(routineId : Int64)
+    case deleteRoutine(routineId : Int64)
     // Rate Controller
     case updateRate(date: String)
     case getRates
@@ -105,7 +108,13 @@ extension MufflerAPI: TargetType {
         // Daily Plan Controller
         case .updateZeroDay:
             return "/dailyPlan/zeroDay"
-
+            
+        // Routine Controller
+        case .getRoutine(let routineId):
+            return "api/routine/\(routineId)"
+        case .deleteRoutine(let routineId):
+            return "api/routine/\(routineId)"
+            
         // Rate Controller
         case .updateRate(let date):
             return "/api/rate/\(date)"
@@ -134,9 +143,9 @@ extension MufflerAPI: TargetType {
             return .post
         case .connect, .getPreviousGoals, .getExpense, .getWeeklyExpense, .searchExpense, .fetchAvailableExpenseDates,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
-             .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo, .getCategoryFilter,.getCategory:
+             .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo, .getCategoryFilter,.getCategory, .getRoutine:
             return .get
-        case .deleteGoal, .deleteExpense, .deleteCategory:
+        case .deleteGoal, .deleteExpense, .deleteCategory, .deleteRoutine:
             return .delete
         case .updateExpense,.updateCategory:
             return .patch
@@ -151,9 +160,9 @@ extension MufflerAPI: TargetType {
             return .requestPlain
         case .getPreviousGoals, .getExpense,.fetchAvailableExpenseDates, .getWeeklyExpense, .searchExpense,
              .getMonthlyExpense, .getDailyExpense, .getRates, .getNow, .getGoal,
-             .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo:
+             .getGoalByYearMonth, .getGoalByCategory, .getBasicHomeInfo, .getRoutine:
             return .requestPlain
-        case .deleteGoal, .deleteExpense, .deleteCategory:
+        case .deleteGoal, .deleteExpense, .deleteCategory, .deleteRoutine:
             return .requestPlain
         case .createCategory(let request):
             return .requestJSONEncodable(request)
@@ -178,4 +187,5 @@ extension MufflerAPI: TargetType {
         return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDg0ODUzMTd9.XuzFNk-rsRpVzMjoRHnGLaAia9ghjQn66_M8w6CWNPA"] // Replace with your actual access token
     }
 }
+
 
