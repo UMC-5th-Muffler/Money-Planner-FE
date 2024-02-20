@@ -254,6 +254,7 @@ class RoutineDetailViewController : UIViewController, UITextFieldDelegate {
             viewModel.deleteRoutine(routineId: id)
                 .subscribe(onNext: { repos in
                     // 네트워크 응답에 대한 처리
+                    NotificationCenter.default.post(name: Notification.Name("changeRoutine"), object: nil)
                     print("소비 내역 삭제하기 성공!")
                     print(repos)
                 }, onError: { error in

@@ -33,6 +33,8 @@ class RepeatConsumeViewController : UIViewController,  UITableViewDataSource, UI
         fetchRepeatConsumeData()
         view.backgroundColor = .mpWhite
         
+        NotificationCenter.default.addObserver(self, selector: #selector(getNotificationChangeRoutine), name: Notification.Name("changeRoutine"), object: nil)
+        
         
         self.navigationController?.navigationBar.tintColor = .mpBlack
         self.navigationController?.navigationBar.topItem?.title = ""
@@ -265,5 +267,36 @@ class RepeatConsumeRecordCell: UITableViewCell {
             repeatDayLabel.text = repeatDayLabel.text! + "요일"
             
         }
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension RepeatConsumeViewController {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // 선택한 셀의 인덱스를 기반으로 해당하는 루틴을 가져옵니다.
+        let selectedRoutine = routineList[indexPath.row]
+        
+        // 모달을 표시할 뷰 컨트롤러를 생성합니다.
+        if let routineid = selectedRoutine.routineId {
+            let  data = routineList[indexPath.row]
+            let title = data.routineTitle
+            let categoryIcon = data.categoryIcon
+
+            if let cost = data.routineCost {
+                let routineidInt64 = Int64(routineid)
+                let costInt64 = Int64(cost)
+                let modalViewController = RoutineDetailViewController(routineId: routineidInt64, title: title, categoryIcon: categoryIcon, cost: costInt64 )
+                modalViewController.modalPresentationStyle = .overFullScreen
+
+                present(modalViewController, animated: true, completion: nil)
+            }
+            
+        }
+    }
+}
+
+extension RepeatConsumeViewController {
+    @objc func getNotificationChangeRoutine(){
+        fetchRepeatConsumeData()
     }
 }
