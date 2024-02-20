@@ -52,6 +52,13 @@ class SearchConsumeViewController : UIViewController {
         return v
     }()
     
+    var imageView : UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "no-result")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     var consumeList : [DailyConsume] = []
     
     override func viewDidLoad(){
@@ -80,10 +87,16 @@ extension SearchConsumeViewController : UISearchBarDelegate{
     func setUpNoDataView(){
         view.addSubview(noDataView)
         
+        noDataView.addSubview(imageView)
         noDataView.addSubview(noDataLabel)
         noDataView.addSubview(otherKeywordLabel)
         
         NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: -75),
+            imageView.heightAnchor.constraint(equalToConstant: 150),
+            imageView.widthAnchor.constraint(equalToConstant: 150),
+            
             noDataView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             noDataView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             
