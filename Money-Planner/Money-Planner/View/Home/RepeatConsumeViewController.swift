@@ -222,7 +222,7 @@ class RepeatConsumeRecordCell: UITableViewCell {
         
         if(routine.monthlyRepeatDay != nil){
             //매달
-            repeatDayLabel.text = "매달 \(routine.monthlyRepeatDay)일"
+            repeatDayLabel.text = routine.monthlyRepeatDay
         }else{
             //매주
             if(routine.weeklyDetail?.weeklyTerm == 1){

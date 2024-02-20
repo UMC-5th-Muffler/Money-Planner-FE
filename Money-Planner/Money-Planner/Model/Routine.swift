@@ -12,7 +12,7 @@ struct Routine : Codable {
     let routineTitle: String?
     let routineCost: Int?
     let categoryIcon: String?
-    let monthlyRepeatDay: Int?
+    let monthlyRepeatDay: String?
     let weeklyDetail: RoutineWeeklyDetail?
 }
 
