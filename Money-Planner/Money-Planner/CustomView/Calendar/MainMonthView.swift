@@ -29,7 +29,11 @@ class MainMonthView: UIView {
     
     let btnRight: UIButton = {
         let btn=UIButton()
-        btn.setImage(UIImage(systemName: "arrowtriangle.right.fill"), for: .normal)
+        if let originalImage = UIImage(named: "btn_date_next") {
+            let flippedImage = UIImage(cgImage: originalImage.cgImage!, scale: originalImage.scale, orientation: .upMirrored)
+            // 뒤집어진 이미지 사용
+            btn.setImage(flippedImage, for: .normal)
+        }
         btn.tintColor = .mpBlack
         btn.translatesAutoresizingMaskIntoConstraints=false
         btn.addTarget(self, action: #selector(btnLeftRightAction(sender:)), for: .touchUpInside)
@@ -38,7 +42,7 @@ class MainMonthView: UIView {
     
     let btnLeft: UIButton = {
         let btn=UIButton()
-        btn.setImage(UIImage(systemName: "arrowtriangle.left.fill"), for: .normal)
+        btn.setImage(UIImage(named: "btn_date_next"), for: .normal)
         btn.tintColor = .mpBlack
         btn.translatesAutoresizingMaskIntoConstraints=false
         btn.addTarget(self, action: #selector(btnLeftRightAction(sender:)), for: .touchUpInside)
@@ -67,15 +71,16 @@ class MainMonthView: UIView {
         
         self.addSubview(btnLeft)
         btnLeft.topAnchor.constraint(equalTo: topAnchor).isActive=true
-        btnLeft.leftAnchor.constraint(equalTo: leftAnchor).isActive=true
-        btnLeft.rightAnchor.constraint(equalTo: monthLabel.leftAnchor, constant: -8).isActive = true
-        btnLeft.heightAnchor.constraint(equalTo: monthLabel.heightAnchor).isActive=true
+        btnLeft.rightAnchor.constraint(equalTo: monthLabel.leftAnchor, constant: -10).isActive = true
+        
+        btnLeft.heightAnchor.constraint(equalTo: monthLabel.heightAnchor, constant: -3).isActive=true
     
         
         self.addSubview(btnRight)
         btnRight.topAnchor.constraint(equalTo: topAnchor).isActive=true
-        btnRight.leftAnchor.constraint(equalTo: monthLabel.rightAnchor, constant: 8).isActive = true
-        btnRight.heightAnchor.constraint(equalTo: monthLabel.heightAnchor).isActive=true
+        btnRight.leftAnchor.constraint(equalTo: monthLabel.rightAnchor, constant: 10).isActive = true
+        btnRight.heightAnchor.constraint(equalTo: monthLabel.heightAnchor, constant: -3).isActive=true
+        
     }
     
     @objc func btnLeftRightAction(sender: UIButton) {
