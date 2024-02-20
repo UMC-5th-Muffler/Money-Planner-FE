@@ -344,8 +344,9 @@ class ConsumeRecordCell: UITableViewCell {
         return label
     }()
     
-    let circleView: UIView = {
-        let view = UIView()
+    let circleView: UIImageView = {
+        let view = UIImageView()
+        view.image = nil
         view.backgroundColor = UIColor.mpDarkGray
         view.layer.cornerRadius = 22 // 동그라미의 반지름 설정
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -389,6 +390,7 @@ class ConsumeRecordCell: UITableViewCell {
     func configure(with consumeRecord: ConsumeDetail) {
         titleLabel.text = consumeRecord.title
         costLabel.text = consumeRecord.cost.formattedWithSeparator() + "원"
+        circleView.image = UIImage(named: consumeRecord.categoryIcon)
         // 다른 데이터를 사용하여 셀을 업데이트할 수 있습니다.
     }
 }
