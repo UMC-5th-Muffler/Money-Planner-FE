@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class HomeViewController : UIViewController, MainMonthViewDelegate, OrderModalDelegate {
+class HomeViewController : UIViewController, MainMonthViewDelegate{
     
     var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -113,6 +113,12 @@ class HomeViewController : UIViewController, MainMonthViewDelegate, OrderModalDe
     var goingUp: Bool?
     var childScrollingDownDueToParent = false
     
+    var sort : SortType = SortType.descending {
+        didSet{
+            consumeView.sort = sort
+        }
+    }
+    
     override func viewDidLoad(){
         contentScrollView.delegate = self
         categoryScrollView.delegate = self
@@ -171,14 +177,9 @@ class HomeViewController : UIViewController, MainMonthViewDelegate, OrderModalDe
         }else{
             self.consumeList.removeAll()
             self.hasNext = false
-            fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil)
+            fetchConsumeData(lastDate: nil, lastExpenseId: nil)
         }
         
-    }
-    
-    // OrderModal의 delegate
-    func changeOrder(order : String) {
-        print("hi")
     }
     
     // ConsumeRecordCell의 delegate
@@ -411,7 +412,7 @@ extension HomeViewController{
     }
     
     // 소비 데이터 불러오기
-    func fetchConsumeData(order : String?, lastDate: String?, lastExpenseId: Int?){
+    func fetchConsumeData(lastDate: String?, lastExpenseId: Int?){
         self.loading = true
         
         var categoryId : Int? = categoryScrollView.selectedCategoryIndex
@@ -421,7 +422,7 @@ extension HomeViewController{
         
         let dateStr = (monthView.currentMonth >= 10) ? "\(monthView.currentYear)-\(monthView.currentMonth)" : "\(monthView.currentYear)-0\(monthView.currentMonth)"
         
-        HomeRepository.shared.getExpenseList(yearMonth: dateStr, size: nil, goalId: self.nowGoal?.goalID, order: order, lastDate: lastDate, lastExpenseId: lastExpenseId, categoryId: categoryId){
+        HomeRepository.shared.getExpenseList(yearMonth: dateStr, size: nil, goalId: self.nowGoal?.goalID, order: sort.rawValue, lastDate: lastDate, lastExpenseId: lastExpenseId, categoryId: categoryId){
             (result) in
             switch result{
             case .success(let data):
@@ -636,7 +637,7 @@ extension HomeViewController{
         if(collectionView.currentPage == 0){
             let indexPath = IndexPath(item: 1, section: 0)
             collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-            fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil)
+            fetchConsumeData(lastDate: nil, lastExpenseId: nil)
         }
         
         if(collectionView.currentPage == 1){
@@ -772,7 +773,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         // 만약 스크롤이 테이블 뷰의 맨 아래에 도달했을 때
         if offsetY > contentHeight - tableViewHeight {
             if self.hasNext {
-                fetchConsumeData(order: nil, lastDate: self.consumeList.last?.date, lastExpenseId: self.consumeList.last?.expenseDetailList?.last?.expenseId)
+                fetchConsumeData(lastDate: self.consumeList.last?.date, lastExpenseId: self.consumeList.last?.expenseDetailList?.last?.expenseId)
             }
         }
         
@@ -865,7 +866,7 @@ extension HomeViewController : CategoryButtonScrollDelegate{
             self.consumeList.removeAll()
             self.hasNext = false
  
-            fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil)
+            fetchConsumeData(lastDate: nil, lastExpenseId: nil)
         }
         
     }
@@ -909,15 +910,30 @@ extension HomeViewController : HomeConsumeViewDelegate{
     func changeConsumeData() {
         self.consumeList.removeAll()
         self.hasNext = false
-        fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil)
+        fetchConsumeData(lastDate: nil, lastExpenseId: nil)
     }
     
     func onTapOrder() {
         let vc = OrderModalViewController()
+        vc.selectedSortType = sort
         vc.delegate = self
         present(vc, animated: true)
     }
     
+}
+
+extension HomeViewController : OrderModalDelegate {
+    func changeOrder(order : SortType) {
+        if(sort == order){
+            return
+        }
+        sort = order
+        
+        self.consumeList.removeAll()
+        self.hasNext = false
+        
+        fetchConsumeData(lastDate: nil, lastExpenseId: nil)
+    }
 }
 
 
@@ -931,7 +947,7 @@ extension HomeViewController {
         if(collectionView.currentPage == 1){
             self.consumeList.removeAll()
             self.hasNext = false
-            fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil)
+            fetchConsumeData(lastDate: nil, lastExpenseId: nil)
         }
     }
     

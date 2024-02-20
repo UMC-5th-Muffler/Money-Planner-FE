@@ -8,6 +8,12 @@
 import Foundation
 import UIKit
 
+
+enum SortType: String {
+    case descending = "DESC"
+    case ascending = "ASC"
+}
+
 protocol HomeConsumeViewDelegate : AnyObject {
     func onTapOrder()
     func changeConsumeData()
@@ -56,32 +62,30 @@ class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
         img.image = UIImage(named: "btn_arrow_small")
         return img
     }()
-    
-    let orderLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .mpBlack
-        label.font = UIFont.mpFont14M()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "최신순"
-        label.isUserInteractionEnabled = true
-        return label
+        
+    let button : MPLabel = {
+        let lb = MPLabel()
+        lb.text = "최신순"
+        lb.translatesAutoresizingMaskIntoConstraints = false
+        lb.textColor = .mpBlack
+        lb.font = .mpFont14M()
+        return lb
     }()
     
-    let button : UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("최신순", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.addTarget(self, action: #selector(sortByLatest), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.isUserInteractionEnabled = true
-        return button
-    }()
-    
+    var sort : SortType = SortType.descending{
+        didSet{
+            if(sort == SortType.descending){
+                button.text = "최신순"
+            }else{
+                button.text = "오래된순"
+            }
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTapOrder))
-        orderLabel.addGestureRecognizer(tapGesture)
+        tableHeaderView.addGestureRecognizer(tapGesture)
         showView()
         setupUI()
     }
@@ -89,7 +93,7 @@ class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTapOrder))
-        orderLabel.addGestureRecognizer(tapGesture)
+        tableHeaderView.addGestureRecognizer(tapGesture)
         showView()
         setupUI()
     }
@@ -122,15 +126,17 @@ class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     private func setupUI() {
+        if(sort == SortType.descending){
+            button.text = "최신순"
+        }else{
+            button.text = "오래된순"
+        }
         tableHeaderView.addSubview(button)
         tableHeaderView.addSubview(arrow_small)
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .mpWhite
         
-        tableView.tableHeaderView = tableHeaderView
-        tableHeaderView.isUserInteractionEnabled = true
-        tableView.tableHeaderView?.isUserInteractionEnabled = true
-        
+        addSubview(tableHeaderView)
         addSubview(tableView)
         addSubview(noDataView)
         
@@ -139,15 +145,18 @@ class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
         tableView.register(ConsumeRecordCell.self, forCellReuseIdentifier: "ConsumeRecordCell")
         
         NSLayoutConstraint.activate([
-            button.topAnchor.constraint(equalTo: tableHeaderView.topAnchor, constant: 32),
+            tableHeaderView.topAnchor.constraint(equalTo: topAnchor, constant: 32),
+            tableHeaderView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableHeaderView.widthAnchor.constraint(equalToConstant: 60),
+            tableHeaderView.heightAnchor.constraint(equalToConstant: 24),
+            
             button.leadingAnchor.constraint(equalTo: tableHeaderView.leadingAnchor, constant: 16),
             button.heightAnchor.constraint(equalToConstant: 24),
-            button.bottomAnchor.constraint(equalTo: tableHeaderView.bottomAnchor, constant: -32),
             
             arrow_small.leadingAnchor.constraint(equalTo: button.trailingAnchor, constant: 4),
             arrow_small.centerYAnchor.constraint(equalTo: button.centerYAnchor),
             
-            tableView.topAnchor.constraint(equalTo: topAnchor),
+            tableView.topAnchor.constraint(equalTo: tableHeaderView.bottomAnchor, constant: 32),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -256,12 +265,7 @@ extension HomeConsumeView {
     }
     
     @objc func onTapOrder(){
-        print("여기 안옴?")
         delegate?.onTapOrder()
-    }
-    
-    @objc func sortByLatest() {
-        print("안녕")
     }
 }
 

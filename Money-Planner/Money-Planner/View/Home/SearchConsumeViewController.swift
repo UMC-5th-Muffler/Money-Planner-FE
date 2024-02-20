@@ -22,6 +22,11 @@ class SearchConsumeViewController : UIViewController {
     
     var hasNext : Bool = false
     var loading : Bool = false
+    var sort : SortType = SortType.descending {
+        didSet{
+            consumeView.sort = sort
+        }
+    }
     
     let noDataLabel : MPLabel = {
         let label = MPLabel()
@@ -59,6 +64,8 @@ class SearchConsumeViewController : UIViewController {
         searchBar.placeholder = "어떤 소비내역을 찾으세요?"
         searchBar.searchTextField.font = .mpFont16M()
         self.navigationItem.titleView = searchBar
+        
+        consumeView.delegate = self
         
         consumeView.isHidden = true
         noDataView.isHidden = true
@@ -99,12 +106,17 @@ extension SearchConsumeViewController : UISearchBarDelegate{
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        fetchData()
+    }
+    
+    func fetchData(){
         guard let searchText = searchBar.text, !searchText.isEmpty else {
             return // 검색어가 비어 있으면 무시
         }
+        
         self.loading = true
         
-        ExpenseRepository.shared.getExpenseList(text: searchText, order: nil, size: nil){
+        ExpenseRepository.shared.getExpenseList(text: searchText, order: sort.rawValue, size: nil){
             (result) in
             switch result{
             case .success(let data):
@@ -128,9 +140,6 @@ extension SearchConsumeViewController : UISearchBarDelegate{
                     }
                 }
                 
-                print("확인")
-                print(consumeList)
-                
             case .failure(.failure(message: let message)):
                 print(message)
                 self.loading = false
@@ -140,5 +149,28 @@ extension SearchConsumeViewController : UISearchBarDelegate{
                 self.loading = false
             }
         }
+    }
+}
+
+extension SearchConsumeViewController : HomeConsumeViewDelegate{
+    func onTapOrder() {
+        let vc = OrderModalViewController()
+        vc.selectedSortType = sort
+        vc.delegate = self
+        present(vc, animated: true)
+    }
+    
+    func changeConsumeData() {
+    }
+}
+
+
+extension SearchConsumeViewController : OrderModalDelegate{
+    func changeOrder(order: SortType) {
+        if(sort == order){
+            return
+        }
+        sort = order
+        fetchData()
     }
 }

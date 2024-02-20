@@ -3,19 +3,24 @@ import Foundation
 import UIKit
 
 protocol OrderModalDelegate : AnyObject {
-    func changeOrder(order : String)
+    func changeOrder(order : SortType)
 }
 
 
 class OrderModalViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
     weak var delegate: OrderModalDelegate?
-    private let withdrawalReasons = [
-        "서비스 이용이 불편해서",
-        "목표 달성에 도움이 되지 않아서",
-        "소비내역 관리에 효과가 없어서",
-        "개인정보 및 보안 우려",
-        "타 서비스로 이동"
+    private let sortName = [
+        "최신순",
+        "오래된순"
     ]
+    
+    private let sortTypeArray = [
+        SortType.descending,
+        SortType.ascending
+    ]
+    
+    var selectedSortType : SortType = SortType.descending
+    
     private let modalBar : UIView = {
         let view = UIView()
         view.layer.cornerRadius = 8
@@ -25,7 +30,7 @@ class OrderModalViewController : UIViewController, UITableViewDataSource, UITabl
     }()
     private let titleLabel : MPLabel = {
         let label = MPLabel()
-        label.text = "탈퇴 사유를 알려주세요"
+        label.text = "정렬"
         label.font = .mpFont20B()
         label.textColor = .mpBlack
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -40,18 +45,6 @@ class OrderModalViewController : UIViewController, UITableViewDataSource, UITabl
         return tableView
     }()
     
-    private let closeButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("완료", for: .normal)
-        button.titleLabel?.font = .mpFont16B()
-        button.backgroundColor = .mpGypsumGray
-        button.setTitleColor(.mpGray, for: .normal) // Adjust color as needed
-        button.layer.cornerRadius = 10
-        button.isEnabled = false
-        return button
-    }()
-    
     private let customModal: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -61,8 +54,7 @@ class OrderModalViewController : UIViewController, UITableViewDataSource, UITabl
         return view
     }()
     private var selectedIndexPath: IndexPath?
-    private var selectedReason: String?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -70,13 +62,12 @@ class OrderModalViewController : UIViewController, UITableViewDataSource, UITabl
         customModal.addSubview(modalBar)
         customModal.addSubview(titleLabel)
         customModal.addSubview(tableView)
-        customModal.addSubview(closeButton)
         
         NSLayoutConstraint.activate([
             customModal.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             customModal.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -36),
             customModal.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -64),
-            customModal.heightAnchor.constraint(equalToConstant: 460),
+            customModal.heightAnchor.constraint(equalToConstant: 228),
             
             modalBar.widthAnchor.constraint(equalToConstant: 49),
             modalBar.heightAnchor.constraint(equalToConstant: 4),
@@ -92,19 +83,12 @@ class OrderModalViewController : UIViewController, UITableViewDataSource, UITabl
             tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
             tableView.leadingAnchor.constraint(equalTo: customModal.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: customModal.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: closeButton.topAnchor),
-            
-            closeButton.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 16),
-            closeButton.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -16),
-            closeButton.bottomAnchor.constraint(equalTo: customModal.bottomAnchor,constant: -16),
-            closeButton.heightAnchor.constraint(equalToConstant: 50)
+            tableView.bottomAnchor.constraint(equalTo: customModal.bottomAnchor,constant: -16)
         ])
         
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        
-        closeButton.addTarget(self, action: #selector(closeModal), for: .touchUpInside)
     }
     
     @objc private func closeModal() {
@@ -113,40 +97,36 @@ class OrderModalViewController : UIViewController, UITableViewDataSource, UITabl
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return withdrawalReasons.count
+        return sortName.count
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60.0 // Change the cell height as needed
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = withdrawalReasons[indexPath.row]
+        cell.textLabel?.text = sortName[indexPath.row]
         cell.textLabel?.font = .mpFont16M()
         cell.textLabel?.textColor = .mpDarkGray
         cell.selectionStyle = .none
+        
+        if(selectedSortType == sortTypeArray[indexPath.row]){
+            cell.accessoryType = .checkmark
+            cell.tintColor = .mpMainColor // Change the color of the checkmark
+        }
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            // Unselect the previously selected cell
-            if let selectedIndexPath = selectedIndexPath {
-                tableView.cellForRow(at: selectedIndexPath)?.accessoryType = .none
-            }
-
-            // Select the current cell
-            if let cell = tableView.cellForRow(at: indexPath) {
-                cell.accessoryType = .checkmark
-                cell.tintColor = .mpMainColor // Change the color of the checkmark
-                closeButton.isEnabled = true
-                closeButton.backgroundColor = .mpMainColor
-                closeButton.setTitleColor(.mpWhite, for: .normal)
-                selectedReason = withdrawalReasons[indexPath.row]
-
-            }
-
-            selectedIndexPath = indexPath
-
-            tableView.deselectRow(at: indexPath, animated: true)
+        // Unselect the previously selected cell
+        if let selectedIndexPath = selectedIndexPath {
+            tableView.cellForRow(at: selectedIndexPath)?.accessoryType = .none
         }
+                
+        selectedSortType = sortTypeArray[indexPath.row]
+        delegate?.changeOrder(order: selectedSortType)
+        closeModal()
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
 
