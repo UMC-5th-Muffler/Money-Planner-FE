@@ -99,6 +99,7 @@
 		7A8F3EC82B84FE6100480902 /* CustomCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EC52B84FE6100480902 /* CustomCalendarView.swift */; };
 		7A8F3EC92B84FE6100480902 /* GoalComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EC62B84FE6100480902 /* GoalComponents.swift */; };
 		7A8F3ECA2B84FE6100480902 /* GoalDailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EC72B84FE6100480902 /* GoalDailyViewController.swift */; };
+		7A8F3ECD2B84FF9A00480902 /* GoalCreationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3ECC2B84FF9A00480902 /* GoalCreationManager.swift */; };
 		7AC060FF2B4C5D78008C0E63 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC060FE2B4C5D78008C0E63 /* Design.swift */; };
 		D20D6FDA2B581A05006D6762 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D6FD92B581A05006D6762 /* CustomTabBarController.swift */; };
 		D20D6FDC2B581A5A006D6762 /* UITabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20D6FDB2B581A5A006D6762 /* UITabBar.swift */; };
@@ -250,6 +251,7 @@
 		7A8F3EC52B84FE6100480902 /* CustomCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCalendarView.swift; sourceTree = "<group>"; };
 		7A8F3EC62B84FE6100480902 /* GoalComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalComponents.swift; sourceTree = "<group>"; };
 		7A8F3EC72B84FE6100480902 /* GoalDailyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalDailyViewController.swift; sourceTree = "<group>"; };
+		7A8F3ECC2B84FF9A00480902 /* GoalCreationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalCreationManager.swift; sourceTree = "<group>"; };
 		7AC060FE2B4C5D78008C0E63 /* Design.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design.swift; sourceTree = "<group>"; };
 		D20D6FD92B581A05006D6762 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		D20D6FDB2B581A5A006D6762 /* UITabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBar.swift; sourceTree = "<group>"; };
@@ -646,6 +648,7 @@
 		7A610ACD2B480B1400D3096F /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				7A8F3ECB2B84FF9A00480902 /* Goal */,
 				D20D701F2B66FE8F006D6762 /* Home */,
 			);
 			path = ViewModel;
@@ -752,6 +755,14 @@
 				7A610AED2B493F6D00D3096F /* RegisterUsageViewController.swift */,
 			);
 			path = Usage;
+			sourceTree = "<group>";
+		};
+		7A8F3ECB2B84FF9A00480902 /* Goal */ = {
+			isa = PBXGroup;
+			children = (
+				7A8F3ECC2B84FF9A00480902 /* GoalCreationManager.swift */,
+			);
+			path = Goal;
 			sourceTree = "<group>";
 		};
 		D20D6FDF2B5AEC76006D6762 /* TabBar */ = {
@@ -1045,6 +1056,7 @@
 				552A42672B72200E007AEAAD /* DailyConsumeViewController.swift in Sources */,
 				D20D6FF32B5D67B1006D6762 /* Category.swift in Sources */,
 				D2D0B7382B6BA845003B6B5E /* HomeAPI.swift in Sources */,
+				7A8F3ECD2B84FF9A00480902 /* GoalCreationManager.swift in Sources */,
 				208C90CD2B7BBC6700C67960 /* ExpenseCreateResponse.swift in Sources */,
 				D20D6FEB2B5AF62E006D6762 /* MainWeekDayView.swift in Sources */,
 				D20D700F2B61241F006D6762 /* NotificationsViewController.swift in Sources */,
