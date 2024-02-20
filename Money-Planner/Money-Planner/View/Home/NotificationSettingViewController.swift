@@ -23,6 +23,30 @@ class NotificationSettingViewController : UIViewController {
     
     let settingTableView = UITableView()
     
+    let controlswitch1: UISwitch = {
+        let s = UISwitch()
+        s.setOn(false, animated: true)
+        return s
+    }()
+    
+    let controlswitch2: UISwitch = {
+        let s = UISwitch()
+        s.setOn(false, animated: true)
+        return s
+    }()
+    
+    let controlswitch3: UISwitch = {
+        let s = UISwitch()
+        s.setOn(false, animated: true)
+        return s
+    }()
+    
+    let controlswitch4: UISwitch = {
+        let s = UISwitch()
+        s.setOn(false, animated: true)
+        return s
+    }()
+    
     let settingCellData: [(name: String, description: String)] = [
         ("당일 목표금액 리마인드", "매일 아침 그날의 목표 금액을 알려드릴게요.\n리마인드를 통해 내 목표를 계속 상기시켜요."),
         ("당일 소비내역 기록", "하루종일 소비내역을 기록하지 않으면 당일\n밤에 다시 리마인드 해드릴게요."),
@@ -55,7 +79,6 @@ extension NotificationSettingViewController : UITableViewDelegate, UITableViewDa
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.layoutIfNeeded()
-        //self.navigationItem.leftBarButtonItem = backButton
     }
     
     func setupTitle() {
@@ -103,6 +126,64 @@ extension NotificationSettingViewController : UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: settingCell.cellId, for: indexPath) as! settingCell
         let data = settingCellData[indexPath.section]
+
+        // 각 셀에 해당 switch를 추가
+        switch indexPath.section {
+        case 0:
+            cell.addSubview(controlswitch1)
+            controlswitch1.translatesAutoresizingMaskIntoConstraints = false
+            controlswitch1.onTintColor = UIColor.mpMainColor
+            NSLayoutConstraint.activate([
+                controlswitch1.topAnchor.constraint(equalTo: cell.topAnchor, constant: 24),
+                controlswitch1.rightAnchor.constraint(equalTo: cell.rightAnchor),
+                controlswitch1.heightAnchor.constraint(equalToConstant: 31),
+                controlswitch1.widthAnchor.constraint(equalToConstant: 51)
+                
+            ])
+            controlswitch1.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
+        case 1:
+            cell.addSubview(controlswitch2)
+            controlswitch2.translatesAutoresizingMaskIntoConstraints = false
+            controlswitch2.onTintColor = UIColor.mpMainColor
+            NSLayoutConstraint.activate([
+                controlswitch2.topAnchor.constraint(equalTo: cell.topAnchor, constant: 24),
+                controlswitch2.rightAnchor.constraint(equalTo: cell.rightAnchor),
+                controlswitch2.heightAnchor.constraint(equalToConstant: 31),
+                controlswitch2.widthAnchor.constraint(equalToConstant: 51)
+                
+            ])
+            controlswitch2.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
+        case 2:
+            cell.addSubview(controlswitch3)
+            controlswitch3.translatesAutoresizingMaskIntoConstraints = false
+            controlswitch3.onTintColor = UIColor.mpMainColor
+            NSLayoutConstraint.activate([
+                controlswitch3.topAnchor.constraint(equalTo: cell.topAnchor, constant: 24),
+                controlswitch3.rightAnchor.constraint(equalTo: cell.rightAnchor),
+                controlswitch3.heightAnchor.constraint(equalToConstant: 31),
+                controlswitch3.widthAnchor.constraint(equalToConstant: 51)
+                
+            ])
+            controlswitch3.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
+        case 3:
+            cell.addSubview(controlswitch4)
+            controlswitch4.translatesAutoresizingMaskIntoConstraints = false
+            controlswitch4.onTintColor = UIColor.mpMainColor
+            NSLayoutConstraint.activate([
+                controlswitch4.topAnchor.constraint(equalTo: cell.topAnchor, constant: 24),
+                controlswitch4.rightAnchor.constraint(equalTo: cell.rightAnchor),
+                controlswitch4.heightAnchor.constraint(equalToConstant: 31),
+                controlswitch4.widthAnchor.constraint(equalToConstant: 51)
+                
+            ])
+            controlswitch4.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
+        default:
+            break
+        }
+        
+
+        
+        
         cell.nameLabel.text = data.name
         cell.descLabel.text = data.description
     
@@ -114,6 +195,56 @@ extension NotificationSettingViewController : UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 128
     }
+    
+    @objc func switchValueChanged() {
+        
+        if controlswitch1.isOn {
+            print("1on")
+        } else {
+            print("1off")
+        }
+
+        if controlswitch2.isOn {
+            print("2on")
+        } else {
+            print("2off")
+        }
+
+        if controlswitch3.isOn {
+            print("3on")
+        } else {
+            print("3off")
+        }
+
+        if controlswitch4.isOn {
+            print("4on")
+        } else {
+            print("4off")
+        }
+ 
+    }
+    
+//    func performDeleteToken() {
+//        NotificationRepository.shared.deleteToken { result in
+//             switch result {
+//             case .success(let data):
+//                 print("삭제 성공")
+//             case .failure(let error):
+//                 print("삭제 실패")
+//             }
+//         }
+//    }
+    
+//    func performPatchToken() {
+//        NotificationRepository.shared.patchToken(token: token) { result in //토큰 받아올거...
+//             switch result {
+//             case .success(let data):
+//                 print("패치 성공")
+//             case .failure(let error):
+//                 print("패치 실패")
+//             }
+//         }
+//    }
     
 }
 
@@ -135,18 +266,13 @@ class settingCell : UITableViewCell {
         return label
     }()
     
-    let controlswitch : UISwitch = {
-        let s = UISwitch()
-        s.isOn = true
-        
-        return s
-    }()
+
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setlayout()
         
-        controlswitch.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -163,7 +289,10 @@ class settingCell : UITableViewCell {
         
         self.addSubview(nameLabel)
         self.addSubview(descLabel)
-        self.addSubview(controlswitch)
+        
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        descLabel.translatesAutoresizingMaskIntoConstraints = false
+
         
         descLabel.numberOfLines = 0
         descLabel.lineBreakMode = .byWordWrapping
@@ -175,12 +304,6 @@ class settingCell : UITableViewCell {
         attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
         descLabel.attributedText = attrString
         
-        controlswitch.onTintColor = UIColor.mpMainColor
-        
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        descLabel.translatesAutoresizingMaskIntoConstraints = false
-        controlswitch.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
             nameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 24),
             nameLabel.leftAnchor.constraint(equalTo: leftAnchor),
@@ -189,19 +312,11 @@ class settingCell : UITableViewCell {
             descLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 10),
             descLabel.leftAnchor.constraint(equalTo: leftAnchor),
             descLabel.heightAnchor.constraint(equalToConstant: 46),
-            descLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24),
-            
-            controlswitch.topAnchor.constraint(equalTo: topAnchor, constant: 24),
-            controlswitch.rightAnchor.constraint(equalTo: rightAnchor),
-            controlswitch.heightAnchor.constraint(equalToConstant: 31),
-            controlswitch.widthAnchor.constraint(equalToConstant: 51)
+            descLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24)
             
         ])
         
     }
     
-    @objc func switchValueChanged() {
-        // 스위치 값이 변경될 때 수행할 동작 구현
-        print("Switch value changed")
-    }
+
 }
