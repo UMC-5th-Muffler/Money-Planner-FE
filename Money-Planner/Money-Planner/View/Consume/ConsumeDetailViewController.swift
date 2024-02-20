@@ -10,6 +10,10 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+protocol ConsumeDetailViewDelegate : AnyObject {
+    func changeDetail()
+}
+
 // 소비 수정 및 삭제 컨트롤러
 class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, CategorySelectionDelegate,CalendarSelectionDelegate,RepeatModalViewDelegate,AddCategoryViewDelegate {
     func AddCategoryCompleted(_ name: String, iconName: String) {
@@ -70,6 +74,8 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
     var amountAdd = false
     var catAdd = false
     var titleAdd = false
+    
+    weak var delegate : ConsumeDetailViewDelegate?
     
     let currentDate = Date()
     let dateFormatter = DateFormatter()
@@ -972,6 +978,7 @@ class ConsumeDetailViewController: UIViewController, UITextFieldDelegate, Catego
             .subscribe(
             onSuccess: { response in
                 print(response)
+                self.delegate?.changeDetail()
             }, onFailure: {error in
                 print(error)
             }).disposed(by: disposeBag)

@@ -145,8 +145,8 @@ class RepeatConsumeRecordCell: UITableViewCell {
         return label
     }()
     
-    let circleView: UIView = {
-        let view = UIView()
+    let circleView: UIImageView = {
+        let view = UIImageView()
         view.backgroundColor = UIColor.mpDarkGray
         view.layer.cornerRadius = 22 // 동그라미의 반지름 설정
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -218,6 +218,7 @@ class RepeatConsumeRecordCell: UITableViewCell {
         //        repeatDayLabel.text = routine.rout
         
         costLabel.text = routine.routineCost!.formattedWithSeparator() + "원"
+        circleView.image = UIImage(named: routine.categoryIcon!)
         
         if(routine.monthlyRepeatDay != nil){
             //매달

@@ -9,9 +9,9 @@ import Foundation
 
 struct ConsumeDetail: Codable {
     let expenseId: Int
-    let title: String
-    let cost: Int
-    let categoryIcon: String
+    var title: String
+    var cost: Int
+    var categoryIcon: String
 
     enum CodingKeys: String, CodingKey {
         case expenseId, title, cost, categoryIcon

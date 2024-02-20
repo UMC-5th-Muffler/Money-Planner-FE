@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class HomeViewController : UIViewController, MainMonthViewDelegate, HomeConsumeViewDelegate, OrderModalDelegate {
+class HomeViewController : UIViewController, MainMonthViewDelegate, OrderModalDelegate {
     
     var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -117,6 +117,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate, HomeConsumeV
         contentScrollView.delegate = self
         categoryScrollView.delegate = self
         consumeView.tableView.delegate = self
+//        consumeView.
         
         fetchCalendarData()
         fetchCategoryList()
@@ -125,6 +126,8 @@ class HomeViewController : UIViewController, MainMonthViewDelegate, HomeConsumeV
         contentScrollView.addSubview(contentView)
         
         setupHeader()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(getNotificationConsumeView), name: Notification.Name("addConsume"), object: nil)
         
         // 스크롤 뷰 작업
         NSLayoutConstraint.activate([
@@ -166,17 +169,11 @@ class HomeViewController : UIViewController, MainMonthViewDelegate, HomeConsumeV
         if(collectionView.currentPage == 0){
             fetchChangeMonthCalendarData()
         }else{
-            self.consumeList = []
-            fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil, categoryId: nil)
+            self.consumeList.removeAll()
+            self.hasNext = false
+            fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil)
         }
         
-    }
-    
-    // HomeConsumeView의 delegate
-    func onTapOrder() {
-        let vc = OrderModalViewController()
-        vc.delegate = self
-        present(vc, animated: true)
     }
     
     // OrderModal의 delegate
@@ -414,8 +411,13 @@ extension HomeViewController{
     }
     
     // 소비 데이터 불러오기
-    func fetchConsumeData(order : String?, lastDate: String?, lastExpenseId: Int?, categoryId: Int?){
+    func fetchConsumeData(order : String?, lastDate: String?, lastExpenseId: Int?){
         self.loading = true
+        
+        var categoryId : Int? = categoryScrollView.selectedCategoryIndex
+        if(categoryId == -1){
+            categoryId = nil
+        }
         
         let dateStr = (monthView.currentMonth >= 10) ? "\(monthView.currentYear)-\(monthView.currentMonth)" : "\(monthView.currentYear)-0\(monthView.currentMonth)"
         
@@ -616,6 +618,7 @@ extension HomeViewController{
     
     func setUpConsumeView(cell : UICollectionViewCell){
         cell.contentView.addSubview(consumeView)
+        consumeView.delegate = self
         
         NSLayoutConstraint.activate([
             consumeView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
@@ -633,7 +636,7 @@ extension HomeViewController{
         if(collectionView.currentPage == 0){
             let indexPath = IndexPath(item: 1, section: 0)
             collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-            fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil, categoryId: nil)
+            fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil)
         }
         
         if(collectionView.currentPage == 1){
@@ -769,12 +772,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         // 만약 스크롤이 테이블 뷰의 맨 아래에 도달했을 때
         if offsetY > contentHeight - tableViewHeight {
             if self.hasNext {
-                var categoryId : Int? = categoryScrollView.selectedCategoryIndex
-                if(categoryId == -1){
-                    categoryId = nil
-                }
-                
-                fetchConsumeData(order: nil, lastDate: self.consumeList.last?.date, lastExpenseId: self.consumeList.last?.expenseDetailList?.last?.expenseId, categoryId: categoryId)
+                fetchConsumeData(order: nil, lastDate: self.consumeList.last?.date, lastExpenseId: self.consumeList.last?.expenseDetailList?.last?.expenseId)
             }
         }
         
@@ -864,15 +862,10 @@ extension HomeViewController : CategoryButtonScrollDelegate{
         }
         
         if(collectionView.currentPage == 1){
-            self.consumeList = []
+            self.consumeList.removeAll()
             self.hasNext = false
-            if(categoryId == -1){
-                // 전체 일때
-                fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil, categoryId: nil)
-            }else{
-                // 카테고리 일때
-                fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil, categoryId: categoryId)
-            }
+ 
+            fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil)
         }
         
     }
@@ -910,4 +903,36 @@ extension HomeViewController : CategoryEditDelegate{
     func changeCategoryView() {
         fetchCategoryList()
     }
+}
+
+extension HomeViewController : HomeConsumeViewDelegate{
+    func changeConsumeData() {
+        self.consumeList.removeAll()
+        self.hasNext = false
+        fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil)
+    }
+    
+    func onTapOrder() {
+        let vc = OrderModalViewController()
+        vc.delegate = self
+        present(vc, animated: true)
+    }
+    
+}
+
+
+// notification 기능 등록 함수
+extension HomeViewController {
+    @objc func getNotificationConsumeView(){
+        if(collectionView.currentPage == 0){
+            fetchChangeMonthCalendarData()
+        }
+        
+        if(collectionView.currentPage == 1){
+            self.consumeList.removeAll()
+            self.hasNext = false
+            fetchConsumeData(order: nil, lastDate: nil, lastExpenseId: nil)
+        }
+    }
+    
 }

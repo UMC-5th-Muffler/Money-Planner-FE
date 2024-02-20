@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelectionDelegate,CalendarSelectionDelegate,RepeatModalViewDelegate,AddCategoryViewDelegate, PopupViewDelegate {
-    
+        
     func popupChecked() {
         dismiss()
     }
@@ -955,6 +955,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
                      
                     }
                 }
+                self.sendNotificationEvent()
             }, onFailure: {error in
                 print(error)
             }).disposed(by: disposeBag)
@@ -974,6 +975,10 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
                     tabBarVC.selectedIndex = 0 // 홈 뷰가 첫 번째 탭이라고 가정
                 }
         }
+    }
+    
+    private func sendNotificationEvent() {
+        NotificationCenter.default.post(name: Notification.Name("addConsume"), object: nil)
     }
 }
 

@@ -10,6 +10,7 @@ import UIKit
 
 protocol HomeConsumeViewDelegate : AnyObject {
     func onTapOrder()
+    func changeConsumeData()
 }
 
 class HomeConsumeView: UIView, UITableViewDataSource, UITableViewDelegate {
@@ -321,6 +322,7 @@ extension HomeConsumeView{
         let expenseId : Int64 = Int64(selectedRecord.expenseId)
         let detailViewController = ConsumeDetailViewController(expenseId: expenseId)
         detailViewController.modalPresentationStyle = .fullScreen
+        detailViewController.delegate = self
         self.window?.rootViewController?.present(detailViewController, animated: true, completion: nil)
     }
 }
@@ -392,5 +394,11 @@ class ConsumeRecordCell: UITableViewCell {
         costLabel.text = consumeRecord.cost.formattedWithSeparator() + "원"
         circleView.image = UIImage(named: consumeRecord.categoryIcon)
         // 다른 데이터를 사용하여 셀을 업데이트할 수 있습니다.
+    }
+}
+
+extension HomeConsumeView : ConsumeDetailViewDelegate{
+    func changeDetail() {
+        delegate?.changeConsumeData()
     }
 }
