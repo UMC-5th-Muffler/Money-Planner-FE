@@ -94,7 +94,6 @@ extension NotificationViewController : UITableViewDelegate, UITableViewDataSourc
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.layoutIfNeeded()
         self.navigationItem.rightBarButtonItem = settingButton
-        //self.navigationItem.leftBarButtonItem = backButton
     }
     
     func setupNotificationTable() {
@@ -144,7 +143,12 @@ class notificationCell : UITableViewCell {
     
     let icon = UIImageView(image: UIImage(named: "btn_evaluation_red_on"))
     let title = MPLabel()
-    let content = MPLabel()
+    let content : MPLabel = {
+        let label = MPLabel()
+        label.text = "temp"
+        
+        return label
+    }()
     let time = MPLabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -177,7 +181,7 @@ class notificationCell : UITableViewCell {
         content.lineBreakMode = .byCharWrapping
         
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 3 // 줄간격 설정 (현재 반영 안되는 이슈 있음)
+        paragraphStyle.lineSpacing = 7
         
         let attrString = NSMutableAttributedString(string: content.text ?? "")
         attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
@@ -196,17 +200,17 @@ class notificationCell : UITableViewCell {
             
             title.topAnchor.constraint(equalTo: topAnchor, constant: 20),
             title.leftAnchor.constraint(equalTo: icon.rightAnchor, constant: 8),
-            title.heightAnchor.constraint(equalToConstant: 20),
+            title.heightAnchor.constraint(equalToConstant: 23),
             
             content.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 5),
-            content.leftAnchor.constraint(equalTo: leftAnchor, constant: 48),
+            content.leftAnchor.constraint(equalTo: icon.rightAnchor, constant: 8),
             content.rightAnchor.constraint(equalTo: rightAnchor, constant: -25),
-            content.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15),
-            content.heightAnchor.constraint(equalToConstant: 55),
+            content.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
+            content.heightAnchor.constraint(equalToConstant: 56),
 
             time.topAnchor.constraint(equalTo: topAnchor, constant: 20),
             time.rightAnchor.constraint(equalTo: rightAnchor, constant: -25),
-            time.heightAnchor.constraint(equalToConstant: 20)
+            time.heightAnchor.constraint(equalToConstant: 23)
         
         ])
         

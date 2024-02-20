@@ -10,24 +10,6 @@ import UIKit
 
 class EditGoalViewController : UIViewController {
     
-//    let backButton : UIBarButtonItem = {
-//        let button = UIButton()
-//        button.setImage(UIImage(named: "btn_arrow_big"), for: .normal)
-//        button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-//
-//        return UIBarButtonItem(customView: button)
-//    }()
-    
-    let deleteButton : UIBarButtonItem = {
-        let button = UIButton(type: .system)
-        button.setTitle("삭제", for: .normal)
-        button.tintColor = UIColor.mpRed
-        button.titleLabel?.font = UIFont.mpFont18M()
-        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
-        
-        return UIBarButtonItem(customView: button)
-    }()
-    
     let contentScrollView : UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -78,6 +60,9 @@ class EditGoalViewController : UIViewController {
     
     override func viewDidLoad(){
         view.backgroundColor = UIColor.mpWhite
+        
+        hideKeyboard()
+        
         view.addSubview(contentScrollView)
         contentScrollView.addSubview(contentView)
         
@@ -107,11 +92,36 @@ class EditGoalViewController : UIViewController {
         
     }
     
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        super.touchesBegan(touches, with: event)
+//        self.view.endEditing(true) // 키보드를 숨기는 메서드 호출
+//    }
+    
+    func hideKeyboard() {
+            let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+            view.addGestureRecognizer(tap)
+    }
+        
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
 }
 
 extension EditGoalViewController : UIScrollViewDelegate, UITextFieldDelegate {
     
     func setupNavigationBar() {
+        
+        let deleteButton : UIBarButtonItem = {
+            let button = UIButton(type: .system)
+            button.setTitle("삭제", for: .normal)
+            button.tintColor = UIColor.mpRed
+            button.titleLabel?.font = UIFont.mpFont18M()
+            button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+            
+            return UIBarButtonItem(customView: button)
+        }()
+        
         self.navigationItem.title = "소비목표 수정"
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.mpBlack, NSAttributedString.Key.font: UIFont.mpFont18B()]
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
@@ -121,12 +131,6 @@ extension EditGoalViewController : UIScrollViewDelegate, UITextFieldDelegate {
         self.navigationItem.rightBarButtonItem = deleteButton
         
     }
-    
-//    @objc private func backButtonTapped() {
-//        // 뒤로 가기 버튼 동작 구현
-//        print("뒤로가기버튼 클릭")
-//        navigationController?.popViewController(animated: true)
-//    }
     
     @objc private func deleteButtonTapped() {
         print("삭제버튼 클릭")
@@ -317,11 +321,11 @@ extension EditGoalViewController : UIScrollViewDelegate, UITextFieldDelegate {
         
         editByCategory.text = "카테고리별 목표 수정"
         editByCategory.image = UIImage(named: "btn_arrow_small-black")
-        //editByCategory.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        editByCategory.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         
         editByDate.text = "날짜별 목표 수정"
         editByDate.image = UIImage(named: "btn_arrow_small-black")
-        //editByDate.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        editByDate.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     
         contentView.addSubview(moreLabel)
         contentView.addSubview(editByCategory)
@@ -348,6 +352,11 @@ extension EditGoalViewController : UIScrollViewDelegate, UITextFieldDelegate {
         ])
     }
     
+    @objc func buttonTapped() {
+        print("버튼눌림")
+//        let evaluationVC = EvaluationViewController()
+//        navigationController?.pushViewController(evaluationVC, animated: true)
+    }
     
     func setupNextButton(){
         nextBtn.translatesAutoresizingMaskIntoConstraints = false

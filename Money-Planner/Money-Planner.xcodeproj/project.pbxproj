@@ -175,6 +175,7 @@
 		205894032B825B36008F536D /* OverViewExpenseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverViewExpenseResponse.swift; sourceTree = "<group>"; };
 		205894062B827B58008F536D /* UpdateCategoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UpdateCategoryRequest.swift; path = "Money-Planner/ViewModel/Expense/UpdateCategoryRequest.swift"; sourceTree = SOURCE_ROOT; };
 		205894092B827BF3008F536D /* DeleteCategoryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCategoryResponse.swift; sourceTree = "<group>"; };
+		205E232D2B83524A00E55412 /* Money-PlannerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Money-PlannerRelease.entitlements"; sourceTree = "<group>"; };
 		206C58D32B623C43008410C1 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		206C58D72B626465008410C1 /* CategoryModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModalViewController.swift; sourceTree = "<group>"; };
 		206C58DE2B6306FE008410C1 /* CalendartModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendartModalViewController.swift; sourceTree = "<group>"; };
@@ -593,6 +594,7 @@
 		7A610AB62B47FA8E00D3096F /* Money-Planner */ = {
 			isa = PBXGroup;
 			children = (
+				205E232D2B83524A00E55412 /* Money-PlannerRelease.entitlements */,
 				D29536EF2B4C091400EEA81F /* Money-Planner.entitlements */,
 				7A610AB72B47FA8E00D3096F /* AppDelegate.swift */,
 				7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */,
@@ -1243,7 +1245,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 97CYTD232Q;
+				DEVELOPMENT_TEAM = 4ND496J48G;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Money-Planner/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1257,7 +1259,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.umc.Money-Planner";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.umc.Money-Planner99";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1272,11 +1274,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Money-Planner/Money-Planner.entitlements";
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_ENTITLEMENTS = "Money-Planner/Money-PlannerRelease.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 97CYTD232Q;
+				DEVELOPMENT_TEAM = 4ND496J48G;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Money-Planner/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1290,7 +1291,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.umc.Money-Planner";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.umc.Money-Planner99";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
