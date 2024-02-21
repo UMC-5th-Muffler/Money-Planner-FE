@@ -511,6 +511,10 @@ extension HomeViewController{
             titleLabel.text = goalText
         }
         
+        if(self.nowGoal?.icon != nil){
+            titleLabel.text = self.nowGoal!.icon! + titleLabel.text!
+        }
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(monthViewTapped))
         titleLabel.addGestureRecognizer(tapGesture)
         
