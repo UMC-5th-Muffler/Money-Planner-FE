@@ -21,7 +21,7 @@ class GoalCreationManager {
     var goalBudget: Int64? = 1000
     var startDate: String? = "2024-3-12"
     var endDate: String? = "2024-4-27"
-    var categoryGoals: [CategoryGoal] = [] // Assuming this matches your CategoryGoal structure
+    var categoryGoals: [CategoryGoal] = []
     var dailyBudgets: [Int64] = [] // Added dailyBudgets property
     
     private let disposeBag = DisposeBag()
@@ -121,5 +121,20 @@ class GoalCreationManager {
         endDate = nil
 //        categoryGoals = [] // Clear categoryGoals
         dailyBudgets = [] // Clear dailyBudgets
+    }
+    
+    func postContent(){
+        print("마지막 체크")
+        print(icon)
+        print(goalTitle)
+        print(startDate)
+        print(endDate)
+        print(goalBudget)
+        print(categoryGoals)
+        print(dailyBudgets)
+        GoalRepository.shared.postContent(icon: icon!, title: goalTitle!, startDate: startDate!, endDate: endDate!, totalBudget: goalBudget!, categoryGoals: categoryGoals, dailyBudgets: dailyBudgets){
+            _ in
+            
+        }
     }
 }

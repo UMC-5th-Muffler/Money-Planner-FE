@@ -19,6 +19,7 @@ enum GoalAPI {
     case goalReport(goalId: Int)
     case goalExpense(goalId: Int, startDate: String, endDate: String, size: Int, lastDate: String?, lastExpenseId: Int?)
     case getPreviousGoals
+    case postContent(request: PostGoalRequest)
 }
 
 extension GoalAPI : BaseAPI {
@@ -46,7 +47,8 @@ extension GoalAPI : BaseAPI {
             return "/api/expense/weekly?goalId=\(goalId)"
         case .getPreviousGoals:
             return "/api/goal/previous"
-            
+        case .postContent :
+            return "/api/goal"
         }
     }
     
@@ -58,6 +60,8 @@ extension GoalAPI : BaseAPI {
             return .post
         case .deleteGoal:
             return .delete
+        case .postContent:
+            return .post
         default :
             return .get
         }
@@ -97,6 +101,9 @@ extension GoalAPI : BaseAPI {
         case .deleteGoal:
             return .requestPlain
             
+        case .postContent(let request):
+            return .requestJSONEncodable(request)
+            
         default:
             return .requestPlain
         }
@@ -108,7 +115,7 @@ extension GoalAPI : BaseAPI {
 
 //let provider = MoyaProvider<GoalAPI>()
 //let disposeBag = DisposeBag()
-    
+
 //func postGoal(request: PostGoalRequest) {
 //    provider.rx.request(.postGoal(request: request))
 //        .filterSuccessfulStatusCodes()

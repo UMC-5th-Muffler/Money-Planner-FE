@@ -55,7 +55,6 @@ struct DeleteGoalResponse: Codable {
 struct PostGoalRequest: Encodable {
     let icon: String
     let title: String
-    let detail: String
     let startDate: String
     let endDate: String
     let totalBudget: Int64

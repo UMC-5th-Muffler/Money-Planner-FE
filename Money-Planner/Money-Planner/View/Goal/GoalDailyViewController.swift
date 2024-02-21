@@ -119,7 +119,7 @@ class GoalDailyViewController: UIViewController, FSCalendarDelegate, FSCalendarD
     }
     
     @objc private func btmButtonTapped() {
-        let goalFinalVC = GoalFinalViewController() // 가정: GoalFinalViewController가 존재함
+        let goalFinalVC = GoalFinalViewController()
         let budgets = convertToInt64Array(from: amountInfo)
         goalCreationManager.addDailyBudgets(budgets: budgets)
         navigationController?.pushViewController(goalFinalVC, animated: true)

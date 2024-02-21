@@ -108,6 +108,7 @@ class GoalFinalViewController : UIViewController{
     @objc func completeBtnTapped(){
         //post하기 => 이건 별도로 구현하기
 //        goalCreationManager.postGoal()
+        goalCreationManager.postContent()
         
         //manager 비우기
         goalCreationManager.clear()
