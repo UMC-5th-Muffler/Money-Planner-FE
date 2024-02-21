@@ -224,7 +224,7 @@ class GoalAmountModalViewController: UIViewController, UITextFieldDelegate, Mone
         setupViews()
         setupConstraints()
         setupKeyboardNotifications()
-        amountCell.configureCell(image: UIImage(named: "icon_Wallet"), placeholder: "목표 금액을 입력해주세요")
+        amountCell.configureCell(image: UIImage(named: "icon_Wallet"), placeholder: "목표 금액을 입력해주세요", cost: "")
         
         amountCell.textField.becomeFirstResponder()
     }
@@ -319,7 +319,7 @@ class GoalAmountModalViewController: UIViewController, UITextFieldDelegate, Mone
         backgroundView.addSubview(subtitleLabel)
         
         amountCell.delegate = self
-        amountCell.configureCell(image: nil, placeholder: "목표 금액 입력")
+        amountCell.configureCell(image: nil, placeholder: "목표 금액 입력", cost: "")
         backgroundView.addSubview(amountCell)
         
         confirmButton.setTitle("확인", for: .normal)
