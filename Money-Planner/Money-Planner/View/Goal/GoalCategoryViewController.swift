@@ -161,7 +161,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     @objc func btmButtonTapped() {
         // Collect category goals from the UI
         var categoryGoals = [CategoryGoal]()
-        
+    
         for section in 0..<categoryCount - 1 {  // Exclude the "Add Category" section
             if let categoryCell = tableView.cellForRow(at: IndexPath(row: 0, section: section)) as? GoalCategoryTableViewCell,
                let amountCell = tableView.cellForRow(at: IndexPath(row: 1, section: section)) as? MoneyAmountTextCell,
@@ -175,7 +175,7 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
         }
         
         // Add category goals to the goalCreationManager
-       // goalCreationManager.addCategoryGoals(categoryGoals: categoryGoals)
+       goalCreationManager.addCategoryGoals(categoryGoals: categoryGoals)
         
         // Proceed to the next view controller or show an error/alert if needed
         let goalDailyVC = GoalDailyViewController()

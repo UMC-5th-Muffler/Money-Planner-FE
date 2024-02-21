@@ -26,6 +26,7 @@ class GoalFinalViewController : UIViewController{
     private let goalCreationManager = GoalCreationManager.shared
     
     override func viewDidLoad() {
+        print(goalCreationManager)
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupViews()

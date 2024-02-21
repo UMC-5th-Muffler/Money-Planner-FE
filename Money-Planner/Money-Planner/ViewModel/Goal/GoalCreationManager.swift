@@ -21,7 +21,7 @@ class GoalCreationManager {
     var goalBudget: Int64? = 1000
     var startDate: String? = "2024-3-12"
     var endDate: String? = "2024-4-27"
-//    var categoryGoals: [CategoryGoal] = [] // Assuming this matches your CategoryGoal structure
+    var categoryGoals: [CategoryGoal] = [] // Assuming this matches your CategoryGoal structure
     var dailyBudgets: [Int64] = [] // Added dailyBudgets property
     
     private let disposeBag = DisposeBag()
@@ -68,25 +68,24 @@ class GoalCreationManager {
 //            .disposed(by: disposeBag)
 //    }
 
-    //카테고리별 목표 추가 (카테고리VC에서 scrap해오는건 이녀석의 몫)
-//    func addCategoryGoals(categoryGoals: [CategoryGoal]) {
-//        var isUnique = true
-//        let existingCategoryIds = self.categoryGoals.map { $0.categoryId }
-//        
-//        for categoryGoal in categoryGoals {
-//            if existingCategoryIds.contains(categoryGoal.categoryId) {
-//                isUnique = false
-//                break
-//            }
-//        }
-//        
-//        if isUnique {
-//            self.categoryGoals.append(contentsOf: categoryGoals)
-//            print("Category goals added successfully.")
-//        } else {
-//            print("One or more category goals have duplicate category IDs.")
-//        }
-//    }
+    func addCategoryGoals(categoryGoals: [CategoryGoal]) {
+        var isUnique = true
+        let existingCategoryIds = self.categoryGoals.map { $0.categoryId }
+        
+        for categoryGoal in categoryGoals {
+            if existingCategoryIds.contains(categoryGoal.categoryId) {
+                isUnique = false
+                break
+            }
+        }
+        
+        if isUnique {
+            self.categoryGoals.append(contentsOf: categoryGoals)
+            print("Category goals added successfully.")
+        } else {
+            print("One or more category goals have duplicate category IDs.")
+        }
+    }
     
     //일별 목표를 등록
     func addDailyBudgets(budgets: [Int64]) {
