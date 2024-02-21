@@ -137,6 +137,8 @@ class HomeViewController : UIViewController, MainMonthViewDelegate{
         
         NotificationCenter.default.addObserver(self, selector: #selector(getNotificationChangeCalendarView), name: Notification.Name("changeCalendar"), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(getNotificationChangeHomenow), name: Notification.Name("addGoal"), object: nil)
+        
         // 스크롤 뷰 작업
         NSLayoutConstraint.activate([
             contentScrollView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 12),
@@ -957,6 +959,12 @@ extension HomeViewController {
     @objc func getNotificationChangeCalendarView(){
         if(collectionView.currentPage == 0){
             fetchChangeMonthCalendarData()
+        }
+    }
+    
+    @objc func getNotificationChangeHomenow(){
+        if(collectionView.currentPage == 0){
+            fetchCalendarData()
         }
     }
 }
