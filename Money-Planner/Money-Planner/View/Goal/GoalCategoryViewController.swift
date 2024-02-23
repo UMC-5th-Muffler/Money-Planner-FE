@@ -356,10 +356,24 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     //헤더 뷰 지정 (헤더 텍스트보다 발전)
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: CustomSectionHeaderView.identifier) as? CustomSectionHeaderView else { return nil }
-        
+        // 삭제 없데이트
         headerView.titleLabel.text = "카테고리 목표 \(section + 1)"
         headerView.onDeleteButtonTapped = { [weak self] in
             guard let self = self else { return }
+               // 배열 범위 확인
+//            if section < self.data.count {
+//                // 데이터 모델에서 해당 섹션 삭제
+//                self.data.remove(at: section)
+//                
+//                // 테이블 뷰에서 섹션 삭제
+//                self.tableView.performBatchUpdates({
+//                    self.tableView.deleteSections(IndexSet(integer: section), with: .automatic)
+//                }) { completed in
+//                    // 필요한 추가 작업 수행, 예를 들어 다른 섹션의 인덱스 업데이트 등
+//                    tableView.reloadData() // 전체 테이블 뷰를 새로고침하여 헤더 타이틀 업데이트
+//
+//                }
+//            }
             //금액 빼고
             sumAmount -= categoryGoalMaker[section].categoryBudget ?? 0
             //초기화 시키고
