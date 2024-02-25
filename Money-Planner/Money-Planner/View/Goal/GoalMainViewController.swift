@@ -36,6 +36,8 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(getNotificationGoalView), name: Notification.Name("addGoal"), object: nil)
+        
         view.backgroundColor = .mpGypsumGray
         setupSubscriptions()
 //        viewModel.resetData()
@@ -265,6 +267,9 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
         goalTable.reloadData()
     }
 
-
+    @objc func getNotificationGoalView(){
+        viewModel.fetchNowGoal()
+        viewModel.fetchNotNowGoals()
+    }
 }
 

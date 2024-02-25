@@ -12,25 +12,33 @@ import RxCocoa
 
 extension GoalCategoryViewController: CategorySelectionDelegate{
     func didSelectCategory(id: Int64, category: String, iconName: String) {
-        // 카테고리 선택된 것 반영
-        // => categoryId 넘겨줘야 함.
-        // 카테고리 정보를 담는 리스트에 저장
-        let add = GoalCategory(categoryName: category, categoryIcon: iconName, categoryId: id)
-        data.append(add) // 리스트에 데이터 추가
-        print(data) // 추가된 것 확인
-        let id = data[currentCellIndex].categoryId
-        let name = data[currentCellIndex].categoryName
-        let icon = data[currentCellIndex].categoryIcon
-        // 선택된 인덱스 패스에 해당하는 카테고리를 업데이트
-        if let cell = tableView.cellForRow(at: selectedIndexPath!) as? GoalCategoryTableViewCell {cell.configureCell(categoryId: id, text: name, iconName: icon)
-            print(selectedIndexPath as Any)
+        // 선택된 카테고리 정보를 업데이트
+        if let index = selectedIndexPath?.section {
+            // data 배열에 선택된 카테고리 정보 업데이트
+            if index < data.count {
+                data[index].categoryId = id
+                data[index].categoryName = category
+                data[index].categoryIcon = iconName
+            } else {
+                // 선택된 섹션 인덱스가 data 배열의 크기보다 큰 경우, 새로운 카테고리 정보를 추가
+                let newCategory = GoalCategory(categoryName: category, categoryIcon: iconName, categoryId: id, cost: nil)
+                data.append(newCategory)
+            }
+
+            // 선택된 인덱스 패스에 해당하는 셀만 리로드
+            if let indexPath = selectedIndexPath {
+                tableView.reloadRows(at: [indexPath], with: .none)
+            }
+        } else {
+            // selectedIndexPath가 nil인 경우, 전체 테이블 뷰 리로드
+            tableView.reloadData()
         }
-            
-            //btmBtn 활성화 결정
-            checkForDuplicateCategoriesAndUpdateUI()
-    //        tableView.reloadSections([selectedIndexPath!.section], with: .none) => 이거 있으면 오히려 안됨
-        
+
+        //btmBtn 활성화 결정 및 기타 UI 업데이트
+        //checkForDuplicateCategoriesAndUpdateUI()
     }
+
+
     
     
     func AddCategory() {
@@ -48,7 +56,18 @@ extension GoalCategoryViewController: MoneyAmountTextCellDelegate {
     
     func didChangeAmountText(to newValue: String?, cell: MoneyAmountTextCell, oldValue: String?) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        
+        if indexPath.section < data.count {
+            if let newAmount = newValue {
+                // 옵셔널 바인딩을 사용하여 newAmount가 nil이 아닌 경우에만 실행
+                data[indexPath.section].cost = Int64(newAmount) ?? 0
+            } else {
+                // newAmount가 nil인 경우의 처리, 예를 들어 기본값 설정
+                data[indexPath.section].cost = 0 // 또는 적절한 기본값
+            }
+        } else {
+            // indexPath.section이 data 배열의 범위를 벗어난 경우의 처리
+            print("섹션 인덱스가 data 배열의 범위를 벗어났습니다.")
+        }        
         let newValueNumeric = parseNumericValue(from: newValue)
         let oldValueNumeric = parseNumericValue(from: oldValue)
         var categoryGoalOver = false
@@ -107,12 +126,14 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     let disposeBag = DisposeBag()
     // 카테고리 내용 저장
     struct GoalCategory {
-        let categoryName : String
-        let categoryIcon : String
-        let categoryId : Int64
+        var categoryName : String
+        var categoryIcon : String
+        var categoryId : Int64
+        var cost : Int64?
     }
     
     var data : [GoalCategory] = []
+    
     var currentCellIndex : Int = 0
     //화면 구성 요소
     var header = HeaderView(title: "")
@@ -335,10 +356,24 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     //헤더 뷰 지정 (헤더 텍스트보다 발전)
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: CustomSectionHeaderView.identifier) as? CustomSectionHeaderView else { return nil }
-        
+        // 삭제 없데이트
         headerView.titleLabel.text = "카테고리 목표 \(section + 1)"
         headerView.onDeleteButtonTapped = { [weak self] in
             guard let self = self else { return }
+               // 배열 범위 확인
+//            if section < self.data.count {
+//                // 데이터 모델에서 해당 섹션 삭제
+//                self.data.remove(at: section)
+//                
+//                // 테이블 뷰에서 섹션 삭제
+//                self.tableView.performBatchUpdates({
+//                    self.tableView.deleteSections(IndexSet(integer: section), with: .automatic)
+//                }) { completed in
+//                    // 필요한 추가 작업 수행, 예를 들어 다른 섹션의 인덱스 업데이트 등
+//                    tableView.reloadData() // 전체 테이블 뷰를 새로고침하여 헤더 타이틀 업데이트
+//
+//                }
+//            }
             //금액 빼고
             sumAmount -= categoryGoalMaker[section].categoryBudget ?? 0
             //초기화 시키고
@@ -378,6 +413,9 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
     
     //섹션, row 별 셀 종류 지정
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print(currentCellIndex)
+        currentCellIndex = indexPath.section
+        print(data)
         if indexPath.section == categoryCount - 1 {
             // 마지막 섹션에 GoalCreateCategoryBtnCell 배치
             let cell = tableView.dequeueReusableCell(withIdentifier: "GoalCreateCategoryBtnCell", for: indexPath) as! GoalCreateCategoryBtnCell
@@ -389,32 +427,54 @@ class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITable
                 let newCategory = Category(id: 0, name: "")// TODO : id는 나중에
                 self.categoryGoalMaker.append(newCategory)
                 
+                // 빈 데이터 넣기
+                let add = GoalCategory(categoryName: "", categoryIcon: "", categoryId: 0, cost: 0)
+                data.append(add)
                 //btmBtn 체크
                 //checkForDuplicateCategoriesAndUpdateUI()
             }
             return cell
         } else {
             if indexPath.row == 0 {
-                currentCellIndex = indexPath.row
-                // Dequeue GoalCategoryTableViewCell for category name input
+                // "GoalCategoryTableViewCell" 식별자를 사용하여 셀을 재사용 대기열에서 가져옴
                 let cell = tableView.dequeueReusableCell(withIdentifier: "GoalCategoryTableViewCell", for: indexPath) as! GoalCategoryTableViewCell
-                cell.configureCell(categoryId: -1, text: "카테고리 선택", iconName: "icon_category")
+                
+                // 현재 섹션의 인덱스가 data 리스트의 크기보다 작은 경우, 즉 선택된 카테고리 정보가 있는 경우
+                if indexPath.section < data.count {
+                    let category = data[indexPath.section]
+                    cell.configureCell(categoryId: category.categoryId, text: category.categoryName, iconName: category.categoryIcon)
+                    cell.isModified = true
+                } else {
+                    // data 리스트에 해당 섹션에 대한 정보가 없는 경우, 기본 셀을 구성
+                    cell.configureCell(categoryId: -1, text: "카테고리 선택", iconName: "icon_category")
+                    cell.isModified = false
+                }
+                
                 cell.isModified = false
                 cell.categoryModalBtn.addTarget(self, action: #selector(categoryModalButtonTapped), for: .touchUpInside)
                 return cell
             } else {
+            }
                 // Dequeue MoneyAmountTextCell for amount input
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MoneyAmountTextCell", for: indexPath) as! MoneyAmountTextCell
+                if indexPath.section < data.count {
+                    // 이미 추가된 금액이 있는 경우
+                    let dataIndex = data[indexPath.section]
+                    cell.configureCell(image: UIImage(named: "icon_Wallet"), placeholder: "목표 금액", cost: String(dataIndex.cost ?? 0))
+                
+                }else{
+                    
                 cell.textField.text = nil
                 cell.amountLabel.text = ""
-                cell.configureCell(image: UIImage(named: "icon_Wallet"), placeholder: "목표 금액")
-                cell.delegate = self
-                
-                return cell
-            }
+                cell.configureCell(image: UIImage(named: "icon_Wallet"), placeholder: "목표 금액", cost: "")
+                            }
+            cell.delegate = self
+            
+            return cell
+
         }
+        
     }
-    
     
     // UITableViewDelegate 메서드 구현
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

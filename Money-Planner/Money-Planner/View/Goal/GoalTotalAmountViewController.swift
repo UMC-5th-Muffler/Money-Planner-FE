@@ -153,7 +153,7 @@ class GoalTotalAmountViewController : UIViewController, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MoneyAmountTextCell", for: indexPath) as! MoneyAmountTextCell
-        cell.configureCell(image: UIImage(named: "icon_Wallet"), placeholder: "목표 금액")
+        cell.configureCell(image: UIImage(named: "icon_Wallet"), placeholder: "목표 금액", cost: "")
         cell.delegate = self  // Set the viewController as the delegate
         return cell
     }

@@ -921,13 +921,14 @@ class MoneyAmountTextCell: UITableViewCell, UITextFieldDelegate {
         ])
     }
     
-    func configureCell(image: UIImage?, placeholder: String) {
+    func configureCell(image: UIImage?, placeholder: String, cost : String) {
         if let image = image {
             iconImageView.image = image.withTintColor(.mpGray, renderingMode: .alwaysOriginal)
         } else {
             iconImageView.image = nil
         }
         textField.placeholder = placeholder
+        textField.text = cost
     }
     
 }

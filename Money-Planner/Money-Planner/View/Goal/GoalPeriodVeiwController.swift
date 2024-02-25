@@ -60,16 +60,16 @@ class GoalPeriodViewController : UIViewController, UINavigationControllerDelegat
     }
     
     @objc func btmButtonTapped() {
-
-        //이전 소비내역 발견, 모달 띄우기.
-        if findOutPreviousConsumeRecord() {
-            let modal = FoundPreviousConsumeRecordModal(startDate: periodBtn.startDate, endDate: periodBtn.endDate)
-            modal.modalPresentationStyle = .popover
-            modal.delegate = self
-            self.present(modal, animated: true)
-        } else {
-            goToGoalAmountVC()
-        }
+        goToGoalAmountVC()
+//        //이전 소비내역 발견, 모달 띄우기.
+//        if findOutPreviousConsumeRecord() {
+//            let modal = FoundPreviousConsumeRecordModal(startDate: periodBtn.startDate, endDate: periodBtn.endDate)
+//            modal.modalPresentationStyle = .popover
+//            modal.delegate = self
+//            self.present(modal, animated: true)
+//        } else {
+//            goToGoalAmountVC()
+//        }
     }
     
     func goToGoalAmountVC(){

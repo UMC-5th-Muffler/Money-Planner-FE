@@ -39,6 +39,6 @@ extension CategoryAPI : BaseAPI {
     }
     
     public var headers: [String: String]? {
-        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDg0ODUzMTd9.XuzFNk-rsRpVzMjoRHnGLaAia9ghjQn66_M8w6CWNPA"]
+        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDg1NzY0MzN9.5Y9V2ZbYIEic2YTVqm2YZ6kCbZFaJ4mKVj4665dFdBM"]
     }
 }
