@@ -71,8 +71,8 @@ extension GoalDetailsViewController : PeriodSelectionDelegate {
 class GoalDetailsViewController : UIViewController {
     
     private let viewModel = GoalDetailViewModel.shared
-    let expenseViewModel = GoalExpenseViewModel.shared
-    let reportViewModel = GoalReportViewModel.shared
+//    let expenseViewModel = GoalExpenseViewModel.shared
+//    let reportViewModel = GoalReportViewModel.shared
     private let disposeBag = DisposeBag()
     let goalId : Int
     
@@ -90,6 +90,48 @@ class GoalDetailsViewController : UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        view.backgroundColor = .mpWhite
+//        setupNavigationBar()
+//        setupLayout()
+//        setupTabButtons()
+//        setuplineViews()
+//        configureViews()
+//        configureSpendingAndReportViews()
+//        selectButton(spendingButton) // Default selected button
+//        
+//        // ViewModel의 goalDetail 데이터를 관찰하고 UI 업데이트
+//        viewModel.goalDetail.asObservable()
+//            .compactMap { $0 }
+//            .subscribe(onNext: { [weak self] detail in
+//                // GoalDetail 데이터를 사용하여 UI 업데이트
+//                // 예: self?.titleLabel.text = detail.title
+//            }).disposed(by: disposeBag)
+//        
+//        // ViewModel의 goalExpenses 데이터를 관찰하고 UI 업데이트
+//        viewModel.goalExpenses.asObservable()
+//            .compactMap { $0 }
+//            .subscribe(onNext: { [weak self] expenses in
+//                // GoalExpenses 데이터를 사용하여 UI 업데이트
+//                // 예: self?.updateExpenses(expenses)
+//            }).disposed(by: disposeBag)
+//        
+//        // ViewModel의 CategoryTotalCost 데이터를 관찰하고 UI 업데이트
+//        viewModel.goalReport.asObservable()
+//            .compactMap { $0 }
+//            .subscribe(onNext: { [weak self] goalReportResult in
+//                self?.updateCategory(with: goalReportResult)
+//            }).disposed(by: disposeBag)
+//        
+//        // ViewModel에서 GoalReport 데이터 가져오기
+//        
+//        viewModel.fetchGoalReport(goalId: goalId)
+//        viewModel.fetchGoalDetail(goalId: goalId)
+//        viewModel.fetchGoalExpenses(goalId: goalId, startDate: <#T##String#>, endDate: <#T##String#>, size: 10)
+//        
+//    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .mpWhite
@@ -101,16 +143,37 @@ class GoalDetailsViewController : UIViewController {
         configureSpendingAndReportViews()
         selectButton(spendingButton) // Default selected button
         
-        // ViewModel에서 GoalReport 데이터 가져오기
-        reportViewModel.fetchGoalReport(for: goalId)
+        // ViewModel의 goalDetail 데이터를 관찰하고 UI 업데이트
+        viewModel.goalDetail.asObservable()
+                .compactMap { $0 }
+                .subscribe(onNext: { [weak self] detail in
+                    // GoalDetail 데이터를 사용하여 UI 업데이트
+
+                    // GoalDetail에서 startDate와 endDate를 기반으로 Expenses 데이터 가져오기
+                    self?.viewModel.fetchGoalExpenses(goalId: self!.goalId, startDate: detail.startDate, endDate: detail.endDate, size: 10)
+                }).disposed(by: disposeBag)
+        
+        // ViewModel의 goalExpenses 데이터를 관찰하고 UI 업데이트
+        viewModel.goalExpenses.asObservable()
+            .compactMap { $0 }
+            .subscribe(onNext: { [weak self] expenses in
+                // GoalExpenses 데이터를 사용하여 UI 업데이트
+                // 예: self?.updateExpenses(expenses)
+            }).disposed(by: disposeBag)
         
         // ViewModel의 CategoryTotalCost 데이터를 관찰하고 UI 업데이트
-        reportViewModel.goalReportRelay.asObservable()
+        viewModel.goalReport.asObservable()
             .compactMap { $0 }
             .subscribe(onNext: { [weak self] goalReportResult in
                 self?.updateCategory(with: goalReportResult)
             }).disposed(by: disposeBag)
+        
+        // ViewModel에서 GoalReport 데이터 가져오기
+        viewModel.fetchGoalReport(goalId: goalId)
+        viewModel.fetchGoalDetail(goalId: goalId)
+        // 초기 fetchGoalExpenses 호출은 제거하고, goalDetail 구독 결과에 따라 호출되도록 변경
     }
+
     
     func updateCategory(with reports: GoalReportResult) {
         reportView.updateCategory(with: reports, goal: viewModel.goalDetail.value!)
