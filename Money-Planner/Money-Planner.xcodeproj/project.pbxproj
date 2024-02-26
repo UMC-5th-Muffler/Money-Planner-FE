@@ -72,6 +72,7 @@
 		7A0D331D2B7DFE0B007B2736 /* RxKakaoSDKFriend in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D331C2B7DFE0B007B2736 /* RxKakaoSDKFriend */; };
 		7A0D331F2B7DFE0B007B2736 /* RxKakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D331E2B7DFE0B007B2736 /* RxKakaoSDKShare */; };
 		7A0D33222B7DFE22007B2736 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D33212B7DFE22007B2736 /* FSCalendar */; };
+		7A3069702B8C380B00CD331D /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 7A30696F2B8C380B00CD331D /* Lottie */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -387,6 +388,7 @@
 				7A610ADE2B4900C800D3096F /* Moya in Frameworks */,
 				7A0D331F2B7DFE0B007B2736 /* RxKakaoSDKShare in Frameworks */,
 				7A610ADC2B4900C800D3096F /* CombineMoya in Frameworks */,
+				7A3069702B8C380B00CD331D /* Lottie in Frameworks */,
 				7A610AE22B4900C800D3096F /* RxMoya in Frameworks */,
 				208C909A2B6ABBC500C67960 /* RxCocoa in Frameworks */,
 				208C90982B6ABBC500C67960 /* RxBlocking-Dynamic in Frameworks */,
@@ -1060,6 +1062,7 @@
 				7A0D331C2B7DFE0B007B2736 /* RxKakaoSDKFriend */,
 				7A0D331E2B7DFE0B007B2736 /* RxKakaoSDKShare */,
 				7A0D33212B7DFE22007B2736 /* FSCalendar */,
+				7A30696F2B8C380B00CD331D /* Lottie */,
 			);
 			productName = "Money-Planner";
 			productReference = 7A610AB42B47FA8E00D3096F /* Money-Planner.app */;
@@ -1094,6 +1097,7 @@
 				208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				7A0D33152B7DFE0B007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 				7A0D33202B7DFE22007B2736 /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				7A30696E2B8C380B00CD331D /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			productRefGroup = 7A610AB52B47FA8E00D3096F /* Products */;
 			projectDirPath = "";
@@ -1532,6 +1536,14 @@
 				minimumVersion = 2.8.4;
 			};
 		};
+		7A30696E2B8C380B00CD331D /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.4.1;
+			};
+		};
 		7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya";
@@ -1597,6 +1609,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7A0D33202B7DFE22007B2736 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
+		};
+		7A30696F2B8C380B00CD331D /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A30696E2B8C380B00CD331D /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
 		};
 		7A610ADB2B4900C800D3096F /* CombineMoya */ = {
 			isa = XCSwiftPackageProductDependency;

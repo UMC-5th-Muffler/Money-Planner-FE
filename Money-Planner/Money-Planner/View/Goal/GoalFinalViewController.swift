@@ -8,6 +8,7 @@
 import Foundation
 import RxMoya
 import UIKit
+import Lottie
 
 
 class GoalFinalViewController : UIViewController{
