@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Lottie
 
 protocol FoundPreviousConsumeRecordModalDelegate: AnyObject {
     func modalGoToGoalAmountVC()
@@ -57,6 +58,15 @@ class FoundPreviousConsumeRecordModal : UIViewController {
         return label
     }()
     
+    let mufflerDeleteAnimation :  LottieAnimationView = {
+        let animationView: LottieAnimationView = .init(name: "muffler_delete")
+        animationView.loopMode = .loop
+        animationView.contentMode = .scaleAspectFit
+        animationView.animationSpeed = 2
+        return animationView
+    }()
+    
+    
     let skipBtn : UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .clear
@@ -84,6 +94,7 @@ class FoundPreviousConsumeRecordModal : UIViewController {
         view.backgroundColor = .clear
         setupLayout()
         setupActions()
+        mufflerDeleteAnimation.play()
     }
     
     //레이아웃
@@ -92,7 +103,7 @@ class FoundPreviousConsumeRecordModal : UIViewController {
         view.addSubview(customModal)
         customModal.translatesAutoresizingMaskIntoConstraints = false
         
-        [titleLabel, subtitleLabel, skipBtn, acceptBtn].forEach {
+        [titleLabel, subtitleLabel, skipBtn, acceptBtn, mufflerDeleteAnimation].forEach {
             customModal.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -120,7 +131,14 @@ class FoundPreviousConsumeRecordModal : UIViewController {
 //            acceptBtn.trailingAnchor.constraint(greaterThanOrEqualTo: skipBtn.trailingAnchor, constant: 10),
             acceptBtn.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -20),
             acceptBtn.widthAnchor.constraint(equalToConstant: 136),
-            acceptBtn.heightAnchor.constraint(equalToConstant: 56)
+            acceptBtn.heightAnchor.constraint(equalToConstant: 56),
+            
+            mufflerDeleteAnimation.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 10),
+            mufflerDeleteAnimation.bottomAnchor.constraint(equalTo: skipBtn.topAnchor, constant: -10),
+            mufflerDeleteAnimation.centerXAnchor.constraint(equalTo: customModal.centerXAnchor),
+            mufflerDeleteAnimation.widthAnchor.constraint(equalToConstant: 148),
+            mufflerDeleteAnimation.heightAnchor.constraint(equalToConstant: 148)
+            
         ])
 
     }

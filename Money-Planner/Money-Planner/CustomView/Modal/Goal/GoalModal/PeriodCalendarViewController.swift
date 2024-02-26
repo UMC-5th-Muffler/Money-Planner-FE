@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import RxSwift
 import FSCalendar
+import Lottie
 
 //기간 선택 프로토콜 정의
 protocol PeriodSelectionDelegate: AnyObject {
