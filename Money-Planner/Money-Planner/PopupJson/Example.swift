@@ -67,16 +67,18 @@ class GifViewController : UIViewController {
         //첫 번째 애니메이션 뷰의 제약조건 설정
         NSLayoutConstraint.activate([
             animationView1.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            animationView1.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 60),
-            animationView1.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60)
+            animationView1.widthAnchor.constraint(equalToConstant: 60),
+            animationView1.heightAnchor.constraint(equalToConstant: 60),
+            animationView1.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
         
         //첫 번째를 제외한 나머지 애니메이션 뷰의 제약조건을 설정
         for (index, animationView) in animationViews.enumerated() where index > 0 {
             NSLayoutConstraint.activate([
                 animationView.topAnchor.constraint(equalTo: animationViews[index - 1].bottomAnchor, constant: 10),
-                animationView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 60),
-                animationView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60)
+                animationView.widthAnchor.constraint(equalToConstant: 60),
+                animationView.heightAnchor.constraint(equalToConstant: 60),
+                animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             ])
         }
         
