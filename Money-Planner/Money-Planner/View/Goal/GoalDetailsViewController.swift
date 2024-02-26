@@ -83,7 +83,7 @@ class GoalDetailsViewController : UIViewController {
         //순서 미정의 된 변수, super init, 정의가 이제 된 변수를 바탕으로 한 개변
         self.goalId = goalID
         super.init(nibName: nil, bundle: nil)
-        configureViews()
+//        configureViews()
     }
     
     required init?(coder: NSCoder) {
@@ -139,8 +139,6 @@ class GoalDetailsViewController : UIViewController {
         setupLayout()
         setupTabButtons()
         setuplineViews()
-        configureViews()
-        configureSpendingAndReportViews()
         selectButton(spendingButton) // Default selected button
         
         // ViewModel의 goalDetail 데이터를 관찰하고 UI 업데이트
@@ -148,7 +146,8 @@ class GoalDetailsViewController : UIViewController {
                 .compactMap { $0 }
                 .subscribe(onNext: { [weak self] detail in
                     // GoalDetail 데이터를 사용하여 UI 업데이트
-
+                    print("상단 goal detail 받기 성공.")
+                    print("\(detail.icon) + \(detail.title)")
                     // GoalDetail에서 startDate와 endDate를 기반으로 Expenses 데이터 가져오기
                     self?.viewModel.fetchGoalExpenses(goalId: self!.goalId, startDate: detail.startDate, endDate: detail.endDate, size: 10)
                 }).disposed(by: disposeBag)
@@ -172,6 +171,10 @@ class GoalDetailsViewController : UIViewController {
         viewModel.fetchGoalReport(goalId: goalId)
         viewModel.fetchGoalDetail(goalId: goalId)
         // 초기 fetchGoalExpenses 호출은 제거하고, goalDetail 구독 결과에 따라 호출되도록 변경
+        
+        //fetch후 받아와야함.
+        configureViews()
+        configureSpendingAndReportViews()
     }
 
     
@@ -446,11 +449,6 @@ class GoalDetailsViewController : UIViewController {
 
 class SpendingView: UIView, UITableViewDelegate, UITableViewDataSource {
     
-    //    var data: [DailyConsume] = [] {
-    //        didSet {
-    //            tableView.reloadData()
-    //        }
-    //    }
     var data: [DailyConsume] = [] {
         didSet {
             tableView.reloadData()

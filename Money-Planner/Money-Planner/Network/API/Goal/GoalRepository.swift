@@ -9,6 +9,13 @@ import Foundation
 import RxSwift
 import Moya
 
+enum NetworkError: Error {
+    case nilResponse
+    case decodingError
+    // 기타 네트워크 관련 에러
+}
+
+
 final class GoalRepository {
     
     static let shared = GoalRepository()
@@ -31,11 +38,24 @@ final class GoalRepository {
     }
     
     // 목표 상세 페이지 상단 정보를 가져오는 메서드
+//    func getGoalDetail(goalId: Int) -> Single<GoalDetailResponse> {
+//        return provider.rx.request(.getGoalDetail(goalId: goalId))
+//            .filterSuccessfulStatusCodes()
+//            .map(GoalDetailResponse.self)
+//    }
     func getGoalDetail(goalId: Int) -> Single<GoalDetailResponse> {
         return provider.rx.request(.getGoalDetail(goalId: goalId))
             .filterSuccessfulStatusCodes()
+            .flatMap { response -> PrimitiveSequence<SingleTrait, Response> in
+                // 응답 데이터가 비어있는지 확인
+                guard !response.data.isEmpty else {
+                    return .error(NetworkError.nilResponse)
+                }
+                return .just(response)
+            }
             .map(GoalDetailResponse.self)
     }
+
     
     // 목표를 생성하는 메서드
     func postGoal(request: PostGoalRequest) -> Single<PostGoalResponse> {
