@@ -9,15 +9,14 @@ import Foundation
 import RxMoya
 import UIKit
 
-
 class GoalFinalViewController : UIViewController{
     
-    private let header = HeaderView(title: "")
+//    private let header = HeaderView(title: "")
     private let descriptionView = DescriptionView(text: "목표 생성이\n완료되었어요!", alignToCenter: false)
     private let subDescriptionView = SubDescriptionView(text: "혜원님의 알뜰한 소비를 응원해요!", alignToCenter: false)
     private let cheerImageView : UIImageView = {
         var u = UIImageView()
-        u.image = UIImage(systemName: "hands.sparkles")
+        u.image = UIImage(named: "goal-create")
         return u
     }()
     private let goalCard = GoalCard()
@@ -29,13 +28,14 @@ class GoalFinalViewController : UIViewController{
         print(goalCreationManager)
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        setupNavigationBar()
         setupViews()
         setupConstraints()
         btmButton.addTarget(self, action: #selector(completeBtnTapped), for: .touchUpInside)
     }
     
     func setupViews(){
-        view.addSubview(header)
+//        view.addSubview(header)
         view.addSubview(descriptionView)
         view.addSubview(subDescriptionView)
         view.addSubview(cheerImageView)
@@ -44,7 +44,7 @@ class GoalFinalViewController : UIViewController{
     }
     
     func setupConstraints(){
-        header.translatesAutoresizingMaskIntoConstraints = false
+//        header.translatesAutoresizingMaskIntoConstraints = false
         descriptionView.translatesAutoresizingMaskIntoConstraints = false
         subDescriptionView.translatesAutoresizingMaskIntoConstraints = false
         cheerImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -52,16 +52,16 @@ class GoalFinalViewController : UIViewController{
         btmButton.translatesAutoresizingMaskIntoConstraints = false
         
         // Constraints for the header
-        NSLayoutConstraint.activate([
-            header.topAnchor.constraint(equalTo: view.topAnchor, constant: 128),
-            header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            header.heightAnchor.constraint(equalToConstant: 72)
-        ])
+//        NSLayoutConstraint.activate([
+//            header.topAnchor.constraint(equalTo: view.topAnchor, constant: 128),
+//            header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            header.heightAnchor.constraint(equalToConstant: 72)
+//        ])
         
         // Constraints for the descriptionView
         NSLayoutConstraint.activate([
-            descriptionView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 30),
+            descriptionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 37),
             descriptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             descriptionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
@@ -73,14 +73,13 @@ class GoalFinalViewController : UIViewController{
             subDescriptionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
         
-//        //cheerImageView
-//        NSLayoutConstraint.activate([
-//            cheerImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 60),
-//            cheerImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60),
-//            cheerImageView.heightAnchor.constraint(equalToConstant: 250),
-//            cheerImageView.topAnchor.constraint(equalTo: subDescriptionView.bottomAnchor, constant: 10),
-//            cheerImageView.bottomAnchor.constraint(equalTo: goalCard.topAnchor, constant: -30)
-//        ])
+        // Constraints for the main bottom button
+        NSLayoutConstraint.activate([
+            btmButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            btmButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            btmButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            btmButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
         
         // Constraints for the goalCard
         NSLayoutConstraint.activate([
@@ -90,12 +89,13 @@ class GoalFinalViewController : UIViewController{
             goalCard.heightAnchor.constraint(equalToConstant: 144)
         ])
         
-        // Constraints for the main bottom button
+        //cheerImageView
         NSLayoutConstraint.activate([
-            btmButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            btmButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            btmButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            btmButton.heightAnchor.constraint(equalToConstant: 50)
+            cheerImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            cheerImageView.widthAnchor.constraint(equalToConstant: 272),
+            cheerImageView.heightAnchor.constraint(equalToConstant: 272),
+            cheerImageView.topAnchor.constraint(greaterThanOrEqualTo: subDescriptionView.bottomAnchor, constant: 30),
+            cheerImageView.bottomAnchor.constraint(equalTo: goalCard.topAnchor, constant: -20)
         ])
         
         // It's important to also set the vertical constraints for goalCard to avoid vertical ambiguity.
@@ -103,25 +103,43 @@ class GoalFinalViewController : UIViewController{
         NSLayoutConstraint.activate([
             goalCard.bottomAnchor.constraint(lessThanOrEqualTo: btmButton.topAnchor, constant: -20)
         ])
+        
     }
     
     @objc func completeBtnTapped(){
         //post하기 => 이건 별도로 구현하기
 //        goalCreationManager.postGoal()
         goalCreationManager.postContent()
+        
+        //이게 무슨 코드인가 공부
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             // 3초 후에 실행될 코드
             NotificationCenter.default.post(name: Notification.Name("addGoal"), object: nil)
         }
+        
         //manager 비우기
         goalCreationManager.clear()
         
         if let navigationController = navigationController {
             self.tabBarController?.tabBar.isHidden = false
             navigationController.popToRootViewController(animated: true)
-            
         }
     }
+    
+    private func setupNavigationBar() {
+        navigationController?.isNavigationBarHidden = false
+        let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(backButtonTapped))
+        let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium, scale: .medium)
+        backButton.image = UIImage(systemName: "chevron.left", withConfiguration: config)
+        backButton.tintColor = .mpBlack
+        
+        navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+    
 }
 
 class GoalCard : UIView {
@@ -216,7 +234,7 @@ class GoalCard : UIView {
         amountTitle.textColor = .mpDarkGray
         amountTitle.font = .mpFont16M()
         
-        goalBudget.text = formatNumber(goalCreationManager.goalBudget!) + "원"
+        goalBudget.text = numberToKorean(Int(goalCreationManager.goalBudget!)) + "원"
         goalBudget.textColor = .mpBlack
         goalBudget.font = .mpFont16M()
         
@@ -251,11 +269,30 @@ class GoalCard : UIView {
         
     }
     
+//    private func formatNumber(_ number: Int64) -> String {
+//        let numberFormatter = NumberFormatter()
+//        numberFormatter.numberStyle = .decimal // Use .decimal for formatting with commas.
+//        return numberFormatter.string(from: NSNumber(value: number)) ?? "0"
+//    }
     
-    private func formatNumber(_ number: Int64) -> String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal // Use .decimal for formatting with commas.
-        return numberFormatter.string(from: NSNumber(value: number)) ?? "0"
+    //숫자를 한글로 표현하는 함수(2000 -> 0부터 9999999999999999까지가능)
+    func numberToKorean(_ number: Int) -> String {
+        let unitLarge = ["", "만", "억", "조"]
+        
+        var result = ""
+        var num = number
+        var unitIndex = 0
+        
+        while num > 0 {
+            let segment = num % 10000
+            if segment != 0 {
+                result = "\((segment))\(unitLarge[unitIndex]) \(result)"
+            }
+            num /= 10000
+            unitIndex += 1
+        }
+        
+        return result.isEmpty ? "0" : result
     }
     
 }

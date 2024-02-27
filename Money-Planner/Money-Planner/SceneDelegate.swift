@@ -37,7 +37,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBarController.viewControllers = [homeVC, goalVC, consumeVC, battleVC, settingVC]
         tabBarController.selectedIndex = 0 // 홈을 먼저 띄우게 함.
 
-        window?.rootViewController = tabBarController
+        window?.rootViewController = tabBarController //GifViewController()
         window?.makeKeyAndVisible()
 
 }

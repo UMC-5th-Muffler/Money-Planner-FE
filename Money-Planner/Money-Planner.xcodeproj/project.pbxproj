@@ -72,6 +72,13 @@
 		7A0D331D2B7DFE0B007B2736 /* RxKakaoSDKFriend in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D331C2B7DFE0B007B2736 /* RxKakaoSDKFriend */; };
 		7A0D331F2B7DFE0B007B2736 /* RxKakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D331E2B7DFE0B007B2736 /* RxKakaoSDKShare */; };
 		7A0D33222B7DFE22007B2736 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0D33212B7DFE22007B2736 /* FSCalendar */; };
+		7A30697E2B8C4FEA00CD331D /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 7A30697D2B8C4FEA00CD331D /* Lottie */; };
+		7A3069882B8C5A0900CD331D /* muffler_delete.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3069872B8C5A0900CD331D /* muffler_delete.json */; };
+		7A30698D2B8C5C9700CD331D /* muffler_happy2.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3069892B8C5C9600CD331D /* muffler_happy2.json */; };
+		7A30698E2B8C5C9700CD331D /* muffler_surprised.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A30698A2B8C5C9600CD331D /* muffler_surprised.json */; };
+		7A30698F2B8C5C9700CD331D /* muffler_money.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A30698B2B8C5C9600CD331D /* muffler_money.json */; };
+		7A3069902B8C5C9700CD331D /* muffler_zero.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A30698C2B8C5C9600CD331D /* muffler_zero.json */; };
+		7A3069922B8C5D5400CD331D /* Example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3069912B8C5D5400CD331D /* Example.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -258,6 +265,12 @@
 		552A42FF2B7AA03E007AEAAD /* goalDeleteModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = goalDeleteModalView.swift; sourceTree = "<group>"; };
 		552A431B2B7AB534007AEAAD /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		5591601B2B64595E00063F06 /* EvaluationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationViewController.swift; sourceTree = "<group>"; };
+		7A3069872B8C5A0900CD331D /* muffler_delete.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = muffler_delete.json; sourceTree = "<group>"; };
+		7A3069892B8C5C9600CD331D /* muffler_happy2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = muffler_happy2.json; sourceTree = "<group>"; };
+		7A30698A2B8C5C9600CD331D /* muffler_surprised.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = muffler_surprised.json; sourceTree = "<group>"; };
+		7A30698B2B8C5C9600CD331D /* muffler_money.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = muffler_money.json; sourceTree = "<group>"; };
+		7A30698C2B8C5C9600CD331D /* muffler_zero.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = muffler_zero.json; sourceTree = "<group>"; };
+		7A3069912B8C5D5400CD331D /* Example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Example.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -387,6 +400,7 @@
 				7A610ADE2B4900C800D3096F /* Moya in Frameworks */,
 				7A0D331F2B7DFE0B007B2736 /* RxKakaoSDKShare in Frameworks */,
 				7A610ADC2B4900C800D3096F /* CombineMoya in Frameworks */,
+				7A30697E2B8C4FEA00CD331D /* Lottie in Frameworks */,
 				7A610AE22B4900C800D3096F /* RxMoya in Frameworks */,
 				208C909A2B6ABBC500C67960 /* RxCocoa in Frameworks */,
 				208C90982B6ABBC500C67960 /* RxBlocking-Dynamic in Frameworks */,
@@ -581,6 +595,19 @@
 			path = Routine;
 			sourceTree = "<group>";
 		};
+		7A3069862B8C5A0900CD331D /* PopupJson */ = {
+			isa = PBXGroup;
+			children = (
+				7A3069892B8C5C9600CD331D /* muffler_happy2.json */,
+				7A30698B2B8C5C9600CD331D /* muffler_money.json */,
+				7A30698A2B8C5C9600CD331D /* muffler_surprised.json */,
+				7A30698C2B8C5C9600CD331D /* muffler_zero.json */,
+				7A3069872B8C5A0900CD331D /* muffler_delete.json */,
+				7A3069912B8C5D5400CD331D /* Example.swift */,
+			);
+			path = PopupJson;
+			sourceTree = "<group>";
+		};
 		7A4C67322B5A47BD008BCAC9 /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
@@ -678,6 +705,7 @@
 		7A610AB62B47FA8E00D3096F /* Money-Planner */ = {
 			isa = PBXGroup;
 			children = (
+				7A3069862B8C5A0900CD331D /* PopupJson */,
 				205E232D2B83524A00E55412 /* Money-PlannerRelease.entitlements */,
 				D29536EF2B4C091400EEA81F /* Money-Planner.entitlements */,
 				7A610AB72B47FA8E00D3096F /* AppDelegate.swift */,
@@ -1060,6 +1088,7 @@
 				7A0D331C2B7DFE0B007B2736 /* RxKakaoSDKFriend */,
 				7A0D331E2B7DFE0B007B2736 /* RxKakaoSDKShare */,
 				7A0D33212B7DFE22007B2736 /* FSCalendar */,
+				7A30697D2B8C4FEA00CD331D /* Lottie */,
 			);
 			productName = "Money-Planner";
 			productReference = 7A610AB42B47FA8E00D3096F /* Money-Planner.app */;
@@ -1094,6 +1123,7 @@
 				208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				7A0D33152B7DFE0B007B2736 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 				7A0D33202B7DFE22007B2736 /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				7A30697C2B8C4FE900CD331D /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = 7A610AB52B47FA8E00D3096F /* Products */;
 			projectDirPath = "";
@@ -1110,10 +1140,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A610AC42B47FA8F00D3096F /* LaunchScreen.storyboard in Resources */,
+				7A30698D2B8C5C9700CD331D /* muffler_happy2.json in Resources */,
 				7A8F3EF92B8506A600480902 /* Config.xcconfig in Resources */,
 				7A610AC12B47FA8F00D3096F /* Assets.xcassets in Resources */,
+				7A30698F2B8C5C9700CD331D /* muffler_money.json in Resources */,
+				7A3069902B8C5C9700CD331D /* muffler_zero.json in Resources */,
 				D20D701E2B668800006D6762 /* Home.json in Resources */,
+				7A3069882B8C5A0900CD331D /* muffler_delete.json in Resources */,
 				7A8F3EF12B85059D00480902 /* consumeDummy.json in Resources */,
+				7A30698E2B8C5C9700CD331D /* muffler_surprised.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1208,6 +1243,7 @@
 				D20D6FFE2B5FDF4C006D6762 /* ConsumeDetail.swift in Sources */,
 				7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */,
 				7A8F3EF42B85059D00480902 /* GoalTitleViewController.swift in Sources */,
+				7A3069922B8C5D5400CD331D /* Example.swift in Sources */,
 				7A610AE52B491ED600D3096F /* Dummy.swift in Sources */,
 				7A8F3F0D2B8524B100480902 /* GoalMainViewModel.swift in Sources */,
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
@@ -1532,6 +1568,14 @@
 				minimumVersion = 2.8.4;
 			};
 		};
+		7A30697C2B8C4FE900CD331D /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.4.1;
+			};
+		};
 		7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya";
@@ -1597,6 +1641,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7A0D33202B7DFE22007B2736 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
+		};
+		7A30697D2B8C4FEA00CD331D /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A30697C2B8C4FE900CD331D /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 		7A610ADB2B4900C800D3096F /* CombineMoya */ = {
 			isa = XCSwiftPackageProductDependency;

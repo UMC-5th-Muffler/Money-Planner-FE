@@ -24,15 +24,9 @@ import Foundation
 //}
 
 struct GoalDetailResponse: Decodable {
-    public let isSuccess: Bool
-    public let message: String
-    public let result: GoalDetail
-
-    enum CodingKeys: String, CodingKey {
-        case isSuccess
-        case message
-        case result
-    }
+    let isSuccess: Bool
+    let message: String
+    let result: GoalDetail
 }
 
 struct GoalDetail: Decodable {
