@@ -9,9 +9,9 @@ import Foundation
 
 //goal detail 최상단을 위한 정보
 struct GoalDetailResponse: Decodable {
-    public let isSuccess: Bool
-    public let message: String
-    public let result: GoalDetail
+    let isSuccess: Bool
+    let message: String
+    let result: GoalDetail
 }
 
 struct GoalDetail: Decodable {
