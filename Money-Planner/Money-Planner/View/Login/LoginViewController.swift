@@ -19,6 +19,8 @@ class LoginViewController: UIViewController {
     
     private let logoImageView = UIImageView()
     private let sloganLabel = MPLabel()
+    private let subLabel = MPLabel()
+
     private let kakaoLoginButton = UIButton()
     private let appleLoginButton = UIButton()//ASAuthorizationAppleIDButton()
     
@@ -30,54 +32,82 @@ class LoginViewController: UIViewController {
         view.backgroundColor = .mpWhite
         
         // 뷰 설정
-        setuplogoImageView()
         setupSloganLabel()
+        setupSubLabel()
+        setuplogoImageView()
         setupButtons()
         bindEvents()
     }
     
     //아래에서부터 setup 함수들이다. 위의 4가지 요소의 '구성 + 오토레이아웃' 이다.
     
-    private func setuplogoImageView() {
-        logoImageView.image = UIImage(named: "appstore") // "logoImage"는 이미지 이름
-        logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(logoImageView)
-        
-        NSLayoutConstraint.activate([
-            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 150), // 예시 상수 값
-            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoImageView.widthAnchor.constraint(equalToConstant: 193),
-            logoImageView.heightAnchor.constraint(equalToConstant: 193)
-        ])
-    }
+
     
     private func setupSloganLabel() {
-        sloganLabel.text = "당신의 현명한 소비습관 도우미, 머플러!"
-        sloganLabel.textColor = .mpBlack
-        sloganLabel.font = UIFont.mpFont26B()
+        // NSMutableParagraphStyle 객체 생성 및 행 간격 설정
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 5 // 원하는 행 간격 값 설정
+        
+        // NSAttributedString 설정
+        let attributedString = NSMutableAttributedString(string: "나의 소비목표 달성을\n도와줄 머플러",
+                                                         attributes: [.paragraphStyle: paragraphStyle,
+                                                                      .foregroundColor: UIColor.mpBlack,
+                                                                      .font: UIFont.mpFont26B()])
+        
+        sloganLabel.attributedText = attributedString
         sloganLabel.textAlignment = .center
-        sloganLabel.numberOfLines = 0 // 여러 줄로 표시 가능하도록 설정
+        sloganLabel.numberOfLines = 2 // 여러 줄로 표시 가능하도록 설정
+        
         sloganLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sloganLabel)
         
         NSLayoutConstraint.activate([
-            sloganLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 40), // 예시 상수 값
+            sloganLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120), // 예시 상수 값
             sloganLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             sloganLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            sloganLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            sloganLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            // 높이 제약 조건을 삭제하거나 수정할 수 있습니다. 높이가 고정되어 있으면 행 간격 변경이 제대로 반영되지 않을 수 있습니다.
+        ])
+    }
+
+    
+    private func setupSubLabel() {
+        subLabel.text = "디테일한 목표로 소비내역을 관리해요"
+        subLabel.textColor = .mpDarkGray
+        subLabel.font = UIFont.mpFont14M()
+        subLabel.textAlignment = .center
+        subLabel.numberOfLines = 0 // 여러 줄로 표시 가능하도록 설정
+        subLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(subLabel)
+        
+        NSLayoutConstraint.activate([
+            subLabel.topAnchor.constraint(equalTo: sloganLabel.bottomAnchor, constant: 12), // 예시 상수 값
+            subLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            subLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            subLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
+    }
+    private func setuplogoImageView() {
+        logoImageView.image = UIImage(named: "img_popup_save") // "logoImage"는 이미지 이름
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        logoImageView.contentMode = .scaleAspectFit
+        view.addSubview(logoImageView)
+        NSLayoutConstraint.activate([
+            logoImageView.topAnchor.constraint(equalTo: subLabel.bottomAnchor, constant: 12), // 예시 상수 값
+            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImageView.widthAnchor.constraint(equalToConstant: 280),
+            logoImageView.heightAnchor.constraint(equalToConstant: 280)
         ])
     }
     
-    
     private func setupButtons() {
-        
         setupKakaoButton(kakaoLoginButton)
         setupAppleButton(appleLoginButton)
-        
+
         // Apple 로그인 버튼 설정
         NSLayoutConstraint.activate([
             appleLoginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            appleLoginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -150),
+            appleLoginButton.bottomAnchor.constraint(equalTo: kakaoLoginButton.topAnchor, constant: -16),
             appleLoginButton.widthAnchor.constraint(equalToConstant: 332),
             appleLoginButton.heightAnchor.constraint(equalToConstant: 50)
         ])
@@ -85,7 +115,7 @@ class LoginViewController: UIViewController {
         // 카카오 로그인 버튼 설정
         NSLayoutConstraint.activate([
             kakaoLoginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            kakaoLoginButton.bottomAnchor.constraint(equalTo: appleLoginButton.topAnchor, constant: -15),
+            kakaoLoginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -60),
             kakaoLoginButton.widthAnchor.constraint(equalToConstant: 332),
             kakaoLoginButton.heightAnchor.constraint(equalToConstant: 50)
         ])
