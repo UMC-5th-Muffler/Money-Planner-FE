@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KakaoSDKAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -18,6 +19,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
+    //     ///userdefaults 안에서 이전 로그인 여부 파악하고 자동로그인.
+    //     ///없으면 로그인 화면으로 이동
+    //     window?.rootViewController = LoginViewController()
+    //     window?.makeKeyAndVisible()
+    // }
+    
+    // //kakao authorization 위해 추가
+    // func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+    //     if let url = URLContexts.first?.url {
+    //         if (AuthApi.isKakaoTalkLoginUrl(url)) {
+    //             _ = AuthController.handleOpenUrl(url: url)
+    //         }
+    //     }
+    // }
         let tabBarController = CustomTabBarController()
         tabBarController.tabBar.tintColor = .mpMainColor
 

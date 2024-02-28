@@ -6,112 +6,154 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import KakaoSDKCommon
+import KakaoSDKAuth
+import KakaoSDKUser
+import AuthenticationServices
+import Moya
+
 
 class LoginViewController: UIViewController {
     
-    private lazy var headerView = HeaderView(title: "헤더 타이틀")
-    private lazy var descriptionView = DescriptionView(text: "메인 설명", alignToCenter: true)
-    private lazy var subDescriptionView = SubDescriptionView(text: "부가 설명", alignToCenter: false)
-    private lazy var checkButton = CheckBtn()
-    private lazy var mainButton = MainBottomBtn(title: "메인 버튼")
-    private lazy var smallButtonView = SmallBtnView()
+    private let logoImageView = UIImageView()
+    private let sloganLabel = MPLabel()
+    private let kakaoLoginButton = UIButton()
+    private let appleLoginButton = UIButton()//ASAuthorizationAppleIDButton()
     
+    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = UIColor(named: "mpWhite")
         
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground  // 또는 UIColor.mpWhite, 적절한 색상 설정
+        view.backgroundColor = .mpWhite
         
-        setupHeaderView()
-        setupDescriptionView()
-        setupSubDescriptionView()
-        setupCheckButton()
-        setupMainButton()
-        setupSmallButtonView()
+        // 뷰 설정
+        setuplogoImageView()
+        setupSloganLabel()
+        setupButtons()
+        bindEvents()
     }
     
-    private func setupHeaderView() {
-        view.addSubview(headerView)
-        headerView.translatesAutoresizingMaskIntoConstraints = false
+    //아래에서부터 setup 함수들이다. 위의 4가지 요소의 '구성 + 오토레이아웃' 이다.
+    
+    private func setuplogoImageView() {
+        logoImageView.image = UIImage(named: "appstore") // "logoImage"는 이미지 이름
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(logoImageView)
+        
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 60)
+            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 150), // 예시 상수 값
+            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImageView.widthAnchor.constraint(equalToConstant: 193),
+            logoImageView.heightAnchor.constraint(equalToConstant: 193)
         ])
     }
     
-    private func setupDescriptionView() {
-        view.addSubview(descriptionView)
-        descriptionView.translatesAutoresizingMaskIntoConstraints = false
+    private func setupSloganLabel() {
+        sloganLabel.text = "당신의 현명한 소비습관 도우미, 머플러!"
+        sloganLabel.textColor = .mpBlack
+        sloganLabel.font = UIFont.mpFont26B()
+        sloganLabel.textAlignment = .center
+        sloganLabel.numberOfLines = 0 // 여러 줄로 표시 가능하도록 설정
+        sloganLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(sloganLabel)
+        
         NSLayoutConstraint.activate([
-            descriptionView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 20),
-            descriptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            descriptionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            sloganLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 40), // 예시 상수 값
+            sloganLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            sloganLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            sloganLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
     }
     
-    private func setupSubDescriptionView() {
-        view.addSubview(subDescriptionView)
-        subDescriptionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            subDescriptionView.topAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: 10),
-            subDescriptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            subDescriptionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-        ])
-    }
     
-    
-    private func setupCheckButton() {
-        view.addSubview(checkButton)
-        checkButton.translatesAutoresizingMaskIntoConstraints = false
+    private func setupButtons() {
+        
+        setupKakaoButton(kakaoLoginButton)
+        setupAppleButton(appleLoginButton)
+        
+        // Apple 로그인 버튼 설정
         NSLayoutConstraint.activate([
-            checkButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            checkButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
-            checkButton.widthAnchor.constraint(equalToConstant: 50),
-            checkButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
-    }
-    
-    private func setupMainButton() {
-        mainButton.isEnabled = false
-        view.addSubview(mainButton)
-        mainButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            mainButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            mainButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            mainButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            mainButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            mainButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
-    }
-    
-    private func setupSmallButtonView() {
-        view.addSubview(smallButtonView)
-        smallButtonView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            smallButtonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            smallButtonView.bottomAnchor.constraint(equalTo: mainButton.topAnchor, constant: -20),
-            smallButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            smallButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            smallButtonView.heightAnchor.constraint(equalToConstant: 50)
+            appleLoginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            appleLoginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -150),
+            appleLoginButton.widthAnchor.constraint(equalToConstant: 332),
+            appleLoginButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         
-        smallButtonView.addCancelAction(target: self, action: #selector(cancelButtonTapped))
-        smallButtonView.addCompleteAction(target: self, action: #selector(completeButtonTapped))
+        // 카카오 로그인 버튼 설정
+        NSLayoutConstraint.activate([
+            kakaoLoginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            kakaoLoginButton.bottomAnchor.constraint(equalTo: appleLoginButton.topAnchor, constant: -15),
+            kakaoLoginButton.widthAnchor.constraint(equalToConstant: 332),
+            kakaoLoginButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
     }
     
-    @objc private func cancelButtonTapped() {
-        print("취소 버튼이 탭되었습니다.")
-        // 취소 버튼 액션 처리
+    //위의 setupButtons의 부속 함수
+    private func setupKakaoButton(_ button: UIButton) {
+        button.setImage(UIImage(named: "btn_login_kakao"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.addTarget(self, action: #selector(loginToKakao), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(button)
     }
     
-    @objc private func completeButtonTapped() {
-        print("완료 버튼이 탭되었습니다.")
-        // 완료 버튼 액션 처리
+    private func setupAppleButton(_ button: UIButton /*ASAuthorizationAppleIDButton*/) {
+        button.setImage(UIImage(named: "btn_login_apple"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.addTarget(self, action: #selector(loginToApple), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(button)
     }
+    
+    private func bindEvents() {
+        // 카카오 로그인 버튼 이벤트 바인딩
+        kakaoLoginButton.rx.tap
+            .bind { [weak self] in self?.loginToKakao() }
+            .disposed(by: disposeBag)
+        
+        // 애플 로그인 버튼 이벤트 바인딩=> 수정해야 됨.
+        //        secondButton.rx.tap
+        //            .bind { [weak self] in self?.loginToApple() }
+        //            .disposed(by: disposeBag)
+    }
+    
+    @objc private func loginToKakao() {
+        if UserApi.isKakaoTalkLoginAvailable() {
+            UserApi.shared.rx_loginWithKakaoTalk()
+                .subscribe(onNext: { [weak self] oauthToken in
+                    self?.handleLoginResult(oauthToken: oauthToken, error: nil)
+                }, onError: { [weak self] error in
+                    self?.handleLoginResult(oauthToken: nil, error: error)
+                })
+                .disposed(by: disposeBag)
+        } else {
+            UserApi.shared.rx_loginWithKakaoAccount()
+                .subscribe(onNext: { [weak self] oauthToken in
+                    self?.handleLoginResult(oauthToken: oauthToken, error: nil)
+                }, onError: { [weak self] error in
+                    self?.handleLoginResult(oauthToken: nil, error: error)
+                })
+                .disposed(by: disposeBag)
+        }
+    }
+    
+    @objc private func loginToApple() {
+        
+    }
+    
+    
+    private func handleLoginResult(oauthToken: OAuthToken?, error: Error?) {
+        if let error = error {
+            print("로그인 실패: \(error.localizedDescription)")
+        } else if let oauthToken = oauthToken {
+            print("로그인 성공")
+            // 로그인 성공 후 처리
+            
+        }
+    }
+    
 }
-
 
