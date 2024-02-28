@@ -69,12 +69,33 @@ extension UserApi {
 class KakaoLogin {
     
     static let shared = KakaoLogin()
-    
+    private let disposeBag = DisposeBag()
+
     private init() {}
     
     func loginToKakao() {
-        // 여기에 카카오 로그인 로직 구현
-    }
+            if UserApi.isKakaoTalkLoginAvailable() {
+                UserApi.shared.rx_loginWithKakaoTalk()
+                    .subscribe(onNext: { oauthToken in
+                        print("로그인 성공: \(oauthToken)")
+                        // 성공 처리 로직
+                    }, onError: { error in
+                        print("로그인 실패: \(error)")
+                        // 실패 처리 로직
+                    })
+                    .disposed(by: disposeBag)
+            } else {
+                UserApi.shared.rx_loginWithKakaoAccount()
+                    .subscribe(onNext: { oauthToken in
+                        print("로그인 성공: \(oauthToken)")
+                        // 성공 처리 로직
+                    }, onError: { error in
+                        print("로그인 실패: \(error)")
+                        // 실패 처리 로직
+                    })
+                    .disposed(by: disposeBag)
+            }
+        }
     
     // 기타 카카오 로그인 관련 메소드 ...
 }

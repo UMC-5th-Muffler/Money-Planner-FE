@@ -19,8 +19,8 @@ class LoginViewController: UIViewController {
     
     private let logoImageView = UIImageView()
     private let sloganLabel = MPLabel()
-    private let firstButton = UIButton()
-    private let secondButton = UIButton()//ASAuthorizationAppleIDButton()
+    private let kakaoLoginButton = UIButton()
+    private let appleLoginButton = UIButton()//ASAuthorizationAppleIDButton()
     
     private let disposeBag = DisposeBag()
     
@@ -71,23 +71,23 @@ class LoginViewController: UIViewController {
     
     private func setupButtons() {
         
-        setupKakaoButton(firstButton)
-        setupAppleButton(secondButton)
+        setupKakaoButton(kakaoLoginButton)
+        setupAppleButton(appleLoginButton)
         
         // Apple 로그인 버튼 설정
         NSLayoutConstraint.activate([
-            secondButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            secondButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -150),
-            secondButton.widthAnchor.constraint(equalToConstant: 332),
-            secondButton.heightAnchor.constraint(equalToConstant: 50)
+            appleLoginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            appleLoginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -150),
+            appleLoginButton.widthAnchor.constraint(equalToConstant: 332),
+            appleLoginButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         
         // 카카오 로그인 버튼 설정
         NSLayoutConstraint.activate([
-            firstButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            firstButton.bottomAnchor.constraint(equalTo: secondButton.topAnchor, constant: -15),
-            firstButton.widthAnchor.constraint(equalToConstant: 332),
-            firstButton.heightAnchor.constraint(equalToConstant: 50)
+            kakaoLoginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            kakaoLoginButton.bottomAnchor.constraint(equalTo: appleLoginButton.topAnchor, constant: -15),
+            kakaoLoginButton.widthAnchor.constraint(equalToConstant: 332),
+            kakaoLoginButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
@@ -110,7 +110,7 @@ class LoginViewController: UIViewController {
     
     private func bindEvents() {
         // 카카오 로그인 버튼 이벤트 바인딩
-        firstButton.rx.tap
+        kakaoLoginButton.rx.tap
             .bind { [weak self] in self?.loginToKakao() }
             .disposed(by: disposeBag)
         
