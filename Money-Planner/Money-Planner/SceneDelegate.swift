@@ -19,16 +19,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
          guard let windowScene = (scene as? UIWindowScene) else { return }
          window = UIWindow(windowScene: windowScene)
          
-         // UserDefaults를 사용하여 이전 로그인 여부 확인 및 자동 로그인 처리
-         // 예시 코드로, 실제 앱에서는 로그인 상태를 관리하는 더 안전한 방법을 사용해야 합니다.
-         let isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
-         if isLoggedIn {
-             // 로그인 상태이면 메인 화면으로 이동
-             setupMainInterface()
-         } else {
-             // 로그인 상태가 아니면 로그인 화면으로 이동
-             window?.rootViewController = LoginViewController()
-         }
+//         // UserDefaults를 사용하여 이전 로그인 여부 확인 및 자동 로그인 처리
+//         // 예시 코드로, 실제 앱에서는 로그인 상태를 관리하는 더 안전한 방법을 사용해야 합니다.
+//         let isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
+//         if isLoggedIn {
+//             // 로그인 상태이면 메인 화면으로 이동
+//             setupMainInterface()
+//         } else {
+//             // 로그인 상태가 아니면 로그인 화면으로 이동
+//             window?.rootViewController = LoginViewController()
+//         }
+         // 로그인 상태이면 메인 화면으로 이동
+         setupMainInterface()
          window?.makeKeyAndVisible()
      }
      
