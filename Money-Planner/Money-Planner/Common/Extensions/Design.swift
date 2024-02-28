@@ -16,6 +16,10 @@ extension UIFont {
         return UIFont(name: "AppleSDGothicNeo-Bold", size: 26) ?? UIFont.systemFont(ofSize: 26, weight: .bold)
     }
     
+    static func mpFont21SB() -> UIFont {
+        return UIFont(name: "AppleSDGothicNeo-SemiBold", size: 21) ?? UIFont.systemFont(ofSize: 21, weight: .light)
+    }
+    
     static func mpFont20B() -> UIFont {
         return UIFont(name: "AppleSDGothicNeo-Bold", size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .bold)
     }
@@ -71,18 +75,38 @@ extension UIFont {
     static func mpFont12R() -> UIFont {
         return UIFont(name: "AppleSDGothicNeo-Regular", size: 12) ?? UIFont.systemFont(ofSize: 12, weight: .regular)
     }
+    
+    static func mpFont10B() -> UIFont {
+        return UIFont(name: "AppleSDGothicNeo-Bold", size: 10) ?? UIFont.systemFont(ofSize: 10, weight: .bold)
+    }
+    
+    static func mpFont10M() -> UIFont {
+        return UIFont(name: "AppleSDGothicNeo-Medium", size: 10) ?? UIFont.systemFont(ofSize: 10, weight: .medium)
+    }
+    
+    static func mpFont10R() -> UIFont {
+        return UIFont(name: "AppleSDGothicNeo-Regular", size: 10) ?? UIFont.systemFont(ofSize: 10, weight: .regular)
+    }
 }
 
 
 //Custom Color
 extension UIColor {
-    static let mpMainColor = UIColor(red: 0/255, green: 117/255, blue: 255/255, alpha: 1) // #0075FF
+    static let mpMainColor = UIColor(red: 19/255, green: 203/255, blue: 191/255, alpha: 1) // #19CBBF
+    static let mpMainColorA30 = UIColor(red: 19/255, green: 203/255, blue: 191/255, alpha: 0.3) // #19CBBF
+
+    static let mpGraph = UIColor(red: 40/255, green: 216/255, blue: 204/255, alpha: 1) // #28D8CC
+    static let mpCalendarHighLight = UIColor(red: 223/255, green: 242/255, blue: 241/255, alpha: 1) // #DFF2F1
     static let mpGray = UIColor(red: 190/255, green: 190/255, blue: 192/255, alpha: 1) // #BEBEC0
     static let mpLightGray = UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1) // #E8E8E8
     static let mpDarkGray = UIColor(red: 138/255, green: 138/255, blue: 138/255, alpha: 1) // #8A8A8A
     static let mpGypsumGray = UIColor(red: 246/255, green: 246/255, blue: 246/255, alpha: 1) // #F6F6F6
+    static let mpMidGray = UIColor(red: 196/255, green: 196/255, blue: 196/255, alpha: 1) // #C4C4C4
     static let mpCharcoal = UIColor(red: 84/255, green: 89/255, blue: 101/255, alpha: 1) // #545965
     static let mpWhite = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1) // #FFFFFF
     static let mpBlack = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // #000000
+    static let mpRed = UIColor(red: 255/255, green: 88/255, blue: 89/255, alpha: 1)  //##FF5859
+    static let mpDim = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.4)
 }
+
 

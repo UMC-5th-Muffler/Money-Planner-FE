@@ -1,0 +1,34 @@
+[
+  {
+    "date": "2024-02-01",
+    "dailyTotalCost": 54787,
+    "expenseDetailList": [
+      {"title": "교통", "cost": 12074},
+      {"title": "쇼핑", "cost": 4267},
+      {"title": "기타", "cost": 2734},
+      {"title": "기타", "cost": 13783},
+      {"title": "식사", "cost": 4426}
+    ]
+  },
+  {
+    "date": "2024-02-02",
+    "dailyTotalCost": 87180,
+    "expenseDetailList": [
+      {"title": "교통", "cost": 14498},
+      {"title": "쇼핑", "cost": 19898},
+      {"title": "식사", "cost": 6872},
+      {"title": "쇼핑", "cost": 12139}
+    ]
+  },
+  {
+    "date": "2024-02-12",
+    "dailyTotalCost": 73836,
+    "expenseDetailList": [
+      {"title": "식사", "cost": 9805},
+      {"title": "식사", "cost": 11865},
+      {"title": "기타", "cost": 11343},
+      {"title": "교통", "cost": 15389}
+    ]
+  }
+]
+

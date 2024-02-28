@@ -1,0 +1,57 @@
+
+
+
+"activeGoalResponse": {
+            "goalId": 2,
+            "goalTitle": "title",
+            "goalBudget": 4000,
+            "startDate": "2024-01-03",
+            "endDate": "2024-01-06",
+            "totalCost": 322
+}
+"dailyList": [
+        # inactive
+        {
+            "날짜" : "2024-01-02"
+            "dailyRate": null,
+        },
+    
+        # active
+       {
+           "날짜" : "2024-01-03"
+           "dailyBudget": 1000,
+           "dailyTotalCost": 111,
+           "dailyRate": "LOW",
+           "isZeroDay": false
+       },
+       {
+           "날짜" : "2024-01-04"
+           "dailyBudget": 1000,
+           "dailyTotalCost": 110,
+           "dailyRate": null,
+           "isZeroDay": false
+       },
+       {
+           "날짜" : "2024-01-05"
+           "dailyBudget": 1000,
+           "dailyTotalCost": 101,
+           "dailyRate": "LOW",
+           "isZeroDay": false
+       },
+       {
+           "날짜" : "2024-01-06"
+           "dailyBudget": 1000,
+           "dailyTotalCost": 0,
+           "dailyRate": "HIGH",
+           "isZeroDay": true
+       }
+       # inactive
+       {
+           "날짜" : "2024-01-05"
+           "dailyRate": null,
+       },
+   ]
+}
+
+
+
