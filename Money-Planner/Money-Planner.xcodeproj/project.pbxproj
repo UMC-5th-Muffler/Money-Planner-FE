@@ -20,12 +20,8 @@
 		208C90912B6AB7A200C67960 /* MufflerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90902B6AB7A200C67960 /* MufflerViewModel.swift */; };
 		208C90932B6AB7DA00C67960 /* ConnectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90922B6AB7DA00C67960 /* ConnectModel.swift */; };
 		208C90962B6ABBC500C67960 /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 208C90952B6ABBC500C67960 /* RxBlocking */; };
-		208C90982B6ABBC500C67960 /* RxBlocking-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 208C90972B6ABBC500C67960 /* RxBlocking-Dynamic */; };
 		208C909A2B6ABBC500C67960 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 208C90992B6ABBC500C67960 /* RxCocoa */; };
-		208C909C2B6ABBC500C67960 /* RxCocoa-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */; };
 		208C909E2B6ABBC500C67960 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 208C909D2B6ABBC500C67960 /* RxRelay */; };
-		208C909F2B6ABBE900C67960 /* RxBlocking-Dynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 208C90972B6ABBC500C67960 /* RxBlocking-Dynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		208C90A12B6ABBEB00C67960 /* RxCocoa-Dynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		208C90A42B6CD72000C67960 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90A32B6CD72000C67960 /* PopupViewController.swift */; };
 		208C90A62B6D15BB00C67960 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90A52B6D15BB00C67960 /* ProfileViewController.swift */; };
 		208C90A82B6D48B300C67960 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90A72B6D48B300C67960 /* User.swift */; };
@@ -89,6 +85,7 @@
 		7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AB72B47FA8E00D3096F /* AppDelegate.swift */; };
 		7A610ABA2B47FA8E00D3096F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */; };
 		7A610ABC2B47FA8E00D3096F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610ABB2B47FA8E00D3096F /* LoginViewController.swift */; };
+		7A610AC12B47FA8F00D3096F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A610AC02B47FA8F00D3096F /* Assets.xcassets */; };
 		7A610AC42B47FA8F00D3096F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A610AC22B47FA8F00D3096F /* LaunchScreen.storyboard */; };
 		7A610AD22B49004200D3096F /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AD12B49004200D3096F /* MyPageViewController.swift */; };
 		7A610AD62B49007100D3096F /* BattleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AD52B49007100D3096F /* BattleViewController.swift */; };
@@ -104,15 +101,6 @@
 		7A610AF02B49414100D3096F /* RegisterProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AEF2B49414100D3096F /* RegisterProfileViewController.swift */; };
 		7A610AF22B49421F00D3096F /* KakaoLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF12B49421F00D3096F /* KakaoLogin.swift */; };
 		7A610AF42B49422E00D3096F /* AppleLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF32B49422E00D3096F /* AppleLogin.swift */; };
-		7AC060FF2B4C5D78008C0E63 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC060FE2B4C5D78008C0E63 /* Design.swift */; };
-		7AC061022B4C61D2008C0E63 /* RxKakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 7AC061012B4C61D2008C0E63 /* RxKakaoSDK */; };
-		7AC061042B4C61D2008C0E63 /* RxKakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7AC061032B4C61D2008C0E63 /* RxKakaoSDKAuth */; };
-		7AC061062B4C61D2008C0E63 /* RxKakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 7AC061052B4C61D2008C0E63 /* RxKakaoSDKCommon */; };
-		7AC061082B4C61D2008C0E63 /* RxKakaoSDKFriend in Frameworks */ = {isa = PBXBuildFile; productRef = 7AC061072B4C61D2008C0E63 /* RxKakaoSDKFriend */; };
-		7AC0610A2B4C61D2008C0E63 /* RxKakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = 7AC061092B4C61D2008C0E63 /* RxKakaoSDKShare */; };
-		7AC0610C2B4CDBD6008C0E63 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AC0610B2B4CDBD6008C0E63 /* Assets.xcassets */; };
-		7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF12B49421F00D3096F /* KakaoLoginViewController.swift */; };
-		7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF32B49422E00D3096F /* AppleLoginViewController.swift */; };
 		7A8F3EC82B84FE6100480902 /* CustomCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EC52B84FE6100480902 /* CustomCalendarView.swift */; };
 		7A8F3EC92B84FE6100480902 /* GoalComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EC62B84FE6100480902 /* GoalComponents.swift */; };
 		7A8F3ECA2B84FE6100480902 /* GoalDailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EC72B84FE6100480902 /* GoalDailyViewController.swift */; };
@@ -211,8 +199,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				208C90A12B6ABBEB00C67960 /* RxCocoa-Dynamic in Embed Frameworks */,
-				208C909F2B6ABBE900C67960 /* RxBlocking-Dynamic in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -290,6 +276,7 @@
 		7A610AB72B47FA8E00D3096F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7A610AB92B47FA8E00D3096F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7A610ABB2B47FA8E00D3096F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		7A610AC02B47FA8F00D3096F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A610AC32B47FA8F00D3096F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7A610AC52B47FA8F00D3096F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A610AD12B49004200D3096F /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
@@ -302,10 +289,6 @@
 		7A610AEF2B49414100D3096F /* RegisterProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterProfileViewController.swift; sourceTree = "<group>"; };
 		7A610AF12B49421F00D3096F /* KakaoLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLogin.swift; sourceTree = "<group>"; };
 		7A610AF32B49422E00D3096F /* AppleLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLogin.swift; sourceTree = "<group>"; };
-		7AC060FE2B4C5D78008C0E63 /* Design.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design.swift; sourceTree = "<group>"; };
-		7AC0610B2B4CDBD6008C0E63 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		7A610AF12B49421F00D3096F /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
-		7A610AF32B49422E00D3096F /* AppleLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewController.swift; sourceTree = "<group>"; };
 		7A8F3EC52B84FE6100480902 /* CustomCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCalendarView.swift; sourceTree = "<group>"; };
 		7A8F3EC62B84FE6100480902 /* GoalComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalComponents.swift; sourceTree = "<group>"; };
 		7A8F3EC72B84FE6100480902 /* GoalDailyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalDailyViewController.swift; sourceTree = "<group>"; };
@@ -407,14 +390,12 @@
 				7A0D331B2B7DFE0B007B2736 /* RxKakaoSDKCommon in Frameworks */,
 				208C909E2B6ABBC500C67960 /* RxRelay in Frameworks */,
 				7A0D331D2B7DFE0B007B2736 /* RxKakaoSDKFriend in Frameworks */,
-				208C909C2B6ABBC500C67960 /* RxCocoa-Dynamic in Frameworks */,
 				7A610ADE2B4900C800D3096F /* Moya in Frameworks */,
 				7A0D331F2B7DFE0B007B2736 /* RxKakaoSDKShare in Frameworks */,
 				7A610ADC2B4900C800D3096F /* CombineMoya in Frameworks */,
 				7A30697E2B8C4FEA00CD331D /* Lottie in Frameworks */,
 				7A610AE22B4900C800D3096F /* RxMoya in Frameworks */,
 				208C909A2B6ABBC500C67960 /* RxCocoa in Frameworks */,
-				208C90982B6ABBC500C67960 /* RxBlocking-Dynamic in Frameworks */,
 				7A0D33192B7DFE0B007B2736 /* RxKakaoSDKAuth in Frameworks */,
 				7A610AE02B4900C800D3096F /* ReactiveMoya in Frameworks */,
 				208C90962B6ABBC500C67960 /* RxBlocking in Frameworks */,
@@ -727,11 +708,11 @@
 				7A610ACD2B480B1400D3096F /* ViewModel */,
 				7A610ACC2B480B0E00D3096F /* View */,
 				7A610ACB2B480AFF00D3096F /* Network */,
+				7A610AC02B47FA8F00D3096F /* Assets.xcassets */,
 				7A610AC22B47FA8F00D3096F /* LaunchScreen.storyboard */,
 				7A610AC52B47FA8F00D3096F /* Info.plist */,
-				7AC0610B2B4CDBD6008C0E63 /* Assets.xcassets */,
 				7A8F3EF82B8506A600480902 /* Config.xcconfig */,
-				/* D2D0B7322B6A74CD003B6B5E Config.xcconfig */,
+				D2D0B7322B6A74CD003B6B5E /* Config.xcconfig */,
 			);
 			path = "Money-Planner";
 			sourceTree = "<group>";
@@ -1089,9 +1070,7 @@
 				7A610ADF2B4900C800D3096F /* ReactiveMoya */,
 				7A610AE12B4900C800D3096F /* RxMoya */,
 				208C90952B6ABBC500C67960 /* RxBlocking */,
-				208C90972B6ABBC500C67960 /* RxBlocking-Dynamic */,
 				208C90992B6ABBC500C67960 /* RxCocoa */,
-				208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */,
 				208C909D2B6ABBC500C67960 /* RxRelay */,
 				7A0D33162B7DFE0B007B2736 /* RxKakaoSDK */,
 				7A0D33182B7DFE0B007B2736 /* RxKakaoSDKAuth */,
@@ -1150,7 +1129,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7AC0610C2B4CDBD6008C0E63 /* Assets.xcassets in Resources */,
 				7A610AC42B47FA8F00D3096F /* LaunchScreen.storyboard in Resources */,
 				7A30698D2B8C5C9700CD331D /* muffler_happy2.json in Resources */,
 				7A8F3EF92B8506A600480902 /* Config.xcconfig in Resources */,
@@ -1260,7 +1238,6 @@
 				7A8F3F0D2B8524B100480902 /* GoalMainViewModel.swift in Sources */,
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
 				7A610AF42B49422E00D3096F /* AppleLogin.swift in Sources */,
-				7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */,
 				208C90CF2B7BBC8400C67960 /* ExpenseCreateRequest.swift in Sources */,
 				551E8B762B7D13490008476B /* zeroModalView.swift in Sources */,
 				20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */,
@@ -1278,7 +1255,6 @@
 				D20D70022B5FF088006D6762 /* Formatter.swift in Sources */,
 				7AC060FF2B4C5D78008C0E63 /* Design.swift in Sources */,
 				7A610AF22B49421F00D3096F /* KakaoLogin.swift in Sources */,
-				7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */,
 				7A8F3EF52B85059D00480902 /* GoalPeriodVeiwController.swift in Sources */,
 				7A8F3F092B8524B100480902 /* GoalExpenseViewModel.swift in Sources */,
 				7A8F3ED42B85055D00480902 /* PeriodCalendarViewController.swift in Sources */,
@@ -1479,7 +1455,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 387JTQ5ATJ;
+				DEVELOPMENT_TEAM = 4ND496J48G;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Money-Planner/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1493,7 +1469,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.umc.Money-Planner";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.umc.Money-Planner15";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1511,7 +1487,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Money-Planner/Money-PlannerRelease.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 387JTQ5ATJ;
+				DEVELOPMENT_TEAM = 4ND496J48G;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Money-Planner/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1525,7 +1501,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.umc.Money-Planner";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.umc.Money-Planner15";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1598,14 +1574,6 @@
 				minimumVersion = 15.0.3;
 			};
 		};
-		7AC061002B4C61D2008C0E63 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kakao/kakao-ios-sdk-rx";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.20.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1614,20 +1582,10 @@
 			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxBlocking;
 		};
-		208C90972B6ABBC500C67960 /* RxBlocking-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = "RxBlocking-Dynamic";
-		};
 		208C90992B6ABBC500C67960 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxCocoa;
-		};
-		208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = "RxCocoa-Dynamic";
 		};
 		208C909D2B6ABBC500C67960 /* RxRelay */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1688,31 +1646,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7A610ADA2B4900C800D3096F /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = RxMoya;
-		};
-		7AC061012B4C61D2008C0E63 /* RxKakaoSDK */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7AC061002B4C61D2008C0E63 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
-			productName = RxKakaoSDK;
-		};
-		7AC061032B4C61D2008C0E63 /* RxKakaoSDKAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7AC061002B4C61D2008C0E63 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
-			productName = RxKakaoSDKAuth;
-		};
-		7AC061052B4C61D2008C0E63 /* RxKakaoSDKCommon */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7AC061002B4C61D2008C0E63 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
-			productName = RxKakaoSDKCommon;
-		};
-		7AC061072B4C61D2008C0E63 /* RxKakaoSDKFriend */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7AC061002B4C61D2008C0E63 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
-			productName = RxKakaoSDKFriend;
-		};
-		7AC061092B4C61D2008C0E63 /* RxKakaoSDKShare */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7AC061002B4C61D2008C0E63 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
-			productName = RxKakaoSDKShare;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
