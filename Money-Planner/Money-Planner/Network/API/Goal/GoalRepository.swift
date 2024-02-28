@@ -37,25 +37,13 @@ final class GoalRepository {
             .map(NotNowResponse.self)
     }
     
-    // 목표 상세 페이지 상단 정보를 가져오는 메서드
-//    func getGoalDetail(goalId: Int) -> Single<GoalDetailResponse> {
-//        return provider.rx.request(.getGoalDetail(goalId: goalId))
-//            .filterSuccessfulStatusCodes()
-//            .map(GoalDetailResponse.self)
-//    }
-    func getGoalDetail(goalId: Int) -> Single<GoalDetailResponse> {
+    
+    func getGoalDetail(goalId: String) -> Single<GoalDetailResponse> {
         return provider.rx.request(.getGoalDetail(goalId: goalId))
             .filterSuccessfulStatusCodes()
-            .flatMap { response -> PrimitiveSequence<SingleTrait, Response> in
-                // 응답 데이터가 비어있는지 확인
-                guard !response.data.isEmpty else {
-                    return .error(NetworkError.nilResponse)
-                }
-                return .just(response)
-            }
             .map(GoalDetailResponse.self)
     }
-
+ 
     
     // 목표를 생성하는 메서드
     func postGoal(request: PostGoalRequest) -> Single<PostGoalResponse> {
@@ -79,15 +67,15 @@ final class GoalRepository {
     }
     
     // 목표 상세페이지에서 소비내역 불러오는 용도.
-    func getGoalExpenses(goalId: Int, startDate: String, endDate: String, size: Int, lastDate: String?, lastExpenseId: Int?) -> Single<GoalExpenseResponse> {
-        return provider.rx.request(.goalExpense(goalId: goalId, startDate: startDate, endDate: endDate, size: size, lastDate: lastDate, lastExpenseId: lastExpenseId))
+    func getWeeklyExpenses(goalId: String, startDate: String, endDate: String, size: String, lastDate: String? = nil, lastExpenseId: String? = nil) -> Single<WeeklyExpenseResponse> {
+        return provider.rx.request(.getWeeklyExpenses(goalId: goalId, startDate: startDate, endDate: endDate, size: size, lastDate: lastDate, lastExpenseId: lastExpenseId))
             .filterSuccessfulStatusCodes()
-            .map(GoalExpenseResponse.self)
+            .map(WeeklyExpenseResponse.self)
     }
     
     // 목표 상세페이지의 목표 리포트용
-    func getGoalReport(goalId: Int) -> Single<GoalReportResponse> {
-        return provider.rx.request(.goalReport(goalId: goalId))
+    func getGoalReport(goalId: String) -> Single<GoalReportResponse> {
+        return provider.rx.request(.getGoalReport(goalId: goalId))
             .filterSuccessfulStatusCodes()
             .map(GoalReportResponse.self)
     }

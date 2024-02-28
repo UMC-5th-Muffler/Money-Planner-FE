@@ -37,35 +37,35 @@ class GoalExpenseViewModel {
     }
 
     func fetchWeeklyExpenses(goalId: Int) {
-        guard let goalId = self.goalId, hasNext else { return }
-
-        if let lastDate = lastDate, let lastExpenseId = lastExpenseId, self.goalId == goalId && hasNext {
-            // Pagination 정보가 있고, 동일한 goalId에 대한 요청이고, hasNext가 true이면
-            //10개씩 페이징
-            goalRepository.getGoalExpenses(goalId: goalId, startDate: startDate!, endDate: endDate!, size: 10, lastDate: lastDate, lastExpenseId: lastExpenseId)
-                .subscribe(onSuccess: { [weak self] response in
-                    self?.processExpensesResponse(response)
-                }, onFailure: { error in
-                    print("Error fetching weekly expenses: \(error.localizedDescription)")
-                }).disposed(by: disposeBag)
-        } else if self.goalId != goalId || (hasNext && lastDate == nil && lastExpenseId == nil) {
-            print("Error: Pagination data missing despite more data being available.")
-        }
+//        guard let goalId = self.goalId, hasNext else { return }
+//
+//        if let lastDate = lastDate, let lastExpenseId = lastExpenseId, self.goalId == goalId && hasNext {
+//            // Pagination 정보가 있고, 동일한 goalId에 대한 요청이고, hasNext가 true이면
+//            //10개씩 페이징
+//            goalRepository.getGoalExpenses(goalId: goalId, startDate: startDate!, endDate: endDate!, size: 10, lastDate: lastDate, lastExpenseId: lastExpenseId)
+//                .subscribe(onSuccess: { [weak self] response in
+//                    self?.processExpensesResponse(response)
+//                }, onFailure: { error in
+//                    print("Error fetching weekly expenses: \(error.localizedDescription)")
+//                }).disposed(by: disposeBag)
+//        } else if self.goalId != goalId || (hasNext && lastDate == nil && lastExpenseId == nil) {
+//            print("Error: Pagination data missing despite more data being available.")
+//        }
     }
     
-    private func processExpensesResponse(_ response: GoalExpenseResponse) {
-        if response.isSuccess {
-            let newExpenses = response.result.dailyExpenseList
-            self.goalExpenses.accept(self.goalExpenses.value + newExpenses)
-            
-            // Pagination 정보 업데이트
-            self.hasNext = response.result.hasNext
-            self.lastDate = newExpenses.last?.date
-            self.lastExpenseId = newExpenses.last?.expenseDetailList.last?.expenseId
-        } else {
-            self.hasNext = false
-        }
-    }
+//    private func processExpensesResponse(_ response: GoalExpenseResponse) {
+//        if response.isSuccess {
+//            let newExpenses = response.result.dailyExpenseList
+//            self.goalExpenses.accept(self.goalExpenses.value + newExpenses)
+//            
+//            // Pagination 정보 업데이트
+//            self.hasNext = response.result.hasNext
+//            self.lastDate = newExpenses.last?.date
+//            self.lastExpenseId = newExpenses.last?.expenseDetailList.last?.expenseId
+//        } else {
+//            self.hasNext = false
+//        }
+//    }
     
     // 내부 상태를 초기화합니다.
     func resetData() {

@@ -1,661 +1,43 @@
 //
-//  GoalDetailsViewController.swift
+//  ReportView.swift
 //  Money-Planner
 //
-//  Created by 유철민 on 2/7/24.
+//  Created by 유철민 on 2/28/24.
 //
 
 import Foundation
 import UIKit
-import RxSwift
-import RxCocoa
-import RxMoya
-import Moya
-import FSCalendar
-
-extension GoalDetailsViewController {
-    
-    @objc func showModal() {
-        let modal = ShowingPeriodSelectionModal(startDate: (viewModel.goalDetail.value?.startDate.toDate) ?? Date(), endDate: (viewModel.goalDetail.value?.endDate.toDate) ?? Date())
-        modal.modalPresentationStyle = .popover
-        modal.delegate = self
-        present(modal, animated: true)
-    }
-    
-    func configureSpendingAndReportViews() {
-        
-        spendingView.tapFilterBtn = { [weak self] in
-            self?.showModal()
-        }
-        
-        reportView.goal = GoalDetailViewModel.shared.goalDetail.value // Pass the goal to the report view
-        reportView.tableView.reloadData()
-        
-        spendingView.translatesAutoresizingMaskIntoConstraints = false
-        reportView.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(spendingView)
-        view.addSubview(reportView)
-        
-        // 이곳에서 spendingView와 reportView를 뷰에 추가하고 오토레이아웃을 설정하세요.
-        NSLayoutConstraint.activate([
-            spendingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            spendingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            spendingView.topAnchor.constraint(equalTo: lineView.bottomAnchor, constant: 1),
-            spendingView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            reportView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            reportView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            reportView.topAnchor.constraint(equalTo: lineView.bottomAnchor, constant: 1),
-            reportView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-    }
-}
-
-
-extension GoalDetailsViewController : PeriodSelectionDelegate {
-    func periodSelectionDidSelectDates(startDate: Date, endDate: Date) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.MM.dd"
-        let startDateString = formatter.string(from: startDate)
-        let endDateString = formatter.string(from: endDate)
-        
-        // 필터 버튼의 타이틀 업데이트
-        spendingView.filterBtn.setTitle("\(startDateString) - \(endDateString)", for: .normal)
-        print("보여지는 period 변경 실행")
-    }
-}
-
-class GoalDetailsViewController : UIViewController {
-    
-    private let viewModel = GoalDetailViewModel.shared
-//    let expenseViewModel = GoalExpenseViewModel.shared
-//    let reportViewModel = GoalReportViewModel.shared
-    private let disposeBag = DisposeBag()
-    let goalId : Int
-    
-    private lazy var spendingView = SpendingView()
-    private lazy var reportView = ReportView()
-    
-    init(goalID: Int) {
-        //순서 미정의 된 변수, super init, 정의가 이제 된 변수를 바탕으로 한 개변
-        self.goalId = goalID
-        super.init(nibName: nil, bundle: nil)
-//        configureViews()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        view.backgroundColor = .mpWhite
-//        setupNavigationBar()
-//        setupLayout()
-//        setupTabButtons()
-//        setuplineViews()
-//        configureViews()
-//        configureSpendingAndReportViews()
-//        selectButton(spendingButton) // Default selected button
-//        
-//        // ViewModel의 goalDetail 데이터를 관찰하고 UI 업데이트
-//        viewModel.goalDetail.asObservable()
-//            .compactMap { $0 }
-//            .subscribe(onNext: { [weak self] detail in
-//                // GoalDetail 데이터를 사용하여 UI 업데이트
-//                // 예: self?.titleLabel.text = detail.title
-//            }).disposed(by: disposeBag)
-//        
-//        // ViewModel의 goalExpenses 데이터를 관찰하고 UI 업데이트
-//        viewModel.goalExpenses.asObservable()
-//            .compactMap { $0 }
-//            .subscribe(onNext: { [weak self] expenses in
-//                // GoalExpenses 데이터를 사용하여 UI 업데이트
-//                // 예: self?.updateExpenses(expenses)
-//            }).disposed(by: disposeBag)
-//        
-//        // ViewModel의 CategoryTotalCost 데이터를 관찰하고 UI 업데이트
-//        viewModel.goalReport.asObservable()
-//            .compactMap { $0 }
-//            .subscribe(onNext: { [weak self] goalReportResult in
-//                self?.updateCategory(with: goalReportResult)
-//            }).disposed(by: disposeBag)
-//        
-//        // ViewModel에서 GoalReport 데이터 가져오기
-//        
-//        viewModel.fetchGoalReport(goalId: goalId)
-//        viewModel.fetchGoalDetail(goalId: goalId)
-//        viewModel.fetchGoalExpenses(goalId: goalId, startDate: <#T##String#>, endDate: <#T##String#>, size: 10)
-//        
-//    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .mpWhite
-        setupNavigationBar()
-        setupLayout()
-        setupTabButtons()
-        setuplineViews()
-        selectButton(spendingButton) // Default selected button
-        
-        // ViewModel의 goalDetail 데이터를 관찰하고 UI 업데이트
-        viewModel.goalDetail.asObservable()
-                .compactMap { $0 }
-                .subscribe(onNext: { [weak self] detail in
-                    // GoalDetail 데이터를 사용하여 UI 업데이트
-                    print("상단 goal detail 받기 성공.")
-                    print("\(detail.icon) + \(detail.title)")
-                    // GoalDetail에서 startDate와 endDate를 기반으로 Expenses 데이터 가져오기
-                    self?.viewModel.fetchGoalExpenses(goalId: self!.goalId, startDate: detail.startDate, endDate: detail.endDate, size: 10)
-                }).disposed(by: disposeBag)
-        
-        // ViewModel의 goalExpenses 데이터를 관찰하고 UI 업데이트
-        viewModel.goalExpenses.asObservable()
-            .compactMap { $0 }
-            .subscribe(onNext: { [weak self] expenses in
-                // GoalExpenses 데이터를 사용하여 UI 업데이트
-                // 예: self?.updateExpenses(expenses)
-            }).disposed(by: disposeBag)
-        
-        // ViewModel의 CategoryTotalCost 데이터를 관찰하고 UI 업데이트
-        viewModel.goalReport.asObservable()
-            .compactMap { $0 }
-            .subscribe(onNext: { [weak self] goalReportResult in
-                self?.updateCategory(with: goalReportResult)
-            }).disposed(by: disposeBag)
-        
-        // ViewModel에서 GoalReport 데이터 가져오기
-        viewModel.fetchGoalReport(goalId: goalId)
-        viewModel.fetchGoalDetail(goalId: goalId)
-        // 초기 fetchGoalExpenses 호출은 제거하고, goalDetail 구독 결과에 따라 호출되도록 변경
-        
-        //fetch후 받아와야함.
-        configureViews()
-        configureSpendingAndReportViews()
-    }
-
-    
-    func updateCategory(with reports: GoalReportResult) {
-        reportView.updateCategory(with: reports, goal: viewModel.goalDetail.value!)
-    }
-    
-    var header = HeaderView(title: "")
-    //layer1
-    let dday = DdayLabel()
-    let spanNDuration : MPLabel = {
-        let label = MPLabel()
-        label.text = ""
-        label.font = .mpFont14M()
-        label.textColor = .mpGray
-        return label
-    }()
-    let editBtn : UIButton = {
-        let btn = UIButton()
-        btn.setImage(UIImage(named: "icon_Edit"), for: .normal)
-        btn.tintColor = .mpGray
-        return btn
-    }()
-    
-    //layer2
-    let label1 : MPLabel = {
-        let label = MPLabel()
-        label.text = "소비한 금액"
-        label.font = .mpFont16M()
-        label.textColor = .mpGray
-        label.textAlignment = .left
-        return label
-    }()
-    
-    let label2 : MPLabel = {
-        let label = MPLabel()
-        label.textAlignment = .left
-        return label
-    }()
-    
-    
-    func setupLayout(){
-        
-        view.addSubview(header)
-        view.addSubview(dday)
-        view.addSubview(spanNDuration)
-        view.addSubview(editBtn)
-        view.addSubview(label1)
-        view.addSubview(label2)
-        
-        header.translatesAutoresizingMaskIntoConstraints = false
-        dday.translatesAutoresizingMaskIntoConstraints = false
-        spanNDuration.translatesAutoresizingMaskIntoConstraints = false
-        editBtn.translatesAutoresizingMaskIntoConstraints = false
-        label1.translatesAutoresizingMaskIntoConstraints = false
-        label2.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            header.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            header.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            header.heightAnchor.constraint(equalToConstant: 40)
-        ])
-        
-        // dday 제약 조건
-        NSLayoutConstraint.activate([
-            dday.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 40),
-            dday.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            dday.widthAnchor.constraint(equalToConstant: 39)
-        ])
-        
-        // spanNDuration 제약 조건
-        NSLayoutConstraint.activate([
-            spanNDuration.centerYAnchor.constraint(equalTo: dday.centerYAnchor),
-            spanNDuration.leadingAnchor.constraint(equalTo: dday.trailingAnchor, constant: 10),
-        ])
-        
-        // editBtn 제약 조건
-        NSLayoutConstraint.activate([
-            editBtn.centerYAnchor.constraint(equalTo: dday.centerYAnchor),
-            editBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            editBtn.widthAnchor.constraint(equalToConstant: 40),
-            editBtn.heightAnchor.constraint(equalToConstant: 40)
-        ])
-        
-        // label1 제약 조건
-        NSLayoutConstraint.activate([
-            label1.topAnchor.constraint(equalTo: dday.bottomAnchor, constant: 24),
-            label1.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            label1.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
-        ])
-        
-        // label2 제약 조건
-        NSLayoutConstraint.activate([
-            label2.topAnchor.constraint(equalTo: label1.bottomAnchor, constant: 5),
-            label2.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            label2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            label2.heightAnchor.constraint(equalToConstant: 40)
-        ])
-        
-    }
-    
-    //layer3 : button tab
-    private let spendingButton = UIButton()
-    private let reportButton = UIButton()
-    private let underlineView = UIView()
-    private let lineView = UIView()
-    
-    private var underlineViewLeadingConstraint: NSLayoutConstraint?
-    
-    private func setupTabButtons() {
-        
-        spendingButton.setTitle("소비내역", for: .normal)
-        spendingButton.titleLabel!.font = .mpFont18B()
-        reportButton.setTitle("분석 리포트", for: .normal)
-        reportButton.titleLabel!.font = .mpFont18B()
-        
-        spendingButton.setTitleColor(.gray, for: .normal)
-        reportButton.setTitleColor(.gray, for: .normal)
-        
-        spendingButton.setTitleColor(.black, for: .selected)
-        reportButton.setTitleColor(.black, for: .selected)
-        
-        spendingButton.addTarget(self, action: #selector(selectButton(_:)), for: .touchUpInside)
-        reportButton.addTarget(self, action: #selector(selectButton(_:)), for: .touchUpInside)
-        
-        spendingButton.translatesAutoresizingMaskIntoConstraints = false
-        reportButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(spendingButton)
-        view.addSubview(reportButton)
-        
-        NSLayoutConstraint.activate([
-            spendingButton.topAnchor.constraint(equalTo: label2.bottomAnchor, constant: 20),
-            spendingButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            spendingButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
-            
-            reportButton.topAnchor.constraint(equalTo: label2.bottomAnchor, constant: 20),
-            reportButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            reportButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5)
-        ])
-    }
-    
-    private func setuplineViews() {
-        
-        lineView.backgroundColor = .mpLightGray
-        underlineView.backgroundColor = .mpBlack
-        lineView.translatesAutoresizingMaskIntoConstraints = false
-        underlineView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(lineView)
-        view.addSubview(underlineView)
-        
-        underlineViewLeadingConstraint = underlineView.centerXAnchor.constraint(equalTo: spendingButton.centerXAnchor)
-        
-        NSLayoutConstraint.activate([
-            lineView.topAnchor.constraint(equalTo: spendingButton.bottomAnchor),
-            lineView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            lineView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            lineView.heightAnchor.constraint(equalToConstant: 2),
-            
-            underlineViewLeadingConstraint!,
-            underlineView.topAnchor.constraint(equalTo: spendingButton.bottomAnchor),
-            underlineView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.4),
-            underlineView.heightAnchor.constraint(equalToConstant: 2)
-        ])
-    }
-    
-    @objc private func selectButton(_ sender: UIButton) {
-        [spendingButton, reportButton].forEach { $0.isSelected = ($0 == sender) }
-        
-        // Animate underline view
-        underlineViewLeadingConstraint?.isActive = false
-        underlineViewLeadingConstraint = underlineView.centerXAnchor.constraint(equalTo: sender.centerXAnchor)
-        underlineViewLeadingConstraint?.isActive = true
-        
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
-            if sender == self.spendingButton {
-                self.spendingView.isHidden = false
-                self.reportView.isHidden = true
-            }else{
-                self.spendingView.isHidden = true
-                self.reportView.isHidden = false
-            }
-        }
-    }
-    
-    
-    @objc func backButtonTapped(){
-        navigationController?.popViewController(animated: true)
-    }
-    
-    private func setComma(cash: Int64) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        return formatter.string(from: NSNumber(value: cash)) ?? ""
-    }
-    
-    func configureViews(){
-        
-        let goalDetail = viewModel.goalDetail.value
-        header.setupTitleLabel(with: goalDetail!.icon + " " + goalDetail!.title)
-        header.addBackButtonTarget(target: self, action: #selector(backButtonTapped), for: .touchUpInside)
-        //layer1
-        //dday
-        dday.configure(for: goalDetail!)
-        
-        let dateFormatter = DateFormatter()
-        
-        //spanDuration
-        dateFormatter.dateFormat = "yyyy.MM.dd"
-        let startdatestr = goalDetail!.startDate
-        
-        let enddatestr : String
-        if Calendar.current.dateComponents([.year], from: goalDetail!.startDate.toDate!) == Calendar.current.dateComponents([.year], from: goalDetail!.endDate.toDate!) {
-            enddatestr = goalDetail!.endDate
-        }else{
-            dateFormatter.dateFormat = "MM.dd"
-            enddatestr = dateFormatter.string(from: goalDetail!.endDate.toDate!)
-        }
-        
-        if goalDetail!.startDate.toDate! < Date() && Date() < goalDetail!.endDate.toDate! {
-            let day = Calendar.current.dateComponents([.day], from: goalDetail!.startDate.toDate!, to: Date()).day
-            spanNDuration.text = startdatestr + " - " + enddatestr + " | " + "\(day ?? 0)" + "일차"
-        }else{
-            spanNDuration.text = startdatestr + " - " + enddatestr
-        }
-        
-        //editBtn은 이미 위에 구현됨.
-        
-        //layer2
-        //label1 이미 구현됨.
-        //label2
-        let totalCostString = setComma(cash: goalDetail!.totalCost)
-        let goalBudgetString = " / \(setComma(cash: goalDetail!.totalBudget))원"
-        
-        let attributedString = NSMutableAttributedString(string: totalCostString, attributes: [
-            .font: UIFont.mpFont26B(),
-            .foregroundColor: UIColor.mpBlack
-        ])
-        
-        attributedString.append(NSAttributedString(string: goalBudgetString, attributes: [
-            .font: UIFont.mpFont16M(),
-            .foregroundColor: UIColor.mpGray
-        ]))
-        
-        label2.attributedText = attributedString
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // 뷰 컨트롤러가 나타날 때 탭 바 숨김 처리
-        self.tabBarController?.tabBar.isHidden = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        // 뷰 컨트롤러가 사라질 때 탭 바를 다시 표시
-        self.tabBarController?.tabBar.isHidden = false
-    }
-    
-    func setupNavigationBar() {
-        //        self.navigationController?.navigationBar.tintColor = .mpBlack
-        //        self.navigationItem.title = goal.icon + " " + goal.goalTitle
-        //        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.navigationController?.isNavigationBarHidden = true
-    }
-    
-}
-
-
-
-class SpendingView: UIView, UITableViewDelegate, UITableViewDataSource {
-    
-    var data: [DailyConsume] = [] {
-        didSet {
-            tableView.reloadData()
-        }
-    }
-    
-    var tapFilterBtn: (() -> Void)?
-    
-    // 날짜 필터 버튼
-    let filterBtn: LabelAndImageBtn = {
-        let button = LabelAndImageBtn(type: .system)
-        button.setTitle("전체 기간 조회 ", for: .normal)
-        button.setImage(UIImage(systemName: "chevron.down"), for: .normal)
-        button.setTitleColor(.mpCharcoal, for: .normal)
-        button.titleLabel?.font = .mpFont12M()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private let tableView: UITableView = {
-        let table = UITableView()
-        table.translatesAutoresizingMaskIntoConstraints = false
-        table.isScrollEnabled = false
-        table.separatorStyle = .none
-        return table
-    }()
-    
-    override init(frame: CGRect) {
-        //api 호출로 셀 채워넣기 코드
-        super.init(frame: frame)
-        data = parseDailyConsume(from: jsonString) ?? []
-        setupViews()
-        tableView.reloadData()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupViews() {
-        addSubview(filterBtn)
-        addSubview(tableView)
-        
-        filterBtn.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(ConsumeRecordCell.self, forCellReuseIdentifier: "ConsumeRecordCell")
-        
-        // 필터 버튼 및 테이블뷰의 오토레이아웃 설정을 여기에 추가하세요.
-        NSLayoutConstraint.activate([
-            filterBtn.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            filterBtn.topAnchor.constraint(equalTo: self.topAnchor, constant: 22),
-            
-            tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: filterBtn.bottomAnchor, constant: 24),
-            tableView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-        ])
-    }
-    
-    @objc private func filterButtonTapped() {
-        tapFilterBtn?()
-    }
-    
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return data.count
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data[section].expenseDetailList!.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ConsumeRecordCell", for: indexPath) as? ConsumeRecordCell else {
-            fatalError("Unable to dequeue ConsumeRecordCell")
-        }
-        
-        let consumeRecord = data[indexPath.section].expenseDetailList![indexPath.row]
-        
-        cell.configure(with: consumeRecord)
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        
-        let separatorView : UIView = {
-            let v = UIView()
-            v.translatesAutoresizingMaskIntoConstraints = false
-            v.backgroundColor = .mpGypsumGray
-            v.heightAnchor.constraint(equalToConstant: 1).isActive = true
-            return v
-        }()
-        
-        // 섹션 헤더에 표시할 내용을 추가
-        let titleLabel = MPLabel()
-        titleLabel.text = data[section].date
-        titleLabel.textColor = UIColor(hexCode: "9FAAB0")
-        titleLabel.font = UIFont.mpFont14M()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addSubview(titleLabel)
-        
-        // "Cost" 텍스트를 추가
-        let costLabel = MPLabel()
-        
-        let result: String = data[section].dailyTotalCost!.formattedWithSeparator()
-        
-        costLabel.text = "\(result)원"
-        costLabel.textColor = UIColor.mpDarkGray
-        costLabel.font = UIFont.mpFont14M()
-        costLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerView.addSubview(costLabel)
-        headerView.addSubview(separatorView)
-        
-        // Auto Layout 설정
-        NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
-            titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            
-            costLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
-            costLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            
-            
-            //            separatorView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            //            separatorView.trailingAnchor.constraint(equalTo: costLabel.trailingAnchor)
-        ])
-        
-        return headerView
-    }
-    
-    func parseDailyConsume(from jsonString: String) -> [DailyConsume]? {
-        let jsonData = Data(jsonString.utf8)
-        let decoder = JSONDecoder()
-        do {
-            let dailyConsumes = try decoder.decode([DailyConsume].self, from: jsonData)
-            return dailyConsumes
-        } catch {
-            print("Error decoding JSON: \(error)")
-            return nil
-        }
-    }
-    
-    let jsonString = """
-    [
-      {
-        "date": "2024-02-01",
-        "dailyTotalCost": 54787,
-        "expenseDetailList": [
-          {"title": "교통", "cost": 12074},
-          {"title": "쇼핑", "cost": 4267},
-          {"title": "기타", "cost": 2734},
-          {"title": "기타", "cost": 13783},
-          {"title": "식사", "cost": 4426}
-        ]
-      },
-      {
-        "date": "2024-02-02",
-        "dailyTotalCost": 87180,
-        "expenseDetailList": [
-          {"title": "교통", "cost": 14498},
-          {"title": "쇼핑", "cost": 19898},
-          {"title": "식사", "cost": 6872},
-          {"title": "쇼핑", "cost": 12139}
-        ]
-      },
-      {
-        "date": "2024-02-12",
-        "dailyTotalCost": 73836,
-        "expenseDetailList": [
-          {"title": "식사", "cost": 9805},
-          {"title": "식사", "cost": 11865},
-          {"title": "기타", "cost": 11343},
-          {"title": "교통", "cost": 15389}
-        ]
-      }
-    ]
-    """
-    
-}
 
 class ReportView: UIView, UITableViewDataSource, UITableViewDelegate {
     
-    var goal: GoalDetail?
-    let tableView = UITableView()
+    var goalDetail : GoalDetail?
+    var zeroDayCount: Int64 = 0
     var CategoryTotalCosts: [CategoryTotalCost] = []
     var CategoryGoalReports: [CategoryGoalReport] = []
+    let tableView = UITableView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupTableView()
+        setupView()
+        setupLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupTableView() {
+    private func setupView() {
         tableView.dataSource = self
         tableView.register(ReportSummaryCell.self, forCellReuseIdentifier: "ReportSummaryCell")
         tableView.register(ReportGraphCell.self, forCellReuseIdentifier: "ReportGraphCell")
         tableView.register(CategoryReportCell.self, forCellReuseIdentifier: "CategoryReportCell")
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(tableView)
         
+        addSubview(tableView)
+        tableView.tableFooterView = UIView() // to remove unused cells
+    }
+    
+    private func setupLayout(){
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         // Constraints for tableView
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: topAnchor),
@@ -663,17 +45,15 @@ class ReportView: UIView, UITableViewDataSource, UITableViewDelegate {
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
-        
-        tableView.tableFooterView = UIView() // to remove unused cells
     }
     
     func updateCategory(with reports: GoalReportResult, goal : GoalDetail) {
+        self.zeroDayCount = reports.zeroDayCount
         self.CategoryTotalCosts = reports.categoryTotalCosts
         self.CategoryGoalReports = reports.categoryGoalReports
-        self.goal = goal
+        self.goalDetail = goal
         tableView.reloadData() // 테이블 뷰 리로드하여 새 데이터 반영
     }
-
     
     // MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -700,22 +80,24 @@ class ReportView: UIView, UITableViewDataSource, UITableViewDelegate {
         switch indexPath.section {
         case 0: //리포트 요약 카드
             let cell = tableView.dequeueReusableCell(withIdentifier: "ReportSummaryCell", for: indexPath) as! ReportSummaryCell
-            if let goal = goal {
-                cell.configureCell(goal: goal)
+            if let goalDetail = goalDetail {
+                cell.configureCell(goal: goalDetail, categoryTotalCost : CategoryTotalCosts, zeroDayCount : zeroDayCount)
             }
             return cell
             
         case 1: //그래프
             let cell = tableView.dequeueReusableCell(withIdentifier: "ReportGraphCell", for: indexPath) as! ReportGraphCell
-            cell.configure(with: CategoryTotalCosts, goal: goal!)
+            if let goalDetail = goalDetail {
+                cell.configureCell(with: CategoryTotalCosts, goal: goalDetail)
+            }
             return cell
             
         case 2: //카테고리별 리포트
             let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryReportCell", for: indexPath) as! CategoryReportCell
             if indexPath.row < CategoryGoalReports.count {
                 let report = CategoryGoalReports[indexPath.row]
-                if let goal = self.goal {
-                    cell.configureCell(report: report, goal: goal)
+                if let goalDetail = self.goalDetail{
+                    cell.configureCell(report: report, goal: goalDetail)
                 }
             }
             return cell
@@ -866,7 +248,7 @@ class ReportSummaryCell : UITableViewCell {
         return attributedString
     }
     
-    func configureCell(goal : GoalDetail){
+    func configureCell(goal : GoalDetail, categoryTotalCost : [CategoryTotalCost], zeroDayCount : Int64){
         
         self.contentView.backgroundColor = .mpWhite
         
@@ -899,9 +281,9 @@ class ReportSummaryCell : UITableViewCell {
             
             averageLabel.attributedText = makeLabelText(front: "하루평균 ", middle: "\(setComma(cash: Int64(goal.totalCost)/Int64(span!)))원", end: " 결제했어요", color: .mpMainColor)
             
-            mostConsumedCatLabel.attributedText = makeLabelText(front: "가장 많이 쓴 카테고리는 ", middle: "'임시조치'", end: "(이)에요", color: .mpMainColor) // todo : middle은 수정할것
+            mostConsumedCatLabel.attributedText = makeLabelText(front: "가장 많이 쓴 카테고리는 ", middle: "\(categoryTotalCost[0].categoryName)", end: "(이)에요", color: .mpMainColor) // todo : middle은 수정할것
             
-            zeroDayCountLabel.attributedText = makeLabelText(front: "0원 소비를 한 날은 총 ", middle: "'임시조치'일", end: "이에요", color: .mpMainColor) // todo : middle은 수정할것
+            zeroDayCountLabel.attributedText = makeLabelText(front: "0원 소비를 한 날은 총 ", middle: "\(zeroDayCount)", end: "이에요", color: .mpMainColor) // todo : middle은 수정할것
             
         } else{ //미래 목표
             cardLabel.text = "아직 시작하지 않은 목표에요"
@@ -1062,7 +444,7 @@ class ReportGraphCell: UITableViewCell {
         ])
     }
     
-    func configure(with reports: [CategoryTotalCost], goal : GoalDetail) {
+    func configureCell(with reports: [CategoryTotalCost], goal : GoalDetail) {
         
         //그래프 configure
         categoryConsumeRatioGraph.configure(with: reports, goal: goal)
@@ -1092,7 +474,6 @@ class ReportGraphCell: UITableViewCell {
                 view.isHidden = false
             }
         }
-        
     }
 }
 
@@ -1481,3 +862,4 @@ class CategoryReportCell: UITableViewCell {
         return numberFormatter.string(from: NSNumber(value: number)) ?? "0"
     }
 }
+

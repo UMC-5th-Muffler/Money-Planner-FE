@@ -10,14 +10,22 @@ import RxMoya
 import Moya
 import RxSwift
 
-enum GoalAPI {
+enum GoalAPI : TargetType {
+    //가능
     case postGoal(request: PostGoalRequest)
+    
+    //모름
     case deleteGoal(goalId: Int)
-    case getGoalDetail(goalId: Int)
+    case getGoalDetail(goalId: String)
+    
+    //가능
     case now
     case notNow(endDate: String?)
-    case goalReport(goalId: Int)
-    case goalExpense(goalId: Int, startDate: String, endDate: String, size: Int, lastDate: String?, lastExpenseId: Int?)
+   
+    //모름
+    case getGoalReport(goalId: String)
+    case getWeeklyExpenses(goalId: String, startDate: String, endDate: String, size: String, lastDate: String?, lastExpenseId: String?)
+    
     case getPreviousGoals
     case postContent(request: PostGoalRequest)
 }
@@ -26,7 +34,7 @@ extension GoalAPI : BaseAPI {
     
     var headers: [String: String]? {
         // Replace 'YourTokenHere' with the actual bearer token.
-        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDg5MjYyNzB9.Z9OxUgKkYZhoQzFDd79d8RHdGlHA8g5DcNY2nli4lKw"]
+        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDkxODYwNDl9.UBQS77CjxxCMsMIsBo3fuUzqFaUhgxktSIza1sS8e8I"]
     }
     
     var path: String {
@@ -41,10 +49,10 @@ extension GoalAPI : BaseAPI {
             return "/api/goal/now"
         case .notNow:
             return "/api/goal/not-now"
-        case .goalReport(let goalId):
+        case .getGoalReport(let goalId):
             return "/api/goal/report/\(goalId)"
-        case .goalExpense(let goalId, _, _, _, _, _):
-            return "/api/expense/weekly?goalId=\(goalId)"
+        case .getWeeklyExpenses:
+            return "/api/expense/weekly"
         case .getPreviousGoals:
             return "/api/goal/previous"
         case .postContent :
@@ -58,6 +66,10 @@ extension GoalAPI : BaseAPI {
             return .get
         case .postGoal:
             return .post
+        case .getGoalDetail:
+            return .get
+        case .getWeeklyExpenses:
+            return .get
         case .deleteGoal:
             return .delete
         case .postContent:
@@ -71,8 +83,8 @@ extension GoalAPI : BaseAPI {
         switch self {
         case .postGoal(let request):
             return .requestJSONEncodable(request)
-        case .goalReport:
-            return .requestParameters(parameters: [:], encoding: URLEncoding.queryString)
+        case .getGoalReport: // getGoalReport 추가
+            return .requestPlain
         case .now:
             return .requestPlain
         case .notNow(let endDate):
@@ -81,13 +93,8 @@ extension GoalAPI : BaseAPI {
                 parameters["endDate"] = endDate
             }
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
-        case .goalExpense(let goalId, let startDate, let endDate, let size, let lastDate, let lastExpenseId):
-            var parameters: [String: Any] = [
-                "goalId": goalId,
-                "startDate": startDate,
-                "endDate": endDate,
-                "size": size
-            ]
+        case .getWeeklyExpenses(let goalId, let startDate, let endDate, let size, let lastDate, let lastExpenseId):
+            var parameters: [String: Any] = ["goalId": goalId, "startDate": startDate, "endDate": endDate, "size": size]
             if let lastDate = lastDate {
                 parameters["lastDate"] = lastDate
             }
