@@ -22,51 +22,15 @@ class MufflerViewModel {
         return expenseOverviewSubject.asObservable()
     }
     
-    // Member Controller
-//    func refreshToken() -> Observable<MyRepo> {
-//        return provider.request(.refreshToken)
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//    func loginKakao() -> Observable<MyRepo> {
-//        return provider.request(.loginKakao)
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//
-//    func loginApple() -> Observable<MyRepo> {
-//        return provider.request(.loginApple)
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//
+    // member controller
+    
     func connect() -> Observable<ConnectModel> {
         return provider.request(.connect)
             .map(ConnectModel.self)
             .asObservable()
     }
-//
-//    // Goal Controller
-//    func createGoal() -> Observable<MyRepo> {
-//        return provider.request(.createGoal)
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//
-//    func getPreviousGoals() -> Observable<MyRepo> {
-//        return provider.request(.getPreviousGoals)
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//
-//    func deleteGoal(goalId: String) -> Observable<MyRepo> {
-//        return provider.request(.deleteGoal(goalId: goalId))
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//
+
     // Expense Controller
-    
     // 소비내역 등록 : [POST] /api/expense
     func createExpense(expenseRequest: ExpenseCreateRequest) -> Single<ExpenseCreateResponse> {
         return provider.request(.createExpense(expenseRequest: expenseRequest))
@@ -91,7 +55,7 @@ class MufflerViewModel {
                 .subscribe(onSuccess: { [weak self] response in
                     // BehaviorSubject 업데이트
                     self?.expenseOverviewSubject.onNext(response)
-                }, onError: { [weak self] error in
+                }, onFailure: { [weak self] error in
                     print("Error: \(error)")
                     // 에러 핸들링 필요시 여기서 처리
                     self?.expenseOverviewSubject.onNext(nil)
@@ -105,31 +69,8 @@ class MufflerViewModel {
             .map(ResponseExpenseDto.self)
             .asObservable()
     }
-//
-//    func getWeeklyExpense() -> Observable<MyRepo> {
-//        return provider.request(.getWeeklyExpense)
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//
-//    func searchExpense() -> Observable<MyRepo> {
-//        return provider.request(.searchExpense)
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//
-//    func getMonthlyExpense() -> Observable<MyRepo> {
-//        return provider.request(.getMonthlyExpense)
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//
-//    func getDailyExpense() -> Observable<MyRepo> {
-//        return provider.request(.getDailyExpense)
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//
+
+
     // Category Controller
     // 소비등록 > 카테고리 선택 뷰에서 활용
     func getCategory() -> Observable<GetCategoryResponse> {
@@ -162,25 +103,7 @@ class MufflerViewModel {
             .map(DeleteCategoryResponse.self)
             .asObservable()
     }
-//
-//    // Rate Controller
-//    func updateRate(date: String) -> Observable<MyRepo> {
-//        return provider.request(.updateRate(date: date))
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//
-//    func getRates() -> Observable<MyRepo> {
-//        return provider.request(.getRates)
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-    // daily plan controller
-//    // 제로데이 확인
-//    func checkZeroDay(expenseRequest: ZeroDayRequest) -> Single<ConnectModel> {
-//        return provider.request((expenseRequest: expenseRequest))
-//            .map(ConnectModel.self)
-//    }
+
     // routine controller
     
     // 루틴 디테일 조회
@@ -196,36 +119,7 @@ class MufflerViewModel {
             .map(ConnectModel.self).asObservable()
     }
     
-//    // Home Controller
-//    func getNow() -> Observable<MyRepo> {
-//        return provider.request(.getNow)
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//
-//    func getGoal(goalId: String) -> Observable<MyRepo> {
-//        return provider.request(.getGoal(goalId: goalId))
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//
-//    func getGoalByYearMonth(goalId: String, yearMonth: String) -> Observable<MyRepo> {
-//        return provider.request(.getGoalByYearMonth(goalId: goalId, yearMonth: yearMonth))
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//
-//    func getGoalByCategory(goalId: String, categoryId: String) -> Observable<MyRepo> {
-//        return provider.request(.getGoalByCategory(goalId: goalId, categoryId: categoryId))
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
-//
-//    func getBasicHomeInfo() -> Observable<MyRepo> {
-//        return provider.request(.getBasicHomeInfo)
-//            .map(MyRepo.self)
-//            .asObservable()
-//    }
+
 }
 
 
