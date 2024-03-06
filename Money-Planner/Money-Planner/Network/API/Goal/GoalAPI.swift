@@ -21,11 +21,10 @@ enum GoalAPI : TargetType {
     //가능
     case now
     case notNow(endDate: String?)
-   
-    //모름
     case getGoalReport(goalId: String)
     case getWeeklyExpenses(goalId: String, startDate: String, endDate: String, size: String, lastDate: String?, lastExpenseId: String?)
     
+    //시험
     case getPreviousGoals
     case postContent(request: PostGoalRequest)
 }
@@ -34,7 +33,7 @@ extension GoalAPI : BaseAPI {
     
     var headers: [String: String]? {
         // Replace 'YourTokenHere' with the actual bearer token.
-        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDkxODYwNDl9.UBQS77CjxxCMsMIsBo3fuUzqFaUhgxktSIza1sS8e8I"]
+        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDk4MDQwMTJ9.ROniEMWs_AcWZlB9VuSAfNFcVLHPj_9ihL_nBs0y6bk"]
     }
     
     var path: String {
@@ -45,14 +44,14 @@ extension GoalAPI : BaseAPI {
             return "/api/goal/\(goalId)"
         case .getGoalDetail(let goalId):
             return "/api/goal/\(goalId)"
+        case .getGoalReport(let goalId):
+            return "/api/goal/report/\(goalId)" // 새로운 경로 추가
+        case .getWeeklyExpenses:
+            return "/api/expense/weekly"
         case .now:
             return "/api/goal/now"
         case .notNow:
             return "/api/goal/not-now"
-        case .getGoalReport(let goalId):
-            return "/api/goal/report/\(goalId)"
-        case .getWeeklyExpenses:
-            return "/api/expense/weekly"
         case .getPreviousGoals:
             return "/api/goal/previous"
         case .postContent :
@@ -74,6 +73,8 @@ extension GoalAPI : BaseAPI {
             return .delete
         case .postContent:
             return .post
+        case .getGoalReport:
+            return .get
         default :
             return .get
         }
@@ -93,6 +94,8 @@ extension GoalAPI : BaseAPI {
                 parameters["endDate"] = endDate
             }
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .getGoalDetail:
+            return .requestPlain
         case .getWeeklyExpenses(let goalId, let startDate, let endDate, let size, let lastDate, let lastExpenseId):
             var parameters: [String: Any] = ["goalId": goalId, "startDate": startDate, "endDate": endDate, "size": size]
             if let lastDate = lastDate {
@@ -102,9 +105,6 @@ extension GoalAPI : BaseAPI {
                 parameters["lastExpenseId"] = lastExpenseId
             }
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
-            
-        case .getGoalDetail:
-            return .requestPlain
         case .deleteGoal:
             return .requestPlain
             

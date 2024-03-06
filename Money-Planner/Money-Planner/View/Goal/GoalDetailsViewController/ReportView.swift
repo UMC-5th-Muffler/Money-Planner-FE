@@ -16,6 +16,11 @@ class ReportView: UIView, UITableViewDataSource, UITableViewDelegate {
     var CategoryGoalReports: [CategoryGoalReport] = []
     let tableView = UITableView()
     
+    var summaryCellHeight = 420
+    var graphCellHeight = 90
+    
+    var numberOfSections = 3
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -31,9 +36,12 @@ class ReportView: UIView, UITableViewDataSource, UITableViewDelegate {
         tableView.register(ReportSummaryCell.self, forCellReuseIdentifier: "ReportSummaryCell")
         tableView.register(ReportGraphCell.self, forCellReuseIdentifier: "ReportGraphCell")
         tableView.register(CategoryReportCell.self, forCellReuseIdentifier: "CategoryReportCell")
+        tableView.backgroundColor = .mpWhite
         
         addSubview(tableView)
-        tableView.tableFooterView = UIView() // to remove unused cells
+        tableView.separatorStyle = .none
+//        tableView.tableFooterView = UIView() // to remove unused cells
+//        tableView.tableFooterView?.backgroundColor = .mpWhite
     }
     
     private func setupLayout(){
@@ -47,18 +55,46 @@ class ReportView: UIView, UITableViewDataSource, UITableViewDelegate {
         ])
     }
     
-    func updateCategory(with reports: GoalReportResult, goal : GoalDetail) {
+//    func updateCategory(with reports: GoalReportResult, goal : GoalDetail) {
+//        self.zeroDayCount = reports.zeroDayCount
+//        self.CategoryTotalCosts = reports.categoryTotalCosts
+//        self.CategoryGoalReports = reports.categoryGoalReports
+//        self.goalDetail = goal
+//        tableView.reloadData() // 테이블 뷰 리로드하여 새 데이터 반영
+//    }
+    
+    func updateCategoryReports(with reports: GoalReportResult) {
         self.zeroDayCount = reports.zeroDayCount
         self.CategoryTotalCosts = reports.categoryTotalCosts
         self.CategoryGoalReports = reports.categoryGoalReports
+        
+        if CategoryTotalCosts.count == 0 {
+            graphCellHeight = 120
+        }else {
+            graphCellHeight = 140 + (CategoryTotalCosts.count * 38) + 30
+        }
+        
+        tableView.reloadData() // 테이블 뷰 리로드하여 새 데이터 반영
+    }
+    
+    func updateCategoryGoalDetail(goal : GoalDetail) {
         self.goalDetail = goal
+        if goal.startDate.toDate! > Date().toString().toDate! {
+            summaryCellHeight = 220
+            numberOfSections = 1
+//            tableView.backgroundColor = .mpGypsumGray
+        }else{
+            summaryCellHeight = 420
+            numberOfSections = 3
+//            tableView.backgroundColor = .mpWhite
+        }
         tableView.reloadData() // 테이블 뷰 리로드하여 새 데이터 반영
     }
     
     // MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         // One for summary, one for graph, one for category reports
-        return 3
+        return self.numberOfSections
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -116,13 +152,68 @@ class ReportView: UIView, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case 0:
-            return 420 // Height for ReportSummaryCell
+            return CGFloat(summaryCellHeight) // Height for ReportSummaryCell
         case 1:
-            return 300 // Height for ReportGraphCell
+            return CGFloat(graphCellHeight) // Height for ReportGraphCell
         case 2:
-            return 300 // Height for CategoryReportCell
+            return CGFloat(240) // Height for CategoryReportCell
         default:
             return UITableView.automaticDimension // Fallback
+        }
+    }
+    
+    //section header
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+//
+        // 섹션별로 다른 헤더 타이틀 설정
+        switch section {
+        case 2:
+            let headerLabel = UILabel(frame: CGRect(x: 16, y: 8, width: tableView.bounds.size.width - 32, height: 24))
+            headerLabel.font = .mpFont20B() // 헤더의 폰트 설정
+            headerLabel.textColor = .mpBlack // 헤더의 텍스트 색상 설정
+            headerLabel.text = "카테고리별 리포트 보기"
+            headerView.backgroundColor = .mpWhite// 헤더의 배경 색상 설정
+            headerView.addSubview(headerLabel)
+        default:
+            headerView.backgroundColor = .mpGypsumGray
+        }
+//
+//
+        
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        switch section{
+        case 0 :
+            return 0
+        case 1 :
+            return 10
+        case 2 :
+            return 40
+        default :
+            return 10
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView()
+        footerView.backgroundColor = .mpGypsumGray
+        switch section {
+        case 1:
+            return footerView
+        default:
+            return nil
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        switch section{
+        case 1 :
+            return 10
+        default :
+            return 0
         }
     }
 }
@@ -151,7 +242,7 @@ class ReportSummaryCell : UITableViewCell {
     var cardLabel : MPLabel = {
         let label = MPLabel()
         label.textAlignment = .center
-        label.font = .mpFont16B()
+        label.font = .mpFont16M()
         label.numberOfLines = 0
         return label
     }()
@@ -159,8 +250,7 @@ class ReportSummaryCell : UITableViewCell {
     //average
     //var average : Int64 = 0
     var circle1 : UIImageView = {
-        let image = UIImageView(image: UIImage(systemName: "circlebadge.fill"))
-        image.tintColor = UIColor(hexCode: "D9D9D9")
+        let image = UIImageView(image: UIImage(named: "icon_spend-money"))
         image.contentMode = .scaleAspectFit
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
@@ -175,8 +265,7 @@ class ReportSummaryCell : UITableViewCell {
     //mostConsumedCat
     //var mostConsumedCat = ""
     var circle2 : UIImageView = {
-        let image = UIImageView(image: UIImage(systemName: "circlebadge.fill"))
-        image.tintColor = UIColor(hexCode: "D9D9D9")
+        let image = UIImageView(image: UIImage(named: "icon_most-spend"))
         image.contentMode = .scaleAspectFit
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
@@ -191,8 +280,7 @@ class ReportSummaryCell : UITableViewCell {
     //zeroDayCount
     //var zeroDayCount : Int64 = 0
     var circle3 : UIImageView = {
-        let image = UIImageView(image: UIImage(systemName: "circlebadge.fill"))
-        image.tintColor = UIColor(hexCode: "D9D9D9")
+        let image = UIImageView(image: UIImage(named: "icon_0day"))
         image.contentMode = .scaleAspectFit
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
@@ -236,14 +324,14 @@ class ReportSummaryCell : UITableViewCell {
     
     
     //텍스트 만드는 함수
-    func makeLabelText(front: String, middle: String, end: String, color: UIColor) -> NSAttributedString {
-        let frontAttributes = [NSAttributedString.Key.foregroundColor: UIColor.mpCharcoal]
-        let middleAttributes = [NSAttributedString.Key.foregroundColor: color]
-        let endAttributes = [NSAttributedString.Key.foregroundColor: UIColor.mpCharcoal]
+    func makeLabelText(front: String, middle: String, end: String, color: UIColor, middleBold : Bool, elseColor: UIColor = .mpCharcoal) -> NSAttributedString {
+        let frontAttributes = [NSAttributedString.Key.foregroundColor: elseColor]
+        let middleAttributes = [NSAttributedString.Key.foregroundColor: color, NSAttributedString.Key.font: middleBold ? UIFont.mpFont16B() : UIFont.mpFont16M()]
+        let endAttributes = [NSAttributedString.Key.foregroundColor: elseColor]
         
-        let attributedString = NSMutableAttributedString(string: front + " ", attributes: frontAttributes)
+        let attributedString = NSMutableAttributedString(string: front, attributes: frontAttributes)
         attributedString.append(NSAttributedString(string: middle, attributes: middleAttributes))
-        attributedString.append(NSAttributedString(string: " " + end, attributes: endAttributes))
+        attributedString.append(NSAttributedString(string: end, attributes: endAttributes))
         
         return attributedString
     }
@@ -260,7 +348,7 @@ class ReportSummaryCell : UITableViewCell {
         mostConsumedCatLabel.translatesAutoresizingMaskIntoConstraints = false
         zeroDayCountLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        if goal.endDate.toDate! <= Date() { //현재, 과거 startDate >= Date
+        if goal.startDate.toDate! <= Date().toString().toDate! { //현재, 과거 startDate >= Date
             
             var span : Int?
             
@@ -273,19 +361,20 @@ class ReportSummaryCell : UITableViewCell {
             //card
             //cardLabel
             let (color, front, middle, end): (UIColor, String, String, String) = goal.totalCost <= goal.totalBudget ?
-            (UIColor.mpMainColor, "목표 금액보다 ", "\(setComma(cash: goal.totalBudget - goal.totalCost))", " 원을 아꼈어요\n아주 잘 하고 있어요!") :
-            (UIColor.mpRed, "목표 금액보다 ", "\(setComma(cash: goal.totalCost - goal.totalBudget))", "원을 초과했어요\n조금만 더 아껴보아요!")
-            cardLabel.attributedText = makeLabelText(front: front, middle: middle, end: end, color: color)
+            (UIColor.mpMainColor, "목표 금액보다 ", "\(setComma(cash: goal.totalBudget - goal.totalCost))원", "을 아꼈어요\n아주 잘 하고 있어요!") :
+            (UIColor.mpRed, "목표 금액보다 ", "\(setComma(cash: goal.totalCost - goal.totalBudget))원", "을 초과했어요\n조금만 더 아껴보아요!")
+            cardLabel.attributedText = makeLabelText(front: front, middle: middle, end: end, color: color, middleBold: true, elseColor: .mpBlack)
             //cardImage 추후 수정
-            cardImage.image = goal.totalCost <= goal.totalBudget ? UIImage(systemName: "pencil"): UIImage(systemName: "pencil")
+            cardImage.image = goal.totalCost <= goal.totalBudget ? UIImage(named : "img_goalreport-safe"): UIImage(named : "img_goalreport-over")
             
-            averageLabel.attributedText = makeLabelText(front: "하루평균 ", middle: "\(setComma(cash: Int64(goal.totalCost)/Int64(span!)))원", end: " 결제했어요", color: .mpMainColor)
+            averageLabel.attributedText = makeLabelText(front: "하루평균 ", middle: "\(setComma(cash: Int64(goal.totalCost)/Int64(span!)))원", end: " 결제했어요", color: .mpMainColor, middleBold: false)
+
+            mostConsumedCatLabel.attributedText = makeLabelText(front: "가장 많이 쓴 카테고리는 ", middle: categoryTotalCost.count > 0 ? categoryTotalCost[0].categoryName : "없습니다.", end: categoryTotalCost.count > 0 ? "(이)에요" : "", color: .mpMainColor, middleBold: false) // todo : middle은 수정할것
             
-            mostConsumedCatLabel.attributedText = makeLabelText(front: "가장 많이 쓴 카테고리는 ", middle: "\(categoryTotalCost[0].categoryName)", end: "(이)에요", color: .mpMainColor) // todo : middle은 수정할것
-            
-            zeroDayCountLabel.attributedText = makeLabelText(front: "0원 소비를 한 날은 총 ", middle: "\(zeroDayCount)", end: "이에요", color: .mpMainColor) // todo : middle은 수정할것
+            zeroDayCountLabel.attributedText = makeLabelText(front: "0원 소비를 한 날은 총 ", middle: "\(zeroDayCount)일", end: "이에요", color: .mpMainColor, middleBold: false) // todo : middle은 수정할것
             
         } else{ //미래 목표
+            cardImage.image = UIImage(named: "img_home-deafult")
             cardLabel.text = "아직 시작하지 않은 목표에요"
             averageLabel.isHidden = true
             mostConsumedCatLabel.isHidden = true
@@ -294,6 +383,8 @@ class ReportSummaryCell : UITableViewCell {
             circle2.isHidden = true
             circle3.isHidden = true
         }
+        
+        cardImage.contentMode = .scaleAspectFit
     }
     
     func setupLayout(){
@@ -317,12 +408,13 @@ class ReportSummaryCell : UITableViewCell {
             cardView.heightAnchor.constraint(equalToConstant: 192),
             
             cardImage.centerXAnchor.constraint(equalTo: cardView.centerXAnchor),
-            cardImage.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 20),
-            cardImage.widthAnchor.constraint(equalToConstant: 78),
-            cardImage.heightAnchor.constraint(equalToConstant: 78),
+            cardImage.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 10),
+            cardImage.widthAnchor.constraint(equalToConstant: 108),
+            cardImage.heightAnchor.constraint(equalToConstant: 108),
             
             cardLabel.centerXAnchor.constraint(equalTo: cardView.centerXAnchor),
-            cardLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -30),
+            cardLabel.topAnchor.constraint(equalTo: cardImage.bottomAnchor, constant: 15),
+            cardLabel.bottomAnchor.constraint(lessThanOrEqualTo : cardView.bottomAnchor, constant: -20),
             cardLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
             cardLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16)
         ])
@@ -379,6 +471,7 @@ class ReportSummaryCell : UITableViewCell {
     }
 }
 
+
 class ReportGraphCell: UITableViewCell {
     
     var titleLabel : MPLabel = {
@@ -386,6 +479,7 @@ class ReportGraphCell: UITableViewCell {
         label.text = "가장 많이 소비한 곳은?"
         label.font = .mpFont20B()
         label.textColor = .mpBlack
+        label.textAlignment = .left
         return label
     }()
     
@@ -394,7 +488,6 @@ class ReportGraphCell: UITableViewCell {
     var secondCat = CategoryConsumeRatioGraphTextView()
     var thirdCat = CategoryConsumeRatioGraphTextView()
     var othersCat = CategoryConsumeRatioGraphTextView()
-    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -407,14 +500,23 @@ class ReportGraphCell: UITableViewCell {
     
     
     private func setupLayout() {
-        
-        contentView.addSubview(firstCat)
-        contentView.addSubview(secondCat)
-        contentView.addSubview(thirdCat)
-        contentView.addSubview(othersCat)
-        
         // titleLabel과 categoryConsumeRatioGraph 추가 등 기본 레이아웃 설정
-        // ... 코드 추가
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(categoryConsumeRatioGraph)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        categoryConsumeRatioGraph.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+        ])
+        
+        NSLayoutConstraint.activate([
+            categoryConsumeRatioGraph.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
+            categoryConsumeRatioGraph.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            categoryConsumeRatioGraph.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+        ])
         
         // CategoryConsumeRatioGraphTextViews 레이아웃 설정
         let views = [firstCat, secondCat, thirdCat, othersCat]
@@ -432,7 +534,7 @@ class ReportGraphCell: UITableViewCell {
         // 추가적인 제약 조건 설정
         // 첫 번째 카테고리 뷰는 titleLabel 아래에 위치하게 설정
         NSLayoutConstraint.activate([
-            firstCat.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8)
+            firstCat.topAnchor.constraint(equalTo: categoryConsumeRatioGraph.bottomAnchor, constant: 20)
             // 추가적인 제약 조건은 아래에 구성
         ])
         
@@ -440,7 +542,7 @@ class ReportGraphCell: UITableViewCell {
         NSLayoutConstraint.activate([
             secondCat.topAnchor.constraint(equalTo: firstCat.bottomAnchor, constant: 8),
             thirdCat.topAnchor.constraint(equalTo: secondCat.bottomAnchor, constant: 8),
-            othersCat.topAnchor.constraint(equalTo: thirdCat.bottomAnchor, constant: 8)
+            othersCat.topAnchor.constraint(equalTo: thirdCat.bottomAnchor, constant: 8),
         ])
     }
     
@@ -465,14 +567,23 @@ class ReportGraphCell: UITableViewCell {
             view.isHidden = true // 기본적으로 모든 뷰를 숨깁니다.
             if index < topReports.count {
                 let report = topReports[index]
-                let percentage = Int((Double(report.totalCost) / Double(totalCost)) * 100.0)
+                let percentage = (Double(report.totalCost) / Double(totalCost)) * 100.0
                 view.configure(color: colors[index], name: report.categoryName, percentage: percentage)
                 view.isHidden = false
             } else if index == 3 && !otherReports.isEmpty {
-                let percentage = Int((Double(otherTotalCost) / Double(totalCost)) * 100.0)
+                let percentage = (Double(otherTotalCost) / Double(totalCost)) * 100.0
                 view.configure(color: colors[index], name: "그 외 카테고리 \(otherReports.count)개", percentage: percentage)
                 view.isHidden = false
             }
+        }
+        
+        if firstCat.isHidden && secondCat.isHidden && thirdCat.isHidden && othersCat.isHidden {
+            firstCat.isHidden = false
+            firstCat.configure(color: .mpGray, name: "소비내역 없음", percentage: 0)
+            firstCat.categoryName.textColor = .mpGray
+            firstCat.percentage.text = ""
+        }else{
+            firstCat.categoryName.textColor = .mpBlack
         }
     }
 }
@@ -481,7 +592,6 @@ class ReportGraphCell: UITableViewCell {
 class CategoryConsumeRatioGraph : UIView {
 
     var reportData : [CategoryTotalCost] = []
-    var goal : Goal?
     
     //bar들의 틀이 되어줄 view
     let graphView : UIView = {
@@ -493,28 +603,28 @@ class CategoryConsumeRatioGraph : UIView {
     let firstBar : UIView = {
         let bar = UIView()
         bar.backgroundColor = .mpMainColor
-        bar.layer.cornerRadius = 33
+        bar.layer.cornerRadius = 4
         return bar
     }()
     
     let secondBar : UIView = {
         let bar = UIView()
         bar.backgroundColor = .mpRed
-        bar.layer.cornerRadius = 33
+        bar.layer.cornerRadius = 4
         return bar
     }()
     
     let thirdBar : UIView = {
         let bar = UIView()
         bar.backgroundColor = .yellow
-        bar.layer.cornerRadius = 33
+        bar.layer.cornerRadius = 4
         return bar
     }()
     
     let othersBar : UIView = {
         let bar = UIView()
         bar.backgroundColor = .mpGray
-        bar.layer.cornerRadius = 33
+        bar.layer.cornerRadius = 4
         return bar
     }()
     
@@ -523,6 +633,11 @@ class CategoryConsumeRatioGraph : UIView {
         label.font = .mpFont14B()
         return label
     }()
+    
+    var firstBarWidthConstraint: NSLayoutConstraint?
+    var secondBarWidthConstraint: NSLayoutConstraint?
+    var thirdBarWidthConstraint: NSLayoutConstraint?
+    var othersBarWidthConstraint: NSLayoutConstraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -536,43 +651,70 @@ class CategoryConsumeRatioGraph : UIView {
     
     func setupViews(){
         
-        NSLayoutConstraint.activate([
-            graphView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            graphView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            graphView.heightAnchor.constraint(equalToConstant: 18),
-        ])
+        addSubview(graphView)
+        addSubview(firstBar)
+        addSubview(secondBar)
+        addSubview(thirdBar)
+        addSubview(othersBar)
+        addSubview(leftAmountLabel)
+        
+        // Auto Layout 설정을 위해 translatesAutoresizingMaskIntoConstraints를 false로 설정
+        graphView.translatesAutoresizingMaskIntoConstraints = false
+        firstBar.translatesAutoresizingMaskIntoConstraints = false
+        secondBar.translatesAutoresizingMaskIntoConstraints = false
+        thirdBar.translatesAutoresizingMaskIntoConstraints = false
+        othersBar.translatesAutoresizingMaskIntoConstraints = false
+        leftAmountLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
+            graphView.topAnchor.constraint(equalTo: self.topAnchor),
+            graphView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            graphView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            graphView.heightAnchor.constraint(equalToConstant: 8)
+        ])
+        
+        firstBarWidthConstraint = firstBar.widthAnchor.constraint(equalToConstant: 0)
+        firstBarWidthConstraint?.isActive = true
+
+        secondBarWidthConstraint = secondBar.widthAnchor.constraint(equalToConstant: 0)
+        secondBarWidthConstraint?.isActive = true
+        
+        thirdBarWidthConstraint = firstBar.widthAnchor.constraint(equalToConstant: 0)
+        thirdBarWidthConstraint?.isActive = true
+
+        othersBarWidthConstraint = secondBar.widthAnchor.constraint(equalToConstant: 0)
+        othersBarWidthConstraint?.isActive = true
+        
+        NSLayoutConstraint.activate([
+            firstBar.heightAnchor.constraint(equalToConstant: 8),
             firstBar.leadingAnchor.constraint(equalTo: graphView.leadingAnchor),
-            firstBar.widthAnchor.constraint(equalTo: graphView.widthAnchor, multiplier: 0.25),
-            firstBar.heightAnchor.constraint(equalToConstant: 18),
+            firstBar.topAnchor.constraint(equalTo: graphView.topAnchor),
         ])
         
         //secondBar
         NSLayoutConstraint.activate([
-            secondBar.leadingAnchor.constraint(equalTo: firstBar.leadingAnchor),
-            secondBar.widthAnchor.constraint(equalTo: graphView.widthAnchor, multiplier: 0.25),
-            secondBar.heightAnchor.constraint(equalToConstant: 18),
+            secondBar.heightAnchor.constraint(equalToConstant: 8),
+            secondBar.leadingAnchor.constraint(equalTo: firstBar.trailingAnchor),
+            secondBar.topAnchor.constraint(equalTo: graphView.topAnchor),
         ])
         //thirdBar
         NSLayoutConstraint.activate([
-            thirdBar.leadingAnchor.constraint(equalTo: secondBar.leadingAnchor),
-            thirdBar.widthAnchor.constraint(equalTo: graphView.widthAnchor, multiplier: 0.25),
-            thirdBar.heightAnchor.constraint(equalToConstant: 18),
+            thirdBar.heightAnchor.constraint(equalToConstant: 8),
+            thirdBar.leadingAnchor.constraint(equalTo: secondBar.trailingAnchor),
+            thirdBar.topAnchor.constraint(equalTo: graphView.topAnchor),
         ])
         //othersBar
         NSLayoutConstraint.activate([
-            othersBar.leadingAnchor.constraint(equalTo: thirdBar.leadingAnchor),
-            othersBar.widthAnchor.constraint(equalTo: graphView.widthAnchor, multiplier: 0.25),
-            othersBar.trailingAnchor.constraint(equalTo: graphView.trailingAnchor),
-            othersBar.heightAnchor.constraint(equalToConstant: 18),
+//            othersBar.trailingAnchor.constraint(equalTo: graphView.trailingAnchor),
+            othersBar.heightAnchor.constraint(equalToConstant: 8),
+            othersBar.leadingAnchor.constraint(equalTo: thirdBar.trailingAnchor),
+            othersBar.topAnchor.constraint(equalTo: graphView.topAnchor),
         ])
         
         //leftAmountLabel
         NSLayoutConstraint.activate([
             leftAmountLabel.topAnchor.constraint(equalTo: graphView.bottomAnchor, constant: 10),
-            leftAmountLabel.trailingAnchor.constraint(equalTo: graphView.trailingAnchor),
-            leftAmountLabel.heightAnchor.constraint(equalToConstant: 23),
+            leftAmountLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             leftAmountLabel.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomAnchor, constant: -10)
         ])
     }
@@ -583,52 +725,61 @@ class CategoryConsumeRatioGraph : UIView {
         return formatter.string(from: NSNumber(value: cash)) ?? ""
     }
     
-    func configure(with reportData: [CategoryTotalCost], goal : GoalDetail) {
+    func numberToKorean(_ number: Int64) -> String {
+        let unitLarge = ["", "만", "억", "조"]
         
-        //leftAmountLabel 수정
-        leftAmountLabel.text = goal.totalBudget >= goal.totalCost ? setComma(cash: goal.totalBudget - goal.totalCost) + "원" : setComma(cash: goal.totalCost - goal.totalBudget) + "원 초과"
-        leftAmountLabel.textColor = goal.totalBudget >= goal.totalCost ? .mpBlack : .mpRed
+        var result = ""
+        var num = number
+        var unitIndex = 0
+        
+        while num > 0 {
+            let segment = num % 10000
+            if segment != 0 {
+                result = "\((segment))\(unitLarge[unitIndex]) \(result)"
+            }
+            num /= 10000
+            unitIndex += 1
+        }
+        
+        return result.isEmpty ? "0" : result
+    }
+    
+    func configure(with reportData: [CategoryTotalCost], goal: GoalDetail) {
+        // Update leftAmountLabel based on goal status
+        leftAmountLabel.text = goal.totalBudget >= goal.totalCost ? "남은 금액 " + numberToKorean(goal.totalBudget - goal.totalCost) + "원" : "초과 금액 " + numberToKorean(goal.totalCost - goal.totalBudget)
+        leftAmountLabel.textColor = .mpCharcoal
+//        leftAmountLabel.textColor = goal.totalBudget >= goal.totalCost ? .mpCharcoal : .mpRed
 
-        //그래프 형성
+        // Calculate total cost from reportData
         let totalCost = reportData.reduce(0) { $0 + $1.totalCost }
-        
-        // 전체 너비에서 각 카테고리의 비율에 따른 너비 계산
+
+        // Calculate proportions for each category
         let proportions = reportData.map { CGFloat($0.totalCost) / CGFloat(totalCost) }
-        
-        // 모든 바의 너비를 초기화 (선택적으로, 상황에 맞게 조정 가능)
-        [firstBar, secondBar, thirdBar, othersBar].forEach { bar in
-            if let widthConstraint = bar.constraints.first(where: { $0.firstAttribute == .width }) {
-                widthConstraint.constant = 0
-            }
+
+        // Reset constraints before setting new values
+        firstBarWidthConstraint?.isActive = false
+        secondBarWidthConstraint?.isActive = false
+        thirdBarWidthConstraint?.isActive = false
+        othersBarWidthConstraint?.isActive = false
+
+        // Assign calculated width to each bar based on its proportion
+        if !proportions.isEmpty { // Ensure there is at least one proportion
+            firstBarWidthConstraint = firstBar.widthAnchor.constraint(equalTo: graphView.widthAnchor, multiplier: proportions.count > 0 ? proportions[0] : 0)
+            secondBarWidthConstraint = secondBar.widthAnchor.constraint(equalTo: graphView.widthAnchor, multiplier: proportions.count > 1 ? proportions[1] : 0)
+            thirdBarWidthConstraint = thirdBar.widthAnchor.constraint(equalTo: graphView.widthAnchor, multiplier: proportions.count > 2 ? proportions[2] : 0)
+            let othersProportion = proportions.dropFirst(3).reduce(0, +)
+            othersBarWidthConstraint = othersBar.widthAnchor.constraint(equalTo: graphView.widthAnchor, multiplier: othersProportion)
         }
-        
-        // 카테고리 개수에 따라 각 바의 너비 설정
-        for (index, proportion) in proportions.enumerated() {
-            let width = proportion * self.graphView.bounds.width
-            switch index {
-            case 0:
-                if let widthConstraint = firstBar.constraints.first(where: { $0.firstAttribute == .width }) {
-                    widthConstraint.constant = width
-                }
-            case 1:
-                if let widthConstraint = secondBar.constraints.first(where: { $0.firstAttribute == .width }) {
-                    widthConstraint.constant = width
-                }
-            case 2:
-                if let widthConstraint = thirdBar.constraints.first(where: { $0.firstAttribute == .width }) {
-                    widthConstraint.constant = width
-                }
-            default:
-                // 나머지 모든 카테고리는 othersBar의 너비에 추가
-                if let widthConstraint = othersBar.constraints.first(where: { $0.firstAttribute == .width }) {
-                    widthConstraint.constant += width // othersBar에 나머지 비율들의 합산 너비 설정
-                }
-            }
-        }
-        
-        // 애니메이션 적용하여 레이아웃 변경
+
+        // Activate new constraints
+        firstBarWidthConstraint?.isActive = true
+        secondBarWidthConstraint?.isActive = true
+        thirdBarWidthConstraint?.isActive = true
+        othersBarWidthConstraint?.isActive = true
+
+        // Animate changes
         UIView.animate(withDuration: 0.3) {
-            self.layoutIfNeeded()
+            self.layoutIfNeeded() // Animates the constraint changes
         }
     }
 
@@ -687,15 +838,15 @@ class CategoryConsumeRatioGraphTextView : UIView {
         
         percentage.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            percentage.trailingAnchor.constraint(equalTo: trailingAnchor),
+            percentage.leadingAnchor.constraint(equalTo: categoryName.trailingAnchor, constant: 18),
             percentage.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
     
-    func configure(color : UIColor, name : String, percentage : Int){
+    func configure(color : UIColor, name : String, percentage : Double){
         circle.tintColor = color
         categoryName.text = name
-        self.percentage.text = "\(percentage)%"
+        self.percentage.text = "\(String(format: "%.1f", percentage))%"
     }
     
 }
@@ -744,6 +895,11 @@ class CategoryReportCell: UITableViewCell {
     
     private func setupLayout() {
         
+        [categoryIcon, categoryName, averageLabel, mostConsumedLabel].forEach { view in
+            contentView.addSubview(view)
+            view.translatesAutoresizingMaskIntoConstraints = false
+        }
+        
         //아이콘, label
         NSLayoutConstraint.activate([
             categoryIcon.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
@@ -753,8 +909,7 @@ class CategoryReportCell: UITableViewCell {
             
             categoryName.centerYAnchor.constraint(equalTo: categoryIcon.centerYAnchor),
             categoryName.leadingAnchor.constraint(equalTo: categoryIcon.trailingAnchor, constant: 16),
-            categoryName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            categoryName.heightAnchor.constraint(equalToConstant: 25)
+            categoryName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
         ])
         
         //stack요소
@@ -762,7 +917,7 @@ class CategoryReportCell: UITableViewCell {
         
         //label
         NSLayoutConstraint.activate([
-            averageLabel.topAnchor.constraint(equalTo: verticalStack.bottomAnchor, constant: 16),
+            averageLabel.topAnchor.constraint(equalTo: verticalStack.bottomAnchor, constant: 30),
             averageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             averageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
@@ -776,16 +931,16 @@ class CategoryReportCell: UITableViewCell {
     public func configureCell(report : CategoryGoalReport, goal : GoalDetail){
         
         contentView.backgroundColor = .mpWhite
-        categoryIcon.image = UIImage(named: report.categoryName)
+        categoryIcon.image = UIImage(named: report.categoryIcon)
         categoryName.text = report.categoryName
         
-        progressBar.changeUsedAmt(usedAmt: Int64(report.totalCost), goalAmt: Int64(report.categoryBudget))
+        progressBar.changeUsedAmt(usedAmt: report.totalCost, goalAmt: report.categoryBudget)
         
-        let color : UIColor = goal.totalCost < goal.totalBudget ? .mpMainColor : .mpRed
-        averageLabel.attributedText = makeLabelText(front: "평균적으로", middle: formatNumber(Int64(report.avgCost))+"원", end: "결제했어요", color: color)
+        let color : UIColor = report.totalCost < report.categoryBudget ? .mpMainColor : .mpRed
+        averageLabel.attributedText = makeLabelText(front: "평균적으로 ", middle: formatNumber(Int64(report.avgCost))+"원", end: " 결제했어요", color: color)
         mostConsumedLabel.attributedText = makeLabelText(front: "가장 많이 쓴 돈은 ", middle: formatNumber(Int64(report.maxCost))+"원", end: "이에요", color: color)
         
-        updateSumAmountDisplay(goal: goal)
+        updateSumAmountDisplay(report: report)
         
     }
     
@@ -801,15 +956,15 @@ class CategoryReportCell: UITableViewCell {
         
         verticalStack = UIStackView(arrangedSubviews: [progressBar, horizontalStack])
         verticalStack.axis = .vertical
-        verticalStack.spacing = 8
+        verticalStack.spacing = 0
         verticalStack.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(verticalStack)
         
         NSLayoutConstraint.activate([
-            verticalStack.topAnchor.constraint(equalTo: categoryName.bottomAnchor, constant: 20),
-            verticalStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            verticalStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
+            verticalStack.topAnchor.constraint(equalTo: categoryIcon.bottomAnchor, constant: 25),
+            verticalStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            verticalStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
         ])
         
         progressBar.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -820,18 +975,18 @@ class CategoryReportCell: UITableViewCell {
         let middleAttributes = [NSAttributedString.Key.foregroundColor: color]
         let endAttributes = [NSAttributedString.Key.foregroundColor: UIColor.mpCharcoal]
         
-        let attributedString = NSMutableAttributedString(string: front + " ", attributes: frontAttributes)
+        let attributedString = NSMutableAttributedString(string: front, attributes: frontAttributes)
         attributedString.append(NSAttributedString(string: middle, attributes: middleAttributes))
-        attributedString.append(NSAttributedString(string: " " + end, attributes: endAttributes))
+        attributedString.append(NSAttributedString(string: end, attributes: endAttributes))
         
         return attributedString
     }
     
     //총금액 알려주는 구간 업데이트
-    private func updateSumAmountDisplay(goal : GoalDetail) {
-        let sumAmount = goal.totalCost
+    private func updateSumAmountDisplay(report : CategoryGoalReport) {
+        let sumAmount = report.totalCost
         let formattedSumAmount = formatNumber(sumAmount)
-        let goalBudget = goal.totalBudget
+        let goalBudget = report.categoryBudget
         let formattedGoalAmount = formatNumber(goalBudget)
         
         let text = "\(formattedSumAmount)원 / \(formattedGoalAmount)원"
@@ -852,7 +1007,8 @@ class CategoryReportCell: UITableViewCell {
         let leftAmount = goalBudget > sumAmount ? goalBudget - sumAmount : sumAmount - goalBudget
         let formattedLeftAmount = formatNumber(leftAmount)
         leftAmountLabel.text = goalBudget > sumAmount ? "남은 금액 \(formattedLeftAmount)원" : "초과 금액 \(formattedLeftAmount)원"
-        leftAmountLabel.textColor = goalBudget >= sumAmount ? .mpBlack : .mpRed
+        leftAmountLabel.textColor = .mpCharcoal
+        leftAmountLabel.font = .mpFont14B()
         
     }
     

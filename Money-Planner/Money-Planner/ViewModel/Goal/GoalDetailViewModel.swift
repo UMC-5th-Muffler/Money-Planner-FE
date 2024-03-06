@@ -13,28 +13,25 @@ import UIKit
 class GoalDetailViewModel {
     
     static let shared = GoalDetailViewModel()
-    private let goalRepository = GoalRepository.shared
-    private let disposeBag = DisposeBag()
-    
-    // Relay for GoalDetail
-    let goalDetail = PublishRelay<GoalDetail>()
-    
-    // Relays for GoalReport and GoalExpense
+    let repository = GoalRepository.shared
+    let disposeBag = DisposeBag()
+    let goalRelay = PublishRelay<GoalDetail>()
     let goalReportRelay = PublishRelay<GoalReportResult>()
     let weeklyExpensesRelay = PublishRelay<WeeklyExpenseResult>()
+    let dailyExpenseListRelay = PublishRelay<[DailyExpense]>()
     
     var hasNext = false
     private var lastDate: String?
     private var lastExpenseId: String?
+    private var selectedStartDate: String?
+    private var selectedEndDate: String?
     
-    private init() {}
-    
-    func fetchGoalDetail(goalId: Int) {
-        goalRepository.getGoalDetail(goalId: String(goalId))
+    func fetchGoal(goalId: String) {
+        repository.getGoalDetail(goalId: goalId)
             .subscribe { [weak self] event in
                 switch event {
                 case .success(let response):
-                    self?.goalDetail.accept(response.result)
+                    self?.goalRelay.accept(response.result)
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -42,8 +39,8 @@ class GoalDetailViewModel {
             .disposed(by: disposeBag)
     }
     
-    func fetchGoalReport(goalId: Int) {
-        goalRepository.getGoalReport(goalId: String(goalId))
+    func fetchGoalReport(goalId: String) {
+        repository.getGoalReport(goalId: goalId)
             .subscribe { [weak self] event in
                 switch event {
                 case .success(let response):
@@ -55,80 +52,155 @@ class GoalDetailViewModel {
             .disposed(by: disposeBag)
     }
     
-    func fetchExpensesUsingGoalDetail(goalId: Int, forceRefresh: Bool = false) {
-        
+//    func fetchExpensesUsingGoalDetail(goalId: String, forceRefresh: Bool = false) {
+//        
+//        if forceRefresh {
+//            lastDate = nil
+//            lastExpenseId = nil
+//        }
+//        
+//        repository.getGoalDetail(goalId: goalId)
+//            .flatMap { [weak self] goalDetailResponse -> Single<WeeklyExpenseResponse> in
+//                guard let self = self else { return .never() }
+//                let startDate = goalDetailResponse.result.startDate
+//                let endDate = goalDetailResponse.result.endDate
+//                selectedStartDate = startDate
+//                selectedEndDate = endDate
+//                return self.repository.getWeeklyExpenses(goalId: goalId, startDate: startDate, endDate: endDate, size: "10", lastDate: self.lastDate, lastExpenseId: self.lastExpenseId)
+//            }.subscribe(onSuccess: { [weak self] expenseResponse in
+//                // 마지막 날짜와 ID 업데이트
+//                if let lastExpense = expenseResponse.result.dailyExpenseList.last?.expenseDetailList.last {
+//                    self?.lastDate = expenseResponse.result.dailyExpenseList.last?.date
+//                    self?.lastExpenseId = String(lastExpense.expenseId)
+//                }
+//                
+//                // hasNext 업데이트
+//                self?.hasNext = expenseResponse.result.hasNext
+//                
+//                // 데이터 방출
+//                self?.weeklyExpensesRelay.accept(expenseResponse.result)
+//            }, onFailure: { error in
+//                print("Error fetching expenses: \(error.localizedDescription)")
+//            }).disposed(by: disposeBag)
+//    }
+    
+    func fetchNextPageIfPossible(goalId: String) {
+        guard hasNext else { return }
+        fetchBySelectedDates(goalId: goalId, startDate: self.selectedStartDate!, endDate: self.selectedEndDate!)
+    }
+    
+    //    func fetchBySelectedDates(goalId : String, startDate : String, endDate : String, forceRefresh: Bool = false){
+    //
+    //        if forceRefresh {
+    //            lastDate = nil
+    //            lastExpenseId = nil
+    //        }
+    //
+    //        self.selectedStartDate = startDate
+    //        self.selectedEndDate = endDate
+    //
+    //        repository.getWeeklyExpenses(goalId: goalId, startDate: startDate, endDate: endDate, size: "10", lastDate: self.lastDate, lastExpenseId: self.lastExpenseId)
+    //            .subscribe { [weak self] expenseResponse in
+    //                switch expenseResponse {
+    //                case .success(let response):
+    //                    if let lastExpense = response.result.dailyExpenseList.last?.expenseDetailList.last {
+    //                        self?.lastDate = response.result.dailyExpenseList.last?.date
+    //                        self?.lastExpenseId = String(lastExpense.expenseId)
+    //                    }
+    //
+    //                    // hasNext 업데이트
+    //                    self?.hasNext = response.result.hasNext
+    //
+    //                    // 데이터 방출
+    //                    self?.weeklyExpensesRelay.accept(response.result)
+    //                case .failure(let error):
+    //                    print(error.localizedDescription)
+    //                }
+    //            }
+    //            .disposed(by: disposeBag)
+    //    }
+    
+    func fetchBySelectedDates(goalId: String, startDate: String, endDate: String, forceRefresh: Bool = false) {
         if forceRefresh {
             lastDate = nil
             lastExpenseId = nil
+            // Emit an empty list to clear existing data
+            dailyExpenseListRelay.accept([])
         }
         
-        goalRepository.getGoalDetail(goalId: String(goalId))
+        self.selectedStartDate = startDate
+        self.selectedEndDate = endDate
+        
+        repository.getWeeklyExpenses(goalId: goalId, startDate: startDate, endDate: endDate, size: "10", lastDate: lastDate, lastExpenseId: lastExpenseId)
+            .subscribe(onSuccess: { [weak self] expenseResponse in
+                self?.updatePaginationInfo(from: expenseResponse.result)
+                
+                // Decide to either clear existing data and emit new or append to existing data
+                if forceRefresh {
+                    // Directly emit the new data
+                    self?.dailyExpenseListRelay.accept(expenseResponse.result.dailyExpenseList)
+                } else {
+                    // Append new data to existing and emit
+                    self?.dailyExpenseListRelay
+                        .take(1) // Take the current state before appending
+                        .subscribe(onNext: { currentList in
+                            let updatedList = currentList + expenseResponse.result.dailyExpenseList
+                            self?.dailyExpenseListRelay.accept(updatedList)
+                        })
+                        .disposed(by: self!.disposeBag)
+                }
+            }, onFailure: { error in
+                print("Error fetching expenses: \(error.localizedDescription)")
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func fetchExpensesUsingGoalDetail(goalId: String, forceRefresh: Bool = false) {
+        if forceRefresh {
+            lastDate = nil
+            lastExpenseId = nil
+            // Emit an empty list to clear existing data
+            dailyExpenseListRelay.accept([])
+        }
+        
+        repository.getGoalDetail(goalId: goalId)
             .flatMap { [weak self] goalDetailResponse -> Single<WeeklyExpenseResponse> in
                 guard let self = self else { return .never() }
                 let startDate = goalDetailResponse.result.startDate
                 let endDate = goalDetailResponse.result.endDate
-                return self.goalRepository.getWeeklyExpenses(goalId: String(goalId), startDate: startDate, endDate: endDate, size: "10", lastDate: self.lastDate, lastExpenseId: self.lastExpenseId)
+                self.selectedStartDate = startDate
+                self.selectedEndDate = endDate
+                return self.repository.getWeeklyExpenses(goalId: goalId, startDate: startDate, endDate: endDate, size: "10", lastDate: self.lastDate, lastExpenseId: self.lastExpenseId)
             }.subscribe(onSuccess: { [weak self] expenseResponse in
-                // 마지막 날짜와 ID 업데이트
-                if let lastExpense = expenseResponse.result.dailyExpenseList.last?.expenseDetailList.last {
-                    self?.lastDate = expenseResponse.result.dailyExpenseList.last?.date
-                    self?.lastExpenseId = String(lastExpense.expenseId)
+                self?.updatePaginationInfo(from: expenseResponse.result)
+                
+                // Check if it's a force refresh or a subsequent fetch
+                if forceRefresh {
+                    // For force refresh, directly emit the new list
+                    self?.dailyExpenseListRelay.accept(expenseResponse.result.dailyExpenseList)
+                } else {
+                    // For subsequent fetches, append new data to the existing data
+                    self?.dailyExpenseListRelay
+                        .take(1) // Take the current value of the relay
+                        .subscribe(onNext: { currentList in
+                            let updatedList = currentList + expenseResponse.result.dailyExpenseList
+                            self?.dailyExpenseListRelay.accept(updatedList)
+                        })
+                        .disposed(by: self!.disposeBag)
                 }
-                
-                // hasNext 업데이트
-                self?.hasNext = expenseResponse.result.hasNext
-                
-                // 데이터 방출
-                self?.weeklyExpensesRelay.accept(expenseResponse.result)
-            }, onError: { error in
+            }, onFailure: { error in
                 print("Error fetching expenses: \(error.localizedDescription)")
             }).disposed(by: disposeBag)
     }
     
-    func fetchNextPageIfPossible(goalId: Int) {
-        guard hasNext else { return }
-        fetchExpensesUsingGoalDetail(goalId: goalId)
+    private func updatePaginationInfo(from result: WeeklyExpenseResult) {
+        if let lastExpenseDay = result.dailyExpenseList.last,
+           let lastExpense = lastExpenseDay.expenseDetailList.last {
+            self.lastDate = lastExpenseDay.date
+            self.lastExpenseId = String(lastExpense.expenseId)
+        }
+        self.hasNext = result.hasNext
     }
-}
-
-class GoalAPIViewController: UIViewController {
     
-    var viewModel = GoalDetailViewModel.shared
-    var disposeBag = DisposeBag()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // ViewModel의 fetchGoal 메서드를 호출하여 데이터 요청
-        viewModel.fetchGoalDetail(goalId: 14)
-        viewModel.fetchGoalReport(goalId: 14)
-        viewModel.fetchExpensesUsingGoalDetail(goalId: 14, forceRefresh: true)
-        
-        // 데이터 수신을 위한 구독 설정
-        viewModel.goalDetail
-            .subscribe(onNext: { [weak self] goal in
-                // 여기서 goal 데이터를 사용하여 UI 업데이트
-                print(goal)
-            })
-            .disposed(by: disposeBag)
-        
-        viewModel.goalReportRelay
-            .subscribe(onNext: { [weak self] report in
-                // report 데이터를 사용하여 UI 업데이트
-                print(report)
-            })
-            .disposed(by: disposeBag)
-        
-        
-        // 소비 내역 구독 설정
-        viewModel.weeklyExpensesRelay
-            .subscribe(onNext: { [weak self] weeklyExpenses in
-                // 여기서 weeklyExpenses 데이터를 사용하여 UI 업데이트, 예를 들어 콘솔에 출력
-                print("Weekly Expenses: \(weeklyExpenses)")
-                // 추가적으로, 여기에서 테이블 뷰를 업데이트할 수도 있습니다.
-                // self?.tableView.reloadData() // 예시: 테이블 뷰가 있다고 가정
-            })
-            .disposed(by: disposeBag)
-    }
-
 }

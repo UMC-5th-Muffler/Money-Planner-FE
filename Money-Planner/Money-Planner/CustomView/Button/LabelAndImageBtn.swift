@@ -42,5 +42,6 @@ class LabelAndImageBtn: UIButton {
     // 이미지 설정 메소드 오버라이드
     override func setImage(_ image: UIImage?, for state: UIControl.State) {
         customImageView.image = image
+        
     }
 }

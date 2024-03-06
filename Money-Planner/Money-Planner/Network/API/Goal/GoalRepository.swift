@@ -66,18 +66,16 @@ final class GoalRepository {
             .map(PreviousGoalResponse.self)
     }
     
-    // 목표 상세페이지에서 소비내역 불러오는 용도.
-    func getWeeklyExpenses(goalId: String, startDate: String, endDate: String, size: String, lastDate: String? = nil, lastExpenseId: String? = nil) -> Single<WeeklyExpenseResponse> {
-        return provider.rx.request(.getWeeklyExpenses(goalId: goalId, startDate: startDate, endDate: endDate, size: size, lastDate: lastDate, lastExpenseId: lastExpenseId))
-            .filterSuccessfulStatusCodes()
-            .map(WeeklyExpenseResponse.self)
-    }
-    
-    // 목표 상세페이지의 목표 리포트용
     func getGoalReport(goalId: String) -> Single<GoalReportResponse> {
         return provider.rx.request(.getGoalReport(goalId: goalId))
             .filterSuccessfulStatusCodes()
             .map(GoalReportResponse.self)
+    }
+    
+    func getWeeklyExpenses(goalId: String, startDate: String, endDate: String, size: String, lastDate: String? = nil, lastExpenseId: String? = nil) -> Single<WeeklyExpenseResponse> {
+        return provider.rx.request(.getWeeklyExpenses(goalId: goalId, startDate: startDate, endDate: endDate, size: size, lastDate: lastDate, lastExpenseId: lastExpenseId))
+            .filterSuccessfulStatusCodes()
+            .map(WeeklyExpenseResponse.self)
     }
     
     func postContent( icon: String, title: String, startDate : String, endDate : String, totalBudget : Int64, categoryGoals : [CategoryGoal], dailyBudgets: [Int64], completion: @escaping (Result<Goal?, BaseError>) -> Void){

@@ -13,65 +13,23 @@ import RxMoya
 import Moya
 import FSCalendar
 
-extension GoalDetailsViewController {
+class GoalDetailsViewController: UIViewController, ExpenseViewDelegate, ZeroViewDelegate {
     
-    @objc func showModal() {
-        let modal = ShowingPeriodSelectionModal(startDate: (goalDetail!.startDate.toDate) ?? Date(), endDate: (goalDetail!.endDate.toDate) ?? Date())
-        modal.modalPresentationStyle = .popover
-        modal.delegate = self
-        present(modal, animated: true)
+    func changeZeroView() {
+        //
     }
     
-    func configureSpendingAndReportViews() {
-        
-        expenseView.tapFilterBtn = { [weak self] in
-            self?.showModal()
-        }
-        
-        reportView.goal = goalDetail // Pass the goal to the report view
-        reportView.tableView.reloadData()
-        
-        expenseView.translatesAutoresizingMaskIntoConstraints = false
-        reportView.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(expenseView)
-        view.addSubview(reportView)
-        
-        // 이곳에서 expenseView와 reportView를 뷰에 추가하고 오토레이아웃을 설정하세요.
-        NSLayoutConstraint.activate([
-            expenseView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            expenseView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            expenseView.topAnchor.constraint(equalTo: lineView.bottomAnchor, constant: 1),
-            expenseView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            reportView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            reportView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            reportView.topAnchor.constraint(equalTo: lineView.bottomAnchor, constant: 1),
-            reportView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+    func navigateToDailyConsumeViewController(date: String, totalAmount: Int64) {
+        let dailyConsumeVC = DailyConsumeViewController()
+        dailyConsumeVC.dateText = date
+        dailyConsumeVC.totalAmount = Int(totalAmount)
+        dailyConsumeVC.zeroViewDelegate = self // If GoalDetailsViewController conforms to ZeroViewDelegate
+        dailyConsumeVC.setupTotalAmount()
+        self.navigationController?.pushViewController(dailyConsumeVC, animated: true)
     }
-}
-
-
-extension GoalDetailsViewController : PeriodSelectionDelegate {
-    func periodSelectionDidSelectDates(startDate: Date, endDate: Date) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.MM.dd"
-        let startDateString = formatter.string(from: startDate)
-        let endDateString = formatter.string(from: endDate)
-        
-        // 필터 버튼의 타이틀 업데이트
-        expenseView.filterBtn.setTitle("\(startDateString) - \(endDateString)", for: .normal)
-        print("보여지는 period 변경 실행")
-    }
-}
-
-class GoalDetailsViewController : UIViewController {
     
-    private let viewModel = GoalDetailViewModel.shared
-    private let disposeBag = DisposeBag()
+    var viewModel = GoalDetailViewModel.shared
+    var disposeBag = DisposeBag()
     
     let goalId : Int
     
@@ -87,110 +45,62 @@ class GoalDetailsViewController : UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
+    init() {
+        self.goalId = 8//11, 12 4=>가장 많이 소비한 곳은 안뜸. 5=>카페/간식 데이터가 안옴.
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        view.backgroundColor = .mpWhite
-//        setupNavigationBar()
-//        setupLayout()
-//        setupTabButtons()
-//        setuplineViews()
-//        configureViews()
-//        configureSpendingAndReportViews()
-//        selectButton(spendingButton) // Default selected button
-//        
-//        // ViewModel의 goalDetail 데이터를 관찰하고 UI 업데이트
-//        viewModel.goalDetail.asObservable()
-//            .compactMap { $0 }
-//            .subscribe(onNext: { [weak self] detail in
-//                // GoalDetail 데이터를 사용하여 UI 업데이트
-//                // 예: self?.titleLabel.text = detail.title
-//            }).disposed(by: disposeBag)
-//        
-//        // ViewModel의 goalExpenses 데이터를 관찰하고 UI 업데이트
-//        viewModel.goalExpenses.asObservable()
-//            .compactMap { $0 }
-//            .subscribe(onNext: { [weak self] expenses in
-//                // GoalExpenses 데이터를 사용하여 UI 업데이트
-//                // 예: self?.updateExpenses(expenses)
-//            }).disposed(by: disposeBag)
-//        
-//        // ViewModel의 CategoryTotalCost 데이터를 관찰하고 UI 업데이트
-//        viewModel.goalReport.asObservable()
-//            .compactMap { $0 }
-//            .subscribe(onNext: { [weak self] goalReportResult in
-//                self?.updateCategory(with: goalReportResult)
-//            }).disposed(by: disposeBag)
-//        
-//        // ViewModel에서 GoalReport 데이터 가져오기
-//        
-//        viewModel.fetchGoalReport(goalId: goalId)
-//        viewModel.fetchGoalDetail(goalId: goalId)
-//        viewModel.fetchGoalExpenses(goalId: goalId, startDate: <#T##String#>, endDate: <#T##String#>, size: 10)
-//        
-//    }
-    
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        view.backgroundColor = .white
         
-        // ViewModel에서 GoalReport 데이터 가져오기
-        viewModel.fetchGoalReport(goalId: goalId)
-        viewModel.fetchGoalDetail(goalId: goalId)
-        viewModel.fetchExpensesUsingGoalDetail(goalId: goalId, forceRefresh: true)
-        // 초기 fetchGoalExpenses 호출은 제거하고, goalDetail 구독 결과에 따라 호출되도록 변경
+        viewModel.fetchGoal(goalId: String(goalId))
+        viewModel.fetchGoalReport(goalId: String(goalId))
+        viewModel.fetchExpensesUsingGoalDetail(goalId: String(goalId), forceRefresh: true)
         
-        // ViewModel의 goalDetail 데이터를 관찰하고 UI 업데이트
-        viewModel.goalDetail
-            .subscribe(onNext: { [weak self] detail in
-                // 여기서 goal 데이터를 사용하여 UI 업데이트
-                print("상단 goal detail 받기 성공.")
-                print("\(detail.icon) + \(detail.title)")
-                self?.goalDetail = detail
-                // GoalDetail에서 startDate와 endDate를 기반으로 Expenses 데이터 가져오기
-                self?.configureViews()
-
+        // GoalDetail 데이터 수신
+        viewModel.goalRelay
+            .subscribe(onNext: { [weak self] goalDetail in
+                // reportView에 GoalDetail 데이터 전달 및 업데이트
+                self?.reportView.updateCategoryGoalDetail(goal: goalDetail)
+                self?.setupNavgationBarTitle(icon: goalDetail.icon, title: goalDetail.title)
+                self?.goalDetail = goalDetail
+                self?.configureViews(goalDetail: goalDetail)
+                print(goalDetail)
             })
             .disposed(by: disposeBag)
         
+        // GoalReport 데이터 수신
         viewModel.goalReportRelay
             .subscribe(onNext: { [weak self] report in
-                // report 데이터를 사용하여 UI 업데이트
+                // reportView에 GoalReport 데이터 전달 및 업데이트
+                self?.reportView.updateCategoryReports(with: report)
                 print(report)
             })
             .disposed(by: disposeBag)
         
-        
-        // 소비 내역 구독 설정
-        viewModel.weeklyExpensesRelay
-            .subscribe(onNext: { [weak self] weeklyExpenses in
-                // 여기서 weeklyExpenses 데이터를 사용하여 UI 업데이트, 예를 들어 콘솔에 출력
-                print("Weekly Expenses: \(weeklyExpenses)")
-                // 추가적으로, 여기에서 테이블 뷰를 업데이트할 수도 있습니다.
-                // self?.tableView.reloadData() // 예시: 테이블 뷰가 있다고 가정
+        // WeeklyExpenses 데이터 수신
+        viewModel.dailyExpenseListRelay
+            .subscribe(onNext: { [weak self] dailyExpenseList in
+                // reportView에 WeeklyExpenses 데이터 전달 및 업데이트
+                self?.expenseView.update(with: dailyExpenseList)
             })
             .disposed(by: disposeBag)
         
-        
-        view.backgroundColor = .mpWhite
         setupNavigationBar()
         setupLayout()
         setupTabButtons()
         setuplineViews()
-        selectButton(spendingButton) // Default selected button
-        
-        configureSpendingAndReportViews()
-    }
-
-    
-    func updateCategory(with reports: GoalReportResult) {
-        reportView.updateCategory(with: reports, goal: self.goalDetail!)
+        setupExpenseView()
+        setupReportView()
+        selectButton(reportButton)
     }
     
-    var header = HeaderView(title: "")
     //layer1
     let dday = DdayLabel()
     let spanNDuration : MPLabel = {
@@ -202,7 +112,7 @@ class GoalDetailsViewController : UIViewController {
     }()
     let editBtn : UIButton = {
         let btn = UIButton()
-        btn.setImage(UIImage(named: "icon_Edit"), for: .normal)
+        btn.setImage(UIImage(named: "btn_Edit"), for: .normal)
         btn.tintColor = .mpGray
         return btn
     }()
@@ -223,33 +133,23 @@ class GoalDetailsViewController : UIViewController {
         return label
     }()
     
-    
     func setupLayout(){
         
-        view.addSubview(header)
         view.addSubview(dday)
         view.addSubview(spanNDuration)
         view.addSubview(editBtn)
         view.addSubview(label1)
         view.addSubview(label2)
         
-        header.translatesAutoresizingMaskIntoConstraints = false
         dday.translatesAutoresizingMaskIntoConstraints = false
         spanNDuration.translatesAutoresizingMaskIntoConstraints = false
         editBtn.translatesAutoresizingMaskIntoConstraints = false
         label1.translatesAutoresizingMaskIntoConstraints = false
         label2.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            header.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            header.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            header.heightAnchor.constraint(equalToConstant: 40)
-        ])
-        
         // dday 제약 조건
         NSLayoutConstraint.activate([
-            dday.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 40),
+            dday.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             dday.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             dday.widthAnchor.constraint(equalToConstant: 39)
         ])
@@ -370,42 +270,33 @@ class GoalDetailsViewController : UIViewController {
         }
     }
     
-    
-    @objc func backButtonTapped(){
-        navigationController?.popViewController(animated: true)
-    }
-    
     private func setComma(cash: Int64) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         return formatter.string(from: NSNumber(value: cash)) ?? ""
     }
     
-    func configureViews(){
-        
-//        let goalDetail = self.goalDetail!
-        header.setupTitleLabel(with: goalDetail!.icon + " " + goalDetail!.title)
-        header.addBackButtonTarget(target: self, action: #selector(backButtonTapped), for: .touchUpInside)
+    func configureViews(goalDetail : GoalDetail){
         //layer1
         //dday
-        dday.configure(for: goalDetail!)
+        dday.configure(for: goalDetail)
         
         let dateFormatter = DateFormatter()
         
         //spanDuration
         dateFormatter.dateFormat = "yyyy.MM.dd"
-        let startdatestr = goalDetail!.startDate
+        let startdatestr = dateFormatter.string(from: goalDetail.startDate.toDate!)
         
         let enddatestr : String
-        if Calendar.current.dateComponents([.year], from: goalDetail!.startDate.toDate!) == Calendar.current.dateComponents([.year], from: goalDetail!.endDate.toDate!) {
-            enddatestr = goalDetail!.endDate
+        if Calendar.current.dateComponents([.year], from: goalDetail.startDate.toDate!) == Calendar.current.dateComponents([.year], from: goalDetail.endDate.toDate!) {
+            enddatestr = dateFormatter.string(from: goalDetail.endDate.toDate!)
         }else{
             dateFormatter.dateFormat = "MM.dd"
-            enddatestr = dateFormatter.string(from: goalDetail!.endDate.toDate!)
+            enddatestr = dateFormatter.string(from: goalDetail.endDate.toDate!)
         }
         
-        if goalDetail!.startDate.toDate! < Date() && Date() < goalDetail!.endDate.toDate! {
-            let day = Calendar.current.dateComponents([.day], from: goalDetail!.startDate.toDate!, to: Date()).day
+        if goalDetail.startDate.toDate! < Date() && Date() < goalDetail.endDate.toDate! {
+            let day = Calendar.current.dateComponents([.day], from: goalDetail.startDate.toDate!, to: Date()).day
             spanNDuration.text = startdatestr + " - " + enddatestr + " | " + "\(day ?? 0)" + "일차"
         }else{
             spanNDuration.text = startdatestr + " - " + enddatestr
@@ -416,8 +307,8 @@ class GoalDetailsViewController : UIViewController {
         //layer2
         //label1 이미 구현됨.
         //label2
-        let totalCostString = setComma(cash: goalDetail!.totalCost)
-        let goalBudgetString = " / \(setComma(cash: goalDetail!.totalBudget))원"
+        let totalCostString = setComma(cash: goalDetail.totalCost)
+        let goalBudgetString = " / \(setComma(cash: goalDetail.totalBudget))원"
         
         let attributedString = NSMutableAttributedString(string: totalCostString, attributes: [
             .font: UIFont.mpFont26B(),
@@ -444,11 +335,116 @@ class GoalDetailsViewController : UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
     
-    func setupNavigationBar() {
-        //        self.navigationController?.navigationBar.tintColor = .mpBlack
-        //        self.navigationItem.title = goal.icon + " " + goal.goalTitle
-        //        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.navigationController?.isNavigationBarHidden = true
+    private func setupExpenseView() {
+        expenseView.delegate = self
+        view.addSubview(expenseView)
+        expenseView.translatesAutoresizingMaskIntoConstraints = false
+        configureExpenseViews()
+        NSLayoutConstraint.activate([
+            expenseView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            expenseView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            expenseView.topAnchor.constraint(equalTo: lineView.bottomAnchor, constant: 1),
+            expenseView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
     
+    private func setupReportView() {
+        view.addSubview(reportView)
+        reportView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            reportView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            reportView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            reportView.topAnchor.constraint(equalTo: lineView.bottomAnchor, constant: 1),
+            reportView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    //navigation 설정
+    @objc private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    private func setupNavigationBar() {
+        let backButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(backButtonTapped))
+        let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium, scale: .medium)
+        backButton.image = UIImage(systemName: "chevron.left", withConfiguration: config)
+        backButton.tintColor = .mpBlack
+        
+        navigationItem.leftBarButtonItem = backButton
+    }
+    
+    private func setupNavgationBarTitle(icon : String, title : String){
+        let titleLabel = UILabel()
+        
+        // 아이콘과 타이틀을 결합한 문자열 생성
+        let fullTitle = icon + " " + title
+        
+        // NSAttributedString을 사용하여 타이틀 문자열에 스타일 적용
+        let attributedText = NSMutableAttributedString(string: fullTitle, attributes: [
+            .font: UIFont.mpFont18B(),
+            .foregroundColor: UIColor.mpBlack // 텍스트 색상 설정
+        ])
+        
+        // 아이콘에 대한 스타일 지정 (예시: 아이콘만 볼드체로 표시하고 싶은 경우)
+        if let iconRange = fullTitle.range(of: icon) {
+            attributedText.addAttributes([
+                .font: UIFont.boldSystemFont(ofSize: 18) // 아이콘에 대한 커스텀 폰트 설정
+            ], range: NSRange(iconRange, in: fullTitle))
+        }
+        
+        // NSAttributedString을 UILabel에 할당
+        titleLabel.attributedText = attributedText
+        
+        // 타이틀 뷰로 설정
+        navigationItem.titleView = titleLabel
+        
+        // 타이틀 뷰의 크기 조정이 필요한 경우
+        titleLabel.sizeToFit()
+    }
+    
+}
+
+
+extension GoalDetailsViewController {
+    
+    @objc func showModal() {
+        let modal = ShowingPeriodSelectionModal(startDate: (goalDetail!.startDate.toDate) ?? Date(), endDate: (goalDetail!.endDate.toDate) ?? Date())
+        modal.modalPresentationStyle = .popover
+        modal.delegate = self
+        present(modal, animated: true)
+    }
+    
+    func configureExpenseViews() {
+        expenseView.tapFilterBtn = { [weak self] in
+            self?.showModal()
+        }
+    }
+}
+
+
+extension GoalDetailsViewController : PeriodSelectionDelegate {
+    func periodSelectionDidSelectDates(startDate: Date, endDate: Date) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        var startDateString = formatter.string(from: startDate)
+        var endDateString = formatter.string(from: endDate)
+        
+        //viewModel 선택 날짜로 갱신
+        viewModel.fetchBySelectedDates(goalId: String(goalId), startDate: startDateString, endDate: endDateString, forceRefresh: true)
+        
+        if startDateString == goalDetail?.startDate && endDateString == goalDetail?.endDate{
+            expenseView.filterBtn.setTitle("전체 기간 조회", for: .normal)
+            return
+        }
+        
+        formatter.dateFormat = "yyyy.MM.dd"
+        startDateString = formatter.string(from: startDate)
+        endDateString = formatter.string(from: endDate)
+        
+        // 필터 버튼의 타이틀 업데이트
+        expenseView.filterBtn.setTitle("\(startDateString) - \(endDateString)", for: .normal)
+        
+        print("보여지는 period 변경 실행")
+    }
 }

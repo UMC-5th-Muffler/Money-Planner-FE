@@ -33,11 +33,11 @@ class DdayLabel: MPLabel {
     func configure(for goal: GoalDetail) {
         self.font = .mpFont14B()
 
-        let currentDate = Date()
-        let isPastGoal = currentDate > goal.endDate.toDate ?? Date()
-        let isFutureGoal = currentDate < goal.startDate.toDate ?? Date()
+        let currentDate = Date().toString().toDate
+        let isPastGoal = currentDate! > goal.endDate.toDate ?? Date()
+        let isFutureGoal = currentDate! < goal.startDate.toDate ?? Date()
 
-        let daysLeft = isPastGoal ? 0 : Calendar.current.dateComponents([.day], from: currentDate, to: goal.endDate.toDate ?? Date()).day ?? 0
+        let daysLeft = isPastGoal ? 0 : Calendar.current.dateComponents([.day], from: currentDate!, to: goal.endDate.toDate ?? Date()).day ?? 0
 
         var ddayText = "D-\(daysLeft)"
         self.backgroundColor = UIColor.mpCalendarHighLight
