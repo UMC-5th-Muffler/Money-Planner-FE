@@ -18,16 +18,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
          // UIWindowScene 유효성 검사
          guard let windowScene = (scene as? UIWindowScene) else { return }
          window = UIWindow(windowScene: windowScene)
+         
          let defaults = UserDefaults.standard
-//         let token = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTI0MDczNDZ9.yrSymioU_M5qZ518OkxcQiKsUyRKn2-UzMJV_fw01Yk"
-//         defaults.set(token, forKey: "refreshToken")
-         if let refreshToken = defaults.string(forKey: "refreshToken"){
-             //리프레쉬 토큰이 있는 경우
-             print("리프레쉬 토큰 존재함")
-             let viewModel = LoginViewModel()
-             viewModel.refreshAccessTokenIfNeeded()
-
+         let viewModel = LoginViewModel()
+        // 엑세스 토큰이 있는 경우
+         if let accessToken = defaults.string(forKey: "accessToken"){
+             viewModel.isLoginEnabled { isEnabled in
+                 if isEnabled {
+                     // 로그인 가능한 경우
+                     print("로그인 가능합니다.")
+                     self.setupMainInterface()
+                 } else {
+                     // 로그인 불가능한 경우
+                     print("로그인이 불가능합니다.")
+                     if let refreshToken = defaults.string(forKey: "refreshToken"){
+                         //리프레쉬 토큰이 있는 경우
+                         print("리프레쉬 토큰 존재함")
+                         viewModel.refreshAccessTokenIfNeeded()
+                     }
+                 }
+             }
+         }else{
+            window?.rootViewController = LoginViewController()
          }
+    
 //         // UserDefaults를 사용하여 이전 로그인 여부 확인 및 자동 로그인 처리
 //         // 예시 코드로, 실제 앱에서는 로그인 상태를 관리하는 더 안전한 방법을 사용해야 합니다.
 //         let isLoggedIn = defaults.bool(forKey: "isLoggedIn")

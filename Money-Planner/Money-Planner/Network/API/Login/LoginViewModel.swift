@@ -14,7 +14,21 @@ import UIKit
 class LoginViewModel {
     let loginRepository = LoginRepository()
     let disposeBag = DisposeBag()
-
+    
+    
+    func isLoginEnabled(completion: @escaping (Bool) -> Void) {
+        loginRepository.connect()
+            .subscribe(onNext: { response in
+                print(response)
+                completion(response.isSuccess)
+            }, onError: { error in
+                // 오류가 발생한 경우에 대한 처리를 수행합니다.
+                print(error)
+                completion(false) // 로그인 불가능으로 처리
+            })
+            .disposed(by: disposeBag)
+    }
+    
     func refreshAccessTokenIfNeeded() {
         // 이미 저장된 리프레시 토큰이 있는 경우
         if let refreshToken = UserDefaults.standard.string(forKey: "refreshToken") {

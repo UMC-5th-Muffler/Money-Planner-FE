@@ -64,8 +64,17 @@ extension LoginAPI: TargetType {
     }
     
     var headers: [String: String]? {
-        return nil
-    }
+        switch self {
+            case .refreshToken:
+                return nil
+            default:
+                // Add access token to headers
+                if let accessToken = UserDefaults.standard.string(forKey: "accessToken") {
+                    return ["Authorization": "Bearer \(accessToken)"]
+                } else {
+                    return nil
+                }
+            }    }
 }
 
 
