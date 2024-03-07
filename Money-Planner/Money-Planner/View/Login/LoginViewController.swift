@@ -139,6 +139,8 @@ class LoginViewController: UIViewController {
     }
     
     private func bindEvents() {
+
+    
         // 카카오 로그인 버튼 이벤트 바인딩
         kakaoLoginButton.rx.tap
             .bind { [weak self] in self?.loginToKakao() }
@@ -149,6 +151,8 @@ class LoginViewController: UIViewController {
         //            .bind { [weak self] in self?.loginToApple() }
         //            .disposed(by: disposeBag)
     }
+    
+    
     
     @objc private func loginToKakao() {
         if UserApi.isKakaoTalkLoginAvailable() {
@@ -170,6 +174,8 @@ class LoginViewController: UIViewController {
         }
     }
     
+    
+    
     @objc private func loginToApple() {
         
     }
@@ -180,10 +186,24 @@ class LoginViewController: UIViewController {
             print("로그인 실패: \(error.localizedDescription)")
         } else if let oauthToken = oauthToken {
             print("로그인 성공")
-            // 로그인 성공 후 처리
-            
+            // 로그인 성공 후에 토큰을 저장합니다.
+            print(oauthToken)
+            saveTokenToUserDefaults(token: oauthToken.accessToken)
+            // 홈화면으로 이동
+            // 홈 화면으로 이동합니다.
+            let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+            sceneDelegate?.setupMainInterface()
         }
+        
+        
     }
+    // 토큰을 UserDefaults에 저장하는 함수
+    func saveTokenToUserDefaults(token: String) {
+        let defaults = UserDefaults.standard
+        defaults.set(token, forKey: "accessToken")
+    }
+  
     
+
 }
 
