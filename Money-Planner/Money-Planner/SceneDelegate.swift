@@ -21,8 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
          
          let defaults = UserDefaults.standard
          let viewModel = LoginViewModel()
-         defaults.set("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMzI0NjEzNzk1IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDk5MDM5MzR9.NzemIJaCQO1bTGIEIpAvgRT0wsai0ZLJ8AexPzbcmr0", forKey: "accessToken")
-         defaults.set("eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTI0MDk1MzR9.zJO0TrjidpePb2rc8znBP5ZgRZCfbVlPqu89Z0p_BjY", forKey: "refreshToken")
+
         // 엑세스 토큰이 있는 경우
          if let accessToken = defaults.string(forKey: "accessToken"){
              viewModel.isLoginEnabled { isEnabled in
