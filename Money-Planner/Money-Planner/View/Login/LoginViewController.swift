@@ -155,23 +155,30 @@ class LoginViewController: UIViewController {
     
     
     @objc private func loginToKakao() {
-        if UserApi.isKakaoTalkLoginAvailable() {
-            UserApi.shared.rx_loginWithKakaoTalk()
-                .subscribe(onNext: { [weak self] oauthToken in
-                    self?.handleLoginResult(oauthToken: oauthToken, error: nil)
-                }, onError: { [weak self] error in
-                    self?.handleLoginResult(oauthToken: nil, error: error)
-                })
-                .disposed(by: disposeBag)
-        } else {
-            UserApi.shared.rx_loginWithKakaoAccount()
-                .subscribe(onNext: { [weak self] oauthToken in
-                    self?.handleLoginResult(oauthToken: oauthToken, error: nil)
-                }, onError: { [weak self] error in
-                    self?.handleLoginResult(oauthToken: nil, error: error)
-                })
-                .disposed(by: disposeBag)
-        }
+            guard let url = URL(string: "http://13.209.182.17:8080/api/member/login/kakao") else {
+                print("유효하지 않은 URL입니다.")
+                return
+            }
+            // Safari로 URL 열기
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        
+//        if UserApi.isKakaoTalkLoginAvailable() {
+//            UserApi.shared.rx_loginWithKakaoTalk()
+//                .subscribe(onNext: { [weak self] oauthToken in
+//                    self?.handleLoginResult(oauthToken: oauthToken, error: nil)
+//                }, onError: { [weak self] error in
+//                    self?.handleLoginResult(oauthToken: nil, error: error)
+//                })
+//                .disposed(by: disposeBag)
+//        } else {
+//            UserApi.shared.rx_loginWithKakaoAccount()
+//                .subscribe(onNext: { [weak self] oauthToken in
+//                    self?.handleLoginResult(oauthToken: oauthToken, error: nil)
+//                }, onError: { [weak self] error in
+//                    self?.handleLoginResult(oauthToken: nil, error: error)
+//                })
+//                .disposed(by: disposeBag)
+//        }
     }
     
     

@@ -47,6 +47,11 @@
 		208F5E8B2B81320D00107735 /* CreateCategoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208F5E8A2B81320D00107735 /* CreateCategoryResponse.swift */; };
 		209FF8712B851E79009E68E7 /* RoutineDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209FF8702B851E79009E68E7 /* RoutineDetailViewController.swift */; };
 		209FF8742B851EA8009E68E7 /* GetRoutineIdResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209FF8732B851EA8009E68E7 /* GetRoutineIdResponse.swift */; };
+		20ADFB702B99CA0D0054390F /* LoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20ADFB6F2B99CA0D0054390F /* LoginAPI.swift */; };
+		20ADFB722B99CAC80054390F /* LoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20ADFB712B99CAC80054390F /* LoginRepository.swift */; };
+		20ADFB742B99CB310054390F /* RefreshTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20ADFB732B99CB310054390F /* RefreshTokenResponse.swift */; };
+		20ADFB762B99CC500054390F /* RefreshTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20ADFB752B99CC500054390F /* RefreshTokenRequest.swift */; };
+		20ADFB782B99CE150054390F /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20ADFB772B99CE150054390F /* LoginViewModel.swift */; };
 		20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */; };
 		20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */; };
 		20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD902B656034008F8AB9 /* OneDayButton.swift */; };
@@ -244,6 +249,11 @@
 		208F5E8A2B81320D00107735 /* CreateCategoryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCategoryResponse.swift; sourceTree = "<group>"; };
 		209FF8702B851E79009E68E7 /* RoutineDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineDetailViewController.swift; sourceTree = "<group>"; };
 		209FF8732B851EA8009E68E7 /* GetRoutineIdResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRoutineIdResponse.swift; sourceTree = "<group>"; };
+		20ADFB6F2B99CA0D0054390F /* LoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAPI.swift; sourceTree = "<group>"; };
+		20ADFB712B99CAC80054390F /* LoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRepository.swift; sourceTree = "<group>"; };
+		20ADFB732B99CB310054390F /* RefreshTokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTokenResponse.swift; sourceTree = "<group>"; };
+		20ADFB752B99CC500054390F /* RefreshTokenRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTokenRequest.swift; sourceTree = "<group>"; };
+		20ADFB772B99CE150054390F /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatModalViewController.swift; sourceTree = "<group>"; };
 		20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDayView.swift; sourceTree = "<group>"; };
 		20AFDD902B656034008F8AB9 /* OneDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDayButton.swift; sourceTree = "<group>"; };
@@ -468,6 +478,8 @@
 			isa = PBXGroup;
 			children = (
 				208C90922B6AB7DA00C67960 /* ConnectModel.swift */,
+				20ADFB732B99CB310054390F /* RefreshTokenResponse.swift */,
+				20ADFB752B99CC500054390F /* RefreshTokenRequest.swift */,
 			);
 			path = Member;
 			sourceTree = "<group>";
@@ -585,6 +597,16 @@
 				209FF8732B851EA8009E68E7 /* GetRoutineIdResponse.swift */,
 			);
 			path = Routine;
+			sourceTree = "<group>";
+		};
+		20ADFB6E2B99C9F90054390F /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				20ADFB6F2B99CA0D0054390F /* LoginAPI.swift */,
+				20ADFB712B99CAC80054390F /* LoginRepository.swift */,
+				20ADFB772B99CE150054390F /* LoginViewModel.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 		7A3069862B8C5A0900CD331D /* PopupJson */ = {
@@ -953,6 +975,7 @@
 		D20D702A2B68BB81006D6762 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				20ADFB6E2B99C9F90054390F /* Login */,
 				7A8F3F142B85259400480902 /* Goal */,
 				D25D76592B80D91A0044A74D /* Routine */,
 				D253EEBB2B7B651500A4FC1C /* Expense */,
@@ -1173,6 +1196,7 @@
 				208F5E892B8131ED00107735 /* CreateCategoryRequest.swift in Sources */,
 				552A431C2B7AB534007AEAAD /* UIImage.swift in Sources */,
 				206C58D82B626465008410C1 /* CategoryModalViewController.swift in Sources */,
+				20ADFB742B99CB310054390F /* RefreshTokenResponse.swift in Sources */,
 				7A8F3ED82B85055D00480902 /* WarnAboutUneditableModal.swift in Sources */,
 				D2D0B7362B6BA83E003B6B5E /* HomeRepository.swift in Sources */,
 				208F5E7E2B80C81E00107735 /* ZeroDayRequest.swift in Sources */,
@@ -1193,6 +1217,7 @@
 				208C90C02B72636C00C67960 /* UIHelper.swift in Sources */,
 				208C90A82B6D48B300C67960 /* User.swift in Sources */,
 				20AFDD952B65B882008F8AB9 /* ChooseDateView.swift in Sources */,
+				20ADFB702B99CA0D0054390F /* LoginAPI.swift in Sources */,
 				D25D76612B8201A70044A74D /* Statistics.swift in Sources */,
 				D217EBEC2B6F846400EB6BF3 /* Progress.swift in Sources */,
 				208C90AC2B6E3F8100C67960 /* UnregisterViewController.swift in Sources */,
@@ -1215,6 +1240,7 @@
 				551E8B782B7D135E0008476B /* evaluationModalView.swift in Sources */,
 				D20D70302B68BEB0006D6762 /* Encodable.swift in Sources */,
 				7A8F3ED62B85055D00480902 /* ShowingPeriodSelectionModal.swift in Sources */,
+				20ADFB782B99CE150054390F /* LoginViewModel.swift in Sources */,
 				7A8F3EC82B84FE6100480902 /* CustomCalendarView.swift in Sources */,
 				D2D0B72F2B6A70A1003B6B5E /* BaseRepository.swift in Sources */,
 				D253EEB72B7B505B00A4FC1C /* HomeMoreModalViewController.swift in Sources */,
@@ -1273,6 +1299,7 @@
 				20EF78312B68E3AD00AA135E /* MyPageTableViewCell.swift in Sources */,
 				D217EBF12B7460CC00EB6BF3 /* CategoryRepository.swift in Sources */,
 				20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */,
+				20ADFB722B99CAC80054390F /* LoginRepository.swift in Sources */,
 				208F5E872B8125B300107735 /* GetCategoryResponse.swift in Sources */,
 				7A8F3F182B85259400480902 /* GoalAPI.swift in Sources */,
 				208C908F2B6AB78900C67960 /* MufflerAPI.swift in Sources */,
@@ -1307,6 +1334,7 @@
 				208F5E8B2B81320D00107735 /* CreateCategoryResponse.swift in Sources */,
 				20118A112B56A86100B2569E /* ConsumeViewController.swift in Sources */,
 				D25D765B2B80D9270044A74D /* RoutineAPI.swift in Sources */,
+				20ADFB762B99CC500054390F /* RefreshTokenRequest.swift in Sources */,
 				D20D6FDC2B581A5A006D6762 /* UITabBar.swift in Sources */,
 				D20D6FF82B5E974D006D6762 /* MainStatistics.swift in Sources */,
 			);
@@ -1457,7 +1485,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 4ND496J48G;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Money-Planner/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1471,7 +1499,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.umc.Money-Planner15";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.umc.Money-Planner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1489,7 +1517,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Money-Planner/Money-PlannerRelease.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 4ND496J48G;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Money-Planner/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1503,7 +1531,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.umc.Money-Planner15";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.umc.Money-Planner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
