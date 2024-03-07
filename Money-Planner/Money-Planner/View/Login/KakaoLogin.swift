@@ -75,6 +75,7 @@ class KakaoLogin {
     
     func loginToKakao() {
             if UserApi.isKakaoTalkLoginAvailable() {
+                print("log1")
                 UserApi.shared.rx_loginWithKakaoTalk()
                     .subscribe(onNext: { oauthToken in
                         print("로그인 성공: \(oauthToken)")
@@ -85,6 +86,8 @@ class KakaoLogin {
                     })
                     .disposed(by: disposeBag)
             } else {
+                print("log2")
+
                 UserApi.shared.rx_loginWithKakaoAccount()
                     .subscribe(onNext: { oauthToken in
                         print("로그인 성공: \(oauthToken)")
