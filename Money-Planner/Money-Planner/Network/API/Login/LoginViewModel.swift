@@ -23,13 +23,17 @@ class LoginViewModel {
             let refreshTokenRequest = RefreshTokenRequest(refreshToken: refreshToken)
             loginRepository.refreshToken(refreshToken: refreshTokenRequest)
                 .subscribe(onNext: { response in
+                    print(response)
                     // 새로운 액세스 토큰이 성공적으로 갱신된 경우
                     if response.isSuccess {
                         // 갱신된 액세스 토큰을 저장하거나, 필요한 처리를 수행합니다.
-                        let accessToken  = response.result.accessToken
-                        print(response)
-                        print(accessToken)
-                        UserDefaults.standard.set(accessToken, forKey: "accessToken")
+                        if let result = response.result {
+                            let accessToken  = result.accessToken
+                            let refreshToken = result.refreshToken
+                            UserDefaults.standard.set(accessToken, forKey: "accessToken")
+                            UserDefaults.standard.set(refreshToken, forKey: "refreshToken")
+                        }
+                        
                         // 홈 화면으로 이동합니다.
                         self.MoveToHome()
                     } else {
@@ -38,12 +42,14 @@ class LoginViewModel {
                     }
                 }, onError: { error in
                     // 오류가 발생한 경우에 대한 처리를 수행합니다.
+                    print(error)
                     print("Error refreshing access token: \(error.localizedDescription)")
                 })
                 .disposed(by: disposeBag)
         }
     }
     func MoveToHome(){
+        print("홈화면으로 이동")
         let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
         sceneDelegate?.setupMainInterface()
     }

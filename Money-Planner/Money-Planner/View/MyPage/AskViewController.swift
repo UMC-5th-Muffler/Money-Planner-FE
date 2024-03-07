@@ -341,46 +341,66 @@ class AskViewController: UIViewController,UITextFieldDelegate,UITextViewDelegate
     // MARK: - UItextFieldDelegate
 
     
-    func textField(_ textField: UITextField,shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//    func textField(_ textField: UITextField,shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        if textField == emailTextField {
+//            // 현재 텍스트필드의 텍스트
+//            let currentText = textField.text ?? ""
+//            // 새로 입력되는 문자열
+//            let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
+//            let textSize = newText.count
+//            if textSize > 0 {
+//                completeCheck.emailWriten = true
+//                updateCompleteButtonState()
+//            }
+//            else{
+//                completeCheck.emailWriten = false
+//                updateCompleteButtonState()
+//            }
+//            // 이메일 형식 검사
+//            if isValidEmail(email: newText) {
+//                // 올바른 이메일 형식
+//                emailTextField.layer.borderColor = UIColor.clear.cgColor
+//                emailLabel2.textColor = .mpDarkGray
+//                emailLabel2.text = "문의에 대한 답변을 이메일로 보내드려요."
+//                completeCheck.emailError = true
+//                updateCompleteButtonState()
+//
+//
+//            } else {
+//                // 잘못된 이메일 형식
+//
+//                emailTextField.layer.borderColor = UIColor.mpRed.cgColor
+//                emailTextField.layer.borderWidth = 1.0
+//                emailLabel2.textColor = .mpRed
+//                emailLabel2.text = "이메일 형식이 올바르지 않습니다."
+//                completeCheck.emailError = false
+//                updateCompleteButtonState()
+//            }
+//        }
+//
+//        return true
+//    }
+    func textFieldDidChangeSelection(_ textField: UITextField) {
         if textField == emailTextField {
-            // 현재 텍스트필드의 텍스트
-            let currentText = textField.text ?? ""
-            // 새로 입력되는 문자열
-            let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
-            let textSize = newText.count
-            if textSize > 0 {
-                completeCheck.emailWriten = true
-                updateCompleteButtonState()
-            }
-            else{
-                completeCheck.emailWriten = false
-                updateCompleteButtonState()
-            }
-            // 이메일 형식 검사
-            if isValidEmail(email: newText) {
+            guard let newText = textField.text else { return }
+            let isEmailValid = isValidEmail(email: newText)
+            if isEmailValid {
                 // 올바른 이메일 형식
                 emailTextField.layer.borderColor = UIColor.clear.cgColor
                 emailLabel2.textColor = .mpDarkGray
                 emailLabel2.text = "문의에 대한 답변을 이메일로 보내드려요."
                 completeCheck.emailError = true
-                updateCompleteButtonState()
-
-
             } else {
                 // 잘못된 이메일 형식
-
                 emailTextField.layer.borderColor = UIColor.mpRed.cgColor
                 emailTextField.layer.borderWidth = 1.0
                 emailLabel2.textColor = .mpRed
                 emailLabel2.text = "이메일 형식이 올바르지 않습니다."
                 completeCheck.emailError = false
-                updateCompleteButtonState()
             }
+            updateCompleteButtonState()
         }
-
-        return true
     }
-    
     // 이메일 형식 검사 함수
         func isValidEmail(email: String) -> Bool {
             let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"

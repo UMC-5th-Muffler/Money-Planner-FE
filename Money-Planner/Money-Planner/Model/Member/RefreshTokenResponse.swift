@@ -7,25 +7,28 @@
 
 import Foundation
 
-struct RefreshTokenResponse: Codable {
+struct RefreshTokenResponse: Decodable {
     let isSuccess: Bool
     let message: String
-    let result: ResultType
-
-    struct ResultType: Codable {
-        let type: String
-        let accessToken : String
-        let refreshToken : String
-
-        enum CodingKeys: String, CodingKey {
-            case type, accessToken, refreshToken
-        }
-    }
-   
-
-    private enum CodingKeys: String, CodingKey {
+    let result: TokenInfo?
+    
+    enum CodingKeys: String, CodingKey {
         case isSuccess
         case message
         case result
     }
+    
+    struct TokenInfo: Decodable {
+        let type: String
+        let accessToken : String
+        let refreshToken : String
+        
+        enum TokenInfo: String, CodingKey {
+            case type
+            case accessToken
+            case refreshToken
+        }
+    }
+    
+    
 }

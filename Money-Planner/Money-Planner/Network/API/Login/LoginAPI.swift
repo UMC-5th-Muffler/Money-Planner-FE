@@ -21,10 +21,10 @@ extension LoginAPI: TargetType {
     var baseURL: URL {
         return URL(string: "http://13.209.182.17:8080")!
     }
-
+    
     var path: String {
         switch self {
-        // Member Controller
+            // Member Controller
         case .refreshToken:
             return "/api/member/refresh-token"
         case .loginKakao:
@@ -35,17 +35,17 @@ extension LoginAPI: TargetType {
             return "/api/member/connect"
         }
     }
-
+    
     var method: Moya.Method {
         switch self {
-        // Define HTTP methods for each API endpoint
+            // Define HTTP methods for each API endpoint
         case .refreshToken, .loginKakao, .loginApple:
             return .post
         case .connect:
             return .get
         }
     }
-
+    
     // Define request parameters for each API endpoint
     var task: Task {
         switch self {
@@ -53,19 +53,18 @@ extension LoginAPI: TargetType {
             return .requestPlain
         case .refreshToken(let refreshTokenRequest):
             return .requestJSONEncodable(refreshTokenRequest)
-
+            
         }
         
     }
-
+    
     // Define sample data for each API endpoint
     var sampleData: Data {
         return Data()
     }
-
-    // Define headers for the request
+    
     var headers: [String: String]? {
-        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDk4OTE3MzF9.qZ5Ee8XIIAcXNzYAZXXdfQFmFSOoUvKhyQxZHl88S7s"] // Replace with your actual access token
+        return nil
     }
 }
 

@@ -87,7 +87,6 @@ extension HomeAPI : BaseAPI {
         let defaults = UserDefaults.standard
         if let token = defaults.string(forKey: "accessToken") {
             print("토큰 불러오기 성공")
-            print(token)
             return ["Authorization": "Bearer \(token)"]
         } else {
             return nil

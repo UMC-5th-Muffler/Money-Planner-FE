@@ -19,8 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
          guard let windowScene = (scene as? UIWindowScene) else { return }
          window = UIWindow(windowScene: windowScene)
          let defaults = UserDefaults.standard
-         let token = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTIzOTczMzF9.A4WabpfNo1LGGyXXmTy4OrJwyFda5tmoVMwdZgAGMc4"
-         defaults.set(token, forKey: "refreshToken")
+//         let token = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTI0MDczNDZ9.yrSymioU_M5qZ518OkxcQiKsUyRKn2-UzMJV_fw01Yk"
+//         defaults.set(token, forKey: "refreshToken")
          if let refreshToken = defaults.string(forKey: "refreshToken"){
              //리프레쉬 토큰이 있는 경우
              print("리프레쉬 토큰 존재함")
