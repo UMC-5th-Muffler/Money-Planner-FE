@@ -334,6 +334,8 @@ class AskViewController: UIViewController,UITextFieldDelegate,UITextViewDelegate
             updateCompleteButtonState()
             return true
         }
+        updateCompleteButtonState()
+
     }
 
 
@@ -383,6 +385,15 @@ class AskViewController: UIViewController,UITextFieldDelegate,UITextViewDelegate
     func textFieldDidChangeSelection(_ textField: UITextField) {
         if textField == emailTextField {
             guard let newText = textField.text else { return }
+            let textSize = newText.count
+            if textSize > 0 {
+                completeCheck.emailWriten = true
+                updateCompleteButtonState()
+            }
+            else{
+                completeCheck.emailWriten = false
+                updateCompleteButtonState()
+            }
             let isEmailValid = isValidEmail(email: newText)
             if isEmailValid {
                 // 올바른 이메일 형식

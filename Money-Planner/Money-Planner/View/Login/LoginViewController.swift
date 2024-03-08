@@ -16,6 +16,8 @@ import Moya
 
 
 class LoginViewController: UIViewController {
+
+    
     
     private let logoImageView = UIImageView()
     private let sloganLabel = MPLabel()
@@ -155,13 +157,19 @@ class LoginViewController: UIViewController {
     
     
     @objc private func loginToKakao() {
-            guard let url = URL(string: "http://13.209.182.17:8080/api/member/login/kakao") else {
-                print("유효하지 않은 URL입니다.")
-                return
-            }
-            // Safari로 URL 열기
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        
+//            guard let url = URL(string: "http://13.209.182.17:8080/api/member/login/kakao") else {
+//                print("유효하지 않은 URL입니다.")
+//                return
+//            }
+//            // Safari로 URL 열기
+//            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        UserApi.shared.rx_loginWithKakaoAccount()
+            .subscribe(onNext: { [weak self] oauthToken in
+                self?.handleLoginResult(oauthToken: oauthToken, error: nil)
+            }, onError: { [weak self] error in
+                self?.handleLoginResult(oauthToken: nil, error: error)
+            })
+            .disposed(by: disposeBag)
 //        if UserApi.isKakaoTalkLoginAvailable() {
 //            UserApi.shared.rx_loginWithKakaoTalk()
 //                .subscribe(onNext: { [weak self] oauthToken in
@@ -184,7 +192,14 @@ class LoginViewController: UIViewController {
     
     
     @objc private func loginToApple() {
-        
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+         let request = appleIDProvider.createRequest()
+         request.requestedScopes = [.fullName, .email] //유저로 부터 알 수 있는 정보들(name, email)
+                
+         let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+         authorizationController.delegate = self
+         authorizationController.presentationContextProvider = self
+         authorizationController.performRequests()
     }
     
     
@@ -213,4 +228,60 @@ class LoginViewController: UIViewController {
     
 
 }
+extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding{
+  func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+   
+      
+        return self.view.window!
+    }
 
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+    //로그인 성공
+        switch authorization.credential {
+        case let appleIDCredential as ASAuthorizationAppleIDCredential:
+            // You can create an account in your system.
+            let userIdentifier = appleIDCredential.user
+            // 사용자 식별자를 UserDefaults에 저장
+            UserDefaults.standard.set(userIdentifier, forKey: "userIdentifier")
+            
+            let fullName = appleIDCredential.fullName
+            let email = appleIDCredential.email
+            print(appleIDCredential)
+            
+            if  let authorizationCode = appleIDCredential.authorizationCode,
+                let identityToken = appleIDCredential.identityToken,
+                let authCodeString = String(data: authorizationCode, encoding: .utf8),
+                let identifyTokenString = String(data: identityToken, encoding: .utf8) {
+                print("authorizationCode: \(String(data: authorizationCode, encoding: .utf8))")
+                print("identityToken: \(identityToken)")
+                print("authCodeString: \(authCodeString)")
+                print("identifyTokenString: \(identifyTokenString)")
+            }
+            
+            print("useridentifier: \(userIdentifier)")
+            print("fullName: \(String(describing: fullName))")
+            print("email: \(String(describing: email))")
+            
+            // 홈 화면으로 이동합니다.
+            let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+            sceneDelegate?.setupMainInterface()
+            
+        case let passwordCredential as ASPasswordCredential:
+            // Sign in using an existing iCloud Keychain credential.
+            let username = passwordCredential.user
+            let password = passwordCredential.password
+            
+            print("username: \(username)")
+            print("password: \(password)")
+            
+        default:
+            break
+        }
+    }
+    
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        // 로그인 실패(유저의 취소도 포함)
+        print("login failed - \(error.localizedDescription)")
+    }
+}
