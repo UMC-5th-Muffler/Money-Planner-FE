@@ -22,18 +22,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
          
          let defaults = UserDefaults.standard
          let viewModel = LoginViewModel()
-//         UserDefaults.standard.set("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMzI0NjEzNzk1IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDk5MDk4NDd9.fzRg8tD3aKHyAD-rrhqXrGRbhGeDDP59iq0i2MSlYOg", forKey: "accessToken")
-//         UserDefaults.standard.set("eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTI0MTU0NDd9.lVrz1cn99NN1246kIBextwEna0WBjCpGFZ1va3qs2ZE", forKey: "refreshToken")
+         
+         // 임시 토큰 초기 세팅
+         if let accessToken = defaults.string(forKey: "accessToken"){
+             
+         }else{
+             print("엑세스 초기 세팅 완")
+             UserDefaults.standard.set("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMzI0NjEzNzk1IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDk5MDk4NDd9.fzRg8tD3aKHyAD-rrhqXrGRbhGeDDP59iq0i2MSlYOg", forKey: "accessToken")
+         }
+         
+         if let refreshToken = defaults.string(forKey: "refreshToken"){
+             
+         }else{
+             print("리프레쉬 초기 세팅 완")
+             UserDefaults.standard.set("eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTI0MTU0NDd9.lVrz1cn99NN1246kIBextwEna0WBjCpGFZ1va3qs2ZE", forKey: "refreshToken")
+         }
+       
         // 엑세스 토큰이 있는 경우
          if let accessToken = defaults.string(forKey: "accessToken"){
              viewModel.isLoginEnabled { isEnabled in
                  if isEnabled {
                      // 로그인 가능한 경우
-                     print("로그인 가능합니다.")
+                     print("로그인 가능합니다. - 현재 가지고 있는 엑세스 토큰이 유효함")
                      self.setupMainInterface()
                  } else {
                      // 로그인 불가능한 경우
-                     print("로그인이 불가능합니다.")
+                     print("로그인이 불가능합니다.- 엑세스 토큰을 가지고 있으나 기간 만료 (갱신 필요)")
                      if let refreshToken = defaults.string(forKey: "refreshToken"){
                          //리프레쉬 토큰이 있는 경우
                          print("리프레쉬 토큰 존재함")
@@ -98,32 +112,33 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func sceneDidBecomeActive(_ scene: UIScene) {
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        let defaults = UserDefaults.standard
-        if let userID = defaults.string(forKey: "userIdentifier"){
-            appleIDProvider.getCredentialState(forUserID: userID) { (credentialState, error) in
-                switch credentialState {
-                    case .authorized:
-                       print("authorized")
-                       // The Apple ID credential is valid.
-                       DispatchQueue.main.async {
-                         //authorized된 상태이므로 바로 로그인 완료 화면으로 이동
-                           self.setupMainInterface()
-                       }
-                    case .revoked:
-                       print("revoked")
-                    case .notFound:
-                       // The Apple ID credential is either revoked or was not found, so show the sign-in UI.
-                       print("notFound")
-                           
-                    default:
-                        break
-                }
-            }
-            
-        }
-
-        
+        // 애플 Id 확인
+//        let appleIDProvider = ASAuthorizationAppleIDProvider()
+//        let defaults = UserDefaults.standard
+//        if let userID = defaults.string(forKey: "userIdentifier"){
+//            appleIDProvider.getCredentialState(forUserID: userID) { (credentialState, error) in
+//                switch credentialState {
+//                    case .authorized:
+//                       print("authorized")
+//                       // The Apple ID credential is valid.
+//                       DispatchQueue.main.async {
+//                         //authorized된 상태이므로 바로 로그인 완료 화면으로 이동
+//                           self.setupMainInterface()
+//                       }
+//                    case .revoked:
+//                       print("revoked")
+//                    case .notFound:
+//                       // The Apple ID credential is either revoked or was not found, so show the sign-in UI.
+//                       print("notFound")
+//                           
+//                    default:
+//                        break
+//                }
+//            }
+//            
+//        }
+//
+//        
     }
     
     func sceneWillResignActive(_ scene: UIScene) {
