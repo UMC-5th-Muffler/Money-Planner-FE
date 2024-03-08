@@ -33,8 +33,13 @@ enum GoalAPI : TargetType {
 extension GoalAPI : BaseAPI {
     
     var headers: [String: String]? {
-        // Replace 'YourTokenHere' with the actual bearer token.
-        return ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMjkwMTA2OTM0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDk4OTE3MzF9.qZ5Ee8XIIAcXNzYAZXXdfQFmFSOoUvKhyQxZHl88S7s"]
+        let defaults = UserDefaults.standard
+        if let token = defaults.string(forKey: "accessToken") {
+            print("토큰 불러오기 성공")
+            return ["Authorization": "Bearer \(token)"]
+        } else {
+            return nil
+        }
     }
     
     var path: String {

@@ -6,112 +6,211 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import KakaoSDKCommon
+import KakaoSDKAuth
+import KakaoSDKUser
+import AuthenticationServices
+import Moya
+
 
 class LoginViewController: UIViewController {
     
-    private lazy var headerView = HeaderView(title: "헤더 타이틀")
-    private lazy var descriptionView = DescriptionView(text: "메인 설명", alignToCenter: true)
-    private lazy var subDescriptionView = SubDescriptionView(text: "부가 설명", alignToCenter: false)
-    private lazy var checkButton = CheckBtn()
-    private lazy var mainButton = MainBottomBtn(title: "메인 버튼")
-    private lazy var smallButtonView = SmallBtnView()
+    private let logoImageView = UIImageView()
+    private let sloganLabel = MPLabel()
+    private let subLabel = MPLabel()
+
+    private let kakaoLoginButton = UIButton()
+    private let appleLoginButton = UIButton()//ASAuthorizationAppleIDButton()
     
+    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = UIColor(named: "mpWhite")
         
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground  // 또는 UIColor.mpWhite, 적절한 색상 설정
+        view.backgroundColor = .mpWhite
         
-        setupHeaderView()
-        setupDescriptionView()
-        setupSubDescriptionView()
-        setupCheckButton()
-        setupMainButton()
-        setupSmallButtonView()
+        // 뷰 설정
+        setupSloganLabel()
+        setupSubLabel()
+        setuplogoImageView()
+        setupButtons()
+        bindEvents()
     }
     
-    private func setupHeaderView() {
-        view.addSubview(headerView)
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 60)
-        ])
-    }
+    //아래에서부터 setup 함수들이다. 위의 4가지 요소의 '구성 + 오토레이아웃' 이다.
     
-    private func setupDescriptionView() {
-        view.addSubview(descriptionView)
-        descriptionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            descriptionView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 20),
-            descriptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            descriptionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-        ])
-    }
-    
-    private func setupSubDescriptionView() {
-        view.addSubview(subDescriptionView)
-        subDescriptionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            subDescriptionView.topAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: 10),
-            subDescriptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            subDescriptionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-        ])
-    }
-    
-    
-    private func setupCheckButton() {
-        view.addSubview(checkButton)
-        checkButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            checkButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            checkButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
-            checkButton.widthAnchor.constraint(equalToConstant: 50),
-            checkButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
-    }
-    
-    private func setupMainButton() {
-        mainButton.isEnabled = false
-        view.addSubview(mainButton)
-        mainButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            mainButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            mainButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            mainButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            mainButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            mainButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
-    }
-    
-    private func setupSmallButtonView() {
-        view.addSubview(smallButtonView)
-        smallButtonView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            smallButtonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            smallButtonView.bottomAnchor.constraint(equalTo: mainButton.topAnchor, constant: -20),
-            smallButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            smallButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            smallButtonView.heightAnchor.constraint(equalToConstant: 50)
-        ])
-        
-        smallButtonView.addCancelAction(target: self, action: #selector(cancelButtonTapped))
-        smallButtonView.addCompleteAction(target: self, action: #selector(completeButtonTapped))
-    }
-    
-    @objc private func cancelButtonTapped() {
-        print("취소 버튼이 탭되었습니다.")
-        // 취소 버튼 액션 처리
-    }
-    
-    @objc private func completeButtonTapped() {
-        print("완료 버튼이 탭되었습니다.")
-        // 완료 버튼 액션 처리
-    }
-}
 
+    
+    private func setupSloganLabel() {
+        // NSMutableParagraphStyle 객체 생성 및 행 간격 설정
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 5 // 원하는 행 간격 값 설정
+        
+        // NSAttributedString 설정
+        let attributedString = NSMutableAttributedString(string: "나의 소비목표 달성을\n도와줄 머플러",
+                                                         attributes: [.paragraphStyle: paragraphStyle,
+                                                                      .foregroundColor: UIColor.mpBlack,
+                                                                      .font: UIFont.mpFont26B()])
+        
+        sloganLabel.attributedText = attributedString
+        sloganLabel.textAlignment = .center
+        sloganLabel.numberOfLines = 2 // 여러 줄로 표시 가능하도록 설정
+        
+        sloganLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(sloganLabel)
+        
+        NSLayoutConstraint.activate([
+            sloganLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120), // 예시 상수 값
+            sloganLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            sloganLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            sloganLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            // 높이 제약 조건을 삭제하거나 수정할 수 있습니다. 높이가 고정되어 있으면 행 간격 변경이 제대로 반영되지 않을 수 있습니다.
+        ])
+    }
+
+    
+    private func setupSubLabel() {
+        subLabel.text = "디테일한 목표로 소비내역을 관리해요"
+        subLabel.textColor = .mpDarkGray
+        subLabel.font = UIFont.mpFont14M()
+        subLabel.textAlignment = .center
+        subLabel.numberOfLines = 0 // 여러 줄로 표시 가능하도록 설정
+        subLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(subLabel)
+        
+        NSLayoutConstraint.activate([
+            subLabel.topAnchor.constraint(equalTo: sloganLabel.bottomAnchor, constant: 12), // 예시 상수 값
+            subLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            subLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            subLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
+    }
+    private func setuplogoImageView() {
+        logoImageView.image = UIImage(named: "img_popup_save") // "logoImage"는 이미지 이름
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        logoImageView.contentMode = .scaleAspectFit
+        view.addSubview(logoImageView)
+        NSLayoutConstraint.activate([
+            logoImageView.topAnchor.constraint(equalTo: subLabel.bottomAnchor, constant: 12), // 예시 상수 값
+            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImageView.widthAnchor.constraint(equalToConstant: 280),
+            logoImageView.heightAnchor.constraint(equalToConstant: 280)
+        ])
+    }
+    
+    private func setupButtons() {
+        setupKakaoButton(kakaoLoginButton)
+        setupAppleButton(appleLoginButton)
+
+        // Apple 로그인 버튼 설정
+        NSLayoutConstraint.activate([
+            appleLoginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            appleLoginButton.bottomAnchor.constraint(equalTo: kakaoLoginButton.topAnchor, constant: -16),
+            appleLoginButton.widthAnchor.constraint(equalToConstant: 332),
+            appleLoginButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
+        // 카카오 로그인 버튼 설정
+        NSLayoutConstraint.activate([
+            kakaoLoginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            kakaoLoginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -60),
+            kakaoLoginButton.widthAnchor.constraint(equalToConstant: 332),
+            kakaoLoginButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
+    //위의 setupButtons의 부속 함수
+    private func setupKakaoButton(_ button: UIButton) {
+        button.setImage(UIImage(named: "btn_login_kakao"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.addTarget(self, action: #selector(loginToKakao), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(button)
+    }
+    
+    private func setupAppleButton(_ button: UIButton /*ASAuthorizationAppleIDButton*/) {
+        button.setImage(UIImage(named: "btn_login_apple"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.addTarget(self, action: #selector(loginToApple), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(button)
+    }
+    
+    private func bindEvents() {
+
+    
+        // 카카오 로그인 버튼 이벤트 바인딩
+        kakaoLoginButton.rx.tap
+            .bind { [weak self] in self?.loginToKakao() }
+            .disposed(by: disposeBag)
+        
+        // 애플 로그인 버튼 이벤트 바인딩=> 수정해야 됨.
+        //        secondButton.rx.tap
+        //            .bind { [weak self] in self?.loginToApple() }
+        //            .disposed(by: disposeBag)
+    }
+    
+    
+    
+    @objc private func loginToKakao() {
+            guard let url = URL(string: "http://13.209.182.17:8080/api/member/login/kakao") else {
+                print("유효하지 않은 URL입니다.")
+                return
+            }
+            // Safari로 URL 열기
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        
+//        if UserApi.isKakaoTalkLoginAvailable() {
+//            UserApi.shared.rx_loginWithKakaoTalk()
+//                .subscribe(onNext: { [weak self] oauthToken in
+//                    self?.handleLoginResult(oauthToken: oauthToken, error: nil)
+//                }, onError: { [weak self] error in
+//                    self?.handleLoginResult(oauthToken: nil, error: error)
+//                })
+//                .disposed(by: disposeBag)
+//        } else {
+//            UserApi.shared.rx_loginWithKakaoAccount()
+//                .subscribe(onNext: { [weak self] oauthToken in
+//                    self?.handleLoginResult(oauthToken: oauthToken, error: nil)
+//                }, onError: { [weak self] error in
+//                    self?.handleLoginResult(oauthToken: nil, error: error)
+//                })
+//                .disposed(by: disposeBag)
+//        }
+    }
+    
+    
+    
+    @objc private func loginToApple() {
+        
+    }
+    
+    
+    private func handleLoginResult(oauthToken: OAuthToken?, error: Error?) {
+        if let error = error {
+            print("로그인 실패: \(error.localizedDescription)")
+        } else if let oauthToken = oauthToken {
+            print("로그인 성공")
+            // 로그인 성공 후에 토큰을 저장합니다.
+            print(oauthToken)
+            saveTokenToUserDefaults(token: oauthToken.accessToken)
+            // 홈화면으로 이동
+            // 홈 화면으로 이동합니다.
+            let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+            sceneDelegate?.setupMainInterface()
+        }
+        
+        
+    }
+    // 토큰을 UserDefaults에 저장하는 함수
+    func saveTokenToUserDefaults(token: String) {
+        let defaults = UserDefaults.standard
+        defaults.set(token, forKey: "accessToken")
+    }
+  
+    
+
+}
 

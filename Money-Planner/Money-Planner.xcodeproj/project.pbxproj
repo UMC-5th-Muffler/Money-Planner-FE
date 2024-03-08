@@ -20,12 +20,8 @@
 		208C90912B6AB7A200C67960 /* MufflerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90902B6AB7A200C67960 /* MufflerViewModel.swift */; };
 		208C90932B6AB7DA00C67960 /* ConnectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90922B6AB7DA00C67960 /* ConnectModel.swift */; };
 		208C90962B6ABBC500C67960 /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 208C90952B6ABBC500C67960 /* RxBlocking */; };
-		208C90982B6ABBC500C67960 /* RxBlocking-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 208C90972B6ABBC500C67960 /* RxBlocking-Dynamic */; };
 		208C909A2B6ABBC500C67960 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 208C90992B6ABBC500C67960 /* RxCocoa */; };
-		208C909C2B6ABBC500C67960 /* RxCocoa-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */; };
 		208C909E2B6ABBC500C67960 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 208C909D2B6ABBC500C67960 /* RxRelay */; };
-		208C909F2B6ABBE900C67960 /* RxBlocking-Dynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 208C90972B6ABBC500C67960 /* RxBlocking-Dynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		208C90A12B6ABBEB00C67960 /* RxCocoa-Dynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		208C90A42B6CD72000C67960 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90A32B6CD72000C67960 /* PopupViewController.swift */; };
 		208C90A62B6D15BB00C67960 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90A52B6D15BB00C67960 /* ProfileViewController.swift */; };
 		208C90A82B6D48B300C67960 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208C90A72B6D48B300C67960 /* User.swift */; };
@@ -51,6 +47,11 @@
 		208F5E8B2B81320D00107735 /* CreateCategoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208F5E8A2B81320D00107735 /* CreateCategoryResponse.swift */; };
 		209FF8712B851E79009E68E7 /* RoutineDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209FF8702B851E79009E68E7 /* RoutineDetailViewController.swift */; };
 		209FF8742B851EA8009E68E7 /* GetRoutineIdResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209FF8732B851EA8009E68E7 /* GetRoutineIdResponse.swift */; };
+		20ADFB702B99CA0D0054390F /* LoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20ADFB6F2B99CA0D0054390F /* LoginAPI.swift */; };
+		20ADFB722B99CAC80054390F /* LoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20ADFB712B99CAC80054390F /* LoginRepository.swift */; };
+		20ADFB742B99CB310054390F /* RefreshTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20ADFB732B99CB310054390F /* RefreshTokenResponse.swift */; };
+		20ADFB762B99CC500054390F /* RefreshTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20ADFB752B99CC500054390F /* RefreshTokenRequest.swift */; };
+		20ADFB782B99CE150054390F /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20ADFB772B99CE150054390F /* LoginViewModel.swift */; };
 		20AFDD8D2B6418A6008F8AB9 /* RepeatModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */; };
 		20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */; };
 		20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AFDD902B656034008F8AB9 /* OneDayButton.swift */; };
@@ -105,8 +106,8 @@
 		7A610AEA2B493EC900D3096F /* MakeGoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AE92B493EC900D3096F /* MakeGoalViewController.swift */; };
 		7A610AEE2B493F6D00D3096F /* RegisterUsageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AED2B493F6D00D3096F /* RegisterUsageViewController.swift */; };
 		7A610AF02B49414100D3096F /* RegisterProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AEF2B49414100D3096F /* RegisterProfileViewController.swift */; };
-		7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF12B49421F00D3096F /* KakaoLoginViewController.swift */; };
-		7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF32B49422E00D3096F /* AppleLoginViewController.swift */; };
+		7A610AF22B49421F00D3096F /* KakaoLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF12B49421F00D3096F /* KakaoLogin.swift */; };
+		7A610AF42B49422E00D3096F /* AppleLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A610AF32B49422E00D3096F /* AppleLogin.swift */; };
 		7A8F3EC82B84FE6100480902 /* CustomCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EC52B84FE6100480902 /* CustomCalendarView.swift */; };
 		7A8F3EC92B84FE6100480902 /* GoalComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EC62B84FE6100480902 /* GoalComponents.swift */; };
 		7A8F3ECA2B84FE6100480902 /* GoalDailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8F3EC72B84FE6100480902 /* GoalDailyViewController.swift */; };
@@ -205,8 +206,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				208C90A12B6ABBEB00C67960 /* RxCocoa-Dynamic in Embed Frameworks */,
-				208C909F2B6ABBE900C67960 /* RxBlocking-Dynamic in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -252,6 +251,11 @@
 		208F5E8A2B81320D00107735 /* CreateCategoryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCategoryResponse.swift; sourceTree = "<group>"; };
 		209FF8702B851E79009E68E7 /* RoutineDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineDetailViewController.swift; sourceTree = "<group>"; };
 		209FF8732B851EA8009E68E7 /* GetRoutineIdResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRoutineIdResponse.swift; sourceTree = "<group>"; };
+		20ADFB6F2B99CA0D0054390F /* LoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAPI.swift; sourceTree = "<group>"; };
+		20ADFB712B99CAC80054390F /* LoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRepository.swift; sourceTree = "<group>"; };
+		20ADFB732B99CB310054390F /* RefreshTokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTokenResponse.swift; sourceTree = "<group>"; };
+		20ADFB752B99CC500054390F /* RefreshTokenRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTokenRequest.swift; sourceTree = "<group>"; };
+		20ADFB772B99CE150054390F /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		20AFDD8C2B6418A6008F8AB9 /* RepeatModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatModalViewController.swift; sourceTree = "<group>"; };
 		20AFDD8E2B654CB4008F8AB9 /* ChooseDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDayView.swift; sourceTree = "<group>"; };
 		20AFDD902B656034008F8AB9 /* OneDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDayButton.swift; sourceTree = "<group>"; };
@@ -297,8 +301,8 @@
 		7A610AE92B493EC900D3096F /* MakeGoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeGoalViewController.swift; sourceTree = "<group>"; };
 		7A610AED2B493F6D00D3096F /* RegisterUsageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUsageViewController.swift; sourceTree = "<group>"; };
 		7A610AEF2B49414100D3096F /* RegisterProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterProfileViewController.swift; sourceTree = "<group>"; };
-		7A610AF12B49421F00D3096F /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
-		7A610AF32B49422E00D3096F /* AppleLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewController.swift; sourceTree = "<group>"; };
+		7A610AF12B49421F00D3096F /* KakaoLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLogin.swift; sourceTree = "<group>"; };
+		7A610AF32B49422E00D3096F /* AppleLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLogin.swift; sourceTree = "<group>"; };
 		7A8F3EC52B84FE6100480902 /* CustomCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCalendarView.swift; sourceTree = "<group>"; };
 		7A8F3EC62B84FE6100480902 /* GoalComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalComponents.swift; sourceTree = "<group>"; };
 		7A8F3EC72B84FE6100480902 /* GoalDailyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalDailyViewController.swift; sourceTree = "<group>"; };
@@ -400,14 +404,12 @@
 				7A0D331B2B7DFE0B007B2736 /* RxKakaoSDKCommon in Frameworks */,
 				208C909E2B6ABBC500C67960 /* RxRelay in Frameworks */,
 				7A0D331D2B7DFE0B007B2736 /* RxKakaoSDKFriend in Frameworks */,
-				208C909C2B6ABBC500C67960 /* RxCocoa-Dynamic in Frameworks */,
 				7A610ADE2B4900C800D3096F /* Moya in Frameworks */,
 				7A0D331F2B7DFE0B007B2736 /* RxKakaoSDKShare in Frameworks */,
 				7A610ADC2B4900C800D3096F /* CombineMoya in Frameworks */,
 				7A30697E2B8C4FEA00CD331D /* Lottie in Frameworks */,
 				7A610AE22B4900C800D3096F /* RxMoya in Frameworks */,
 				208C909A2B6ABBC500C67960 /* RxCocoa in Frameworks */,
-				208C90982B6ABBC500C67960 /* RxBlocking-Dynamic in Frameworks */,
 				7A0D33192B7DFE0B007B2736 /* RxKakaoSDKAuth in Frameworks */,
 				7A610AE02B4900C800D3096F /* ReactiveMoya in Frameworks */,
 				208C90962B6ABBC500C67960 /* RxBlocking in Frameworks */,
@@ -480,6 +482,8 @@
 			isa = PBXGroup;
 			children = (
 				208C90922B6AB7DA00C67960 /* ConnectModel.swift */,
+				20ADFB732B99CB310054390F /* RefreshTokenResponse.swift */,
+				20ADFB752B99CC500054390F /* RefreshTokenRequest.swift */,
 			);
 			path = Member;
 			sourceTree = "<group>";
@@ -597,6 +601,16 @@
 				209FF8732B851EA8009E68E7 /* GetRoutineIdResponse.swift */,
 			);
 			path = Routine;
+			sourceTree = "<group>";
+		};
+		20ADFB6E2B99C9F90054390F /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				20ADFB6F2B99CA0D0054390F /* LoginAPI.swift */,
+				20ADFB712B99CAC80054390F /* LoginRepository.swift */,
+				20ADFB772B99CE150054390F /* LoginViewModel.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 		7A3069862B8C5A0900CD331D /* PopupJson */ = {
@@ -852,8 +866,8 @@
 			isa = PBXGroup;
 			children = (
 				7A610ABB2B47FA8E00D3096F /* LoginViewController.swift */,
-				7A610AF12B49421F00D3096F /* KakaoLoginViewController.swift */,
-				7A610AF32B49422E00D3096F /* AppleLoginViewController.swift */,
+				7A610AF12B49421F00D3096F /* KakaoLogin.swift */,
+				7A610AF32B49422E00D3096F /* AppleLogin.swift */,
 				7A610AEF2B49414100D3096F /* RegisterProfileViewController.swift */,
 			);
 			path = Login;
@@ -975,6 +989,7 @@
 		D20D702A2B68BB81006D6762 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				20ADFB6E2B99C9F90054390F /* Login */,
 				7A8F3F142B85259400480902 /* Goal */,
 				D25D76592B80D91A0044A74D /* Routine */,
 				D253EEBB2B7B651500A4FC1C /* Expense */,
@@ -1092,9 +1107,7 @@
 				7A610ADF2B4900C800D3096F /* ReactiveMoya */,
 				7A610AE12B4900C800D3096F /* RxMoya */,
 				208C90952B6ABBC500C67960 /* RxBlocking */,
-				208C90972B6ABBC500C67960 /* RxBlocking-Dynamic */,
 				208C90992B6ABBC500C67960 /* RxCocoa */,
-				208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */,
 				208C909D2B6ABBC500C67960 /* RxRelay */,
 				7A0D33162B7DFE0B007B2736 /* RxKakaoSDK */,
 				7A0D33182B7DFE0B007B2736 /* RxKakaoSDKAuth */,
@@ -1197,6 +1210,7 @@
 				208F5E892B8131ED00107735 /* CreateCategoryRequest.swift in Sources */,
 				552A431C2B7AB534007AEAAD /* UIImage.swift in Sources */,
 				206C58D82B626465008410C1 /* CategoryModalViewController.swift in Sources */,
+				20ADFB742B99CB310054390F /* RefreshTokenResponse.swift in Sources */,
 				7A8F3ED82B85055D00480902 /* WarnAboutUneditableModal.swift in Sources */,
 				D2D0B7362B6BA83E003B6B5E /* HomeRepository.swift in Sources */,
 				208F5E7E2B80C81E00107735 /* ZeroDayRequest.swift in Sources */,
@@ -1218,6 +1232,7 @@
 				208C90C02B72636C00C67960 /* UIHelper.swift in Sources */,
 				208C90A82B6D48B300C67960 /* User.swift in Sources */,
 				20AFDD952B65B882008F8AB9 /* ChooseDateView.swift in Sources */,
+				20ADFB702B99CA0D0054390F /* LoginAPI.swift in Sources */,
 				D25D76612B8201A70044A74D /* Statistics.swift in Sources */,
 				D217EBEC2B6F846400EB6BF3 /* Progress.swift in Sources */,
 				208C90AC2B6E3F8100C67960 /* UnregisterViewController.swift in Sources */,
@@ -1240,6 +1255,7 @@
 				551E8B782B7D135E0008476B /* evaluationModalView.swift in Sources */,
 				D20D70302B68BEB0006D6762 /* Encodable.swift in Sources */,
 				7A8F3ED62B85055D00480902 /* ShowingPeriodSelectionModal.swift in Sources */,
+				20ADFB782B99CE150054390F /* LoginViewModel.swift in Sources */,
 				7A8F3EC82B84FE6100480902 /* CustomCalendarView.swift in Sources */,
 				D2D0B72F2B6A70A1003B6B5E /* BaseRepository.swift in Sources */,
 				D253EEB72B7B505B00A4FC1C /* HomeMoreModalViewController.swift in Sources */,
@@ -1262,7 +1278,7 @@
 				7A610AE52B491ED600D3096F /* Dummy.swift in Sources */,
 				7A8F3F0D2B8524B100480902 /* GoalMainViewModel.swift in Sources */,
 				7A610AB82B47FA8E00D3096F /* AppDelegate.swift in Sources */,
-				7A610AF42B49422E00D3096F /* AppleLoginViewController.swift in Sources */,
+				7A610AF42B49422E00D3096F /* AppleLogin.swift in Sources */,
 				208C90CF2B7BBC8400C67960 /* ExpenseCreateRequest.swift in Sources */,
 				551E8B762B7D13490008476B /* zeroModalView.swift in Sources */,
 				20AFDD912B656034008F8AB9 /* OneDayButton.swift in Sources */,
@@ -1279,7 +1295,7 @@
 				205894022B825A92008F536D /* ExpenseZeroDayView.swift in Sources */,
 				D20D70022B5FF088006D6762 /* Formatter.swift in Sources */,
 				7AC060FF2B4C5D78008C0E63 /* Design.swift in Sources */,
-				7A610AF22B49421F00D3096F /* KakaoLoginViewController.swift in Sources */,
+				7A610AF22B49421F00D3096F /* KakaoLogin.swift in Sources */,
 				7A8F3EF52B85059D00480902 /* GoalPeriodVeiwController.swift in Sources */,
 				7A8F3F092B8524B100480902 /* GoalExpenseViewModel.swift in Sources */,
 				7A8F3ED42B85055D00480902 /* PeriodCalendarViewController.swift in Sources */,
@@ -1298,6 +1314,7 @@
 				20EF78312B68E3AD00AA135E /* MyPageTableViewCell.swift in Sources */,
 				D217EBF12B7460CC00EB6BF3 /* CategoryRepository.swift in Sources */,
 				20AFDD8F2B654CB4008F8AB9 /* ChooseDayView.swift in Sources */,
+				20ADFB722B99CAC80054390F /* LoginRepository.swift in Sources */,
 				208F5E872B8125B300107735 /* GetCategoryResponse.swift in Sources */,
 				7A8F3F182B85259400480902 /* GoalAPI.swift in Sources */,
 				208C908F2B6AB78900C67960 /* MufflerAPI.swift in Sources */,
@@ -1333,6 +1350,7 @@
 				208F5E8B2B81320D00107735 /* CreateCategoryResponse.swift in Sources */,
 				20118A112B56A86100B2569E /* ConsumeViewController.swift in Sources */,
 				D25D765B2B80D9270044A74D /* RoutineAPI.swift in Sources */,
+				20ADFB762B99CC500054390F /* RefreshTokenRequest.swift in Sources */,
 				D20D6FDC2B581A5A006D6762 /* UITabBar.swift in Sources */,
 				D20D6FF82B5E974D006D6762 /* MainStatistics.swift in Sources */,
 			);
@@ -1354,6 +1372,7 @@
 /* Begin XCBuildConfiguration section */
 		7A610AC62B47FA8F00D3096F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A8F3EF82B8506A600480902 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1417,6 +1436,7 @@
 		};
 		7A610AC72B47FA8F00D3096F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A8F3EF82B8506A600480902 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1481,7 +1501,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 387JTQ5ATJ;
+				DEVELOPMENT_TEAM = 4ND496J48G;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Money-Planner/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1513,7 +1533,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Money-Planner/Money-PlannerRelease.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 387JTQ5ATJ;
+				DEVELOPMENT_TEAM = 4ND496J48G;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Money-Planner/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1608,20 +1628,10 @@
 			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxBlocking;
 		};
-		208C90972B6ABBC500C67960 /* RxBlocking-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = "RxBlocking-Dynamic";
-		};
 		208C90992B6ABBC500C67960 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxCocoa;
-		};
-		208C909B2B6ABBC500C67960 /* RxCocoa-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 208C90942B6ABBC500C67960 /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = "RxCocoa-Dynamic";
 		};
 		208C909D2B6ABBC500C67960 /* RxRelay */ = {
 			isa = XCSwiftPackageProductDependency;

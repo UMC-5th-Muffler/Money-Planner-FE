@@ -6,41 +6,87 @@
 //
 
 import UIKit
+import KakaoSDKAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
+     
+     // 앱이 시작될 때 초기 화면 설정
+     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+         
+         // UIWindowScene 유효성 검사
+         guard let windowScene = (scene as? UIWindowScene) else { return }
+         window = UIWindow(windowScene: windowScene)
+         
+         let defaults = UserDefaults.standard
+         let viewModel = LoginViewModel()
+
+        // 엑세스 토큰이 있는 경우
+         if let accessToken = defaults.string(forKey: "accessToken"){
+             viewModel.isLoginEnabled { isEnabled in
+                 if isEnabled {
+                     // 로그인 가능한 경우
+                     print("로그인 가능합니다.")
+                     self.setupMainInterface()
+                 } else {
+                     // 로그인 불가능한 경우
+                     print("로그인이 불가능합니다.")
+                     if let refreshToken = defaults.string(forKey: "refreshToken"){
+                         //리프레쉬 토큰이 있는 경우
+                         print("리프레쉬 토큰 존재함")
+                         viewModel.refreshAccessTokenIfNeeded()
+                     }
+                 }
+             }
+         }else{
+            window?.rootViewController = LoginViewController()
+         }
     
-    //기존 storyboard 대신 진입점(rootViewController) 설정
-    func scene(_ scene: UIScene,
-               willConnectTo session: UISceneSession,
-               options connectionOptions: UIScene.ConnectionOptions) {
-        
-        guard let windowScene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: windowScene)
-        let tabBarController = CustomTabBarController()
-        tabBarController.tabBar.tintColor = .mpMainColor
+//         // UserDefaults를 사용하여 이전 로그인 여부 확인 및 자동 로그인 처리
+//         // 예시 코드로, 실제 앱에서는 로그인 상태를 관리하는 더 안전한 방법을 사용해야 합니다.
+//         let isLoggedIn = defaults.bool(forKey: "isLoggedIn")
+//         if isLoggedIn {
+//             print("로그인 상태입니다")
+//             if let refreshToken = defaults.string(forKey: "refreshToken"){
+//                 //리프레쉬 토큰이 있는 경우
+//                 let viewModel = LoginViewModel()
+//                 viewModel.refreshAccessTokenIfNeeded()
+//
+//             }
+//
+//             // 로그인 상태이면 메인 화면으로 이동
+//             setupMainInterface()
+//         } else {
+//             // 로그인 상태가 아니면 로그인 화면으로 이동
+//             print("로그인 상태가 아닙니다.")
+//             window?.rootViewController = LoginViewController()
+//         }
+         window?.makeKeyAndVisible()
+     }
+     
+     // 메인 인터페이스 설정
+     func setupMainInterface() {
+         let tabBarController = CustomTabBarController()
+         tabBarController.tabBar.tintColor = .mpMainColor
 
-        let homeVC = UINavigationController(rootViewController: HomeViewController())
-        let goalVC = UINavigationController(rootViewController: GoalMainViewController())
-        let consumeVC = UINavigationController(rootViewController: ConsumeViewController())
-        let battleVC = UINavigationController(rootViewController: GoalCategoryViewController())
-        let settingVC = UINavigationController(rootViewController: MyPageViewController())
-        
-        homeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "home"), tag: 0)
-        goalVC.tabBarItem = UITabBarItem(title: "목표", image: UIImage(named: "btn_goal_on"), tag: 1)
-        consumeVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "btn_add_new")?.withRenderingMode(.alwaysOriginal), selectedImage: nil)
-        //consumeVC.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0) // 아이콘을 중앙에 배치
-        battleVC.tabBarItem = UITabBarItem(title: "소비 배틀", image: UIImage(named: "btn_battle_on"), tag: 3)
-        settingVC.tabBarItem = UITabBarItem(title: "마이페이지", image: UIImage(named: "btn_mypage_on"), tag: 4)
+         let homeVC = UINavigationController(rootViewController: HomeViewController())
+         let goalVC = UINavigationController(rootViewController: GoalMainViewController())
+         let consumeVC = UINavigationController(rootViewController: ConsumeViewController())
+         let battleVC = UINavigationController(rootViewController: BattleViewController())
+         let settingVC = UINavigationController(rootViewController: MyPageViewController())
+         
+         homeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "home"), tag: 0)
+         goalVC.tabBarItem = UITabBarItem(title: "목표", image: UIImage(named: "btn_goal_on"), tag: 1)
+         consumeVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "btn_add_new")?.withRenderingMode(.alwaysOriginal), selectedImage: nil)
+         battleVC.tabBarItem = UITabBarItem(title: "소비 배틀", image: UIImage(named: "btn_battle_on"), tag: 3)
+         settingVC.tabBarItem = UITabBarItem(title: "마이페이지", image: UIImage(named: "btn_mypage_on"), tag: 4)
 
-        tabBarController.viewControllers = [homeVC, goalVC, consumeVC, battleVC, settingVC]
-        tabBarController.selectedIndex = 0 // 홈을 먼저 띄우게 함.
+         tabBarController.viewControllers = [homeVC, goalVC, consumeVC, battleVC, settingVC]
+         tabBarController.selectedIndex = 0 // 홈을 기본 선택 탭으로 설정
 
-        window?.rootViewController = tabBarController //GifViewController()
-        window?.makeKeyAndVisible()
-
-}
+         window?.rootViewController = tabBarController
+     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
