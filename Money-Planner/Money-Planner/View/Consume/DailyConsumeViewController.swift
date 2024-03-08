@@ -18,7 +18,7 @@ class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITabl
     var historyList : [ExpenseDetailList] = []
     var rateInfo : RateInfo?
     
-    var dateText = ""
+    var dateText : String = ""
     var totalAmount = 12345678
     
     let cellSpacingHeight: CGFloat = 1
@@ -70,6 +70,15 @@ class DailyConsumeViewController : UIViewController, UITableViewDelegate, UITabl
     
     let addContainerView = UIView()
     let addConsumeBtn = UIButton()
+    
+//    init(dateText: String) {
+//        self.dateText = dateText
+//        super.init(nibName: nil, bundle: nil)
+//    }
+//    
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
     
     override func viewDidLoad(){
         view.backgroundColor = UIColor.mpWhite

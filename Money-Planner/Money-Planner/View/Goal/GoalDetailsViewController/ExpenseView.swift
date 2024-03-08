@@ -11,11 +11,14 @@ import UIKit
 // Protocol for handling actions within ExpenseView, like selecting an expense detail
 protocol ExpenseViewDelegate: AnyObject {
     func navigateToDailyConsumeViewController(date: String, totalAmount: Int64)
+    func didRequestToFetchMoreData()
 }
+
 
 class ExpenseView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     weak var delegate: ExpenseViewDelegate?
+    var isEnabled = true
     
     var tapFilterBtn: (() -> Void)?
     
@@ -34,7 +37,7 @@ class ExpenseView: UIView, UITableViewDataSource, UITableViewDelegate {
         tapFilterBtn?()
     }
     
-    private let tableView: UITableView = {
+    let tableView: UITableView = {
         let table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
         table.isScrollEnabled = true
@@ -101,6 +104,7 @@ class ExpenseView: UIView, UITableViewDataSource, UITableViewDelegate {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(ConsumeRecordCell.self, forCellReuseIdentifier: "ConsumeRecordCell")
+        tableView.register(ConsumeRecordPagingCell.self, forCellReuseIdentifier: "ConsumeRecordPagingCell")
         
         backgroundColor = .mpWhite
     }
@@ -111,11 +115,41 @@ class ExpenseView: UIView, UITableViewDataSource, UITableViewDelegate {
         return data.count
     }
     
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return data[section].expenseDetailList.count
+//    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // 마지막 섹션인 경우, '더보기' 셀을 위해 행의 수를 1 증가
+        if section == data.count - 1 {
+            return data[section].expenseDetailList.count + 1 // +1 for the paging cell
+        }
         return data[section].expenseDetailList.count
     }
+
+    
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ConsumeRecordCell", for: indexPath) as? ConsumeRecordCell else {
+//            fatalError("Unable to dequeue ConsumeRecordCell")
+//        }
+//        let expenseDetail = data[indexPath.section].expenseDetailList[indexPath.row]
+//        cell.configure(with: expenseDetail)
+//        return cell
+//    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // 마지막 섹션의 마지막 행인지 확인
+        if indexPath.section == data.count - 1 && indexPath.row == data[indexPath.section].expenseDetailList.count {
+            // ConsumeRecordPagingCell 반환
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ConsumeRecordPagingCell", for: indexPath) as? ConsumeRecordPagingCell else {
+                fatalError("Unable to dequeue ConsumeRecordPagingCell")
+            }
+            cell.configure(isEnabled: !isEnabled) // isFetchingMore 상태에 따라 버튼 활성화
+            cell.onAddButtonTapped = delegate?.didRequestToFetchMoreData
+            return cell
+        }
+
+        // 기존의 ConsumeRecordCell 반환 로직
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ConsumeRecordCell", for: indexPath) as? ConsumeRecordCell else {
             fatalError("Unable to dequeue ConsumeRecordCell")
         }
@@ -123,6 +157,7 @@ class ExpenseView: UIView, UITableViewDataSource, UITableViewDelegate {
         cell.configure(with: expenseDetail)
         return cell
     }
+
     
     // MARK: UITableViewDelegate
     
@@ -147,12 +182,12 @@ class ExpenseView: UIView, UITableViewDataSource, UITableViewDelegate {
         let label = UILabel()
         label.font = .mpFont14M() // Customize the font
         label.textColor = UIColor(hexCode: "9FAAB0") // Customize the text color
-        label.text = data[section].date.toDate?.toString(format: "yyyy.MM.dd") // Use your date format
+        label.text = data[section].date.toDate?.toString(format: "yyyy년 MM월 dd일") // Use your date format
         label.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(label)
         
         let totalCostButton = UIButton(type: .system)
-        let dateText = data[section].date.toDate?.toString(format: "yyyy년 MM월 dd일") ?? "Unknown Date"
+        let dateText = data[section].date.toDate?.toString(format: "yyyy-MM-dd") ?? "Unknown Date"
         totalCostButton.setTitle("\(setComma(cash: data[section].dailyTotalCost))원", for: .normal)
         totalCostButton.setImage(UIImage(named : "btn_arrow"), for: .normal)
         totalCostButton.tintColor = .mpDarkGray
@@ -165,7 +200,7 @@ class ExpenseView: UIView, UITableViewDataSource, UITableViewDelegate {
         totalCostButton.translatesAutoresizingMaskIntoConstraints = false
         // Store the section date in the accessibilityIdentifier for retrieval in the action method
         totalCostButton.accessibilityIdentifier = dateText
-        totalCostButton.addTarget(self, action: #selector(tappedDailyConsumeBtn(sender:)), for: .touchUpInside)
+        totalCostButton.addTarget(self, action: #selector(tappedDailyConsumeBtn(sender: )), for: .touchUpInside)
         headerView.addSubview(totalCostButton)
         
         
@@ -187,17 +222,19 @@ class ExpenseView: UIView, UITableViewDataSource, UITableViewDelegate {
         NSLayoutConstraint.activate([
             totalCostButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
             totalCostButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            totalCostButton.widthAnchor.constraint(equalToConstant: 100) // Adjust width as needed
+            totalCostButton.widthAnchor.constraint(equalToConstant: 200) // Adjust width as needed
         ])
         
         return headerView
     }
+
 
     private func setComma(cash: Int64) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         return formatter.string(from: NSNumber(value: cash)) ?? ""
     }
+
     
 //    @objc func handleHeaderTap(_ gesture: UITapGestureRecognizer) {
 //        guard let section = gesture.view?.tag else { return }
@@ -219,13 +256,63 @@ class ExpenseView: UIView, UITableViewDataSource, UITableViewDelegate {
 //    }
     
     @objc func tappedDailyConsumeBtn(sender: UIButton) {
-        if let dateIdentifier = sender.accessibilityIdentifier?.toDate?.toString(),
+        if let dateIdentifier = sender.accessibilityIdentifier,
            let sectionIndex = data.firstIndex(where: { $0.date == dateIdentifier }) {
             let totalAmount = data[sectionIndex].dailyTotalCost
             delegate?.navigateToDailyConsumeViewController(date: dateIdentifier, totalAmount: totalAmount)
         }else {
             print("Date unknown or section not found")
             return
+        }
+    }
+}
+
+
+class ConsumeRecordPagingCell: UITableViewCell {
+
+    var onAddButtonTapped: (() -> Void)?
+    
+    @objc private func addButtonAction() {
+        onAddButtonTapped?()
+    }
+    
+    private let moreButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("더보기", for: .normal)
+        button.setTitleColor(.mpGray, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(ConsumeRecordPagingCell.self, action: #selector(addButtonAction), for: .touchUpInside)
+        return button
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupUI()
+    }
+    
+    private func setupUI() {
+        addSubview(moreButton)
+        
+        NSLayoutConstraint.activate([
+            moreButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            moreButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            moreButton.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 16),
+            moreButton.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -16)
+        ])
+    }
+    
+    func configure(isEnabled: Bool) {
+        moreButton.isEnabled = isEnabled
+        if isEnabled {
+            moreButton.setTitle("더보기", for: .normal)
+        } else {
+            moreButton.setTitle("마지막입니다", for: .disabled)
         }
     }
 }

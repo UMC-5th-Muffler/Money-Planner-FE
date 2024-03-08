@@ -13,18 +13,22 @@ import RxMoya
 import Moya
 import FSCalendar
 
-class GoalDetailsViewController: UIViewController, ExpenseViewDelegate, ZeroViewDelegate {
+class GoalDetailsViewController: UIViewController, ExpenseViewDelegate {
     
-    func changeZeroView() {
-        //
+    func didRequestToFetchMoreData() {
+        viewModel.fetchNextPageIfPossible(goalId: String(goalId)){ [weak self] in
+            DispatchQueue.main.async {
+               print("추가 소비내역 업데이트 됨")
+            }
+        }
     }
     
     func navigateToDailyConsumeViewController(date: String, totalAmount: Int64) {
         let dailyConsumeVC = DailyConsumeViewController()
-        dailyConsumeVC.dateText = date
-        dailyConsumeVC.totalAmount = Int(totalAmount)
-        dailyConsumeVC.zeroViewDelegate = self // If GoalDetailsViewController conforms to ZeroViewDelegate
-        dailyConsumeVC.setupTotalAmount()
+        dailyConsumeVC.dateText = (date.toDate?.toString(format: "yyyy년 MM월 dd일"))!
+//        dailyConsumeVC.totalAmount = Int(totalAmount)
+//        dailyConsumeVC.zeroViewDelegate = self // If GoalDetailsViewController conforms to ZeroViewDelegate
+//        dailyConsumeVC.setupTotalAmount()
         self.navigationController?.pushViewController(dailyConsumeVC, animated: true)
     }
     
@@ -36,6 +40,8 @@ class GoalDetailsViewController: UIViewController, ExpenseViewDelegate, ZeroView
     var goalDetail : GoalDetail?
     var goalReport : GoalReportResult?
     var goalExpense : WeeklyExpenseResult?
+    
+    private var isFetchingMore = false
     
     private lazy var expenseView = ExpenseView()
     private lazy var reportView = ReportView()
@@ -98,7 +104,9 @@ class GoalDetailsViewController: UIViewController, ExpenseViewDelegate, ZeroView
         setuplineViews()
         setupExpenseView()
         setupReportView()
-        selectButton(reportButton)
+        selectButton(spendingButton)
+        
+//        expenseView.tableView.delegate = self
     }
     
     //layer1
@@ -423,28 +431,32 @@ extension GoalDetailsViewController {
 }
 
 
-extension GoalDetailsViewController : PeriodSelectionDelegate {
+extension GoalDetailsViewController: PeriodSelectionDelegate {
     func periodSelectionDidSelectDates(startDate: Date, endDate: Date) {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        var startDateString = formatter.string(from: startDate)
-        var endDateString = formatter.string(from: endDate)
+        let startDateString = formatter.string(from: startDate)
+        let endDateString = formatter.string(from: endDate)
         
-        //viewModel 선택 날짜로 갱신
-        viewModel.fetchBySelectedDates(goalId: String(goalId), startDate: startDateString, endDate: endDateString, forceRefresh: true)
-        
-        if startDateString == goalDetail?.startDate && endDateString == goalDetail?.endDate{
-            expenseView.filterBtn.setTitle("전체 기간 조회", for: .normal)
-            return
+        // viewModel 선택 날짜로 갱신 with completion
+        viewModel.fetchBySelectedDates(goalId: String(goalId), startDate: startDateString, endDate: endDateString, forceRefresh: true) { [weak self] in
+            DispatchQueue.main.async {
+                // Ensure UI updates are on the main thread
+                if startDateString == self?.goalDetail?.startDate && endDateString == self?.goalDetail?.endDate {
+                    self?.expenseView.filterBtn.setTitle("전체 기간 조회", for: .normal)
+                } else {
+                    // Update the button title to reflect the selected period
+                    formatter.dateFormat = "yyyy.MM.dd"
+                    let formattedStartDate = formatter.string(from: startDate)
+                    let formattedEndDate = formatter.string(from: endDate)
+                    self?.expenseView.filterBtn.setTitle("\(formattedStartDate) - \(formattedEndDate)", for: .normal)
+                }
+            }
         }
-        
-        formatter.dateFormat = "yyyy.MM.dd"
-        startDateString = formatter.string(from: startDate)
-        endDateString = formatter.string(from: endDate)
-        
-        // 필터 버튼의 타이틀 업데이트
-        expenseView.filterBtn.setTitle("\(startDateString) - \(endDateString)", for: .normal)
         
         print("보여지는 period 변경 실행")
     }
 }
+
+
+

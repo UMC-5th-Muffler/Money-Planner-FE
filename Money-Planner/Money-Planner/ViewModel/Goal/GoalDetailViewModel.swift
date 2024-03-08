@@ -52,75 +52,15 @@ class GoalDetailViewModel {
             .disposed(by: disposeBag)
     }
     
-//    func fetchExpensesUsingGoalDetail(goalId: String, forceRefresh: Bool = false) {
-//        
-//        if forceRefresh {
-//            lastDate = nil
-//            lastExpenseId = nil
-//        }
-//        
-//        repository.getGoalDetail(goalId: goalId)
-//            .flatMap { [weak self] goalDetailResponse -> Single<WeeklyExpenseResponse> in
-//                guard let self = self else { return .never() }
-//                let startDate = goalDetailResponse.result.startDate
-//                let endDate = goalDetailResponse.result.endDate
-//                selectedStartDate = startDate
-//                selectedEndDate = endDate
-//                return self.repository.getWeeklyExpenses(goalId: goalId, startDate: startDate, endDate: endDate, size: "10", lastDate: self.lastDate, lastExpenseId: self.lastExpenseId)
-//            }.subscribe(onSuccess: { [weak self] expenseResponse in
-//                // 마지막 날짜와 ID 업데이트
-//                if let lastExpense = expenseResponse.result.dailyExpenseList.last?.expenseDetailList.last {
-//                    self?.lastDate = expenseResponse.result.dailyExpenseList.last?.date
-//                    self?.lastExpenseId = String(lastExpense.expenseId)
-//                }
-//                
-//                // hasNext 업데이트
-//                self?.hasNext = expenseResponse.result.hasNext
-//                
-//                // 데이터 방출
-//                self?.weeklyExpensesRelay.accept(expenseResponse.result)
-//            }, onFailure: { error in
-//                print("Error fetching expenses: \(error.localizedDescription)")
-//            }).disposed(by: disposeBag)
-//    }
-    
-    func fetchNextPageIfPossible(goalId: String) {
-        guard hasNext else { return }
-        fetchBySelectedDates(goalId: goalId, startDate: self.selectedStartDate!, endDate: self.selectedEndDate!)
+    func fetchNextPageIfPossible(goalId: String, completion: @escaping () -> Void) {
+        guard hasNext else {
+            completion()
+            return
+        }
+        fetchBySelectedDates(goalId: goalId, startDate: self.selectedStartDate!, endDate: self.selectedEndDate!, forceRefresh: false, completion: completion)
     }
     
-    //    func fetchBySelectedDates(goalId : String, startDate : String, endDate : String, forceRefresh: Bool = false){
-    //
-    //        if forceRefresh {
-    //            lastDate = nil
-    //            lastExpenseId = nil
-    //        }
-    //
-    //        self.selectedStartDate = startDate
-    //        self.selectedEndDate = endDate
-    //
-    //        repository.getWeeklyExpenses(goalId: goalId, startDate: startDate, endDate: endDate, size: "10", lastDate: self.lastDate, lastExpenseId: self.lastExpenseId)
-    //            .subscribe { [weak self] expenseResponse in
-    //                switch expenseResponse {
-    //                case .success(let response):
-    //                    if let lastExpense = response.result.dailyExpenseList.last?.expenseDetailList.last {
-    //                        self?.lastDate = response.result.dailyExpenseList.last?.date
-    //                        self?.lastExpenseId = String(lastExpense.expenseId)
-    //                    }
-    //
-    //                    // hasNext 업데이트
-    //                    self?.hasNext = response.result.hasNext
-    //
-    //                    // 데이터 방출
-    //                    self?.weeklyExpensesRelay.accept(response.result)
-    //                case .failure(let error):
-    //                    print(error.localizedDescription)
-    //                }
-    //            }
-    //            .disposed(by: disposeBag)
-    //    }
-    
-    func fetchBySelectedDates(goalId: String, startDate: String, endDate: String, forceRefresh: Bool = false) {
+    func fetchBySelectedDates(goalId: String, startDate: String, endDate: String, forceRefresh: Bool = false, completion: @escaping () -> Void) {
         if forceRefresh {
             lastDate = nil
             lastExpenseId = nil
@@ -149,8 +89,10 @@ class GoalDetailViewModel {
                         })
                         .disposed(by: self!.disposeBag)
                 }
+                completion()
             }, onFailure: { error in
                 print("Error fetching expenses: \(error.localizedDescription)")
+                completion()
             })
             .disposed(by: disposeBag)
     }
