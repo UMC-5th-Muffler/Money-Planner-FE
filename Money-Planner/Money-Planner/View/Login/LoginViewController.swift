@@ -163,30 +163,24 @@ class LoginViewController: UIViewController {
 //            }
 //            // Safari로 URL 열기
 //            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        UserApi.shared.rx_loginWithKakaoAccount()
-            .subscribe(onNext: { [weak self] oauthToken in
-                self?.handleLoginResult(oauthToken: oauthToken, error: nil)
-            }, onError: { [weak self] error in
-                self?.handleLoginResult(oauthToken: nil, error: error)
-            })
-            .disposed(by: disposeBag)
-//        if UserApi.isKakaoTalkLoginAvailable() {
-//            UserApi.shared.rx_loginWithKakaoTalk()
-//                .subscribe(onNext: { [weak self] oauthToken in
-//                    self?.handleLoginResult(oauthToken: oauthToken, error: nil)
-//                }, onError: { [weak self] error in
-//                    self?.handleLoginResult(oauthToken: nil, error: error)
-//                })
-//                .disposed(by: disposeBag)
-//        } else {
-//            UserApi.shared.rx_loginWithKakaoAccount()
-//                .subscribe(onNext: { [weak self] oauthToken in
-//                    self?.handleLoginResult(oauthToken: oauthToken, error: nil)
-//                }, onError: { [weak self] error in
-//                    self?.handleLoginResult(oauthToken: nil, error: error)
-//                })
-//                .disposed(by: disposeBag)
-//        }
+
+        if UserApi.isKakaoTalkLoginAvailable() {
+            UserApi.shared.rx_loginWithKakaoTalk()
+                .subscribe(onNext: { [weak self] oauthToken in
+                    self?.handleLoginResult(oauthToken: oauthToken, error: nil)
+                }, onError: { [weak self] error in
+                    self?.handleLoginResult(oauthToken: nil, error: error)
+                })
+                .disposed(by: disposeBag)
+        } else {
+            UserApi.shared.rx_loginWithKakaoAccount()
+                .subscribe(onNext: { [weak self] oauthToken in
+                    self?.handleLoginResult(oauthToken: oauthToken, error: nil)
+                }, onError: { [weak self] error in
+                    self?.handleLoginResult(oauthToken: nil, error: error)
+                })
+                .disposed(by: disposeBag)
+        }
     }
     
     
