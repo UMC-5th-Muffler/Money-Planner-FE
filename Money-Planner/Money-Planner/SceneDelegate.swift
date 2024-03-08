@@ -7,6 +7,7 @@
 
 import UIKit
 import KakaoSDKAuth
+import AuthenticationServices
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -21,7 +22,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
          
          let defaults = UserDefaults.standard
          let viewModel = LoginViewModel()
-
+//         UserDefaults.standard.set("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMzI0NjEzNzk1IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDk5MDk4NDd9.fzRg8tD3aKHyAD-rrhqXrGRbhGeDDP59iq0i2MSlYOg", forKey: "accessToken")
+//         UserDefaults.standard.set("eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTI0MTU0NDd9.lVrz1cn99NN1246kIBextwEna0WBjCpGFZ1va3qs2ZE", forKey: "refreshToken")
         // 엑세스 토큰이 있는 경우
          if let accessToken = defaults.string(forKey: "accessToken"){
              viewModel.isLoginEnabled { isEnabled in
@@ -96,8 +98,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func sceneDidBecomeActive(_ scene: UIScene) {
-        // Called when the scene has moved from an inactive state to an active state.
-        // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let defaults = UserDefaults.standard
+        if let userID = defaults.string(forKey: "userIdentifier"){
+            appleIDProvider.getCredentialState(forUserID: userID) { (credentialState, error) in
+                switch credentialState {
+                    case .authorized:
+                       print("authorized")
+                       // The Apple ID credential is valid.
+                       DispatchQueue.main.async {
+                         //authorized된 상태이므로 바로 로그인 완료 화면으로 이동
+                           self.setupMainInterface()
+                       }
+                    case .revoked:
+                       print("revoked")
+                    case .notFound:
+                       // The Apple ID credential is either revoked or was not found, so show the sign-in UI.
+                       print("notFound")
+                           
+                    default:
+                        break
+                }
+            }
+            
+        }
+
+        
     }
     
     func sceneWillResignActive(_ scene: UIScene) {
