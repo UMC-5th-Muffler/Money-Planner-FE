@@ -28,14 +28,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
              
          }else{
              print("엑세스 초기 세팅 완")
-             UserDefaults.standard.set("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMzI0NjEzNzk1IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDk5MDk4NDd9.fzRg8tD3aKHyAD-rrhqXrGRbhGeDDP59iq0i2MSlYOg", forKey: "accessToken")
+             UserDefaults.standard.set("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMzI0NjEzNzk1IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MTAyMjcyNDV9.odawAaMYxOuY9xzpeeakuC3UFn96KrkFZn4bQDixg-U", forKey: "accessToken")
          }
          
          if let refreshToken = defaults.string(forKey: "refreshToken"){
              
          }else{
              print("리프레쉬 초기 세팅 완")
-             UserDefaults.standard.set("eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTI0MTU0NDd9.lVrz1cn99NN1246kIBextwEna0WBjCpGFZ1va3qs2ZE", forKey: "refreshToken")
+             UserDefaults.standard.set("eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTI3MzI4NDV9.joUbSMNgthbeo5tmzz4US6JzWAgCbHby_lLaV9HGx9E", forKey: "refreshToken")
          }
        
         // 엑세스 토큰이 있는 경우
