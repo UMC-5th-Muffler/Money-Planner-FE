@@ -51,7 +51,7 @@ enum MufflerAPI {
 
 extension MufflerAPI: TargetType {
     var baseURL: URL {
-        return URL(string: "http://13.209.182.17:8080")!
+        return URL(string: "https://muffler.world")!
     }
 
     var path: String {
