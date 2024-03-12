@@ -175,8 +175,8 @@ class PeriodButton: UIButton {
     let iconImageView = UIImageView()
     let periodLabel = MPLabel()
     let spanLabel = MPLabel()
-    var startDate = Date()
-    var endDate = Date()
+    var startDate = Date.todayAtMidnight
+    var endDate = Date.todayAtMidnight
     
     override init(frame: CGRect) {
         super.init(frame: frame)

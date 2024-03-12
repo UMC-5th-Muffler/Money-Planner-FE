@@ -17,8 +17,7 @@ class GoalDetailViewModel {
     let disposeBag = DisposeBag()
     let goalRelay = PublishRelay<GoalDetail>()
     let goalReportRelay = PublishRelay<GoalReportResult>()
-    let weeklyExpensesRelay = PublishRelay<WeeklyExpenseResult>()
-    let dailyExpenseListRelay = PublishRelay<[DailyExpense]>()
+    let dailyExpenseListRelay = BehaviorRelay<[DailyExpense]>(value: [])//PublishRelay<[DailyExpense]>()
     
     var hasNext = false
     private var lastDate: String?
@@ -65,6 +64,7 @@ class GoalDetailViewModel {
             lastDate = nil
             lastExpenseId = nil
             // Emit an empty list to clear existing data
+            hasNext = false
             dailyExpenseListRelay.accept([])
         }
         
@@ -74,7 +74,7 @@ class GoalDetailViewModel {
         repository.getWeeklyExpenses(goalId: goalId, startDate: startDate, endDate: endDate, size: "10", lastDate: lastDate, lastExpenseId: lastExpenseId)
             .subscribe(onSuccess: { [weak self] expenseResponse in
                 self?.updatePaginationInfo(from: expenseResponse.result)
-                
+                let newExpenses = expenseResponse.result.dailyExpenseList
                 // Decide to either clear existing data and emit new or append to existing data
                 if forceRefresh {
                     // Directly emit the new data
@@ -84,8 +84,8 @@ class GoalDetailViewModel {
                     self?.dailyExpenseListRelay
                         .take(1) // Take the current state before appending
                         .subscribe(onNext: { currentList in
-                            let updatedList = currentList + expenseResponse.result.dailyExpenseList
-                            self?.dailyExpenseListRelay.accept(updatedList)
+                            let updatedList = self?.mergeExpenseLists(currentList: currentList, with: newExpenses)
+                            self?.dailyExpenseListRelay.accept(updatedList ?? [])
                         })
                         .disposed(by: self!.disposeBag)
                 }
@@ -102,6 +102,7 @@ class GoalDetailViewModel {
             lastDate = nil
             lastExpenseId = nil
             // Emit an empty list to clear existing data
+            hasNext = false
             dailyExpenseListRelay.accept([])
         }
         
@@ -115,18 +116,19 @@ class GoalDetailViewModel {
                 return self.repository.getWeeklyExpenses(goalId: goalId, startDate: startDate, endDate: endDate, size: "10", lastDate: self.lastDate, lastExpenseId: self.lastExpenseId)
             }.subscribe(onSuccess: { [weak self] expenseResponse in
                 self?.updatePaginationInfo(from: expenseResponse.result)
-                
+                let newExpenses = expenseResponse.result.dailyExpenseList
                 // Check if it's a force refresh or a subsequent fetch
                 if forceRefresh {
                     // For force refresh, directly emit the new list
-                    self?.dailyExpenseListRelay.accept(expenseResponse.result.dailyExpenseList)
+                    self?.dailyExpenseListRelay.accept(newExpenses)
                 } else {
                     // For subsequent fetches, append new data to the existing data
                     self?.dailyExpenseListRelay
                         .take(1) // Take the current value of the relay
                         .subscribe(onNext: { currentList in
-                            let updatedList = currentList + expenseResponse.result.dailyExpenseList
-                            self?.dailyExpenseListRelay.accept(updatedList)
+                            let updatedList = self?.mergeExpenseLists(currentList: currentList, with: newExpenses)
+                            self?.dailyExpenseListRelay.accept(updatedList ?? [])
+                            
                         })
                         .disposed(by: self!.disposeBag)
                 }
@@ -144,5 +146,23 @@ class GoalDetailViewModel {
         self.hasNext = result.hasNext
     }
     
+    private func mergeExpenseLists(currentList: [DailyExpense], with newList: [DailyExpense]) -> [DailyExpense] {
+        var mergedList = currentList
+        
+        for newExpense in newList {
+            if let index = mergedList.firstIndex(where: { $0.date == newExpense.date }) {
+                // 날짜가 동일한 경우 세부 내역을 합칩니다.
+                let updatedExpenseDetailList = mergedList[index].expenseDetailList + newExpense.expenseDetailList
+                let updatedTotalCost = updatedExpenseDetailList.reduce(0) { $0 + $1.cost }
+                let updatedDailyExpense = DailyExpense(date: newExpense.date, dailyTotalCost: Int64(updatedTotalCost), expenseDetailList: updatedExpenseDetailList)
+                mergedList[index] = updatedDailyExpense
+            } else {
+                // 날짜가 다른 경우 새 항목을 추가합니다.
+                mergedList.append(newExpense)
+            }
+        }
+        
+        return mergedList
+    }
     
 }

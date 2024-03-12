@@ -23,21 +23,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
          let defaults = UserDefaults.standard
          let viewModel = LoginViewModel()
          
+//         defaults.removeObject(forKey: "accessToken")
+//         defaults.removeObject(forKey: "refreshToken")
+//         
+         print("____________")
+         print(defaults.string(forKey: "accessToken"))
+         print(defaults.string(forKey: "refreshToken"))
+         print("____________")
          // 임시 토큰 초기 세팅
-         if let accessToken = defaults.string(forKey: "accessToken"){
-             
-         }else{
-             print("엑세스 초기 세팅 완")
-             UserDefaults.standard.set("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMzI0NjEzNzk1IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MTAyMjcyNDV9.odawAaMYxOuY9xzpeeakuC3UFn96KrkFZn4bQDixg-U", forKey: "accessToken")
-         }
-         
-         if let refreshToken = defaults.string(forKey: "refreshToken"){
-             
-         }else{
-             print("리프레쉬 초기 세팅 완")
-             UserDefaults.standard.set("eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTI3MzI4NDV9.joUbSMNgthbeo5tmzz4US6JzWAgCbHby_lLaV9HGx9E", forKey: "refreshToken")
-         }
+//         if let accessToken = defaults.string(forKey: "accessToken"){
+//             
+//         }else{
+//             print("엑세스 초기 세팅 완")
+//             UserDefaults.standard.set("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMzI0NjEzNzk1IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MTAzMzUxNzF9.JItaIW7T6zZytxAt1BumHJ-FiiVJjWw9WHPRogwJ36Q", forKey: "accessToken")
+//         }
+//         
+//         if let refreshToken = defaults.string(forKey: "refreshToken"){
+//             
+//         }else{
+//             print("리프레쉬 초기 세팅 완")
+//             UserDefaults.standard.set("eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTI4NDA3NzF9.qtPQBdgkOKou1aTepPhJAT7p2izfSir2rfAGmono_u4", forKey: "refreshToken")
+//         }
        
+         UserDefaults.standard.set("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMzI4NzI1NjQyIiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MTAzNDIxMjV9.P6QY1YMDuKN357cFhcrHZrFahRtU8vwOaNZmx3ibBkY", forKey: "accessToken")
+         
+         UserDefaults.standard.set("eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTI4NDc3MjV9.Dhz3k-0Ml54v7jhmeLJweydO7MXtxDMLeRJzYK-SZT0", forKey: "refreshToken")
+        
         // 엑세스 토큰이 있는 경우
          if let accessToken = defaults.string(forKey: "accessToken"){
              
@@ -45,6 +56,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                  if isEnabled {
                      // 로그인 가능한 경우
                      print("로그인 가능합니다. - 현재 가지고 있는 엑세스 토큰이 유효함")
+                     print(defaults.string(forKey: "accessToken"))
                      self.setupMainInterface()
                  } else {
                      // 로그인 불가능한 경우
@@ -52,6 +64,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                      if let refreshToken = defaults.string(forKey: "refreshToken"){
                          //리프레쉬 토큰이 있는 경우
                          print("리프레쉬 토큰 존재함")
+                         print(defaults.string(forKey: "refreshToken"))
                          viewModel.refreshAccessTokenIfNeeded()
                      }
                  }

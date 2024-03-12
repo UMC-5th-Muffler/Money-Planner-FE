@@ -144,8 +144,11 @@ class ExpenseView: UIView, UITableViewDataSource, UITableViewDelegate {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "ConsumeRecordPagingCell", for: indexPath) as? ConsumeRecordPagingCell else {
                 fatalError("Unable to dequeue ConsumeRecordPagingCell")
             }
-            cell.configure(isEnabled: !isEnabled) // isFetchingMore 상태에 따라 버튼 활성화
-            cell.onAddButtonTapped = delegate?.didRequestToFetchMoreData
+            cell.configure(isEnabled: GoalDetailViewModel.shared.hasNext) // isFetchingMore 상태에 따라 버튼 활성화
+//            cell.onAddButtonTapped = self.delegate?.didRequestToFetchMoreData
+            cell.onAddButtonTapped = { [weak self] in
+                        self?.delegate?.didRequestToFetchMoreData()
+                    }
             return cell
         }
 
@@ -187,7 +190,7 @@ class ExpenseView: UIView, UITableViewDataSource, UITableViewDelegate {
         headerView.addSubview(label)
         
         let totalCostButton = UIButton(type: .system)
-        let dateText = data[section].date.toDate?.toString(format: "yyyy-MM-dd") ?? "Unknown Date"
+        let dateText = data[section].date //.toDate?.toString(format: "yyyy-MM-dd")
         totalCostButton.setTitle("\(setComma(cash: data[section].dailyTotalCost))원", for: .normal)
         totalCostButton.setImage(UIImage(named : "btn_arrow"), for: .normal)
         totalCostButton.tintColor = .mpDarkGray
@@ -313,6 +316,24 @@ class ConsumeRecordPagingCell: UITableViewCell {
             moreButton.setTitle("더보기", for: .normal)
         } else {
             moreButton.setTitle("마지막입니다", for: .disabled)
+        }
+    }
+}
+
+
+extension ExpenseView: UIScrollViewDelegate {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        // 스크롤 뷰의 현재 오프셋, 콘텐츠 높이, 뷰 높이를 가져옵니다.
+        let currentOffset = scrollView.contentOffset.y
+        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+
+        // 사용자가 스크롤 뷰의 맨 아래 근처에 도달했는지 확인합니다.
+        // 'threshold' 값은 더 일찍 데이터 로딩을 시작하고 싶을 때 조절할 수 있습니다.
+        let threshold = CGFloat(100.0) // 필요에 따라 조절 가능
+        if currentOffset > maximumOffset - threshold {
+            // 맨 아래에 도달했을 때의 액션을 실행합니다.
+            delegate?.didRequestToFetchMoreData()
+            print("aaaa")
         }
     }
 }

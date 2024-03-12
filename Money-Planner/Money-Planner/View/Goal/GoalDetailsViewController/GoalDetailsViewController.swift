@@ -24,12 +24,10 @@ class GoalDetailsViewController: UIViewController, ExpenseViewDelegate {
     }
     
     func navigateToDailyConsumeViewController(date: String, totalAmount: Int64) {
-        let dailyConsumeVC = DailyConsumeViewController()
-        dailyConsumeVC.dateText = (date.toDate?.toString(format: "yyyy년 MM월 dd일"))!
-//        dailyConsumeVC.totalAmount = Int(totalAmount)
-//        dailyConsumeVC.zeroViewDelegate = self // If GoalDetailsViewController conforms to ZeroViewDelegate
-//        dailyConsumeVC.setupTotalAmount()
-        self.navigationController?.pushViewController(dailyConsumeVC, animated: true)
+        let vc = DailyConsumeViewController()
+        vc.hidesBottomBarWhenPushed = true
+        vc.dateText = date
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     var viewModel = GoalDetailViewModel.shared
@@ -43,7 +41,12 @@ class GoalDetailsViewController: UIViewController, ExpenseViewDelegate {
     
     private var isFetchingMore = false
     
-    private lazy var expenseView = ExpenseView()
+    private lazy var expenseView: ExpenseView = {
+        let view = ExpenseView()
+        view.delegate = self  // Delegate 연결
+        return view
+    }()
+    
     private lazy var reportView = ReportView()
     
     init(goalID: Int) {
@@ -303,8 +306,8 @@ class GoalDetailsViewController: UIViewController, ExpenseViewDelegate {
             enddatestr = dateFormatter.string(from: goalDetail.endDate.toDate!)
         }
         
-        if goalDetail.startDate.toDate! < Date() && Date() < goalDetail.endDate.toDate! {
-            let day = Calendar.current.dateComponents([.day], from: goalDetail.startDate.toDate!, to: Date()).day
+        if goalDetail.startDate.toDate! < Date.todayAtMidnight && Date.todayAtMidnight < goalDetail.endDate.toDate! {
+            let day = Calendar.current.dateComponents([.day], from: goalDetail.startDate.toDate!, to: Date.todayAtMidnight).day
             spanNDuration.text = startdatestr + " - " + enddatestr + " | " + "\(day ?? 0)" + "일차"
         }else{
             spanNDuration.text = startdatestr + " - " + enddatestr
@@ -344,7 +347,6 @@ class GoalDetailsViewController: UIViewController, ExpenseViewDelegate {
     }
     
     private func setupExpenseView() {
-        expenseView.delegate = self
         view.addSubview(expenseView)
         expenseView.translatesAutoresizingMaskIntoConstraints = false
         configureExpenseViews()

@@ -80,8 +80,8 @@ class ReportView: UIView, UITableViewDataSource, UITableViewDelegate {
     func updateCategoryGoalDetail(goal : GoalDetail) {
         self.goalDetail = goal
         print(goal.startDate.toDate!)
-        print(Date().toString().toDate!)
-        if goal.startDate.toDate! > Date().toString().toDate! {
+        print(Date.todayAtMidnight)
+        if goal.startDate.toDate! > Date.todayAtMidnight {
             summaryCellHeight = 220
             numberOfSections = 1
 //            tableView.backgroundColor = .mpGypsumGray
@@ -350,14 +350,14 @@ class ReportSummaryCell : UITableViewCell {
         mostConsumedCatLabel.translatesAutoresizingMaskIntoConstraints = false
         zeroDayCountLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        if goal.startDate.toDate! <= Date().toString().toDate! { //현재, 과거 startDate >= Date
+        if goal.startDate.toDate! <= Date.todayAtMidnight { //현재, 과거 startDate >= Date
             
             var span : Int?
             
-            if goal.endDate.toDate! < Date() { //과거
+            if goal.endDate.toDate! < Date.todayAtMidnight { //과거
                 span = Calendar.current.dateComponents([.day], from: goal.startDate.toDate!, to: goal.endDate.toDate!).day
             }else {
-                span = Calendar.current.dateComponents([.day], from: goal.startDate.toDate!, to: Date()).day
+                span = Calendar.current.dateComponents([.day], from: goal.startDate.toDate!, to: Date.todayAtMidnight).day
             }
             
             //card
