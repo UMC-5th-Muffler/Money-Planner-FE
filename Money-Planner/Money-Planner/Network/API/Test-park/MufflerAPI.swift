@@ -51,7 +51,7 @@ enum MufflerAPI {
 
 extension MufflerAPI: TargetType {
     var baseURL: URL {
-        return URL(string: "http://13.209.182.17:8080")!
+        return URL(string: "https://muffler.world")!
     }
 
     var path: String {
@@ -184,7 +184,13 @@ extension MufflerAPI: TargetType {
 
     // Define headers for the request
     var headers: [String: String]? {
-        return ["Authorization": "Bearer "] // Replace with your actual access token
+        let defaults = UserDefaults.standard
+        if let token = defaults.string(forKey: "accessToken") {
+            print("토큰 불러오기 성공")
+            return ["Authorization": "Bearer \(token)"]
+        } else {
+            return nil
+        }
     }
 }
 
