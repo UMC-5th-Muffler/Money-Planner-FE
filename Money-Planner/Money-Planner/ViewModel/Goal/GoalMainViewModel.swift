@@ -46,6 +46,7 @@ class GoalMainViewModel {
                 self?.nowGoalResponse.accept(nowResponse)
             }, onFailure: { error in
                 // Handle error
+                print("error : nowResponse")
                 print(error)
                 
                 //테스트 용도
@@ -74,6 +75,7 @@ class GoalMainViewModel {
                 self.endDate = currentGoals.last?.endDate
             }
         }, onFailure: { error in
+            print("error : notNowResponse")
             print(error)
         }).disposed(by: disposeBag)
     }

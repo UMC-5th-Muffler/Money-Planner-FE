@@ -15,7 +15,6 @@ class LoginViewModel {
     let loginRepository = LoginRepository()
     let disposeBag = DisposeBag()
     
-    
     func isLoginEnabled(completion: @escaping (Bool) -> Void) {
         loginRepository.connect()
             .subscribe(onNext: { response in

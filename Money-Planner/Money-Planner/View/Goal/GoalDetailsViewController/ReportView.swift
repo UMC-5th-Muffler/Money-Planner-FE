@@ -79,6 +79,8 @@ class ReportView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     func updateCategoryGoalDetail(goal : GoalDetail) {
         self.goalDetail = goal
+        print(goal.startDate.toDate!)
+        print(Date().toString().toDate!)
         if goal.startDate.toDate! > Date().toString().toDate! {
             summaryCellHeight = 220
             numberOfSections = 1
