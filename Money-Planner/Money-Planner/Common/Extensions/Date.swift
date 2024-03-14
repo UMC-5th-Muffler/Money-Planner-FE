@@ -25,4 +25,11 @@ extension Date {
         dateFormatter.dateFormat = format
         return dateFormatter.string(from: self)
     }
+    
+    static var todayAtMidnight: Date {
+        let calendar = Calendar.current
+        let dateComponents = calendar.dateComponents([.year, .month, .day], from: Date())
+        let midnightDate = calendar.date(from: dateComponents)!
+        return midnightDate
+    }
 }

@@ -220,6 +220,8 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
             if let goal = viewModel.nowGoalResponse.value?.result {
                 let goalDetailsVC = GoalDetailsViewController(goalID: Int(goal.goalId))
                 navigationController?.pushViewController(goalDetailsVC, animated: true)
+                print("목표 자세히 보기 vc로 전환")
+                print("goalID : \(goal.goalId), 이름 : \(goal.goalTitle)")
                 self.tabBarController?.tabBar.isHidden = true
             }
         } else if indexPath.section == 1 {
@@ -233,6 +235,8 @@ class GoalMainViewController: UIViewController, UITableViewDataSource, UITableVi
             if indexPath.row < notNowGoals.count {
                 let selectedGoal = notNowGoals[indexPath.row]
                 let goalDetailsVC = GoalDetailsViewController(goalID: selectedGoal.goalId)
+                print("목표 자세히 보기 vc로 전환")
+                print("goalID : \(selectedGoal.goalId), 이름 : \(selectedGoal.goalTitle)")
                 navigationController?.pushViewController(goalDetailsVC, animated: true)
                 self.tabBarController?.tabBar.isHidden = true
             }

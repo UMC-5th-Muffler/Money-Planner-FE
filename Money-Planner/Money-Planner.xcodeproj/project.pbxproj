@@ -80,6 +80,8 @@
 		7A30698F2B8C5C9700CD331D /* muffler_money.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A30698B2B8C5C9600CD331D /* muffler_money.json */; };
 		7A3069902B8C5C9700CD331D /* muffler_zero.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A30698C2B8C5C9600CD331D /* muffler_zero.json */; };
 		7A3069922B8C5D5400CD331D /* Example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3069912B8C5D5400CD331D /* Example.swift */; };
+		7A3069972B8F1BC200CD331D /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3069962B8F1BC200CD331D /* ReportView.swift */; };
+		7A3069992B8F1BCC00CD331D /* ExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3069982B8F1BCC00CD331D /* ExpenseView.swift */; };
 		7A4C67392B5A4A49008BCAC9 /* MPLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */; };
 		7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */; };
 		7A4C673D2B5A4AAF008BCAC9 /* SubDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */; };
@@ -275,6 +277,8 @@
 		7A30698B2B8C5C9600CD331D /* muffler_money.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = muffler_money.json; sourceTree = "<group>"; };
 		7A30698C2B8C5C9600CD331D /* muffler_zero.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = muffler_zero.json; sourceTree = "<group>"; };
 		7A3069912B8C5D5400CD331D /* Example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Example.swift; sourceTree = "<group>"; };
+		7A3069962B8F1BC200CD331D /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
+		7A3069982B8F1BCC00CD331D /* ExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseView.swift; sourceTree = "<group>"; };
 		7A4C67382B5A4A49008BCAC9 /* MPLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPLabel.swift; sourceTree = "<group>"; };
 		7A4C673A2B5A4A8D008BCAC9 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		7A4C673C2B5A4AAF008BCAC9 /* SubDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubDescriptionView.swift; sourceTree = "<group>"; };
@@ -622,6 +626,16 @@
 			path = PopupJson;
 			sourceTree = "<group>";
 		};
+		7A3069952B8F19FA00CD331D /* GoalDetailsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7A8F3EE92B85059D00480902 /* GoalDetailsViewController.swift */,
+				7A3069962B8F1BC200CD331D /* ReportView.swift */,
+				7A3069982B8F1BCC00CD331D /* ExpenseView.swift */,
+			);
+			path = GoalDetailsViewController;
+			sourceTree = "<group>";
+		};
 		7A4C67322B5A47BD008BCAC9 /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
@@ -862,9 +876,9 @@
 		7A610AE82B493E8000D3096F /* Goal */ = {
 			isa = PBXGroup;
 			children = (
+				7A3069952B8F19FA00CD331D /* GoalDetailsViewController */,
 				7A8F3EE72B85059D00480902 /* consumeDummy.json */,
 				7A8F3EE82B85059D00480902 /* GoalCategoryViewController.swift */,
-				7A8F3EE92B85059D00480902 /* GoalDetailsViewController.swift */,
 				7A8F3EE62B85059D00480902 /* GoalFinalViewController.swift */,
 				7A8F3EED2B85059D00480902 /* GoalMainViewController.swift */,
 				7A8F3EEB2B85059D00480902 /* GoalPeriodVeiwController.swift */,
@@ -1202,6 +1216,7 @@
 				208F5E7E2B80C81E00107735 /* ZeroDayRequest.swift in Sources */,
 				208C90A62B6D15BB00C67960 /* ProfileViewController.swift in Sources */,
 				D253EEBF2B7B653A00A4FC1C /* ExpenseRepository.swift in Sources */,
+				7A3069992B8F1BCC00CD331D /* ExpenseView.swift in Sources */,
 				7A610AE72B491F1600D3096F /* HeaderView.swift in Sources */,
 				D20D700D2B611EE3006D6762 /* SearchConsumeViewController.swift in Sources */,
 				D223B7552B85379000A21267 /* WhichAddModalViewController.swift in Sources */,
@@ -1320,6 +1335,7 @@
 				208C90AA2B6D559F00C67960 /* AskViewController.swift in Sources */,
 				7A4C673B2B5A4A8D008BCAC9 /* DescriptionView.swift in Sources */,
 				5591601C2B64595E00063F06 /* EvaluationViewController.swift in Sources */,
+				7A3069972B8F1BC200CD331D /* ReportView.swift in Sources */,
 				552A43002B7AA03E007AEAAD /* goalDeleteModalView.swift in Sources */,
 				D25D76582B80CC5C0044A74D /* Routine.swift in Sources */,
 				7A8F3EE32B85058400480902 /* GoalDetail.swift in Sources */,

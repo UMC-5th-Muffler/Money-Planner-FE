@@ -716,7 +716,7 @@ class ConsumeViewController: UIViewController,UITextFieldDelegate, CategorySelec
                 if let removeAllSeprator = textField.text?.replacingOccurrences(of: formatter.groupingSeparator, with: "") {
                     let beforeForemattedString = removeAllSeprator + string
                     // api 연결을 위한 소비금액 저장
-                    currentAmount = Int64(beforeForemattedString)!
+                    currentAmount = Int64(beforeForemattedString)! //다른 문자 입력하면 오류뜸
                     // 입력된 문자열이 숫자가 아닌 경우
                     if !beforeForemattedString.isEmpty && !beforeForemattedString.allSatisfy({ $0.isNumber }) {
                         

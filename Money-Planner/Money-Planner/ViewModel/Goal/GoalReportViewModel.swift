@@ -22,16 +22,16 @@ class GoalReportViewModel {
     private init() {}
     
     func fetchGoalReport(for goalId: Int) {
-        goalRepository.getGoalReport(goalId: goalId)
-            .subscribe(onSuccess: { [weak self] response in
-                if response.isSuccess {
-                    self?.goalReportRelay.accept(response.result)
-                } else {
-                    print("API call succeeded but returned with message: \(response.message)")
-                }
-            }, onFailure: { error in
-                print("Error fetching goal report: \(error.localizedDescription)")
-            }).disposed(by: disposeBag)
+//        goalRepository.getGoalReport(goalId: goalId)
+//            .subscribe(onSuccess: { [weak self] response in
+//                if response.isSuccess {
+//                    self?.goalReportRelay.accept(response.result)
+//                } else {
+//                    print("API call succeeded but returned with message: \(response.message)")
+//                }
+//            }, onFailure: { error in
+//                print("Error fetching goal report: \(error.localizedDescription)")
+//            }).disposed(by: disposeBag)
     }
     
 }

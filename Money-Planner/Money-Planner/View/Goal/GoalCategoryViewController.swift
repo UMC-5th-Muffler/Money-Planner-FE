@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 
 extension GoalCategoryViewController: CategorySelectionDelegate{
+    
     func didSelectCategory(id: Int64, category: String, iconName: String) {
         // 선택된 카테고리 정보를 업데이트
         if let index = selectedIndexPath?.section {
@@ -111,19 +112,23 @@ extension GoalCategoryViewController: MoneyAmountTextCellDelegate {
         //checkForDuplicateCategoriesAndUpdateUI()
     }
 }
+
+
 // 카테고리별 목표 금액 입력 화면
 class GoalCategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddCategoryViewDelegate{
+    
+    
     func AddCategoryCompleted(_ name: String, iconName: String) {
         // 직접 추가 완료 후
     }
     
-    
-    
     ///카테고리 셀을 만들기 위함.
     weak var delegate: CategorySelectionDelegate?
+    
     // api 연결
     let viewModel = MufflerViewModel()
     let disposeBag = DisposeBag()
+    
     // 카테고리 내용 저장
     struct GoalCategory {
         var categoryName : String

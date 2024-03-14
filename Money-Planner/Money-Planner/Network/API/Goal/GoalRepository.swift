@@ -9,6 +9,13 @@ import Foundation
 import RxSwift
 import Moya
 
+enum NetworkError: Error {
+    case nilResponse
+    case decodingError
+    // 기타 네트워크 관련 에러
+}
+
+
 final class GoalRepository {
     
     static let shared = GoalRepository()
@@ -30,12 +37,13 @@ final class GoalRepository {
             .map(NotNowResponse.self)
     }
     
-    // 목표 상세 페이지 상단 정보를 가져오는 메서드
-    func getGoalDetail(goalId: Int) -> Single<GoalDetailResponse> {
+    
+    func getGoalDetail(goalId: String) -> Single<GoalDetailResponse> {
         return provider.rx.request(.getGoalDetail(goalId: goalId))
             .filterSuccessfulStatusCodes()
             .map(GoalDetailResponse.self)
     }
+ 
     
     // 목표를 생성하는 메서드
     func postGoal(request: PostGoalRequest) -> Single<PostGoalResponse> {
@@ -58,18 +66,16 @@ final class GoalRepository {
             .map(PreviousGoalResponse.self)
     }
     
-    // 목표 상세페이지에서 소비내역 불러오는 용도.
-    func getGoalExpenses(goalId: Int, startDate: String, endDate: String, size: Int, lastDate: String?, lastExpenseId: Int?) -> Single<GoalExpenseResponse> {
-        return provider.rx.request(.goalExpense(goalId: goalId, startDate: startDate, endDate: endDate, size: size, lastDate: lastDate, lastExpenseId: lastExpenseId))
-            .filterSuccessfulStatusCodes()
-            .map(GoalExpenseResponse.self)
-    }
-    
-    // 목표 상세페이지의 목표 리포트용
-    func getGoalReport(goalId: Int) -> Single<GoalReportResponse> {
-        return provider.rx.request(.goalReport(goalId: goalId))
+    func getGoalReport(goalId: String) -> Single<GoalReportResponse> {
+        return provider.rx.request(.getGoalReport(goalId: goalId))
             .filterSuccessfulStatusCodes()
             .map(GoalReportResponse.self)
+    }
+    
+    func getWeeklyExpenses(goalId: String, startDate: String, endDate: String, size: String, lastDate: String? = nil, lastExpenseId: String? = nil) -> Single<WeeklyExpenseResponse> {
+        return provider.rx.request(.getWeeklyExpenses(goalId: goalId, startDate: startDate, endDate: endDate, size: size, lastDate: lastDate, lastExpenseId: lastExpenseId))
+            .filterSuccessfulStatusCodes()
+            .map(WeeklyExpenseResponse.self)
     }
     
     func postContent( icon: String, title: String, startDate : String, endDate : String, totalBudget : Int64, categoryGoals : [CategoryGoal], dailyBudgets: [Int64], completion: @escaping (Result<Goal?, BaseError>) -> Void){
@@ -101,4 +107,5 @@ final class GoalRepository {
     }
     
 }
+
 

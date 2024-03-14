@@ -7,7 +7,6 @@
 
 import Foundation
 
-//goal detail 최상단을 위한 정보
 struct GoalDetailResponse: Decodable {
     let isSuccess: Bool
     let message: String
@@ -23,56 +22,56 @@ struct GoalDetail: Decodable {
     let totalCost: Int64
 }
 
-//goaldetails - expense
-struct GoalExpenseResponse: Codable {
-    let isSuccess: Bool
-    let message: String
-    let result: GoalExpenseResult
-}
-
-struct GoalExpenseResult: Codable {
-    let dailyExpenseList: [DailyExpense]
-    let hasNext: Bool
-}
-
-struct DailyExpense: Codable {
-    let date: String
-    let dailyTotalCost: Int
-    let expenseDetailList: [ExpenseDetail]
-}
-
-struct ExpenseDetail: Codable {
-    let expenseId: Int
-    let title: String
-    let cost: Int
-    let categoryIcon: String
-}
-
-
-//goaldetails - report
-struct GoalReportResponse: Codable {
+struct GoalReportResponse: Decodable {
     let isSuccess: Bool
     let message: String
     let result: GoalReportResult
 }
 
-struct GoalReportResult: Codable {
-    let zeroDayCount: Int
+struct GoalReportResult: Decodable {
+    let zeroDayCount: Int64
     let categoryTotalCosts: [CategoryTotalCost]
     let categoryGoalReports: [CategoryGoalReport]
 }
 
-struct CategoryTotalCost: Codable {
+struct CategoryTotalCost: Decodable {
     let categoryName: String
-    let totalCost: Int
+    let totalCost: Int64
 }
 
-struct CategoryGoalReport: Codable {
+struct CategoryGoalReport: Decodable {
     let categoryName: String
     let categoryIcon: String
-    let categoryBudget: Int
-    let totalCost: Int
-    let avgCost: Int
-    let maxCost: Int
-    let expenseCount: Int
+    let categoryBudget: Int64
+    let totalCost: Int64
+    let avgCost: Int64
+    let maxCost: Int64
+    let expenseCount: Int64
+}
+
+//expense
+//struct ExpenseDetail: Decodable {
+//    let expenseId: Int64
+//    let title: String
+//    let cost: Int64
+//    let categoryIcon: String
+//}
+
+// DailyExpenseList 항목에 대한 구조체
+struct DailyExpense: Decodable {
+    let date: String
+    let dailyTotalCost: Int64
+    let expenseDetailList: [ConsumeDetail]
+}
+
+// 전체 응답에 대한 구조체
+struct WeeklyExpenseResponse: Decodable {
+    let isSuccess: Bool
+    let message: String
+    let result: WeeklyExpenseResult
+}
+
+struct WeeklyExpenseResult: Decodable {
+    let dailyExpenseList: [DailyExpense]
+    let hasNext: Bool
 }
