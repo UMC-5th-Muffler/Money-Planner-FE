@@ -254,7 +254,7 @@ class PeriodButton: UIButton {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.day], from: startDate, to: endDate)
         if let day = components.day {
-            spanLabel.text = day % 7 == 0 ? "\(day / 7)주" : "\(day)일"
+            spanLabel.text = (day+1) % 7 == 0 ? "\((day+1) / 7)주" : "\(day+1)일"
         }
         
         self.startDate = startDate

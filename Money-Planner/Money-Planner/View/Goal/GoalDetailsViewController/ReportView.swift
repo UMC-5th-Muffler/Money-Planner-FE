@@ -71,7 +71,8 @@ class ReportView: UIView, UITableViewDataSource, UITableViewDelegate {
         if CategoryTotalCosts.count == 0 {
             graphCellHeight = 120
         }else {
-            graphCellHeight = 140 + (CategoryTotalCosts.count * 38) + 30
+            let constant = CategoryTotalCosts.count >= 4 ? 4 : CategoryTotalCosts.count
+            graphCellHeight = 140 + ( constant * 38) + 30
         }
         
         tableView.reloadData() // 테이블 뷰 리로드하여 새 데이터 반영
@@ -339,6 +340,9 @@ class ReportSummaryCell : UITableViewCell {
     }
     
     func configureCell(goal : GoalDetail, categoryTotalCost : [CategoryTotalCost], zeroDayCount : Int64){
+        
+        print("_______________")
+        print(categoryTotalCost)
         
         self.contentView.backgroundColor = .mpWhite
         

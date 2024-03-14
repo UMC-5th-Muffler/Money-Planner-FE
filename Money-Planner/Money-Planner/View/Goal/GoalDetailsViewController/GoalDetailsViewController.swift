@@ -306,9 +306,9 @@ class GoalDetailsViewController: UIViewController, ExpenseViewDelegate {
             enddatestr = dateFormatter.string(from: goalDetail.endDate.toDate!)
         }
         
-        if goalDetail.startDate.toDate! < Date.todayAtMidnight && Date.todayAtMidnight < goalDetail.endDate.toDate! {
-            let day = Calendar.current.dateComponents([.day], from: goalDetail.startDate.toDate!, to: Date.todayAtMidnight).day
-            spanNDuration.text = startdatestr + " - " + enddatestr + " | " + "\(day ?? 0)" + "일차"
+        if goalDetail.startDate.toDate! <= Date.todayAtMidnight && Date.todayAtMidnight <= goalDetail.endDate.toDate! {
+            let day = Calendar.current.dateComponents([.day], from: goalDetail.startDate.toDate!, to: Date.todayAtMidnight).day! + 1
+            spanNDuration.text = startdatestr + " - " + enddatestr + " | " + "\(day)" + "일차"
         }else{
             spanNDuration.text = startdatestr + " - " + enddatestr
         }

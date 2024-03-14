@@ -281,7 +281,7 @@ class ConsumeRecordPagingCell: UITableViewCell {
     
     private let moreButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("더보기", for: .normal)
+        button.setTitle("아래로 스와이프하여 더보기", for: .normal)
         button.setTitleColor(.mpGray, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -313,7 +313,7 @@ class ConsumeRecordPagingCell: UITableViewCell {
     func configure(isEnabled: Bool) {
         moreButton.isEnabled = isEnabled
         if isEnabled {
-            moreButton.setTitle("더보기", for: .normal)
+            moreButton.setTitle("아래로 스와이프하여 더보기", for: .normal)
         } else {
             moreButton.setTitle("마지막입니다", for: .disabled)
         }

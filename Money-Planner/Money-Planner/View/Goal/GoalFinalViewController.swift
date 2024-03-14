@@ -261,9 +261,11 @@ class GoalCard : UIView {
         
         let calendar = Calendar.current
         let components = calendar.dateComponents([.day], from: startDate.toDate ?? Date(), to: endDate.toDate ?? Date())
+        
         if let day = components.day {
-            tmpStr += day%7==0 ? "(\(day/7)주)" : "(\(day)일)"
+            tmpStr += (day+1) % 7 == 0 ? " (\((day+1) / 7)주)" : " (\(day+1)일)"
         }
+        
         
         goalPeriod.text = tmpStr
         
