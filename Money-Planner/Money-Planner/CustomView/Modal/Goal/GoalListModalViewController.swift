@@ -35,13 +35,22 @@ class GoalListModalViewController: UIViewController, UITableViewDelegate, UITabl
     
     let addGoalLabel: MPLabel = {
         let label = MPLabel()
-        label.text = "+  새로운 목표 추가하기"
+        label.text = "새로운 목표 추가하기"
         label.textAlignment = .center
         label.font = UIFont.mpFont16M()
-        label.textColor = .mpGray
+        label.textColor = .mpDarkGray
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isUserInteractionEnabled = true
         return label
+    }()
+    
+    let plusIconView : UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(systemName: "plus")
+        v.tintColor = .mpDarkGray
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.isUserInteractionEnabled = true
+        return v
     }()
     
     var goalList : [Goal] = []{
@@ -122,15 +131,23 @@ class GoalListModalViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     private func setupView() {
+        customModal.addSubview(plusIconView)
         customModal.addSubview(addGoalLabel)
         customModal.addSubview(noGoalLabel)
         customModal.addSubview(tableView)
-        
+
         showView()
         
         NSLayoutConstraint.activate([
-            addGoalLabel.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -32),
-            addGoalLabel.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 24),
+            plusIconView.heightAnchor.constraint(equalToConstant: 18),
+            plusIconView.widthAnchor.constraint(equalToConstant: 18),
+            
+            plusIconView.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant:24),
+            plusIconView.bottomAnchor.constraint(equalTo: customModal.bottomAnchor, constant: -32),
+            
+            addGoalLabel.centerYAnchor.constraint(equalTo: plusIconView.centerYAnchor),
+            addGoalLabel.leadingAnchor.constraint(equalTo: plusIconView.trailingAnchor, constant: 6),
+            
             noGoalLabel.centerXAnchor.constraint(equalTo: customModal.centerXAnchor),
             noGoalLabel.centerYAnchor.constraint(equalTo: customModal.centerYAnchor),
             
@@ -180,7 +197,10 @@ extension GoalListModalViewController{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = goalList[indexPath.row].goalTitle
+        
+        let goal = goalList[indexPath.row]
+        
+        cell.textLabel?.text =  (goal.icon != nil) ? (goal.icon! + " " + goal.goalTitle!) : goal.goalTitle
         cell.textLabel?.font = .mpFont16M()
         cell.textLabel?.textColor = .mpDarkGray
         cell.selectionStyle = .none

@@ -119,6 +119,8 @@ class HomeViewController : UIViewController, MainMonthViewDelegate{
         }
     }
     
+    var selectedId : Int = -1
+    
     override func viewDidLoad(){
         contentScrollView.delegate = self
         categoryScrollView.delegate = self
@@ -175,6 +177,7 @@ class HomeViewController : UIViewController, MainMonthViewDelegate{
     func didChangeMonth(monthIndex: Int, year: Int) {
         // 값 있을 때는 넘겨주고 없으면 초기화 하기
         calendarView.changeMonth(monthIndex: monthIndex, year: year)
+        categoryScrollView.changeSelectedButton(index: -1)
         
         if(collectionView.currentPage == 0){
             fetchChangeMonthCalendarData()
@@ -512,7 +515,7 @@ extension HomeViewController{
         }
         
         if(self.nowGoal?.icon != nil){
-            titleLabel.text = self.nowGoal!.icon! + titleLabel.text!
+            titleLabel.text = self.nowGoal!.icon! + " " + titleLabel.text!
         }
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(monthViewTapped))

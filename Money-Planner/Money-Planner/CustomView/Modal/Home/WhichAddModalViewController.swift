@@ -49,9 +49,37 @@ class WhichAddModalViewController : UIViewController, UITableViewDataSource, UIT
     }()
     private var selectedIndexPath: IndexPath?
     
+    private var iconViewList : [UIImageView] = []
+    
+    let addIconView : UIImageView = {
+           let v = UIImageView()
+           v.image = UIImage(named: "home_add")
+           v.tintColor = .mpDarkGray
+           v.translatesAutoresizingMaskIntoConstraints = false
+           v.isUserInteractionEnabled = true
+           return v
+    }()
+    
+    let smileIconView : UIImageView = {
+           let v = UIImageView()
+           v.image = UIImage(named: "home_today")
+           v.tintColor = .mpDarkGray
+           v.translatesAutoresizingMaskIntoConstraints = false
+           v.isUserInteractionEnabled = true
+           return v
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        iconViewList = [
+            addIconView,
+            smileIconView
+        ]
+        
+        tableView.register(IconTableViewCell.self, forCellReuseIdentifier: "WhichIconCell")
+                
         view.addSubview(customModal)
         customModal.addSubview(modalBar)
         customModal.addSubview(titleLabel)
@@ -82,7 +110,6 @@ class WhichAddModalViewController : UIViewController, UITableViewDataSource, UIT
         
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     }
     
     @objc private func closeModal() {
@@ -97,11 +124,13 @@ class WhichAddModalViewController : UIViewController, UITableViewDataSource, UIT
         return 60.0 // Change the cell height as needed
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = todo[indexPath.row]
-        cell.textLabel?.font = .mpFont16M()
-        cell.textLabel?.textColor = .mpDarkGray
+        let cell = tableView.dequeueReusableCell(withIdentifier: "WhichIconCell", for: indexPath) as! IconTableViewCell
+          
+          // 아이콘 및 텍스트 설정
+        cell.iconImageView.image = iconViewList[indexPath.row].image
+        cell.titleLabel.text = todo[indexPath.row]
         cell.selectionStyle = .none
+          
         
         return cell
     }

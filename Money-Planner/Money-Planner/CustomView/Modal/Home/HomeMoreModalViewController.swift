@@ -53,8 +53,35 @@ class HomeMoreModalViewController: UIViewController, UITableViewDataSource, UITa
     private var selectedIndexPath: IndexPath?
     private var selectedReason: String?
     
+    private var iconViewList : [UIImageView] = []
+    
+    let categoryIconView : UIImageView = {
+           let v = UIImageView()
+           v.image = UIImage(named: "home_folder")
+           v.tintColor = .mpDarkGray
+           v.translatesAutoresizingMaskIntoConstraints = false
+           v.isUserInteractionEnabled = true
+           return v
+    }()
+    
+    let manageIconView : UIImageView = {
+           let v = UIImageView()
+           v.image = UIImage(named: "home_repeat")
+           v.tintColor = .mpDarkGray
+           v.translatesAutoresizingMaskIntoConstraints = false
+           v.isUserInteractionEnabled = true
+           return v
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.register(IconTableViewCell.self, forCellReuseIdentifier: "IconCell")
+        
+        iconViewList = [
+            categoryIconView,
+            manageIconView
+        ]
         
         view.addSubview(customModal)
         customModal.addSubview(modalBar)
@@ -73,8 +100,8 @@ class HomeMoreModalViewController: UIViewController, UITableViewDataSource, UITa
             modalBar.centerXAnchor.constraint(equalTo: customModal.centerXAnchor),
             
             titleLabel.topAnchor.constraint(equalTo: modalBar.topAnchor, constant: 28),
-            titleLabel.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -16),
+            titleLabel.leadingAnchor.constraint(equalTo: customModal.leadingAnchor, constant: 24),
+            titleLabel.trailingAnchor.constraint(equalTo: customModal.trailingAnchor, constant: -24),
             titleLabel.heightAnchor.constraint(equalToConstant: 28),
             
             
@@ -86,7 +113,6 @@ class HomeMoreModalViewController: UIViewController, UITableViewDataSource, UITa
         
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         
     }
     
@@ -105,11 +131,14 @@ class HomeMoreModalViewController: UIViewController, UITableViewDataSource, UITa
         return 60.0 // Change the cell height as needed
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = pages[indexPath.row]
-        cell.textLabel?.font = .mpFont18M()
-        cell.textLabel?.textColor = .mpBlack
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: "IconCell", for: indexPath) as! IconTableViewCell
+          
+          // 아이콘 및 텍스트 설정
+        cell.iconImageView.image = iconViewList[indexPath.row].image
+        cell.titleLabel.text = pages[indexPath.row]
         cell.selectionStyle = .none
+          
         return cell
     }
     
@@ -120,5 +149,47 @@ class HomeMoreModalViewController: UIViewController, UITableViewDataSource, UITa
         }
         
         closeModal(index: indexPath.row)
+    }
+}
+
+
+class IconTableViewCell: UITableViewCell {
+    var iconImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.tintColor = .mpDarkGray
+        return imageView
+    }()
+    
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .mpFont18M()
+        label.textColor = .mpBlack
+
+        return label
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        addSubview(iconImageView)
+        addSubview(titleLabel)
+        
+        NSLayoutConstraint.activate([
+            iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+            iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            iconImageView.widthAnchor.constraint(equalToConstant: 22),
+            iconImageView.heightAnchor.constraint(equalToConstant: 22),
+            
+            titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12),
+            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
+        ])
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

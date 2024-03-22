@@ -135,6 +135,10 @@ class CategoryEditViewController : UIViewController,CategoryTableViewDelegate, A
             if element1.id != element2.id {
                 return false
             }
+            
+            if element1.isVisible != element2.isVisible{
+                return false
+            }
         }
         
         return true
