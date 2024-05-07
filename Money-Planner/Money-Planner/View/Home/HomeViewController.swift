@@ -119,6 +119,8 @@ class HomeViewController : UIViewController, MainMonthViewDelegate {
         view.backgroundColor = UIColor.mpWhite
         view.addSubview(contentScrollView)
         contentScrollView.addSubview(contentView)
+//        performSendToken()
+//        performPatchToken()
         
         setupHeader()
         
@@ -388,6 +390,30 @@ extension HomeViewController{
         
         calendarView.dailyList = getDailyList(rawData: self.dailyList)
         
+    }
+    
+    func performPatchToken() {
+        let token = UserDefaults.standard.value(forKey: "fcmToken") as! String
+        NotificationRepository.shared.patchToken(token: token) { result in
+            switch result {
+            case .success(let data):
+                print("패치 성공 \(data)")
+            case .failure(let error):
+                print("패치 실패 \(error)")
+            }
+        }
+    }
+    
+    func performSendToken() {
+        let token = UserDefaults.standard.value(forKey: "fcmToken") as! String
+        NotificationRepository.shared.sendToken(token: token) { result in
+            switch result {
+            case .success(let data):
+                print("보내기 성공 \(data)")
+            case .failure(let error):
+                print("보내기 실패 \(error)")
+            }
+        }
     }
     
     func setupHeader(){
